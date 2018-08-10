@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="quartzScheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+        <property name="jobFactory" ref="jobFactory"></property>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <property name="configLocation" value="classpath:quartz.properties" />
+        <property name="triggers">
+            <list>
+                <!--<ref bean="orgTrigger" />-->
+
+            </list>
+        </property>
+    </bean>
+    <bean id="jobFactory" class="com.qis.cluster.MyJobFactory"></bean>
+
+    <!--<bean id="orgJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+        <!--<property name="jobClass">-->
+            <!--<value>com.coracle.xsimple.cluster.system.SyncOrg</value>-->
+        <!--</property>-->
+        <!--<property name="durability" value="true" />-->
+        <!--<property name="requestsRecovery" value="true" />-->
+    <!--</bean>-->
+    <!---->
+
+    <!--<bean id="orgTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="orgJob" />-->
+        <!--<property name="cronExpression" value="0 20 1 * * ?" />-->
+    <!--</bean>-->
+
+</beans>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinri.dao.roleLog.RoleLogMapper">
+
+
+    <!-- 查询条件SQL -->
+    <sql id="whereColumnBySelect">
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="code != null">
+                AND code = #{code}
+            </if>
+            <if test="name != null and phoneNumber !=''">
+                AND t.name = #{name}
+            </if>
+        </trim>
+    </sql>
+
+
+    <!-- 查询列表可以根据分页进行查询 -->
+    <select id="findOperationList"  parameterType="com.xinri.po.roleLog.OperationRecord" resultType="com.xinri.po.roleLog.OperationRecord">
+        SELECT
+        code,name,operation,time,remark
+        FROM xr_operationRecord
+        <include refid="whereColumnBySelect" />
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+
+
+
+
+</mapper>

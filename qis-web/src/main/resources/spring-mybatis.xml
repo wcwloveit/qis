@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xmlns:cache="http://www.springframework.org/schema/cache"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+	<description>Spring公共配置</description>
+	<beans>
+		<!--  读取配置文件 -->
+		<context:property-placeholder location="classpath:application.properties" />
+		<!-- JDBC连接池 -->
+		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+			<property name="driverClass" value="${jdbc.driver}"></property>
+			<property name="jdbcUrl" value="${jdbc.url}"></property>
+			<property name="user" value="${jdbc.username}"></property>
+			<property name="password" value="${jdbc.password}"></property>
+			<property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
+			<property name="minPoolSize" value="${jdbc.minPoolSize}"></property>
+			<property name="initialPoolSize" value="${jdbc.initialPoolSize}"></property>
+			<property name="maxIdleTime" value="${jdbc.maxIdleTime}"></property>
+			<property name="acquireIncrement" value="${jdbc.acquireIncrement}"></property>
+			<property name="maxStatements" value="${jdbc.maxStatements}"></property>
+		</bean>
+
+		<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
+
+		<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
+		<context:component-scan base-package="com.qis,com.xinri">
+			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+			<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+		</context:component-scan>
+
+		<!-- Jpa Entity Manager 配置 -->
+		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+			<property name="dataSource" ref="dataSource" />
+			<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
+			<property name="packagesToScan" value="com.xinri" />
+			<property name="persistenceProviderClass" value="org.hibernate.jpa.HibernatePersistenceProvider" />
+			<property name="jpaProperties">
+				<props>
+					<!--用来后台输出sql-->
+					<prop key="hibernate.format_sql">false</prop>
+					<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+					<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop>
+					<prop key="hibernate.cache.use_query_cache">false</prop>
+					<!--<prop key="net.sf.ehcache.configurationResourceName">cache/ehcache-hibernate-local.xml</prop>-->
+					<!-- 命名规则 My_NAME->MyName -->
+					<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+				</props>
+			</property>
+		</bean>
+
+		<bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+			<!--<property name="databasePlatform">-->
+				<!--&lt;!&ndash;<bean factory-method="getDialect" class="com.kingnode.diva.persistence.Hibernates">&ndash;&gt;-->
+					<!--&lt;!&ndash;<constructor-arg ref="dataSource" />&ndash;&gt;-->
+				<!--&lt;!&ndash;</bean>&ndash;&gt;-->
+			<!--</property>-->
+			<property name="showSql" value="true" />
+			<!-- 实体与数据库表的映射 -->
+			<property name="generateDdl" value="true" />
+		</bean>
+
+
+		<!-- Jpa 事务配置 -->
+		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+			<property name="entityManagerFactory" ref="entityManagerFactory" />
+		</bean>
+
+
+		<!-- 缓存配置 -->
+		<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+			<property name="configLocation" value="classpath:cache/ehcache.xml" />
+			<property name="shared" value="true" />
+		</bean>
+		<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+			<property name="cacheManager" ref="ehCacheManager" />
+		</bean>
+
+		<!-- Redis配置 -->
+		<!-- jedis pool配置 -->
+		<bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+			<property name="maxIdle" value="${redis.maxIdle}" />
+			<property name="maxTotal" value="${redis.maxTotal}" />
+			<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+		</bean>
+
+		<bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+			  p:usePool="true"
+			  p:hostName="${redis.host}"
+			  p:port="${redis.port}"
+			  p:timeout="${redis.timeout}"
+			  p:password="${redis.password}"
+			  p:poolConfig-ref="redisPoolConfig" />
+
+		<!-- redis template definition -->
+		<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connectionFactory-ref="jedisConnFactory"/>
+
+		<bean id="redisServiceMxm" class="com.qis.service.RedisService">
+			<property name="redisTemplate">
+				<ref bean="redisTemplate" />
+			</property>
+		</bean>
+
+		<!-- 配置多版本数据库兼容支持 -->
+		<bean id="vendorProperties"
+			  class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+			<property name="properties">
+				<props>
+					<prop key="Oracle">oracle</prop>
+					<prop key="MySQL">mysql</prop>
+				</props>
+			</property>
+		</bean>
+
+		<bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+			<property name="properties" ref="vendorProperties" />
+		</bean>
+
+		<!-- define the SqlSessionFactory -->
+		<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource" />
+			<property name="databaseIdProvider" ref="databaseIdProvider" />
+
+			<property name="typeAliasesPackage" value="com.xinri"/>
+			<property name="typeAliasesSuperType" value="com.qis.common.persistence.BaseEntity"/>
+			<!--  <property name="mapperLocations" value="classpath*:/mapping/**/*.xml" />-->
+
+			<property name="mapperLocations">
+				<array>
+					<value>classpath:/mapping/**/*.xml</value>
+				</array>
+			</property>
+			<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+		</bean>
+
+
+		<!-- scan for mappers and let them be autowired -->
+		<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+			<property name="basePackage" value="com.xinri.**.dao" />
+			<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean" />
+		</bean>
+
+		<!-- JSR303 Validator定义 -->
+		<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+		<!--&lt;!&ndash; (事务管理)transaction manager, use JtaTransactionManager for global tx &ndash;&gt;-->
+		<!--<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+			<!--<property name="dataSource" ref="dataSource"/>-->
+		<!--</bean>-->
+
+		<!-- Spring Data Jpa配置 -->
+		<jpa:repositories base-package="com.xinri" transaction-manager-ref="transactionManager" entity-manager-factory-ref="entityManagerFactory" />
+
+
+		<!-- 使用annotation定义事务 -->
+		<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+		<!-- 定义aspectj -->
+		<aop:aspectj-autoproxy proxy-target-class="true" />
+		<task:annotation-driven />
+		<cache:annotation-driven cache-manager="cacheManager" />
+
+		<!-- 配置RestTemplate -->
+		<!--Http client Factory-->
+		<bean id="httpClientFactory" class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+			<property name="connectTimeout" value="600000" />
+			<property name="readTimeout" value="600000" />
+		</bean>
+
+		<!--RestTemplate-->
+		<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+			<constructor-arg ref="httpClientFactory" />
+		</bean>
+
+	</beans>
+
+</beans>
