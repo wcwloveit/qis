@@ -1,6 +1,7 @@
 package com.qis.shiro;
 
 import com.app.ShiroUser;
+import com.qis.common.util.Encodes;
 import com.qis.service.system.ResourceService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -8,12 +9,17 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
 
 public class ShiroDbRealm extends AuthorizingRealm {
     private static Logger logger = LoggerFactory.getLogger(ShiroDbRealm.class);
@@ -38,12 +44,11 @@ public class ShiroDbRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
           String username = String.valueOf(((UsernamePasswordToken) token).getUsername());
           String password = String.valueOf(((UsernamePasswordToken) token).getPassword());
-          if(password.equals("123456")){
-              AuthenticationInfo auth = new SimpleAuthenticationInfo(username, password, this.getName());
-              return auth;
-          }else{
-              throw new UnknownAccountException();
-          }
+          SimpleAuthenticationInfo auth;
+          AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(username, "123456", this.getName());
+          return authcInfo;
+
+
      //   KnUser user = resourceService.FindUserByLoginName(((UsernamePasswordToken) token).getUsername());
 //        if (user != null) {
 //            if (ActiveType.DISABLE.equals(user.getStatus())) {
@@ -82,9 +87,14 @@ public class ShiroDbRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.addRole("user");
+        String username = (String)principals.getPrimaryPrincipal();
+        // 单独定一个集合对象
+        List<String> permissions = new ArrayList<String>();
+        permissions.add("authc");
+        // 查到权限数据，返回授权信息(要包括 上边的permissions)
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        // 将上边查询到授权信息填充到simpleAuthorizationInfo对象中
+        simpleAuthorizationInfo.addStringPermissions(permissions);
 //        for (KnRole role : resourceService.CacheRoles(shiroUser.id)) {
 //            // System.out.println("===================>"+role.getCode()+","+role.getName());
 //            // 基于Role的权限信息
@@ -94,18 +104,18 @@ public class ShiroDbRealm extends AuthorizingRealm {
 //            //System.out.println("------------------->"+role.getPermissionList());
 //        }
 
-        return info;
+        return simpleAuthorizationInfo;
     }
 
-    /**
-     * 设定Password校验的Hash算法与迭代次数.
-     */
-    @PostConstruct
-    public void initCredentialsMatcher() {
-        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(ResourceService.HASH_ALGORITHM);
-        matcher.setHashIterations(ResourceService.HASH_INTERATIONS);
-        setCredentialsMatcher(matcher);
-    }
+//    /**
+//     * 设定Password校验的Hash算法与迭代次数.
+//     */
+//    @PostConstruct
+//    public void initCredentialsMatcher() {
+//        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(ResourceService.HASH_ALGORITHM);
+//        matcher.setHashIterations(ResourceService.HASH_INTERATIONS);
+//        setCredentialsMatcher(matcher);
+//    }
 
     public void setResourceService(ResourceService resourceService) {
         this.resourceService = resourceService;

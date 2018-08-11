@@ -1,12 +1,6 @@
 package com.app.api;
 import java.io.Serializable;
 import java.util.List;
-/**
- * @author Chirs Chou
- *         Mail: chirs@zhoujin.com
- *         Date: 13-9-13
- *         Time: 下午9:50
- */
 public class DataTable<T> implements Serializable{
     private static final long serialVersionUID=2252240868205663450L;
     //-- 分页参数 --//

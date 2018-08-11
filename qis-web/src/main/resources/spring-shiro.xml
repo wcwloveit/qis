@@ -32,11 +32,9 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager" />
         <property name="loginUrl" value="/login" />
-        <property name="successUrl" value="/" />
+        <property name="successUrl" value="/index.jsp" />
         <property name="filterChainDefinitions">
             <value>
-                /page_system_404_3.html  = anon
-                /index.jsp  = anon
                 /assets/** = anon
                 /login = anon
                 /logout = logout

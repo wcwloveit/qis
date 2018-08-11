@@ -2,13 +2,10 @@
 <decorators defaultdir="/WEB-INF/layout/">
     <excludes>
         <pattern>/assets/*</pattern>
-        <pattern>/upload/*</pattern>
-        <pattern>/index.jsp</pattern>
+        <pattern>/login</pattern>
         <pattern>/logout</pattern>
-        <pattern>/page_system_404_3.html</pattern>
     </excludes>
     <decorator name="default" page="default.jsp">
-        <pattern>/login</pattern>
         <pattern>/*</pattern>
     </decorator>
 </decorators>

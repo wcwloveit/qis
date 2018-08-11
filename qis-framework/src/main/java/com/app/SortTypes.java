@@ -4,9 +4,6 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-/**
- * @author chirs@zhoujin.com (Chirs Chou)
- */
 public class SortTypes{
     private static Map<String,String> sortTypes=Maps.newLinkedHashMap();
     static{
