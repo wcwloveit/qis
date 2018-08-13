@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinri.dao.remote.SetsRemoteEndPointMapper">
+	<resultMap id="setsRemoteEndPointResultMap" type="com.xinri.po.remote.SetsRemoteEndPoint">
+	      	<result column="SETS_IP" property="setsIp" jdbcType="VARCHAR"/>
+	      	<result column="SETS_POINT" property="setsPoint" jdbcType="VARCHAR"/>
+	      	<result column="REMOTE_END_IP" property="remoteEndIp" jdbcType="VARCHAR"/>
+	      	<result column="REMOTE_END_POINT" property="remoteEndPoint" jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <!-- 列定义 -->
+	<sql id="setsRemoteEndPointColumns">
+	  t.SETS_IP,
+	  t.SETS_POINT,
+	  t.REMOTE_END_IP,
+	  t.REMOTE_END_POINT
+  	</sql>
+
+    <!-- 查询条件SQL -->
+	<sql id="whereColumnBySelect">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="setsIp != null and setsIp !=''">
+				AND t.SETS_IP = #{setsIp}
+			</if>
+			<if test="setsPoint != null and setsPoint !=''">
+				AND t.SETS_POINT = #{setsPoint}
+			</if>
+			<if test="remoteEndIp != null and remoteEndIp !=''">
+				AND t.REMOTE_END_IP = #{remoteEndIp}
+			</if>
+			<if test="remoteEndPoint != null and remoteEndPoint !=''">
+				AND t.REMOTE_END_POINT = #{remoteEndPoint}
+			</if>
+		</trim>
+	</sql>
+
+    <!-- 修改字段SQL -->
+	<sql id="whereColumnByUpdate">
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="setsIp != null">
+			t.SETS_IP = #{setsIp},
+			</if>
+			<if test="setsPoint != null">
+			t.SETS_POINT = #{setsPoint},
+			</if>
+			<if test="remoteEndIp != null">
+			t.REMOTE_END_IP = #{remoteEndIp},
+			</if>
+			<if test="remoteEndPoint != null">
+			t.REMOTE_END_POINT = #{remoteEndPoint},
+			</if>
+		</trim>
+	</sql>
+
+    <!-- 根据主键ID获取数据 -->
+	<select id="get" parameterType="com.xinri.po.remote.SetsRemoteEndPoint" resultMap="setsRemoteEndPointResultMap">
+		SELECT <include refid="setsRemoteEndPointColumns" /> 
+		FROM SETS_REMOTE_END_POINT t 
+		WHERE t.SETS_IP = #{setsIp}
+	</select>
+    <!-- 查询列表可以根据分页进行查询 -->
+	<select id="findList" parameterType="com.xinri.po.remote.SetsRemoteEndPoint" resultMap="setsRemoteEndPointResultMap">
+		SELECT
+		<include refid="setsRemoteEndPointColumns" /> 
+		FROM SETS_REMOTE_END_POINT t 
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}			
+			</when>
+				<otherwise>
+				ORDER BY t.SETS_IP DESC
+				</otherwise>
+			
+		</choose>
+	</select>
+
+    <!-- 查询所有列表 -->
+	<select id="findAllList" parameterType="com.xinri.po.remote.SetsRemoteEndPoint" resultMap="setsRemoteEndPointResultMap">
+		SELECT
+		<include refid="setsRemoteEndPointColumns" /> 
+		FROM SETS_REMOTE_END_POINT t 	
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}			
+			</when>
+				<otherwise>
+				ORDER BY  t.ID DESC
+				</otherwise>
+			
+		</choose>
+		
+		
+	</select>
+
+    <!-- 根据条件查询对象 -->
+	<select id="getByEntity" parameterType="com.xinri.po.remote.SetsRemoteEndPoint" resultMap="setsRemoteEndPointResultMap">
+		SELECT <include refid="setsRemoteEndPointColumns" /> 
+		FROM SETS_REMOTE_END_POINT t 
+		<include refid="whereColumnBySelect"></include>
+	</select>
+	
+    <!-- 新增并设置主键ID至参数对象 -->
+	<insert id="insert" parameterType="com.xinri.po.remote.SetsRemoteEndPoint">
+
+		INSERT INTO SETS_REMOTE_END_POINT
+			(SETS_IP, SETS_POINT, REMOTE_END_IP, REMOTE_END_POINT)
+		VALUES
+			(#{setsIp}, #{setsPoint}, #{remoteEndIp}, #{remoteEndPoint})
+	</insert>
+    <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
+	<insert id="insertSelective" parameterType="com.xinri.po.remote.SetsRemoteEndPoint" useGeneratedKeys="true" keyProperty="id" >
+		
+	    INSERT INTO SETS_REMOTE_END_POINT
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="setsIp != null">
+				SETS_IP,
+			</if>
+			<if test="setsPoint != null">
+				SETS_POINT,
+			</if>
+			<if test="remoteEndIp != null">
+				REMOTE_END_IP,
+			</if>
+			<if test="remoteEndPoint != null">
+				REMOTE_END_POINT,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="setsIp != null">
+				#{setsIp,jdbcType=VARCHAR},
+		  </if>
+		  <if test="setsPoint != null">
+				#{setsPoint,jdbcType=VARCHAR},
+		  </if>
+		  <if test="remoteEndIp != null">
+				#{remoteEndIp,jdbcType=VARCHAR},
+		  </if>
+		  <if test="remoteEndPoint != null">
+				#{remoteEndPoint,jdbcType=VARCHAR},
+		  </if>
+	    </trim>
+  	</insert>
+
+    <!-- 根据主键ID进行修改 -->
+  	<update id="update" parameterType="com.xinri.po.remote.SetsRemoteEndPoint">
+		UPDATE SETS_REMOTE_END_POINT t 
+		<include refid="whereColumnByUpdate"></include>
+		<where>
+			t.SETS_IP = #{setsIp,jdbcType=VARCHAR}
+		</where>
+	</update>
+
+    <!-- 根据条件进行修改 -->
+	<update id="updateByCondition" parameterType="com.xinri.po.remote.SetsRemoteEndPoint">
+		UPDATE SETS_REMOTE_END_POINT t 
+		<include refid="whereColumnByUpdate"></include>
+		<where>${whereSqlParam}</where>
+	</update>
+
+    <!-- 根据主键ID进行逻辑删除 -->
+	<update id="delete" parameterType="com.xinri.po.remote.SetsRemoteEndPoint">
+		UPDATE SETS_REMOTE_END_POINT t SET 
+		t.IS_DELETED = 1
+		WHERE t.SETS_IP = #{setsIp,jdbcType=VARCHAR}
+	</update>
+
+    <!-- 根据主键ID进行批量逻辑删除 -->
+	<update id="batchDelete" parameterType="java.util.List">
+		UPDATE SETS_REMOTE_END_POINT t SET 
+		t.IS_DELETED = 1
+		WHERE t.SETS_IP IN
+		<foreach item="item" collection="list" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+    <!-- 根据条件进行逻辑删除 -->
+	<update id="deleteByEntity" parameterType="com.xinri.po.remote.SetsRemoteEndPoint">
+		UPDATE SETS_REMOTE_END_POINT t SET 
+			t.IS_DELETED = 1
+		<include refid="whereColumnBySelect"/>
+	</update>
+
+    <!-- 根据主键ID进行物理删除 -->
+	<delete id="remove" parameterType="com.xinri.po.remote.SetsRemoteEndPoint">
+		DELETE FROM SETS_REMOTE_END_POINT t 
+		WHERE t.SETS_IP = #{setsIp,jdbcType=VARCHAR}
+	</delete>
+
+    <!-- 根据主键ID进行批量物理删除 -->
+	<delete id="batchRemove" parameterType="java.util.List">
+		DELETE FROM SETS_REMOTE_END_POINT t 
+		WHERE t.SETS_IP IN
+		<foreach item="item" collection="list" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <!-- 根据条件进行物理删除 -->
+	<update id="removeByCondition" parameterType="com.xinri.po.remote.SetsRemoteEndPoint">
+		DELETE FROM SETS_REMOTE_END_POINT t 
+		<where>${whereSqlParam}</where>
+	</update>
+	
+
+</mapper>

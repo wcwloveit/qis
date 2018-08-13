@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinri.dao.menu.QisMenuMapper">
+	<resultMap id="qisMenuResultMap" type="com.xinri.po.menu.QisMenu">
+		   <id column="ID" property="id" jdbcType="BIGINT"/>
+	      	<result column="ICON" property="icon" jdbcType="VARCHAR"/>
+	      	<result column="NAME" property="name" jdbcType="VARCHAR"/>
+	      	<result column="STATE" property="state" jdbcType="INTEGER"/>
+	      	<result column="URL" property="url" jdbcType="VARCHAR"/>
+	      	<result column="P_ID" property="pId" jdbcType="BIGINT"/>
+	</resultMap>
+
+    <!-- 列定义 -->
+	<sql id="qisMenuColumns">
+	  t.ID,
+	  t.ICON,
+	  t.NAME,
+	  t.STATE,
+	  t.URL,
+	  t.P_ID
+  	</sql>
+
+    <!-- 查询条件SQL -->
+	<sql id="whereColumnBySelect">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND t.ID = #{id}
+			</if>
+			<if test="icon != null and icon !=''">
+				AND t.ICON = #{icon}
+			</if>
+			<if test="name != null and name !=''">
+				AND t.NAME = #{name}
+			</if>
+			<if test="state != null">
+				AND t.STATE = #{state}
+			</if>
+			<if test="url != null and url !=''">
+				AND t.URL = #{url}
+			</if>
+			<if test="pId != null">
+				AND t.P_ID = #{pId}
+			</if>
+		</trim>
+	</sql>
+
+    <!-- 修改字段SQL -->
+	<sql id="whereColumnByUpdate">
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">
+			t.ID = #{id},
+			</if>
+			<if test="icon != null">
+			t.ICON = #{icon},
+			</if>
+			<if test="name != null">
+			t.NAME = #{name},
+			</if>
+			<if test="state != null">
+			t.STATE = #{state},
+			</if>
+			<if test="url != null">
+			t.URL = #{url},
+			</if>
+			<if test="pId != null">
+			t.P_ID = #{pId},
+			</if>
+		</trim>
+	</sql>
+
+    <!-- 根据主键ID获取数据 -->
+	<select id="get" parameterType="com.xinri.po.menu.QisMenu" resultMap="qisMenuResultMap">
+		SELECT <include refid="qisMenuColumns" /> 
+		FROM QIS_MENU t 
+		WHERE t.ID = #{id}
+	</select>
+    <!-- 查询列表可以根据分页进行查询 -->
+	<select id="findList" parameterType="com.xinri.po.menu.QisMenu" resultMap="qisMenuResultMap">
+		SELECT
+		<include refid="qisMenuColumns" /> 
+		FROM QIS_MENU t 
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}			
+			</when>
+				<otherwise>
+				ORDER BY t.ID DESC
+				</otherwise>
+			
+		</choose>
+	</select>
+
+    <!-- 查询所有列表 -->
+	<select id="findAllList" parameterType="com.xinri.po.menu.QisMenu" resultMap="qisMenuResultMap">
+		SELECT
+		<include refid="qisMenuColumns" /> 
+		FROM QIS_MENU t 	
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}			
+			</when>
+				<otherwise>
+				ORDER BY  t.ID DESC
+				</otherwise>
+			
+		</choose>
+		
+		
+	</select>
+
+    <!-- 根据条件查询对象 -->
+	<select id="getByEntity" parameterType="com.xinri.po.menu.QisMenu" resultMap="qisMenuResultMap">
+		SELECT <include refid="qisMenuColumns" /> 
+		FROM QIS_MENU t 
+		<include refid="whereColumnBySelect"></include>
+	</select>
+	
+    <!-- 新增并设置主键ID至参数对象 -->
+	<insert id="insert" parameterType="com.xinri.po.menu.QisMenu">
+
+		INSERT INTO QIS_MENU
+			(ID,ICON, NAME,STATE, URL,  P_ID)
+		VALUES
+			(#{id}, #{icon}, #{name}, #{state}, #{url}, #{pId})
+	</insert>
+    <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
+	<insert id="insertSelective" parameterType="com.xinri.po.menu.QisMenu" useGeneratedKeys="true" keyProperty="id" >
+		
+	    INSERT INTO QIS_MENU
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				ID,
+			</if>
+
+			<if test="icon != null">
+				ICON,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="url != null">
+				URL,
+			</if>
+
+			<if test="pId != null">
+				P_ID,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null">
+				#{id,jdbcType=BIGINT},
+		  </if>
+
+		  <if test="icon != null">
+				#{icon,jdbcType=VARCHAR},
+		  </if>
+		  <if test="name != null">
+				#{name,jdbcType=VARCHAR},
+		  </if>
+
+		  <if test="state != null">
+				#{state,jdbcType=INTEGER},
+		  </if>
+		  <if test="url != null">
+				#{url,jdbcType=VARCHAR},
+		  </if>
+
+		  <if test="pId != null">
+				#{pId,jdbcType=BIGINT},
+		  </if>
+	    </trim>
+  	</insert>
+
+    <!-- 根据主键ID进行修改 -->
+  	<update id="update" parameterType="com.xinri.po.menu.QisMenu">
+		UPDATE QIS_MENU t 
+		<include refid="whereColumnByUpdate"></include>
+		<where>
+			t.ID = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+
+    <!-- 根据条件进行修改 -->
+	<update id="updateByCondition" parameterType="com.xinri.po.menu.QisMenu">
+		UPDATE QIS_MENU t 
+		<include refid="whereColumnByUpdate"></include>
+		<where>${whereSqlParam}</where>
+	</update>
+
+    <!-- 根据主键ID进行逻辑删除 -->
+	<update id="delete" parameterType="com.xinri.po.menu.QisMenu">
+		UPDATE QIS_MENU t SET 
+		t.IS_DELETED = 1
+		WHERE t.ID = #{id,jdbcType=BIGINT}
+	</update>
+
+    <!-- 根据主键ID进行批量逻辑删除 -->
+	<update id="batchDelete" parameterType="java.util.List">
+		UPDATE QIS_MENU t SET 
+		t.IS_DELETED = 1
+		WHERE t.ID IN
+		<foreach item="item" collection="list" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+    <!-- 根据条件进行逻辑删除 -->
+	<update id="deleteByEntity" parameterType="com.xinri.po.menu.QisMenu">
+		UPDATE QIS_MENU t SET 
+			t.IS_DELETED = 1
+		<include refid="whereColumnBySelect"/>
+	</update>
+
+    <!-- 根据主键ID进行物理删除 -->
+	<delete id="remove" parameterType="com.xinri.po.menu.QisMenu">
+		DELETE FROM QIS_MENU t 
+		WHERE t.ID = #{id,jdbcType=BIGINT}
+	</delete>
+
+    <!-- 根据主键ID进行批量物理删除 -->
+	<delete id="batchRemove" parameterType="java.util.List">
+		DELETE FROM QIS_MENU t 
+		WHERE t.ID IN
+		<foreach item="item" collection="list" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <!-- 根据条件进行物理删除 -->
+	<update id="removeByCondition" parameterType="com.xinri.po.menu.QisMenu">
+		DELETE FROM QIS_MENU t 
+		<where>${whereSqlParam}</where>
+	</update>
+	
+
+</mapper>

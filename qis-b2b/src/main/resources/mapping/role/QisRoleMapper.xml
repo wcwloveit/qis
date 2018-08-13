@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinri.dao.role.QisRoleMapper">
+	<resultMap id="qisRoleResultMap" type="com.xinri.po.role.QisRole">
+		   <id column="ID" property="id" jdbcType="BIGINT"/>
+	      	<result column="BZ" property="bz" jdbcType="VARCHAR"/>
+	      	<result column="NAME" property="name" jdbcType="VARCHAR"/>
+	      	<result column="REMARKS" property="remarks" jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <!-- 列定义 -->
+	<sql id="qisRoleColumns">
+	  t.ID,
+	  t.BZ,
+	  t.NAME,
+	  t.REMARKS
+  	</sql>
+
+    <!-- 查询条件SQL -->
+	<sql id="whereColumnBySelect">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND t.ID = #{id}
+			</if>
+			<if test="bz != null and bz !=''">
+				AND t.BZ = #{bz}
+			</if>
+			<if test="name != null and name !=''">
+				AND t.NAME = #{name}
+			</if>
+			<if test="remarks != null and remarks !=''">
+				AND t.REMARKS = #{remarks}
+			</if>
+		</trim>
+	</sql>
+
+    <!-- 修改字段SQL -->
+	<sql id="whereColumnByUpdate">
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">
+			t.ID = #{id},
+			</if>
+			<if test="bz != null">
+			t.BZ = #{bz},
+			</if>
+			<if test="name != null">
+			t.NAME = #{name},
+			</if>
+			<if test="remarks != null">
+			t.REMARKS = #{remarks},
+			</if>
+		</trim>
+	</sql>
+
+    <!-- 根据主键ID获取数据 -->
+	<select id="get" parameterType="com.xinri.po.role.QisRole" resultMap="qisRoleResultMap">
+		SELECT <include refid="qisRoleColumns" /> 
+		FROM QIS_ROLE t 
+		WHERE t.ID = #{id}
+	</select>
+    <!-- 查询列表可以根据分页进行查询 -->
+	<select id="findList" parameterType="com.xinri.po.role.QisRole" resultMap="qisRoleResultMap">
+		SELECT
+		<include refid="qisRoleColumns" /> 
+		FROM QIS_ROLE t 
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}			
+			</when>
+				<otherwise>
+				ORDER BY t.ID DESC
+				</otherwise>
+			
+		</choose>
+	</select>
+
+    <!-- 查询所有列表 -->
+	<select id="findAllList" parameterType="com.xinri.po.role.QisRole" resultMap="qisRoleResultMap">
+		SELECT
+		<include refid="qisRoleColumns" /> 
+		FROM QIS_ROLE t 	
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}			
+			</when>
+				<otherwise>
+				ORDER BY  t.ID DESC
+				</otherwise>
+			
+		</choose>
+		
+		
+	</select>
+
+    <!-- 根据条件查询对象 -->
+	<select id="getByEntity" parameterType="com.xinri.po.role.QisRole" resultMap="qisRoleResultMap">
+		SELECT <include refid="qisRoleColumns" /> 
+		FROM QIS_ROLE t 
+		<include refid="whereColumnBySelect"></include>
+	</select>
+	
+    <!-- 新增并设置主键ID至参数对象 -->
+	<insert id="insert" parameterType="com.xinri.po.role.QisRole">
+
+		INSERT INTO QIS_ROLE
+			(ID,  BZ, NAME, REMARKS)
+		VALUES
+			(#{id}, #{bz}, #{name},  #{remarks})
+	</insert>
+    <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
+	<insert id="insertSelective" parameterType="com.xinri.po.role.QisRole" useGeneratedKeys="true" keyProperty="id" >
+		
+	    INSERT INTO QIS_ROLE
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				ID,
+			</if>
+
+			<if test="bz != null">
+				BZ,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+
+			<if test="remarks != null">
+				REMARKS,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null">
+				#{id,jdbcType=BIGINT},
+		  </if>
+
+		  <if test="bz != null">
+				#{bz,jdbcType=VARCHAR},
+		  </if>
+		  <if test="name != null">
+				#{name,jdbcType=VARCHAR},
+		  </if>
+
+		  <if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+		  </if>
+	    </trim>
+  	</insert>
+
+    <!-- 根据主键ID进行修改 -->
+  	<update id="update" parameterType="com.xinri.po.role.QisRole">
+		UPDATE QIS_ROLE t 
+		<include refid="whereColumnByUpdate"></include>
+		<where>
+			t.ID = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+
+    <!-- 根据条件进行修改 -->
+	<update id="updateByCondition" parameterType="com.xinri.po.role.QisRole">
+		UPDATE QIS_ROLE t 
+		<include refid="whereColumnByUpdate"></include>
+		<where>${whereSqlParam}</where>
+	</update>
+
+    <!-- 根据主键ID进行逻辑删除 -->
+	<update id="delete" parameterType="com.xinri.po.role.QisRole">
+		UPDATE QIS_ROLE t SET 
+		t.IS_DELETED = 1
+		WHERE t.ID = #{id,jdbcType=BIGINT}
+	</update>
+
+    <!-- 根据主键ID进行批量逻辑删除 -->
+	<update id="batchDelete" parameterType="java.util.List">
+		UPDATE QIS_ROLE t SET 
+		t.IS_DELETED = 1
+		WHERE t.ID IN
+		<foreach item="item" collection="list" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+    <!-- 根据条件进行逻辑删除 -->
+	<update id="deleteByEntity" parameterType="com.xinri.po.role.QisRole">
+		UPDATE QIS_ROLE t SET 
+			t.IS_DELETED = 1
+		<include refid="whereColumnBySelect"/>
+	</update>
+
+    <!-- 根据主键ID进行物理删除 -->
+	<delete id="remove" parameterType="com.xinri.po.role.QisRole">
+		DELETE FROM QIS_ROLE t 
+		WHERE t.ID = #{id,jdbcType=BIGINT}
+	</delete>
+
+    <!-- 根据主键ID进行批量物理删除 -->
+	<delete id="batchRemove" parameterType="java.util.List">
+		DELETE FROM QIS_ROLE t 
+		WHERE t.ID IN
+		<foreach item="item" collection="list" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <!-- 根据条件进行物理删除 -->
+	<update id="removeByCondition" parameterType="com.xinri.po.role.QisRole">
+		DELETE FROM QIS_ROLE t 
+		<where>${whereSqlParam}</where>
+	</update>
+	
+
+</mapper>

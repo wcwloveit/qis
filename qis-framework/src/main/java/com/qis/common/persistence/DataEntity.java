@@ -17,10 +17,11 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = 1L;
 
+
 	protected Long createdBy; // 创建者
 	protected Date createdOn; // 创建日期 查看数据库字段
-	protected Long updatedBy; // 更新者
-	protected Date updatedOn; // 更新日期 查看数据库字段
+	protected Long modifiedBy; // 更新者
+	protected Date modifiedOn; // 更新日期 查看数据库字段
 	protected Integer isDeleted; // 删除标记（0：正常；1：删除）
 
 
@@ -48,7 +49,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	 */
 	@Override
 	public void preUpdate() {
-		this.updatedOn = new Date();
+		this.modifiedOn = new Date();
 	}
 
 
@@ -66,12 +67,12 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	}
 
 	@JsonIgnore
-	public Long getUpdatedBy() {
-		return updatedBy;
+	public Long getModifiedBy() {
+		return modifiedBy;
 	}
 
-	public void setUpdatedBy(Long updatedBy) {
-		this.updatedBy = updatedBy;
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 
 	public void setCreatedOn(Date createdOn) {
@@ -79,12 +80,12 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	}
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	public Date getUpdatedOn() {
-		return updatedOn;
+	public Date getModifiedOn() {
+		return modifiedOn;
 	}
 
-	public void setUpdatedOn(Date updatedOn) {
-		this.updatedOn = updatedOn;
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
 	}
 
 	@JsonIgnore
