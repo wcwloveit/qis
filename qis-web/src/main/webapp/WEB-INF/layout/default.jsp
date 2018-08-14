@@ -29,17 +29,13 @@
     <link href="${ctx}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
     <link href="${ctx}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
     <!-- END THEME GLOBAL STYLES -->
-    <!-- BEGIN PAGE LEVEL STYLES -->
-    <link href="${ctx}/assets/pages/css/error.min.css" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <link href="${ctx}/assets/layouts/layout4/css/layout.min.css" rel="stylesheet" type="text/css" />
     <link href="${ctx}/assets/layouts/layout4/css/themes/light.min.css" rel="stylesheet" type="text/css" id="style_color" />
     <link href="${ctx}/assets/layouts/layout4/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <script src="${ctx}/assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <!-- END THEME LAYOUT STYLES -->
 
-
-    <!-- BEGIN PAGE LEVEL STYLES -->
     <sitemesh:head/>
     <!-- END PAGE LEVEL STYLES -->
     <script>var ctx="${ctx}";</script>
@@ -1143,7 +1139,6 @@
 <script src="${ctx}/assets/global/plugins/excanvas.min.js"></script>
 <![endif]-->
 <!-- BEGIN CORE PLUGINS -->
-<script src="${ctx}/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script src="${ctx}/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="${ctx}/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
 <script src="${ctx}/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
@@ -1153,14 +1148,28 @@
 <script src="${ctx}/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
-<script src="${ctx}/assets/global/scripts/app.min.js" type="text/javascript"></script>
+<%--<script src="${ctx}/assets/global/scripts/app.js" type="text/javascript"></script>--%>
+<script src="${ctx}/assets/global/scripts/metronic.js" type="text/javascript"></script>
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
-<script src="${ctx}/assets/layouts/layout4/scripts/layout.min.js" type="text/javascript"></script>
-<script src="${ctx}/assets/layouts/layout4/scripts/demo.min.js" type="text/javascript"></script>
-<script src="${ctx}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<script src="${ctx}/assets/global/scripts/metronic.js" type="text/javascript"></script>
+<script src="${ctx}/assets/global/scripts/layout.js" type="text/javascript"></script>
 
-
+<%--<script src="${ctx}/assets/layouts/layout4/scripts/layout.js" type="text/javascript"></script>--%>
+<%--<script src="${ctx}/assets/layouts/layout4/scripts/demo.js" type="text/javascript"></script>--%>
+<%--<script src="${ctx}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>--%>
+<script>
+    jQuery(document).ready(function(){
+        $("#data_table_search").bind("keypress",function(e){ //键盘监听，按enter键搜索
+            if(e.keyCode == 13){
+                $("#data_table_search .filter-submit").click();
+            }
+        });
+        // initiate layout and plugins
+        Metronic.init(); // init metronic core components
+        Layout.init();
+    });
+</script>
 <sitemesh:getProperty property="page.script"/>
 <!-- END JAVASCRIPTS -->
 </body>

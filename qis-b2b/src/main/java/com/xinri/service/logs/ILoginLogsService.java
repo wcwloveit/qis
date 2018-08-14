@@ -1,6 +1,9 @@
 package com.xinri.service.logs;
+import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.logs.LoginLogs;
+
+import java.util.Map;
 /**
  * <p></p>
  * 类名:LoginLogsService<br>
@@ -11,5 +14,6 @@ import com.xinri.po.logs.LoginLogs;
 public interface ILoginLogsService extends IBaseService<LoginLogs>{
 
 
+    DataTable<LoginLogs> findLogList(DataTable<LoginLogs> dt, Map<String, Object> searchParams);
 }
 

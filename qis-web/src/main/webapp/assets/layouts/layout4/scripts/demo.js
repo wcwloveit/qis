@@ -276,8 +276,8 @@ var Demo = function () {
 
 }();
 
-if (App.isAngularJsApp() === false) {
-    jQuery(document).ready(function() {    
-       Demo.init(); // init metronic core componets
-    });
-}
+// if (App.isAngularJsApp() === false) {
+//     jQuery(document).ready(function() {
+//        Demo.init(); // init metronic core componets
+//     });
+// }

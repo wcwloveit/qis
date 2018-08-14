@@ -46,16 +46,33 @@ public class Roles extends DataEntity<Roles>{
 	 * createdOn字段查询条件结束
 	 */
 	private String endCreatedOn;
-	
+
 	/**
 	 * startUpdatedOn字段查询条件开始
 	 */
-	private String startUpdatedOn;
-	
+	private String startModifiedOn;
+
+
 	/**
 	 * endUpdatedOn字段查询条件结束
 	 */
-	private String endUpdatedOn;
+	private String endModifiedOn;
+
+	public String getStartModifiedOn() {
+		return startModifiedOn;
+	}
+
+	public void setStartModifiedOn(String startModifiedOn) {
+		this.startModifiedOn = startModifiedOn;
+	}
+
+	public String getEndModifiedOn() {
+		return endModifiedOn;
+	}
+
+	public void setEndModifiedOn(String endModifiedOn) {
+		this.endModifiedOn = endModifiedOn;
+	}
 	
    
   
@@ -196,22 +213,7 @@ public class Roles extends DataEntity<Roles>{
 	public void setEndCreatedOn(String endCreatedOn){
 		this.endCreatedOn = endCreatedOn;
 	}
-	
-	public String getStartUpdatedOn(){
-		return this.startUpdatedOn;
-	}
 
-	public void setStartUpdatedOn(String startUpdatedOn){
-		this.startUpdatedOn = startUpdatedOn;
-	}
-	
-	public String getEndUpdatedOn(){
-		return this.endUpdatedOn;
-	}
-
-	public void setEndUpdatedOn(String endUpdatedOn){
-		this.endUpdatedOn = endUpdatedOn;
-	}
     public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
