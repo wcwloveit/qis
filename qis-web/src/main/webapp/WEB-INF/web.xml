@@ -7,10 +7,10 @@
     <param-name>spring.profiles.active</param-name>
     <param-value>dev</param-value>
   </context-param>
-  <!-- Spring ApplicationContext配置文件的路径,可使用通配符，用于后面的Spring Context Loader -->
+  <!-- Spring ApplicationContext配置文件的路径,可使用通配符，用于后面的Spring Context Loader  ,classpath*:spring-quartz.xml -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath*:/spring-mybatis.xml,classpath*:/spring-shiro.xml,classpath*:spring-quartz.xml</param-value>
+    <param-value>classpath*:/spring-mybatis.xml,classpath*:/spring-shiro.xml</param-value>
   </context-param>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -41,14 +41,14 @@
   </filter-mapping>
 
   <!-- Open Entity Manager in View filter -->
-  <filter>
-    <filter-name>openEntityManagerInViewFilter</filter-name>
-    <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>openEntityManagerInViewFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  <!--<filter>-->
+    <!--<filter-name>openEntityManagerInViewFilter</filter-name>-->
+    <!--<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>-->
+  <!--</filter>-->
+  <!--<filter-mapping>-->
+    <!--<filter-name>openEntityManagerInViewFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+  <!--</filter-mapping>-->
   <!-- Shiro Security filter -->
   <filter>
     <filter-name>shiroFilter</filter-name>
@@ -131,4 +131,14 @@
     <error-code>500</error-code>
     <location>/WEB-INF/views/error/500.jsp</location>
   </error-page>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>HTTP</web-resource-name>
+      <url-pattern>/assets/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
 </web-app>

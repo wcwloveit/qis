@@ -31,10 +31,10 @@
         <artifactId>spring-jdbc</artifactId>
     </dependency>
     <!-- spring data access -->
-    <dependency>
-        <groupId>org.springframework.data</groupId>
-        <artifactId>spring-data-jpa</artifactId>
-    </dependency>
+    <!--<dependency>-->
+        <!--<groupId>org.springframework.data</groupId>-->
+        <!--<artifactId>spring-data-jpa</artifactId>-->
+    <!--</dependency>-->
     <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjweaver</artifactId>
@@ -54,10 +54,10 @@
         <artifactId>mysql-connector-java</artifactId>
     </dependency>
     <!-- oracle jdbc -->
-    <dependency>
-        <groupId>com.oracle</groupId>
-        <artifactId>ojdbc6</artifactId>
-    </dependency>
+    <!--<dependency>-->
+        <!--<groupId>com.oracle</groupId>-->
+        <!--<artifactId>ojdbc6</artifactId>-->
+    <!--</dependency>-->
     <dependency>
         <groupId>org.mybatis</groupId>
         <artifactId>mybatis-spring</artifactId>
@@ -128,20 +128,20 @@
     <!-- JSON end -->
 
 
-    <!-- hibernate -->
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-ehcache</artifactId>
-    </dependency>
-    <!-- JSR303 BeanValidator -->
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-    </dependency>
+    <!--&lt;!&ndash; hibernate &ndash;&gt;-->
+    <!--<dependency>-->
+        <!--<groupId>org.hibernate</groupId>-->
+        <!--<artifactId>hibernate-entitymanager</artifactId>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+        <!--<groupId>org.hibernate</groupId>-->
+        <!--<artifactId>hibernate-ehcache</artifactId>-->
+    <!--</dependency>-->
+    <!--&lt;!&ndash; JSR303 BeanValidator &ndash;&gt;-->
+    <!--<dependency>-->
+        <!--<groupId>org.hibernate</groupId>-->
+        <!--<artifactId>hibernate-validator</artifactId>-->
+    <!--</dependency>-->
 
 
     <!-- SOAP begin -->
