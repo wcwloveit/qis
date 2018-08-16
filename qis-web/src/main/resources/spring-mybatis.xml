@@ -102,6 +102,7 @@
 			<property name="mapperLocations">
 				<array>
 					<value>classpath:/mapping/**/*.xml</value>
+					<value>classpath:/mapping/dictionary/DictionaryMapper.xml</value>
 				</array>
 			</property>
 			<property name="configLocation" value="classpath:/mybatis-config.xml"></property>

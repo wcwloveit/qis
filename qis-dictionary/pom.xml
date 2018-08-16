@@ -29,4 +29,10 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>com.xinri</groupId>
+            <artifactId>qis-framework</artifactId>
+        </dependency>
+    </dependencies>
 </project>
