@@ -97,12 +97,11 @@
 
 			<property name="typeAliasesPackage" value="com.xinri"/>
 			<property name="typeAliasesSuperType" value="com.qis.common.persistence.BaseEntity"/>
-			<!--  <property name="mapperLocations" value="classpath*:/mapping/**/*.xml" />-->
+			  <!--<property name="mapperLocations" value="classpath*:/mapping/**/*.xml" />-->
 
 			<property name="mapperLocations">
 				<array>
-					<value>classpath:/mapping/**/*.xml</value>
-					<value>classpath:/mapping/dictionary/DictionaryMapper.xml</value>
+					<value>classpath*:/mapping/**/*.xml</value>
 				</array>
 			</property>
 			<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
