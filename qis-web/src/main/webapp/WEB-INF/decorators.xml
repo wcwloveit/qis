@@ -6,6 +6,8 @@
         <pattern>/logout</pattern>
     </excludes>
     <decorator name="default" page="default.jsp">
-        <pattern>/*</pattern>
+        <pattern>/main</pattern>
+        <pattern>/log/*</pattern>
+        <pattern>/dictionary/*</pattern>
     </decorator>
 </decorators>

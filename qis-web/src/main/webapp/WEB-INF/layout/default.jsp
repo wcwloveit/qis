@@ -36,7 +36,7 @@
     <link href="${ctx}/assets/layouts/layout4/css/custom.min.css" rel="stylesheet" type="text/css" />
     <script src="${ctx}/assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <!-- END THEME LAYOUT STYLES -->
-
+    <link rel="shortcut icon" href="favicon.ico" />
     <sitemesh:head/>
     <!-- END PAGE LEVEL STYLES -->
     <script>var ctx="${ctx}";</script>
