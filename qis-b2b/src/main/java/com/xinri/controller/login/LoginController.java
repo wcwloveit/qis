@@ -21,10 +21,10 @@ public class LoginController extends BaseController {
 
     //登录请求
     @RequestMapping(value="login",method= RequestMethod.POST)
-    public String login(String username, String password, Model model) {
+    public String login(String username, String password, Boolean rememberMe, Model model) {
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            token.setRememberMe(true);
+            if(rememberMe!=null&&rememberMe==true)token.setRememberMe(rememberMe);
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.login(token);
             return "redirect:/main";
@@ -41,6 +41,6 @@ public class LoginController extends BaseController {
     //跳转登录页
     @RequestMapping(value="main",method= RequestMethod.GET)
     public String index( Model model) {
-        return "role/list";
+        return "login/form";
     }
 }

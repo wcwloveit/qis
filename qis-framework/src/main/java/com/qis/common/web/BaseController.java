@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
+//import javax.validation.ConstraintViolationException;
+//import javax.validation.ValidationException;
+//import javax.validation.Validator;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -44,12 +44,12 @@ public abstract class BaseController {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 
-	/**
-	 * 验证Bean实例对象
-	 */
-	@Autowired
-	protected Validator validator;
-	
+//	/**
+//	 * 验证Bean实例对象
+//	 */
+//	@Autowired
+//	protected Validator validator;
+//
 	/**
 	 * 管理基础路径
 	 */
@@ -62,17 +62,17 @@ public abstract class BaseController {
 	 * @param groups 验证组
 	 * @return 验证成功：返回true；严重失败：将错误信息添加到 message 中
 	 */
-	protected boolean beanValidator(Model model, Object object, Class<?>... groups) {
-		try{
-			BeanValidators.validateWithException(validator, object, groups);
-		}catch(ConstraintViolationException ex){
-			List<String> list = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
-			list.add(0, "数据验证失败：");
-			//addMessage(model, list.toArray(new String[]{}));待完善
-			return false;
-		}
-		return true;
-	}
+//	protected boolean beanValidator(Model model, Object object, Class<?>... groups) {
+//		try{
+//			BeanValidators.validateWithException(validator, object, groups);
+//		}catch(ConstraintViolationException ex){
+//			List<String> list = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
+//			list.add(0, "数据验证失败：");
+//			//addMessage(model, list.toArray(new String[]{}));待完善
+//			return false;
+//		}
+//		return true;
+//	}
 	
 	/**
 	 * 服务端参数有效性验证
@@ -80,14 +80,14 @@ public abstract class BaseController {
 	 * @param groups 验证组
 	 * @return 验证成功：返回true；严重失败：将错误信息添加到 flash message 中
 	 */
-	protected boolean beanValidator(RedirectAttributes redirectAttributes, Object object, Class<?>... groups) {
-		try{
-			BeanValidators.validateWithException(validator, object, groups);
-		}catch(ConstraintViolationException ex){
-			return false;
-		}
-		return true;
-	}
+//	protected boolean beanValidator(RedirectAttributes redirectAttributes, Object object, Class<?>... groups) {
+//		try{
+//			BeanValidators.validateWithException(validator, object, groups);
+//		}catch(ConstraintViolationException ex){
+//			return false;
+//		}
+//		return true;
+//	}
 	
 	/**
 	 * 服务端参数有效性验证
@@ -95,15 +95,15 @@ public abstract class BaseController {
 	 * @param groups 验证组，不传入此参数时，同@Valid注解验证
 	 * @return 验证成功：继续执行；验证失败：抛出异常跳转400页面。
 	 */
-	protected boolean beanValidator(Object object, Class<?>... groups) {
-		try {
-			BeanValidators.validateWithException(validator, object, groups);
-		} catch (ConstraintViolationException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+//	protected boolean beanValidator(Object object, Class<?>... groups) {
+//		try {
+//			BeanValidators.validateWithException(validator, object, groups);
+//		} catch (ConstraintViolationException e) {
+//			e.printStackTrace();
+//			return false;
+//		}
+//		return true;
+//	}
 	
 	/**
 	 * 添加Model消息
@@ -119,7 +119,7 @@ public abstract class BaseController {
 	
 	/**
 	 * 添加Flash消息
-	 * @param message
+	 * @param messages
 	 */
 	protected void addMessage(RedirectAttributes redirectAttributes, String... messages) {
 		StringBuilder sb = new StringBuilder();
@@ -264,7 +264,7 @@ public abstract class BaseController {
 	/**
 	 * 参数绑定异常
 	 */
-	@ExceptionHandler({BindException.class, ConstraintViolationException.class, ValidationException.class})
+	@ExceptionHandler({BindException.class})//, ConstraintViolationException.class, ValidationException.class
     public String bindException() {  
         return "error/400";
     }

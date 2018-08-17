@@ -1,6 +1,11 @@
 package com.xinri.service.baseData;
+import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.baseData.BaseDatas;
+import com.xinri.po.logs.LoginLogs;
+
+import java.util.Map;
+
 /**
  * <p></p>
  * 类名:BaseDatasService<br>
@@ -10,6 +15,7 @@ import com.xinri.po.baseData.BaseDatas;
 
 public interface IBaseDatasService extends IBaseService<BaseDatas>{
 
+    DataTable<BaseDatas> findListByVo(DataTable<BaseDatas> dt, Map<String, Object> searchParams);
 
 }
 

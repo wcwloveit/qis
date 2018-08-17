@@ -1,6 +1,7 @@
 package com.qis.shiro;
 
 import com.app.ShiroUser;
+import com.qis.common.persistence.util.LoginUser;
 import com.qis.common.util.Encodes;
 import com.qis.service.system.ResourceService;
 import org.apache.shiro.authc.*;
@@ -45,7 +46,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
           String username = String.valueOf(((UsernamePasswordToken) token).getUsername());
           String password = String.valueOf(((UsernamePasswordToken) token).getPassword());
           SimpleAuthenticationInfo auth;
-          AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(username, "123456", this.getName());
+          AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(new ShiroUser(1L,username,username), "123456", this.getName());
           return authcInfo;
 
 
@@ -87,7 +88,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String username = (String)principals.getPrimaryPrincipal();
+        ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
         // 单独定一个集合对象
         List<String> permissions = new ArrayList<String>();
         permissions.add("authc");
