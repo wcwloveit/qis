@@ -12,4 +12,13 @@ public interface IDictionaryService  extends IBaseService<Dictionary> {
 
     public AjaxStatus DeleteDic(Long id);
 
+    public List<Dictionary> reads(String dicKey);
+
+    public void batchSaveDictionary(List<Dictionary> list);
+
+    public String getDicValue(String dicKey, String subKey);
+
+//    public String getRemark(String dicKey, String subKey);
+
+    public String getDicKey(String dicValue, String subKey);
 }

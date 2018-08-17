@@ -158,6 +158,26 @@
                         <span class="title">数据字典</span>
                     </a>
                 </li>
+        <li class="heading">
+        <h3 class="uppercase">BaseData</h3>
+        </li>
+        <li class="nav-item  ">
+        <a href="${ctx}/BaseData/index" class="nav-link">
+        <i class="icon-calendar"></i>
+        <span class="title">BaseData</span>
+        </a>
+        </li>
+
+        <li class="heading">
+        <h3 class="uppercase">角色</h3>
+        </li>
+        <li class="nav-item  ">
+        <a href="${ctx}/role/index" class="nav-link">
+        <i class="icon-calendar"></i>
+        <span class="title">角色</span>
+        </a>
+        </li>
+
 
                 <li class="heading">
                     <h3 class="uppercase">Form</h3>

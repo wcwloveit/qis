@@ -308,6 +308,25 @@
         FROM DICTIONARY
     </select>
 
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO dictionary
+        (DIC_KEY, DIC_VALUE, DIC_PID, TYPE, LEVEL_ID, SORT,REMARK,DICTIONARY_TYPE)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            #{item.dicKey,jdbcType=VARCHAR},
+            #{item.dicValue,jdbcType=VARCHAR},
+            #{item.dicPid,jdbcType=BIGINT},
+            #{item.type,jdbcType=VARCHAR},
+            #{item.levelId,jdbcType=BIGINT},
+            #{item.sort,jdbcType=INTEGER},
+            #{item.remark,jdbcType=VARCHAR},
+            #{item.dictionaryType,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
 </mapper>
 
 

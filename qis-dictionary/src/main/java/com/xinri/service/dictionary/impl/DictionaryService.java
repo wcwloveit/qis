@@ -7,6 +7,7 @@ import com.xinri.service.dictionary.IDictionaryService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.dictionary.DictionaryVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -58,4 +59,81 @@ public class DictionaryService extends CrudService<DictionaryMapper, Dictionary>
         return status;
     }
 
+    /**
+     * @param  dicKey
+     * @return
+     * @description 通过dicKey获取数据
+     */
+    @Override
+    public List<Dictionary> reads(String dicKey) {
+        Dictionary dictionary = new Dictionary();
+        dictionary.setDicKey(dicKey);
+        Dictionary dc = dao.getByEntity(dictionary);
+        dictionary = new Dictionary();
+        dictionary.setDicPid(dc.getId());
+        List<Dictionary> dcList = dao.findList(dictionary);
+        return dcList;
+    }
+
+    /**
+     * 查询指定数据值
+     * @param dicKey
+     * @param subKey
+     * @return
+     */
+    public String getDicValue(String dicKey,String subKey){
+        Dictionary dictionary = new Dictionary();
+        dictionary.setDicKey(dicKey);
+        Dictionary dc = dao.getByEntity(dictionary);
+        dictionary = new Dictionary();
+        dictionary.setDicPid(dc.getId());
+        dictionary.setDicKey(subKey);
+        dictionary=dao.getByEntity(dictionary);
+        return dictionary.getDicValue();
+    }
+
+    /**
+     * 查询指定数据描述
+     * @param dicKey
+     * @param subKey
+     * @retur
+     */
+//    public String getRemark(String dicKey,String subKey){
+//        Dictionary dictionary = new Dictionary();
+//        dictionary.setDicKey(dicKey);
+//        Dictionary dc = dao.getByEntity(dictionary);
+//        dictionary = new Dictionary();
+//        dictionary.setDicPid(dc.getId());
+//        dictionary.setDicKey(subKey);
+//        dictionary=dao.getByEntity(dictionary);
+//        return dictionary.getRemark();
+//    }
+
+    /**
+     * 查询指定数据值
+     * @param dicKey
+     * @param subValue
+     * @return
+     */
+    @Override
+    public String getDicKey(String dicKey, String subValue) {
+        Dictionary dictionary = new Dictionary();
+        dictionary.setDicKey(dicKey);
+        Dictionary dc = dao.getByEntity(dictionary);
+        dictionary = new Dictionary();
+        dictionary.setDicPid(dc.getId());
+        dictionary.setDicValue(subValue);
+        dictionary=dao.getByEntity(dictionary);
+        if(dictionary==null){
+            return "";
+        }else{
+            return dictionary.getDicKey();
+        }
+    }
+
+    @Transactional
+    @Override
+    public void batchSaveDictionary(List<Dictionary> list) {
+        dao.batchInsert(list);
+    }
 }
