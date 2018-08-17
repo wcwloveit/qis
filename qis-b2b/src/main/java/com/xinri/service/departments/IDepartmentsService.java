@@ -1,6 +1,10 @@
 package com.xinri.service.departments;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.departments.Departments;
+import com.xinri.vo.dept.OADepartmentVo;
+
+import java.util.List;
+
 /**
  * <p></p>
  * 类名:DepartmentsService<br>
@@ -10,6 +14,6 @@ import com.xinri.po.departments.Departments;
 
 public interface IDepartmentsService extends IBaseService<Departments>{
 
-
+    public void syncOADept(List<OADepartmentVo> deptList);
 }
 

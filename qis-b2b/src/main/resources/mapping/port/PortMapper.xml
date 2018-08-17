@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinri.dao.port.PortMapper">
+  <resultMap id="PortResultMap" type="com.xinri.po.port.QisPort">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="port_name" jdbcType="VARCHAR" property="portName" />
+    <result column="port_mod" jdbcType="VARCHAR" property="portMod" />
+    <result column="timeout" jdbcType="INTEGER" property="timeout" />
+    <result column="port_desc" jdbcType="VARCHAR" property="portDesc" />
+    <result column="port_env" jdbcType="TINYINT" property="portEnv" />
+  </resultMap>
+
+  <!-- 列定义 -->
+  <sql id="portColumns">
+    t.ID,
+    t.url,
+    t.port_name,
+    t.port_mod,
+    t.timeout,
+    t.port_desc,
+    t.port_env
+  </sql>
+
+
+  <!-- 查询条件SQL -->
+  <sql id="whereColumnBySelect">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="id != null">
+        AND t.ID = #{id}
+      </if>
+      <if test="url != null and url !=''">
+        AND t.url = #{url}
+      </if>
+      <if test="portName != null and portName !=''">
+        AND t.port_name = #{portMod}
+      </if>
+      <if test="portMod != null and portMod !=''">
+        AND t.port_mod = #{portName}
+      </if>
+      <if test="timeout != null">
+        AND t.timeout = #{timeout}
+      </if>
+      <if test="portDesc != null">
+        AND t.port_desc = #{portDesc}
+      </if>
+      <if test="portEnv != null">
+        AND t.port_env = #{portEnv}
+      </if>
+
+    </trim>
+  </sql>
+
+
+  <!-- 根据条件查询对象 -->
+  <select id="findByPortName" parameterType="java.lang.String" resultMap="PortResultMap">
+    SELECT <include refid="portColumns" />
+    FROM Qis_port t
+    where t.port_name=#{_parameter}
+  </select>
+
+
+</mapper>

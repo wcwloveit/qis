@@ -100,33 +100,10 @@
 			<if test="isEffective != null">
 				AND t.IS_EFFECTIVE = #{isEffective}
 			</if>
-			<if test="startEffectiveDateStart != null and startEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START >=str_to_date(concat(#{startEffectiveDateStart},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateStart != null and endEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START <= str_to_date(concat(#{endEffectiveDateStart}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="startEffectiveDateEnd != null and startEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END >=str_to_date(concat(#{startEffectiveDateEnd},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateEnd != null and endEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END <= str_to_date(concat(#{endEffectiveDateEnd}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="startCreatedOn != null and startCreatedOn !=''">
-				AND <![CDATA[ t.CREATED_ON >=str_to_date(concat(#{startCreatedOn},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endCreatedOn != null and endCreatedOn !=''">
-				AND <![CDATA[ t.CREATED_ON <= str_to_date(concat(#{endCreatedOn}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
 			<if test="createdBy != null and createdBy !=''">
 				AND t.CREATED_BY = #{createdBy}
 			</if>
-			<if test="startModifiedOn != null and startModifiedOn !=''">
-				AND <![CDATA[ t.MODIFIED_ON >=str_to_date(concat(#{startModifiedOn},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endModifiedOn != null and endModifiedOn !=''">
-				AND <![CDATA[ t.MODIFIED_ON <= str_to_date(concat(#{endModifiedOn}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
+
 			<if test="modifiedBy != null and modifiedBy !=''">
 				AND t.MODIFIED_BY = #{modifiedBy}
 			</if>
@@ -289,6 +266,34 @@
 		VALUES
 			(#{id}, #{name}, #{code}, #{parentDepartmentId}, #{organizationId}, #{oaNo}, #{oaId}, #{oaCanceled}, #{depthLevel}, #{isDeleted}, #{descr}, #{guidId}, #{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{createdOn}, #{createdBy}, #{modifiedOn}, #{modifiedBy}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6})
 	</insert>
+
+	<!-- 批量新增 -->
+	<insert id="insertDeptList" parameterType="com.xinri.po.departments.Departments">
+
+		INSERT INTO DEPARTMENTS
+		( NAME, CODE, PARENT_DEPARTMENT_ID, ORGANIZATION_ID, OA_NO, OA_ID, OA_CANCELED,
+		DEPTH_LEVEL, IS_DELETED, DESCR, IS_EFFECTIVE, CREATED_ON, DESC_FLEX_FIELD1)
+		VALUES
+		<foreach collection="list" item="dept" index= "index" separator =",">
+			(
+				#{dept.name,jdbcType=VARCHAR},
+				#{dept.code,jdbcType=VARCHAR},
+				#{dept.parentDepartmentId,jdbcType=BIGINT},
+				#{dept.organizationId,jdbcType=BIGINT},
+				#{dept.oaNo,jdbcType=VARCHAR},
+				#{dept.oaId,jdbcType=VARCHAR},
+				#{dept.oaCanceled,jdbcType=VARCHAR},
+				#{dept.depthLevel,jdbcType=INTEGER},
+				#{dept.isDeleted,jdbcType=INTEGER},
+				#{dept.descr,jdbcType=VARCHAR},
+				#{dept.isEffective,jdbcType=INTEGER},
+				#{dept.createdOn,jdbcType=TIMESTAMP},
+				#{dept.descFlexField1,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+
     <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
 	<insert id="insertSelective" parameterType="com.xinri.po.departments.Departments" useGeneratedKeys="true" keyProperty="id" >
 		

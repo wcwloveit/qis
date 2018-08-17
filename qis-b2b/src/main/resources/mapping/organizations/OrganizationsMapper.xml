@@ -105,32 +105,8 @@
 			<if test="isEffective != null">
 				AND t.IS_EFFECTIVE = #{isEffective}
 			</if>
-			<if test="startEffectiveDateStart != null and startEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START >=str_to_date(concat(#{startEffectiveDateStart},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateStart != null and endEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START <= str_to_date(concat(#{endEffectiveDateStart}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="startEffectiveDateEnd != null and startEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END >=str_to_date(concat(#{startEffectiveDateEnd},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateEnd != null and endEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END <= str_to_date(concat(#{endEffectiveDateEnd}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="startCreatedOn != null and startCreatedOn !=''">
-				AND <![CDATA[ t.CREATED_ON >=str_to_date(concat(#{startCreatedOn},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endCreatedOn != null and endCreatedOn !=''">
-				AND <![CDATA[ t.CREATED_ON <= str_to_date(concat(#{endCreatedOn}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
 			<if test="createdBy != null and createdBy !=''">
 				AND t.CREATED_BY = #{createdBy}
-			</if>
-			<if test="startModifiedOn != null and startModifiedOn !=''">
-				AND <![CDATA[ t.MODIFIED_ON >=str_to_date(concat(#{startModifiedOn},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endModifiedOn != null and endModifiedOn !=''">
-				AND <![CDATA[ t.MODIFIED_ON <= str_to_date(concat(#{endModifiedOn}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
 			</if>
 			<if test="modifiedBy != null and modifiedBy !=''">
 				AND t.MODIFIED_BY = #{modifiedBy}
@@ -297,14 +273,39 @@
 		VALUES
 			(#{id}, #{name}, #{code}, #{parentOrganizationId}, #{depthLevel}, #{u9No}, #{u9Id}, #{oaNo}, #{oaId}, #{oaCanceled}, #{isDeleted}, #{descr}, #{guidId}, #{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{createdOn}, #{createdBy}, #{modifiedOn}, #{modifiedBy}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6})
 	</insert>
+
+	<!-- 插入组织信息 -->
+	<insert id="insertOrgList" parameterType="java.util.List">
+		insert into ORGANIZATIONS
+		(NAME, CODE, PARENT_ORGANIZATION_ID, DEPTH_LEVEL, OA_NO, OA_ID, OA_CANCELED, IS_DELETED,
+		DESCR, IS_EFFECTIVE, CREATED_ON, DESC_FLEX_FIELD1)
+		values
+		<foreach collection="list" item="org" index= "index" separator =",">
+			(
+					#{org.name,jdbcType=VARCHAR},
+					#{org.code,jdbcType=VARCHAR},
+					#{org.parentOrganizationId,jdbcType=BIGINT},
+					#{org.depthLevel,jdbcType=INTEGER},
+					#{org.oaNo,jdbcType=VARCHAR},
+					#{org.oaId,jdbcType=VARCHAR},
+					#{org.oaCanceled,jdbcType=VARCHAR},
+					#{org.isDeleted,jdbcType=INTEGER},
+					#{org.descr,jdbcType=VARCHAR},
+					#{org.isEffective,jdbcType=INTEGER},
+					#{org.createdOn,jdbcType=TIMESTAMP},
+					#{org.descFlexField1,jdbcType=VARCHAR}
+			)
+		</foreach>
+
+	</insert>
+
+
+
     <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
 	<insert id="insertSelective" parameterType="com.xinri.po.organizations.Organizations" useGeneratedKeys="true" keyProperty="id" >
 		
 	    INSERT INTO ORGANIZATIONS
 	    <trim prefix="(" suffix=")" suffixOverrides="," >
-			<if test="id != null">
-				ID,
-			</if>
 			<if test="name != null">
 				NAME,
 			</if>
@@ -382,9 +383,6 @@
 			</if>
 	    </trim>
 	    <trim prefix="values (" suffix=")" suffixOverrides="," >
-		  <if test="id != null">
-				#{id,jdbcType=BIGINT},
-		  </if>
 		  <if test="name != null">
 				#{name,jdbcType=VARCHAR},
 		  </if>

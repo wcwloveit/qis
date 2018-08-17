@@ -1,9 +1,19 @@
 package com.xinri.service.user.impl;
+import com.xinri.po.departments.Departments;
+import com.xinri.service.departments.IDepartmentsService;
+import com.xinri.service.port.IPortService;
+import com.xinri.vo.users.OAUsersVo;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
 import com.xinri.po.user.Users;
 import com.xinri.dao.user.UsersMapper;
 import com.xinri.service.user.IUsersService;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
 /**
  * <p></p>
  * 类名:UsersServiceImpl<br>
@@ -12,6 +22,107 @@ import com.xinri.service.user.IUsersService;
  */
 @Service("usersService")
 public class UsersServiceImpl extends CrudService<UsersMapper,Users>  implements IUsersService{
+
+    @Autowired
+    private IPortService portService;
+
+    @Autowired
+    private IDepartmentsService departmentsService;
+
+    @Override
+    @Transactional(readOnly = false)
+    public void syncUsers(List<OAUsersVo> oaUsersVos){
+        if (oaUsersVos.isEmpty()) {
+            String usersInfo = portService.sendPort("OAUser", "", new JSONObject());
+            oaUsersVos = com.alibaba.fastjson.JSONObject.parseArray(usersInfo, OAUsersVo.class);
+        }
+        List<OAUsersVo> surDept = new ArrayList<>();
+        List<Users> usersList = new ArrayList<>();
+        try {
+            //查找所有用户
+            List<Users> sqlUsers=new ArrayList<>();
+            sqlUsers=dao.findAllList();
+            Map<String,Object> allUsers=new HashMap<String,Object>();
+            for(Users u:sqlUsers){
+                allUsers.put(u.getUserNo(),u);
+            }
+            //查找所有部门
+            List<Departments> departments=new ArrayList<>();
+            departments=departmentsService.findAllList();
+            Map<String ,Object> allDept=new HashMap<>();
+            for(Departments d:departments){
+                allDept.put(d.getOaId(),d);
+            }
+
+            for (OAUsersVo vo : oaUsersVos) {
+
+                Users users = new Users();
+
+                users.setUserNo(vo.getWorkcode());
+
+                if (allUsers.containsKey(vo.getUsername())) {//存在 更新
+                    logger.info(vo.getUsername());
+                } else {//不存在，插入
+
+                    users.setDescr(vo.getStatus());
+                    users.setUserName(vo.getWorkcode());
+                    String aa = vo.getMobile();
+                    if(aa!=null){
+                        if (aa.length() >= 20)
+                        {
+                            aa = aa.substring(0, 20);
+                        }
+                    }
+
+                    users.setMobilePhone(aa);
+                    users.setDescFlexField1(vo.getDeptid()+"");
+                    users.setUserNo(vo.getUsername());
+                    users.setName(vo.getLastname());
+                    users.setIsDeleted(0);
+                    users.setIsEffective(0);
+                    users.setPermissionOverFlag(0);
+                    users.setCreatedOn(new Date());
+
+                    Departments dept = new Departments();//获取部门id
+
+                    dept=(Departments) allDept.get(vo.getDeptid()+"");
+
+                    if(dept!=null){
+                        users.setDepartmentId(dept.getId());
+                        users.setOrganizationId(dept.getOrganizationId());
+                    }else{
+                        users.setDepartmentId(0L);
+                        users.setOrganizationId(0L);
+                    }
+
+                    users.setPassword("123");
+                    users.setUserUseType(0);
+                    usersList.add(users);
+                }
+            }
+            for(Users aa:usersList){
+                if(aa.getUserName()==null){
+                    logger.info("aa");
+                }
+            }
+            if (!usersList.isEmpty()) {
+                dao.insertUsersList(usersList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("组织插入错误：" + e);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        Map<String ,Object> aa=new HashMap<>();
+        aa.put("aa",123);
+        aa.put("bb",234);
+        Object cc=aa.get("aa");
+        System.out.println(cc);
+    }
+
 
 
 }

@@ -1,6 +1,10 @@
 package com.xinri.service.organizations;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.organizations.Organizations;
+import com.xinri.vo.org.OAOrgVo;
+
+import java.util.List;
+
 /**
  * <p></p>
  * 类名:OrganizationsService<br>
@@ -10,6 +14,6 @@ import com.xinri.po.organizations.Organizations;
 
 public interface IOrganizationsService extends IBaseService<Organizations>{
 
-
+    public void syncOAOrg(List<OAOrgVo> orgList);
 }
 
