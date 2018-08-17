@@ -14,22 +14,30 @@ public class BaseDatas extends DataEntity<BaseDatas>{
 
     	private String name;
 
+    	//值
     	private String dataValue;
 
+    	//编号
     	private String code;
 
+    	//数据字典类型id
     	private Long baseDataTypeId;
 
+    	//上级数据字典id
     	private Long parentBaseDataId;
 
+    	//备注说明
     	private String descr;
 
     	private String guidId;
 
+    	//是否生效
     	private Integer isEffective;
 
+    	//生效开始时间
     	private Date effectiveDateStart;
 
+    	//生效结束时间
     	private Date effectiveDateEnd;
 
     	private String descFlexField1;
