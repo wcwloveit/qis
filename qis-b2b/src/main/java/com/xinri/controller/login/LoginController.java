@@ -41,6 +41,6 @@ public class LoginController extends BaseController {
     //跳转登录页
     @RequestMapping(value="main",method= RequestMethod.GET)
     public String index( Model model) {
-        return "role/list";
+        return "login/form";
     }
 }

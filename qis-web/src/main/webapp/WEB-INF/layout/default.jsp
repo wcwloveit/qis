@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
@@ -50,7 +51,7 @@
     <div class="page-header-inner ">
         <!-- BEGIN LOGO -->
         <div class="page-logo">
-            <a href="index.html">
+            <a href="${ctx}/main">
                 <img src="${ctx}/assets/layouts/layout4/img/logo-light.png" alt="logo" class="logo-default" />
             </a>
 
@@ -82,7 +83,7 @@
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-user dropdown-dark">
                         <a href="javascript:;" class="dropdown-toggle">
-                            <span class="username username-hide-on-mobile"> Nick </span>
+                            <span class="username username-hide-on-mobile"> <shiro:principal property="name"/> </span>
                             <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
                             <img alt="" class="img-circle" src="${ctx}/assets/layouts/layout4/img/avatar9.jpg" /> </a>
                     </li>
@@ -90,7 +91,7 @@
                     <li class="separator hide"> </li>
 
                     <li class="dropdown dropdown dropdown-user dropdown-dark">
-                        <a href="page_user_login_1.html" class="dropdown-toggle">
+                        <a href="${ctx}/logout" class="dropdown-toggle">
                             <i class="icon-logout"></i>退出</a>
                     </li>
                 </ul>
@@ -124,36 +125,42 @@
             <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
             <ul class="page-sidebar-menu   " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                 <li class="nav-item start ">
-                    <a href="javascript:;" class="nav-link nav-toggle">
+                    <a href="${ctx}/main" class="nav-link nav-toggle">
                         <i class="icon-home"></i>
-                        <span class="title">Dashboard</span>
+                        <span class="title">首页</span>
+                    </a>
+                </li>
+                <li class="heading">
+                    <h3 class="uppercase">例子</h3>
+                </li>
+                <li class="nav-item  ">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-settings"></i>
+                        <span class="title">系统日志</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item start ">
-                            <a href="index.html" class="nav-link ">
-                                <i class="icon-bar-chart"></i>
-                                <span class="title">Dashboard 1</span>
-                            </a>
-                        </li>
-                        <li class="nav-item start ">
-                            <a href="dashboard_2.html" class="nav-link ">
-                                <i class="icon-bulb"></i>
-                                <span class="title">Dashboard 2</span>
-                                <span class="badge badge-success">1</span>
-                            </a>
-                        </li>
-                        <li class="nav-item start ">
-                            <a href="dashboard_3.html" class="nav-link ">
-                                <i class="icon-graph"></i>
-                                <span class="title">Dashboard 3</span>
-                                <span class="badge badge-danger">5</span>
+                        <li class="nav-item  ">
+                            <a href="${ctx}/log/index" class="nav-link ">
+                                <i class="icon-settings"></i>
+                                <span class="title">登陆日志</span>
                             </a>
                         </li>
                     </ul>
                 </li>
+
                 <li class="heading">
-                    <h3 class="uppercase">Features</h3>
+                    <h3 class="uppercase">数据字典</h3>
+                </li>
+                <li class="nav-item  ">
+                    <a href="${ctx}/dictionary/index" class="nav-link">
+                        <i class="icon-calendar"></i>
+                        <span class="title">数据字典</span>
+                    </a>
+                </li>
+
+                <li class="heading">
+                    <h3 class="uppercase">Form</h3>
                 </li>
                 <li class="nav-item  ">
                     <a href="javascript:;" class="nav-link nav-toggle">
@@ -293,6 +300,7 @@
                         </li>
                     </ul>
                 </li>
+
                 <li class="nav-item  ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-puzzle"></i>
