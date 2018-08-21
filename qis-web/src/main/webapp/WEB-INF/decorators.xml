@@ -9,7 +9,9 @@
         <pattern>/main</pattern>
         <pattern>/log/*</pattern>
         <pattern>/dictionary/*</pattern>
-        <pattern>/BaseData/*</pattern>
+
+        <pattern>/baseData/*</pattern>
+        <pattern>/baseDataTypes/*</pattern>
         <pattern>/role/*</pattern>
     </decorator>
 </decorators>

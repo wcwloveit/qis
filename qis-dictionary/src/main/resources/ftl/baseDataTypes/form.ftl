@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>角色管理</title>
+    <title>数据字典管理</title>
     <link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/global/plugins/select2/css/select2.css"/>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
     <link rel="stylesheet" type="text/css"
@@ -30,11 +30,11 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="${rc.contextPath}/">角色管理</a>
+                <a href="${rc.contextPath}/">数据字典管理</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="#">角色详情</a>
+                <a href="#">数据字典详情</a>
                 <i class="fa fa-angle-right"></i>
             </li>
         </ul>
@@ -47,7 +47,7 @@
             <div class="portlet-title">
 
                 <div class="caption">
-                    角色<#if action?? && action == 'create'>
+                    数据字典<#if action?? && action == 'create'>
                     新增</#if><#if action?? && action == 'update'>编辑</#if>
                 </div>
                 <div class="actions">
@@ -58,33 +58,43 @@
 
             <div class="portlet-body">
 
-                <form id="myForm" action="${rc.contextPath}/role/${action?if_exists}"
+                <form id="myForm" action="${rc.contextPath}/baseDataTypes/${action?if_exists}"
                       method="POST" class="form-horizontal">
-                    <input id="id" name="id" value="${role.id?if_exists}" style="display: none">
+                    <input id="id" name="id" value="${baseDataTypes.id?if_exists}" style="display: none">
                     <div class="form-body">
-                        <h3 class="form-section">角色名称</h3>
+                        <h3 class="form-section">名称</h3>
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="inputWarning">角色名称<span class="required">*</span></label>
+                            <label class="control-label col-md-3" for="inputWarning">数据字典名称<span class="required">*</span></label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="name" id="name" value="${role.name?if_exists}"/>
+                                <input type="text" class="form-control" name="name" id="name" value="${baseDataTypes.name?if_exists}"/>
                             </div>
                         </div>
 
-                        <h3 class="form-section">角色类型</h3>
+                        <h3 class="form-section">值</h3>
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="inputWarning">角色类型<span class="required">*</span></label>
+                            <label class="control-label col-md-3" for="inputWarning">数据字典值<span class="required">*</span></label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="roleClassId" id="roleClassId" value="${role.roleClassId?if_exists}"/>
+                                <input type="text" class="form-control" name="typeValue" id="typeValue" value="${baseDataTypes.typeValue?if_exists}"/>
                             </div>
                         </div>
 
-                        <h3 class="form-section">角色描述</h3>
+                        <h3 class="form-section">描述</h3>
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="inputWarning">角色描述<span class="required">*</span></label>
+                            <label class="control-label col-md-3" for="inputWarning">描述<span class="required">*</span></label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="descr" id="descr" value="${role.desc?if_exists}"/>
+                                <input type="text" class="form-control" name="descr" id="descr" value="${baseDataTypes.descr?if_exists}"/>
                             </div>
                         </div>
+                        <#if baseDataTypes.id??>
+                            <h3 class="form-section">子数据字典</h3>
+                            <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div id="resourceTree"></div>
+                            </div>
+                        </div>
+                        </#if>
+
 
                     </div>
                     <div class="form-actions">
@@ -92,7 +102,7 @@
                             <div class="col-md-offset-3 col-md-9">
                                 <button type="submit" class="btn green">提交</button>
                                 <button type="button" class="btn default"
-                                        onclick="javascript:window.location.href='${rc.contextPath}/role/index';">
+                                        onclick="javascript:window.location.href='${rc.contextPath}/baseDataTypes/index';">
                                     取消
                                 </button>
                             </div>
@@ -126,9 +136,32 @@
             type="text/javascript"></script>
     <script src="${rc.contextPath}/assets/global/plugins/bootstrap-summernote/lang/summernote-zh-CN.js"
             type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script type="text/javascript"
             src="${rc.contextPath}/assets/global/plugins/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
     <script type="text/javascript">
+        var tree=$("#resourceTree").jstree({
+            "core": {
+                "animation": 0,
+                        "themes": {
+                    theme: "classic",
+                            "dots": true,
+                            "icons": true
+                },
+                "check_callback": true,
+                        "data": {
+                    'dataType': 'json',
+                            'type': "post",
+                            'url': "${rc.contextPath}/baseData/list/${baseDataTypes.id?if_exists}",
+                },
+            },
+            "types": {
+                "default": {
+                    "valid_children": ["default", "file"]
+                }
+            },
+            "plugins": ["types", "wholerow"]
+        });
         jQuery(function ($) {
 
             var form = $('#myForm'), error = $('.alert-danger', form);
@@ -141,7 +174,7 @@
                     name:{
                         required: true
                     },
-                    roleClassId:{
+                    typeValue:{
                         required: true
                     },
                     desc:{
@@ -152,7 +185,7 @@
                     name:{
                         required: "不能为空"
                     },
-                    roleClassId:{
+                    typeValue:{
                         required: "不能为空"
                     },
                     desc:{

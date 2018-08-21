@@ -1,4 +1,5 @@
 package com.xinri.dao.baseData;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.baseData.BaseDatas;
@@ -12,7 +13,5 @@ import java.util.List;
  */
  @MyBatisDao
 public interface BaseDatasMapper extends CrudDao<BaseDatas>{
-
- public List<BaseDatas> findList(BaseDatas baseDatas);
 }
 

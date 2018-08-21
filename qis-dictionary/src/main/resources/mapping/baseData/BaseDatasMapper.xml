@@ -456,8 +456,8 @@
 
     <!-- 根据主键ID进行物理删除 -->
 	<delete id="remove" parameterType="com.xinri.po.baseData.BaseDatas">
-		DELETE FROM BASE_DATAS t 
-		WHERE t.ID = #{id,jdbcType=BIGINT}
+		DELETE FROM BASE_DATAS
+		WHERE ID = #{id,jdbcType=BIGINT}
 	</delete>
 
     <!-- 根据主键ID进行批量物理删除 -->
@@ -475,6 +475,5 @@
 		DELETE FROM BASE_DATAS t 
 		<where>${whereSqlParam}</where>
 	</update>
-	
 
 </mapper>

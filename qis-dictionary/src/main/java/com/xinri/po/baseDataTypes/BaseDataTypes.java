@@ -1,5 +1,6 @@
-package com.xinri.po.baseData;
+package com.xinri.po.baseDataTypes;
 import com.qis.common.persistence.DataEntity;
+import com.xinri.po.baseData.BaseDatas;
 
 import java.util.*;
 /**
@@ -37,6 +38,17 @@ public class BaseDataTypes extends DataEntity<BaseDataTypes>{
     	private String descFlexField5;
 
     	private String descFlexField6;
+
+    	private List<BaseDatas> baseDatas;
+
+	public List<BaseDatas> getBaseDatas() {
+		return baseDatas;
+	}
+
+	public void setBaseDatas(List<BaseDatas> baseDatas) {
+		this.baseDatas = baseDatas;
+	}
+
 	/**
 	 * createdOn字段查询条件开始
 	 */
