@@ -14,5 +14,6 @@
         <pattern>/role/*</pattern>
         <pattern>/module/*</pattern>
         <pattern>/permissions/*</pattern>
+		<pattern>/roleClass/*</pattern>
     </decorator>
 </decorators>
