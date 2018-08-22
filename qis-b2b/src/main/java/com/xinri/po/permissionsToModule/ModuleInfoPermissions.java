@@ -1,30 +1,16 @@
-package com.xinri.po.moduleInfo;
+package com.xinri.po.permissionsToModule;
 import com.qis.common.persistence.DataEntity;
 
 import java.util.*;
 /**
  * <p></p>
- * 类名:ModuleInfoespo<br>
+ * 类名:ModuleInfoPermissionspo<br>
  * 创建人:xiashanyong<br>
  * 创建时间:20180813<br>
  */
  
-public class ModuleInfoes extends DataEntity<ModuleInfoes>{
+public class ModuleInfoPermissions extends DataEntity<ModuleInfoPermissions>{
 
-
-    	private String name;
-
-    	private String code;
-
-    	private String linkUrl;
-
-    	private Integer isMenu;
-
-    	private Integer isOpen;
-
-    	private Integer depth;
-
-    	private Long parentModuleId;
 
     	private String descr;
 
@@ -47,6 +33,10 @@ public class ModuleInfoes extends DataEntity<ModuleInfoes>{
     	private String descFlexField5;
 
     	private String descFlexField6;
+
+    	private Long moduleInfoId;
+
+    	private Long permissionId;
 	/**
 	 * createdOn字段查询条件开始
 	 */
@@ -85,69 +75,6 @@ public class ModuleInfoes extends DataEntity<ModuleInfoes>{
 	}
 	
    
-  
-	public String getName() {
-		return name;
-	}
-	
-    	public void setName(String name) {
-		this.name = name;
-	}
-    
-  
-	public String getCode() {
-		return code;
-	}
-	
-    	public void setCode(String code) {
-		this.code = code;
-	}
-    
-  
-	public String getLinkUrl() {
-		return linkUrl;
-	}
-	
-    	public void setLinkUrl(String linkUrl) {
-		this.linkUrl = linkUrl;
-	}
-    
-  
-	public Integer getIsMenu() {
-		return isMenu;
-	}
-	
-    	public void setIsMenu(Integer isMenu) {
-		this.isMenu = isMenu;
-	}
-    
-  
-	public Integer getIsOpen() {
-		return isOpen;
-	}
-	
-    	public void setIsOpen(Integer isOpen) {
-		this.isOpen = isOpen;
-	}
-    
-  
-	public Integer getDepth() {
-		return depth;
-	}
-	
-    	public void setDepth(Integer depth) {
-		this.depth = depth;
-	}
-    
-  
-	public Long getParentModuleId() {
-		return parentModuleId;
-	}
-	
-    	public void setParentModuleId(Long parentModuleId) {
-		this.parentModuleId = parentModuleId;
-	}
-    
   
   
 	public String getDescr() {
@@ -253,6 +180,24 @@ public class ModuleInfoes extends DataEntity<ModuleInfoes>{
 	}
     
   
+	public Long getModuleInfoId() {
+		return moduleInfoId;
+	}
+	
+    	public void setModuleInfoId(Long moduleInfoId) {
+		this.moduleInfoId = moduleInfoId;
+	}
+    
+  
+	public Long getPermissionId() {
+		return permissionId;
+	}
+	
+    	public void setPermissionId(Long permissionId) {
+		this.permissionId = permissionId;
+	}
+    
+  
  public String getStartCreatedOn(){
 		return this.startCreatedOn;
 	}
@@ -273,34 +218,6 @@ public class ModuleInfoes extends DataEntity<ModuleInfoes>{
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 
-		
-		sb.append("name=");
-		sb.append(name);
-		sb.append(",");   
-		
-		sb.append("code=");
-		sb.append(code);
-		sb.append(",");   
-		
-		sb.append("linkUrl=");
-		sb.append(linkUrl);
-		sb.append(",");   
-		
-		sb.append("isMenu=");
-		sb.append(isMenu);
-		sb.append(",");   
-		
-		sb.append("isOpen=");
-		sb.append(isOpen);
-		sb.append(",");   
-		
-		sb.append("depth=");
-		sb.append(depth);
-		sb.append(",");   
-		
-		sb.append("parentModuleId=");
-		sb.append(parentModuleId);
-		sb.append(",");   
 		
 		
 		sb.append("descr=");
@@ -349,6 +266,14 @@ public class ModuleInfoes extends DataEntity<ModuleInfoes>{
 		
 		sb.append("descFlexField6=");
 		sb.append(descFlexField6);
+		sb.append(",");   
+		
+		sb.append("moduleInfoId=");
+		sb.append(moduleInfoId);
+		sb.append(",");   
+		
+		sb.append("permissionId=");
+		sb.append(permissionId);
 		sb.append("]");
    
 		

@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>数据字典管理</title>
+    <title>模块管理</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/select2/css/select2.css" type="text/css"/>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css"
@@ -22,11 +22,15 @@
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="${rc.contextPath}/dictionary/list">数据字典</a>
+                <a href="${rc.contextPath}/ftl/moduletionary/list">模块</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="#">数据字典列表</a>
+                <a href="${rc.contextPath}/moduleTypes/index">模块列表</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">${name?if_exists}</a>
                 <i class="fa fa-angle-right"></i>
             </li>
         </ul>
@@ -35,27 +39,23 @@
 <!--数据列表-->
 <div class="row">
     <div class="col-md-4">
-        <div class="portlet box green-haze">
+        <div class="portlet light portlet-fit bordered">
             <div class="portlet-title">
-                <div class="caption"><i class="fa fa-sitemap"></i>数据字典树</div>
+                <div class="caption"><i class="fa fa-sitemap"></i>模块树</div>
             </div>
-            <div class="portlet-body" id="dicTree"></div>
+            <div class="portlet-body" id="moduleTree"></div>
         </div>
     </div>
     <div class="col-md-8">
         <div class="row">
             <div class="col-md-12">
-                <div class="portlet box green-haze">
+                <div class="portlet light bordered">
                     <div class="portlet-title">
                         <div class="caption">
                             <i class="fa fa-square-o"></i>数据信息表单
                         </div>
                         <div class="actions">
                             <div class="btn-group">
-                                <a class="btn gray btn-refresh">
-                                    <i class="glyphicon glyphicon-refresh"></i>
-                                    <span class="hidden-480">刷新</span>
-                                </a>
                                 <a class="btn green btn-parent">
                                     <i class="fa fa-plus"></i>
                                     <span class="hidden-480">新增父节点</span>
@@ -76,12 +76,10 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <form class="form-horizontal" action="${rc.contextPath}/dictionary/save" method="POST"
-                              id="dicForm">
+                        <form class="form-horizontal" action="${rc.contextPath}/module/save" method="POST"
+                              id="moduleForm">
                             <input type="hidden" name="id"/>
-                            <input type="hidden" name="dicPid" value="0"/>
-                            <input type="hidden" name="path"/>
-
+                            <input type="hidden" name="pid" value="0"/>
                             <div class="form-body">
                                 <div class="alert alert-danger display-hide">
                                     <button class="close" data-close="alert"></button>
@@ -90,14 +88,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2 nowrap">名称<span
+                                            <label class="control-label col-md-3 nowrap">模块名称<span
                                                     class="required">*</span></label>
 
-                                            <div class="col-md-10">
+                                            <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="dicValue"
-                                                           placeholder="请录入数据名称" readonly="true"/>
+                                                    <input type="text" class="form-control" name="name"
+                                                           placeholder="请录入模块名称" readonly="true"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -110,8 +108,8 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="dicKey"
-                                                           placeholder="请录入数据编码" readonly="true"/>
+                                                    <input type="text" class="form-control" name="code"
+                                                           placeholder="请录入编码" readonly="true"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -120,36 +118,103 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2">类型</label>
+                                            <label  class="control-label col-md-3">链接类型</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <select type="hidden" id="menuType" name="menuType" class="form-control" disabled="disabled" placeholder="请选择是菜单还是选项">
+                                                        <option value="0">无</option>
+                                                        <option value="1">内部</option>
+                                                        <option value="2">外部</option>
 
-                                            <div class="col-md-10">
-                                                <select id="type" name="type" class="form-control" disabled="disabled"
-                                                        onchange="typeChange()">
-                                                    <option value="CATEGORY">类</option>
-                                                    <option value="ITEM">项</option>
-                                                </select>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">状态</label>
+                                            <label class="control-label col-md-3">链接地址</label>
 
                                             <div class="col-md-9">
-                                                <select name="isDeleted" class="form-control" disabled="disabled">
-                                                    <option value="0">有效</option>
-                                                    <option value="1">失效</option>
-                                                </select>
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="linkUrl"
+                                                           placeholder="请录入链接地址" readonly="true"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2">排序</label>
+                                            <label class="control-label col-md-3">父模块</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <select id="parentModuleId" name="parentModuleId" class="form-control" disabled="disabled" placeholder="请录入上级模块编号">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">描述</label>
 
-                                            <div class="col-md-10">
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="descr"
+                                                           placeholder="请录入描述" readonly="true"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label  class="control-label col-md-3">类型</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <select id="isMenu" name="isMenu" class="form-control" disabled="disabled" placeholder="请选择是菜单还是选项">
+                                                        <option value="1">菜单</option>
+                                                        <option value="0">选项</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">是否公开</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <select id="isOpen" name="isOpen" class="form-control" disabled="disabled" placeholder="请选择是否公开">
+                                                        <option value="1">公开</option>
+                                                        <option value="0">不公开</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row ">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">排序</label>
+
+                                            <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
                                                     <input type="text" class="form-control" name="sort"
@@ -159,48 +224,17 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">所属类型</label>
-
-                                            <div class="col-md-9">
-                                                <select id="levelId" name="levelId" class="form-control"
-                                                        disabled="disabled" onchange="pidChanged()">
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2 nowrap">描述</label>
-
+                                        <div class="form-group permissions"  style="display: none">
+                                            <label class="control-label col-md-2">权限</label>
                                             <div class="col-md-10">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="desc"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">字典类型<span
-                                                    class="required">*</span></label>
-
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="dictionaryType"
-                                                           placeholder="请录入字典类型" readonly="true"/>
-                                                </div>
+                                                <#list permissions as permission>
+                                                    <input type="checkbox" value="${permission.id}" id="pers" name="pers">${permission.name}
+                                                </#list>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
 
                                 <div class="form-actions fluid">
                                     <div class="row">
@@ -221,7 +255,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 </body>
@@ -243,9 +276,11 @@
 <#--<script src="${rc.contextPath}/assets/global/plugins/JsTree/dist/JsTree.js" type="text/javascript"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script type="text/javascript">
+
+
         var status = "";
-        var form = $('#dicForm'), dic_id = 0, text, level_id = 0;
-        $("#dicTree").jstree({
+        var form = $('#moduleForm'), module_id = 0;
+        $("#moduleTree").jstree({
             "core": {
                 "animation": 0,
                 "themes": {
@@ -257,7 +292,7 @@
                 "data": {
                     'dataType': 'json',
                     'type': "post",
-                    'url': "${rc.contextPath}/dictionary/list",
+                    'url': "${rc.contextPath}/module/list",
                 },
             },
             "types": {
@@ -267,11 +302,10 @@
             },
             "plugins": ["types", "wholerow"]
         }).on("select_node.jstree", function (node, selectd) {
-            dic_id = selectd.node.id;
-            text = selectd.node.text;
-            if (dic_id) {
+            module_id = selectd.node.id;
+            if (module_id) {
                 $.ajax({
-                    url: '${rc.contextPath}/dictionary/read-category/' + dic_id,
+                    url: '${rc.contextPath}/module/get-infos/' + module_id,
                     type: 'GET',
                     beforeSend: function () {
                         $(".input-icon > i").removeClass("fa-check fa-warning").attr("data-original-title", "");
@@ -279,36 +313,43 @@
                         $(".form-body .alert-danger").css("display", "none");
                     },
                     success: function (msg) {
-                        var data = msg.dictionary;
+                        var data = msg.module;
                         $('input[name=id]').val(data.id);
-                        $('input[name=dicPid]').val(data.dicPid);
-                        $('input[name=dicKey]').val(data.dicKey);
-                        $('input[name=dicValue]').val(data.dicValue);
+                        $('input[name=name]').val(data.name);
+                        $('input[name=code]').val(data.code);
+                        $('input[name=linkUrl]').val(data.linkUrl);
+                        $('input[name=descr]').val(data.descr);
                         $('input[name=sort]').val(data.sort);
-                        $('input[name=desc]').val(data.desc);
-                        $('input[name=dictionaryType]').val(data.dictionaryType);
-                        $('input[name=path]').val(data.path);
-                        $("select[name=isDeleted] option[value='" + data.isDelete + "']").prop("selected", true);
-                        $("select[name=isDeleted] option[value='" + data.isDelete + "']").attr("selected", "selected");
-                        $("select[name=type] option[value='" + data.type + "']").prop("selected", true);
-                        $("select[name=type] option[value='" + data.type + "']").attr("selected", "selected");
+                        $("select[name=isMenu] option[value='" + data.isMenu + "']").prop("selected", true);
+                        $("select[name=isOpen] option[value='" + data.isOpen + "']").prop("selected", true);
+                        $("select[name=menuType] option[value='" + data.menuType + "']").prop("selected", true);
                         var value = "";
-                        if (data.type == 'ITEM') {
-                            for (var i = 0; i < msg.category.length; i++) {
-                                var obj = msg.category[i];
-                                value = value + "<option value=" + obj.id + ">" + obj.dicValue + "</option>"
+                        if (data.parentModuleId != 0) {
+                            $(".permissions").attr("style","display:block;");
+                            for (var i = 0; i < msg.parents.length; i++) {
+                                var obj = msg.parents[i];
+                                value = value + "<option value=" + obj.id + ">" + obj.name + "</option>";
                             }
-                            $('.btn-children').attr('disabled', "disabled");
 
+                            $('.btn-children').attr('disabled', "disabled");
                         } else {
+                            $(".permissions").attr("style","display:none;");
                             $('.btn-children').enable();
                             $('.btn-parent').enable();
                         }
-                        document.getElementById("levelId").innerHTML = value;
-                        level_id = data.dicValue;
-                        $("select[name=invalid] option[value='" + data.isDeleted + "']").attr("selected", "selected");
-                        $("select[name=levelId] option[value='" + data.dicPid + "']").attr("selected", "selected");
-                        $('#dicForm :input').each(function (a) {
+
+                        $("input[name=pers]").parents('span').removeClass("checked");
+                        if(msg.myPers){
+                            for(var i=0;i<msg.myPers.length;i++){
+                                var myPer=msg.myPers[i];
+                                var qdwd=myPer.permissionId;
+                                $("input[name=pers][value='" +myPer.permissionId+"']").parents('span').toggleClass("checked");
+                                $("input[name=pers][value='" +myPer.permissionId+"']").prop("checked", true);
+                            }
+                        }
+                        document.getElementById("parentModuleId").innerHTML = value;
+                        $("select[name=parentModuleId] option[value='" + data.parentModuleId + "']").prop("selected", true);
+                        $('#moduleForm :input').each(function (a) {
                             $(this).attr('disabled', "disabled");
                             $(this).attr("readonly", "true");
                         });
@@ -324,25 +365,25 @@
             errorClass: 'help-block help-block-error',
             focusInvalid: false,
             rules: {
-                dicValue: {
+                name: {
                     minlength: 2,
                     maxlength: 30,
                     required: true,
                     remote: {
                         type: "GET",
                         contentType: "application/json;charset=UTF-8",
-                        url: "${rc.contextPath}/dictionary/checkExist",//请求地址
+                        url: "${rc.contextPath}/module/checkExist",//请求地址
                         //传递的参数,不写默认是当前校验的值
                         data: {
                             //多参数传递,每个值需要用function返回,
-                            "dicValue": function () {
-                                return $(" input[ name='dicValue' ] ").val();
+                            "name": function () {
+                                return $(" input[ name='name' ] ").val();
                             },
-                            "dicPid": function () {
-                                var level = $("select[name=levelId] option:selected").val();
-                                if (!level)
-                                    level = 0
-                                return level;
+                            "pid": function () {
+                                var parentModuleId = $("select[name=parentModuleId] option:selected").val();
+                                if (!parentModuleId)
+                                    parentModuleId = 0;
+                                return parentModuleId;
                             },
                             "status": function () {
                                 return status;
@@ -350,25 +391,46 @@
                             "id": function () {
                                 var id = $("input[name=id]").val();
                                 if (!id)
-                                    id = 0
+                                    id = 0;
                                 return id;
                             }
                         }
                     }
                 },
-                dicKey: {
-                    required: true
-                },
-                dictionaryType: {
-                    required: true
-                },
-                active: {
-                    required: true
+                code:{
+                    required: true,
+                    remote: {
+                        type: "GET",
+                        contentType: "application/json;charset=UTF-8",
+                        url: "${rc.contextPath}/module/checkCode",//请求地址
+                        //传递的参数,不写默认是当前校验的值
+                        data: {
+                            //多参数传递,每个值需要用function返回,
+                            "code": function () {
+                                return $(" input[ name='code' ] ").val();
+                            },
+                             "status": function () {
+                                return status;
+                             },
+                            "id": function () {
+                                var id = $("input[name=id]").val();
+                                if (!id)
+                                    id = 0;
+                                return id;
+                            }
+                        }
+                    }
                 }
+
             },
             messages: {
-                dicValue: {
-                    remote: "当前层级下存在同名项"
+                name: {
+                    remote: "当前层级下存在同名项",
+                    required: "名称不能为空"
+                },
+                code: {
+                    remote: "存在相同编码",
+                    required: "编码不能为空"
                 }
             },
             invalidHandler: function (event, validator) {
@@ -391,76 +453,70 @@
                 icon.removeClass("fa-warning").addClass("fa-check");
             },
             submitHandler: function (form) {
+                $('select[name=parentModuleId]').enable();
+                $("select[name=isMenu]").enable();
                 error.hide();
                 form.submit();
             }
         });
-        $('.btn-refresh').click(function () {
-            Metronic.startPageLoading();
-            $.ajax({
-                url: '${rc.contextPath}/dictionary/refresh',
-                type: 'GET',
-                traditional: true,
-                success: function (data) {
-                    Metronic.stopPageLoading();
-                    //bootbox.alert("刷新数据字典成功");
-                    bootbox.alert({buttons: {ok: {label: '确认'}}, message: "刷新数据字典成功"});
-                }
-            });
-        });
+
         $('.btn-parent').click(function () {
             form.resetForm();
             $('input[name=id]').val("");
-            $('input[name=dicPid]').val(0);
-            $("select[name=type] option[value='CATEGORY']").prop("selected", true).attr("selected", "selected");
-            $('#dicForm :input').each(function (a) {
+            $('select[name=parentModuleId]').val("");
+            $(".permissions").attr("style","display:none;");
+            $('#moduleForm :input').each(function (a) {
                 $(this).enable();
                 $(this).attr("readonly", false);
             });
+            $("select[name=isMenu] option[value=1]").prop("selected", true);
+            $("select[name=isMenu]").attr('disabled', "disabled");
+            $('select[name=parentModuleId]').attr('disabled', "disabled");
             $('.btn-edit').attr('disabled', "disabled");
             $('.btn-delete').attr('disabled', "disabled");
-            $('select[name=levelId]').val('');
-            $('select[name=levelId]').attr('disabled', "disabled");
             status = "create";
         });
         $('.btn-children').click(function () {
             form.resetForm();
+            $(".permissions").attr("style","display:block;");
+            $('input[name=id]').val("");
             $.ajax({
-                url: '${rc.contextPath}/dictionary/categoryList',
-                type: 'POST',
-                success: function (data) {
+                url: '${rc.contextPath}/module/get-infos/'+module_id,
+                type: 'GET',
+                success: function (msg) {
+                    var data=msg.module;
                     var value = "";
-                    for (var i = 0; i < data.length; i++) {
-                        var obj = data[i];
-                        value = value + "<option value=" + obj.id + ">" + obj.dicValue + "</option>"
+                    for (var i = 0; i < msg.parents.length; i++) {
+                        var obj = msg.parents[i];
+                        value = value + "<option value=" + obj.id + ">" + obj.name + "</option>";
                     }
-                    document.getElementById("levelId").innerHTML = value;
-                    $("select[name=levelId] option[value='" + dic_id + "']").prop("selected", true).attr("selected", "selected");
+                    document.getElementById("parentModuleId").innerHTML = value;
+                    $("select[name=parentModuleId] option[value='" + data.id + "']").attr("selected", "selected");
                 }
             });
-            $('input[name=id]').val("");
-            $('input[name=dicPid]').val(dic_id);
-            // typeChange();
-            $("select[name=type] option[value='ITEM']").prop("selected", true).attr("selected", "selected");
-
-            $('#dicForm :input').each(function (a) {
+            $('#moduleForm :input').each(function (a) {
                 $(this).enable();
                 $(this).attr("readonly", false);
             });
+            $("select[name=isMenu] option[value=0]").prop("selected", true);
+            $("select[name=isMenu]").attr('disabled', "disabled");
+            $('select[name=moduleTypeId]').attr('disabled', "disabled");
             $('.btn-edit').attr('disabled', "disabled");
             $('.btn-delete').attr('disabled', "disabled");
             status = "create";
         });
         $('.btn-edit').click(function () {
-            $('#dicForm :input').each(function (a) {
+            $('#moduleForm :input').each(function (a) {
                 $(this).enable();
                 $(this).attr("readonly", false);
                 status = "update";
             });
+            $('select[name=parentModuleId]').attr('disabled', "disabled");
+            $("select[name=isMenu]").attr('disabled', "disabled");
         });
         $('.btn-cancel').click(function () {
             form.resetForm();
-            $('#dicForm :input').each(function (a) {
+            $('#moduleForm :input').each(function (a) {
                 $(this).attr('disabled', "disabled");
                 $(this).attr("readonly", "true");
             });
@@ -469,7 +525,7 @@
         });
         $('.btn-delete').click(function () {
             bootbox.dialog({
-                message: "确认要删除此数据字典吗？",
+                message: "确认要删除此模块吗？",
                 buttons: {
                     main: {
                         label: "确定",
@@ -477,7 +533,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/dictionary/delete/' + dic_id,
+                                url: '${rc.contextPath}/module/delete/' + module_id,
                                 type: 'DELETE',
                                 success: function (data) {
                                     Metronic.stopPageLoading();
@@ -498,35 +554,6 @@
                 }
             });
         });
-
-        function typeChange() {
-            if ($('select[name=type]').val() == 'ITEM') {
-                $('#dicForm :input').each(function (a) {
-                    $(this).enable();
-                    $(this).attr("readonly", false);
-                });
-                $.ajax({
-                    url: '${rc.contextPath}/dictionary/categoryList',
-                    type: 'POST',
-                    success: function (data) {
-                        var value = "";
-                        for (var i = 0; i < data.length; i++) {
-                            var obj = data[i];
-                            value = value + "<option value=" + obj.id + ">" + obj.dicValue + "</option>"
-                        }
-                        document.getElementById("levelId").innerHTML = value;
-                    }
-                });
-            } else {
-                $('select[name=levelId]').val('');
-                $('select[name=levelId]').attr('disabled', "disabled");
-            }
-        }
-
-        function pidChanged() {
-            $('input[name=dicPid]').val($("select[name=levelId] option:selected").val());
-            $('input[name=dicValue]').val('');
-        }
 
     </script>
 </content>

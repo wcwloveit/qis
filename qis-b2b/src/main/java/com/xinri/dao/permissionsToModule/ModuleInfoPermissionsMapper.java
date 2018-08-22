@@ -1,7 +1,11 @@
-package com.xinri.dao.moduleInfo;
+package com.xinri.dao.permissionsToModule;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
-import com.xinri.po.moduleInfo.ModuleInfoPermissions;
+import com.xinri.po.permissionsToModule.ModuleInfoPermissions;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * 类名:ModuleInfoPermissionsMapper<br>
  * 创建人:xiashanyong<br>

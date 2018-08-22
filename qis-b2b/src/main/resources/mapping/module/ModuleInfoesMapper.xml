@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xinri.dao.moduleInfo.ModuleInfoesMapper">
-	<resultMap id="moduleInfoesResultMap" type="com.xinri.po.moduleInfo.ModuleInfoes">
+<mapper namespace="com.xinri.dao.module.ModuleInfoesMapper">
+	<resultMap id="moduleInfoesResultMap" type="com.xinri.po.module.ModuleInfoes">
 		   <id column="ID" property="id" jdbcType="BIGINT"/>
 	      	<result column="NAME" property="name" jdbcType="VARCHAR"/>
 	      	<result column="CODE" property="code" jdbcType="VARCHAR"/>
@@ -13,6 +13,8 @@
 	      	<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
 	      	<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
 	      	<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+	      	<result column="MENU_TYPE" property="menuType" jdbcType="INTEGER"/>
+			<result column="SORT" property="sort" jdbcType="INTEGER"/>
 	      	<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
 	      	<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
 	      	<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
@@ -41,6 +43,8 @@
 	  t.IS_DELETED,
 	  t.DESCR,
 	  t.GUID_ID,
+	  t.MENU_TYPE,
+	  t.SORT,
 	  t.IS_EFFECTIVE,
 	  t.EFFECTIVE_DATE_START,
 	  t.EFFECTIVE_DATE_END,
@@ -92,21 +96,27 @@
 			<if test="guidId != null and guidId !=''">
 				AND t.GUID_ID = #{guidId}
 			</if>
+			<if test="menuType != null">
+				AND t.MENU_TYPE = #{menuType}
+			</if>
+			<if test="sort != null">
+				AND t.SORT = #{sort}
+			</if>
 			<if test="isEffective != null">
 				AND t.IS_EFFECTIVE = #{isEffective}
 			</if>
-			<if test="startEffectiveDateStart != null and startEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START >=str_to_date(concat(#{startEffectiveDateStart},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateStart != null and endEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START <= str_to_date(concat(#{endEffectiveDateStart}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="startEffectiveDateEnd != null and startEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END >=str_to_date(concat(#{startEffectiveDateEnd},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateEnd != null and endEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END <= str_to_date(concat(#{endEffectiveDateEnd}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
+			<!--<if test="startEffectiveDateStart != null and startEffectiveDateStart !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_START >=str_to_date(concat(#{startEffectiveDateStart},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endEffectiveDateStart != null and endEffectiveDateStart !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_START <= str_to_date(concat(#{endEffectiveDateStart}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="startEffectiveDateEnd != null and startEffectiveDateEnd !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_END >=str_to_date(concat(#{startEffectiveDateEnd},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endEffectiveDateEnd != null and endEffectiveDateEnd !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_END <= str_to_date(concat(#{endEffectiveDateEnd}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
 			<if test="startCreatedOn != null and startCreatedOn !=''">
 				AND <![CDATA[ t.CREATED_ON >=str_to_date(concat(#{startCreatedOn},'00:00:00'),'%Y-%m-%d %T')]]>
 			</if>
@@ -182,6 +192,12 @@
 			<if test="guidId != null">
 			t.GUID_ID = #{guidId},
 			</if>
+			<if test="menuType != null">
+				t.MENU_TYPE = #{menuType},
+			</if>
+			<if test="sort != null">
+				t.SORT = #{sort},
+			</if>
 			<if test="isEffective != null">
 			t.IS_EFFECTIVE = #{isEffective},
 			</if>
@@ -225,30 +241,22 @@
 	</sql>
 
     <!-- 根据主键ID获取数据 -->
-	<select id="get" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" resultMap="moduleInfoesResultMap">
+	<select id="get" parameterType="com.xinri.po.module.ModuleInfoes" resultMap="moduleInfoesResultMap">
 		SELECT <include refid="moduleInfoesColumns" /> 
 		FROM MODULE_INFOES t 
 		WHERE t.ID = #{id}
 	</select>
     <!-- 查询列表可以根据分页进行查询 -->
-	<select id="findList" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" resultMap="moduleInfoesResultMap">
+	<select id="findList" parameterType="com.xinri.po.module.ModuleInfoes" resultMap="moduleInfoesResultMap">
 		SELECT
 		<include refid="moduleInfoesColumns" /> 
 		FROM MODULE_INFOES t 
 		<include refid="whereColumnBySelect" />
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}			
-			</when>
-				<otherwise>
-				ORDER BY t.ID DESC
-				</otherwise>
-			
-		</choose>
+		ORDER BY sort,modified_on DESC,created_on DESC
 	</select>
 
     <!-- 查询所有列表 -->
-	<select id="findAllList" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" resultMap="moduleInfoesResultMap">
+	<select id="findAllList" parameterType="com.xinri.po.module.ModuleInfoes" resultMap="moduleInfoesResultMap">
 		SELECT
 		<include refid="moduleInfoesColumns" /> 
 		FROM MODULE_INFOES t 	
@@ -267,22 +275,22 @@
 	</select>
 
     <!-- 根据条件查询对象 -->
-	<select id="getByEntity" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" resultMap="moduleInfoesResultMap">
+	<select id="getByEntity" parameterType="com.xinri.po.module.ModuleInfoes" resultMap="moduleInfoesResultMap">
 		SELECT <include refid="moduleInfoesColumns" /> 
 		FROM MODULE_INFOES t 
 		<include refid="whereColumnBySelect"></include>
 	</select>
 	
     <!-- 新增并设置主键ID至参数对象 -->
-	<insert id="insert" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+	<insert id="insert" parameterType="com.xinri.po.module.ModuleInfoes">
 
 		INSERT INTO MODULE_INFOES
-			(ID, NAME, CODE, LINK_URL, IS_MENU, IS_OPEN, DEPTH, PARENT_MODULE_ID, IS_DELETED, DESCR, GUID_ID, IS_EFFECTIVE, EFFECTIVE_DATE_START, EFFECTIVE_DATE_END, CREATED_ON, CREATED_BY, MODIFIED_ON, MODIFIED_BY, DESC_FLEX_FIELD1, DESC_FLEX_FIELD2, DESC_FLEX_FIELD3, DESC_FLEX_FIELD4, DESC_FLEX_FIELD5, DESC_FLEX_FIELD6)
+			(ID, NAME, CODE, LINK_URL, IS_MENU, IS_OPEN, DEPTH, PARENT_MODULE_ID, IS_DELETED, DESCR, GUID_ID,MENU_TYPE,SORT, IS_EFFECTIVE, EFFECTIVE_DATE_START, EFFECTIVE_DATE_END, CREATED_ON, CREATED_BY, MODIFIED_ON, MODIFIED_BY, DESC_FLEX_FIELD1, DESC_FLEX_FIELD2, DESC_FLEX_FIELD3, DESC_FLEX_FIELD4, DESC_FLEX_FIELD5, DESC_FLEX_FIELD6)
 		VALUES
-			(#{id}, #{name}, #{code}, #{linkUrl}, #{isMenu}, #{isOpen}, #{depth}, #{parentModuleId}, #{isDeleted}, #{descr}, #{guidId}, #{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{createdOn}, #{createdBy}, #{modifiedOn}, #{modifiedBy}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6})
+			(#{id}, #{name}, #{code}, #{linkUrl}, #{isMenu}, #{isOpen}, #{depth}, #{parentModuleId}, #{isDeleted}, #{descr}, #{guidId},#{menuType}, #{sort},#{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{createdOn}, #{createdBy}, #{modifiedOn}, #{modifiedBy}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6})
 	</insert>
     <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
-	<insert id="insertSelective" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="insertSelective" parameterType="com.xinri.po.module.ModuleInfoes" useGeneratedKeys="true" keyProperty="id" >
 		
 	    INSERT INTO MODULE_INFOES
 	    <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -318,6 +326,12 @@
 			</if>
 			<if test="guidId != null">
 				GUID_ID,
+			</if>
+			<if test="menuType != null">
+				MENU_TYPE,
+			</if>
+			<if test="sort != null">
+				SORT,
 			</if>
 			<if test="isEffective != null">
 				IS_EFFECTIVE,
@@ -393,6 +407,12 @@
 		  <if test="guidId != null">
 				#{guidId,jdbcType=VARCHAR},
 		  </if>
+			<if test="menuType != null">
+				#{menuType,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=VARCHAR},
+			</if>
 		  <if test="isEffective != null">
 				#{isEffective,jdbcType=INTEGER},
 		  </if>
@@ -436,7 +456,7 @@
   	</insert>
 
     <!-- 根据主键ID进行修改 -->
-  	<update id="update" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+  	<update id="update" parameterType="com.xinri.po.module.ModuleInfoes">
 		UPDATE MODULE_INFOES t 
 		<include refid="whereColumnByUpdate"></include>
 		<where>
@@ -445,14 +465,14 @@
 	</update>
 
     <!-- 根据条件进行修改 -->
-	<update id="updateByCondition" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+	<update id="updateByCondition" parameterType="com.xinri.po.module.ModuleInfoes">
 		UPDATE MODULE_INFOES t 
 		<include refid="whereColumnByUpdate"></include>
 		<where>${whereSqlParam}</where>
 	</update>
 
     <!-- 根据主键ID进行逻辑删除 -->
-	<update id="delete" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+	<update id="delete" parameterType="com.xinri.po.module.ModuleInfoes">
 		UPDATE MODULE_INFOES t SET 
 		t.IS_DELETED = 1
 		WHERE t.ID = #{id,jdbcType=BIGINT}
@@ -470,16 +490,16 @@
 	</update>
 
     <!-- 根据条件进行逻辑删除 -->
-	<update id="deleteByEntity" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+	<update id="deleteByEntity" parameterType="com.xinri.po.module.ModuleInfoes">
 		UPDATE MODULE_INFOES t SET 
 			t.IS_DELETED = 1
 		<include refid="whereColumnBySelect"/>
 	</update>
 
     <!-- 根据主键ID进行物理删除 -->
-	<delete id="remove" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
-		DELETE FROM MODULE_INFOES t 
-		WHERE t.ID = #{id,jdbcType=BIGINT}
+	<delete id="remove" parameterType="com.xinri.po.module.ModuleInfoes">
+		DELETE FROM MODULE_INFOES
+		WHERE ID = #{id,jdbcType=BIGINT}
 	</delete>
 
     <!-- 根据主键ID进行批量物理删除 -->
@@ -493,7 +513,7 @@
 	</delete>
 
     <!-- 根据条件进行物理删除 -->
-	<update id="removeByCondition" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+	<update id="removeByCondition" parameterType="com.xinri.po.module.ModuleInfoes">
 		DELETE FROM MODULE_INFOES t 
 		<where>${whereSqlParam}</where>
 	</update>
