@@ -24,6 +24,10 @@ public class Departments extends DataEntity<Departments>{
 
     	private String oaId;
 
+    	private String u9No;
+
+    	private String u9Id;
+
     	private String oaCanceled;
 
     	private Integer depthLevel;
@@ -69,6 +73,22 @@ public class Departments extends DataEntity<Departments>{
 	 * endUpdatedOn字段查询条件结束
 	 */
 	private String endModifiedOn;
+
+	public String getU9No() {
+		return u9No;
+	}
+
+	public void setU9No(String u9No) {
+		this.u9No = u9No;
+	}
+
+	public String getU9Id() {
+		return u9Id;
+	}
+
+	public void setU9Id(String u9Id) {
+		this.u9Id = u9Id;
+	}
 
 	public String getStartModifiedOn() {
 		return startModifiedOn;

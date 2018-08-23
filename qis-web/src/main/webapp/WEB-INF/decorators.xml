@@ -7,7 +7,9 @@
     </excludes>
     <decorator name="default" page="default.jsp">
         <pattern>/main</pattern>
+        <pattern>/organization/*</pattern>
         <pattern>/log/*</pattern>
         <pattern>/dictionary/*</pattern>
+
     </decorator>
 </decorators>

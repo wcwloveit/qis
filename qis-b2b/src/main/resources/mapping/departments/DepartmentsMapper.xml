@@ -257,6 +257,14 @@
 		FROM DEPARTMENTS t 
 		<include refid="whereColumnBySelect"></include>
 	</select>
+
+	<!-- 批量获取正在使用部门 -->
+	<select id="getUserDept" parameterType="com.xinri.po.departments.Departments" resultMap="departmentsResultMap">
+		SELECT <include refid="departmentsColumns" />
+		FROM DEPARTMENTS t
+		<include refid="whereColumnBySelect"></include>
+		and oa_canceled!='1'
+	</select>
 	
     <!-- 新增并设置主键ID至参数对象 -->
 	<insert id="insert" parameterType="com.xinri.po.departments.Departments">

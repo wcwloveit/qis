@@ -1,5 +1,6 @@
 package com.xinri.controller.dictionary;
 
+import com.app.api.JsTree;
 import com.xinri.po.dictionary.Dictionary;
 import com.xinri.service.dictionary.impl.DictionaryService;
 import com.xinri.util.AjaxStatus;
@@ -48,6 +49,16 @@ public class DictionaryController {
         List<DictionaryVo> dictionaryVos = dictionaryService.findListByVo(dictionaryVo);
         return dictionaryVos;
     }
+
+
+//    @RequestMapping(value = "list", method = RequestMethod.POST)
+//    @ResponseBody
+//    public List<DictionaryVo> getItemList() {
+//        DictionaryVo dictionaryVo = new DictionaryVo();
+//        List<DictionaryVo> dictionaryVos = dictionaryService.findListByVo(dictionaryVo);
+//        List<JsTree> jsTrees
+//        return dictionaryVos;
+//    }
 
     /**
      * 返回jsTree点选项的字典数据的详细信息和类型为类的数据

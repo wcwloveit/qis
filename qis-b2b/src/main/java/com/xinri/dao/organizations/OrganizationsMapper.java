@@ -14,5 +14,8 @@ import java.util.List;
 public interface OrganizationsMapper extends CrudDao<Organizations>{
 
    public void insertOrgList(List<Organizations> organizations);
+
+   public List<Organizations> initOrgList(Organizations organizations);
+
 }
 

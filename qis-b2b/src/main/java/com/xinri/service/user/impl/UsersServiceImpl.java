@@ -1,8 +1,13 @@
 package com.xinri.service.user.impl;
+import com.app.api.DataTable;
+import com.google.common.base.Strings;
+import com.qis.common.persistence.Page;
 import com.xinri.po.departments.Departments;
 import com.xinri.service.departments.IDepartmentsService;
 import com.xinri.service.port.IPortService;
+import com.xinri.vo.org.OrgListVo;
 import com.xinri.vo.users.OAUsersVo;
+import com.xinri.vo.users.UserListVo;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -114,6 +119,75 @@ public class UsersServiceImpl extends CrudService<UsersMapper,Users>  implements
         }
 
     }
+
+    /**
+     * 获取分部列表
+     * @param searchParams
+     * @param id
+     * @param dt
+     * @return
+     */
+    @Override
+    public DataTable<UserListVo> getUserList(Map<String, Object> searchParams, String id, DataTable<UserListVo> dt){
+
+        List<UserListVo> orgListVos=new ArrayList<>();
+        Users sqlUser=new Users();
+        Long odid = Long.parseLong(id.substring(0,id.length() - 1));
+        sqlUser.setDepartmentId(odid);
+
+        List<Users> deptList=new ArrayList<>();
+
+        Page page = new Page(dt.pageNo()+1, dt.getiDisplayLength());
+        //获取模糊查询参数
+        if (searchParams != null && searchParams.size() != 0) {
+            //加入查询条件
+            //名称
+            if (searchParams.containsKey("User_name") && !Strings.isNullOrEmpty(searchParams.get("User_name").toString().trim())) {
+                String name = searchParams.get("User_name").toString().trim();
+                sqlUser.setName(name);
+            }
+            if (searchParams.containsKey("User_workcode") && !Strings.isNullOrEmpty(searchParams.get("User_workcode").toString().trim())) {
+                String workcode = searchParams.get("User_workcode").toString().trim();
+                sqlUser.setUserNo(workcode);
+            }
+            if (searchParams.containsKey("User_code") && !Strings.isNullOrEmpty(searchParams.get("User_code").toString().trim())) {
+                String code = searchParams.get("User_code").toString().trim();
+                sqlUser.setUserName(code);
+            }
+            if (searchParams.containsKey("User_status") && !Strings.isNullOrEmpty(searchParams.get("User_status").toString().trim())) {
+                String type = searchParams.get("User_status").toString().trim();
+                sqlUser.setIsEffective(Integer.parseInt(type));
+            }
+            if (searchParams.containsKey("User_mobile") && !Strings.isNullOrEmpty(searchParams.get("User_mobile").toString().trim())) {
+                String mobile = searchParams.get("User_mobile").toString().trim();
+                sqlUser.setMobilePhone(mobile);
+            }
+        }
+
+        sqlUser.setPage(page);
+        deptList=dao.findList(sqlUser);
+        int i=1;
+        for(Users u:deptList){
+            UserListVo vo=new UserListVo();
+            vo.setId(i);
+            vo.setNo(u.getId()+"");
+            vo.setLoginid(u.getUserNo());
+            vo.setUserCode(u.getUserName());
+            vo.setUserMobile(u.getMobilePhone());
+            vo.setUserName(u.getName());
+            vo.setUserStatus(u.getIsEffective()+"");
+            i++;
+            orgListVos.add(vo);
+        }
+
+        page.setData(orgListVos);
+        dt.setiTotalDisplayRecords(page.getTotalSize());
+        dt.setAaData(page.getData());
+
+        return dt;
+    }
+
+
 
     public static void main(String[] args) {
         Map<String ,Object> aa=new HashMap<>();

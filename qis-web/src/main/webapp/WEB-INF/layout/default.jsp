@@ -160,6 +160,16 @@
                 </li>
 
                 <li class="heading">
+                    <h3 class="uppercase">组织设置</h3>
+                </li>
+                <li class="nav-item  ">
+                    <a href="${ctx}/organization/index" class="nav-link">
+                        <i class="icon-calendar"></i>
+                        <span class="title">组织树</span>
+                    </a>
+                </li>
+
+                <li class="heading">
                     <h3 class="uppercase">Form</h3>
                 </li>
                 <li class="nav-item  ">

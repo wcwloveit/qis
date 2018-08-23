@@ -264,6 +264,15 @@
 		FROM ORGANIZATIONS t 
 		<include refid="whereColumnBySelect"></include>
 	</select>
+
+
+	<!-- 获取存在组织 -->
+	<select id="initOrgList" parameterType="com.xinri.po.organizations.Organizations" resultMap="organizationsResultMap">
+		SELECT <include refid="organizationsColumns" />
+		FROM ORGANIZATIONS t
+		<include refid="whereColumnBySelect"></include>
+		and (oa_canceled is null or oa_canceled=0)
+	</select>
 	
     <!-- 新增并设置主键ID至参数对象 -->
 	<insert id="insert" parameterType="com.xinri.po.organizations.Organizations">

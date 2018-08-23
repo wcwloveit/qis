@@ -14,5 +14,7 @@ import java.util.List;
 public interface DepartmentsMapper extends CrudDao<Departments>{
 
   public void insertDeptList(List<Departments> departments);
+
+  public List<Departments> getUserDept(Departments departments);
 }
 
