@@ -3,6 +3,7 @@ package com.xinri.po.port;
 import com.qis.common.persistence.DataEntity;
 import com.xinri.po.permissions.Permissions;
 
+
 public class QisPort extends DataEntity<QisPort> {
 
     private String url;

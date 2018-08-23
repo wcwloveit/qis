@@ -1,6 +1,12 @@
 package com.xinri.service.role;
+import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.role.RoleClasses;
+import com.xinri.vo.role.RoleClassesVo;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p></p>
  * 类名:RoleClassesService<br>
@@ -10,6 +16,6 @@ import com.xinri.po.role.RoleClasses;
 
 public interface IRoleClassesService extends IBaseService<RoleClasses>{
 
-
+    public DataTable<RoleClassesVo>  findListByVo( DataTable<RoleClassesVo>dt, Map<String, Object> searchParams);
 }
 

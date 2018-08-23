@@ -88,7 +88,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 		this.modifiedOn = modifiedOn;
 	}
 
-	@JsonIgnore
+
 	public Integer getIsDeleted() {
 		return isDeleted;
 	}

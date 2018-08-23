@@ -10,5 +10,7 @@ import java.util.List;
 @MyBatisDao
 public interface DictionaryMapper extends CrudDao<Dictionary>{
     List<DictionaryVo> findListByVo(DictionaryVo vo);
+
+    void batchInsert(List<Dictionary> list);
 }
 

@@ -240,7 +240,7 @@
             type="text/javascript"></script>
     <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/js/localization/messages_zh.js"
             type="text/javascript"></script>
-<#--<script src="${rc.contextPath}/assets/global/plugins/jstree/dist/jstree.js" type="text/javascript"></script>-->
+<#--<script src="${rc.contextPath}/assets/global/plugins/JsTree/dist/JsTree.js" type="text/javascript"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script type="text/javascript">
         var status = "";

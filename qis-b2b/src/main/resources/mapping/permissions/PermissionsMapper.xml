@@ -70,18 +70,18 @@
 			<if test="isEffective != null">
 				AND t.IS_EFFECTIVE = #{isEffective}
 			</if>
-			<if test="startEffectiveDateStart != null and startEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START >=str_to_date(concat(#{startEffectiveDateStart},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateStart != null and endEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START <= str_to_date(concat(#{endEffectiveDateStart}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="startEffectiveDateEnd != null and startEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END >=str_to_date(concat(#{startEffectiveDateEnd},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateEnd != null and endEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END <= str_to_date(concat(#{endEffectiveDateEnd}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
+			<!--<if test="startEffectiveDateStart != null and startEffectiveDateStart !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_START >=str_to_date(concat(#{startEffectiveDateStart},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endEffectiveDateStart != null and endEffectiveDateStart !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_START <= str_to_date(concat(#{endEffectiveDateStart}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="startEffectiveDateEnd != null and startEffectiveDateEnd !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_END >=str_to_date(concat(#{startEffectiveDateEnd},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endEffectiveDateEnd != null and endEffectiveDateEnd !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_END <= str_to_date(concat(#{endEffectiveDateEnd}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
 			<if test="startCreatedOn != null and startCreatedOn !=''">
 				AND <![CDATA[ t.CREATED_ON >=str_to_date(concat(#{startCreatedOn},'00:00:00'),'%Y-%m-%d %T')]]>
 			</if>
