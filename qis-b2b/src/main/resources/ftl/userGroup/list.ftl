@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>角色类型</title>
+    <title>用户组</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
 <#--<link href="${rc.contextPath}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />-->
 <#--<link href="${rc.contextPath}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />-->
@@ -12,11 +12,11 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="${rc.contextPath}/">角色</a>
+                <a href="${rc.contextPath}/">用户</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="#">角色类型</a>
+                <a href="#">用户组</a>
                 <i class="fa fa-angle-right"></i>
             </li>
         </ul>
@@ -28,12 +28,12 @@
     <div class="col-md-12">
         <div class="portlet box green-haze">
             <div class="portlet-title">
-                <div class="caption"><i class="fa fa-cogs"></i>角色类型列表</div>
+                <div class="caption"><i class="fa fa-cogs"></i>用户组列表</div>
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green btn-parent" href="${rc.contextPath}/roleClass/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/userGroup/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
@@ -67,20 +67,20 @@
 
                         <label style="float:left;margin-right:5px;">
                             <b class="form-control input-inline" style="border: 0px; text-align: left;">名称</b>
-                            <input type="text" class="input-sm form-filter" name="search_RoleClass_name"
-                                   id="search_RoleClass_name" placeholder="名称"/>
+                            <input type="text" class="input-sm form-filter" name="search_userGroup_name"
+                                   id="search_userGroup_name" placeholder="名称"/>
                         </label>
 
                         <label style="float:left;margin-right:5px;">
                             <b class="form-control input-inline" style="border: 0px; text-align: left;">编号</b>
-                            <input type="text" class="input-sm form-filter" name="search_RoleClass_code"
-                                   id="search_RoleClass_code" placeholder="编号"/>
+                            <input type="text" class="input-sm form-filter" name="search_userGroup_code"
+                                   id="search_userGroup_code" placeholder="编号"/>
                         </label>
 
                         <label style="float:left;margin-right:5px;">
                             <b class="form-control input-inline" style="border: 0px; text-align: left;">描述</b>
-                            <input type="text" class="input-sm form-filter" name="search_RoleClass_descr"
-                                   id="search_RoleClass_descr" placeholder="描述"/>
+                            <input type="text" class="input-sm form-filter" name="search_userGroup_descr"
+                                   id="search_userGroup_descr" placeholder="描述"/>
                         </label>
 
                         <#--<label style="float:left;margin-right:5px;">-->
@@ -101,7 +101,7 @@
                             ">创建时间</div>
                     <div class="input-group date date-picker" data-date-format="yyyy-mm-dd"
                          style="width: 123px;float: left;">
-                        <input id="search_RoleClass_startCreatedOn" name="search_RoleClass_startCreatedOn" style=" width: 90px; padding: 2px; "
+                        <input id="search_userGroup_startCreatedOn" name="search_userGroup_startCreatedOn" style=" width: 90px; padding: 2px; "
                                type="text" class="form-filter input-sm" placeholder="开始日期" readonly>
                         <span class="input-group-btn"><button class="btn btn-sm default" type="button"><i
                                 class="fa fa-calendar"></i></button></span>
@@ -109,7 +109,7 @@
                     <div style="float:left;">~</div>
                     <div class="input-group date date-picker" data-date-format="yyyy-mm-dd"
                          style="width: 123px;float: left;">
-                        <input id="search_RoleClass_endCreatedOn" name="search_RoleClass_endCreatedOn" style=" width:90px; padding: 2px;"
+                        <input id="search_userGroup_endCreatedOn" name="search_userGroup_endCreatedOn" style=" width:90px; padding: 2px;"
                                type="text" class="form-filter input-sm" placeholder="结束日期" readonly>
                         <span class="input-group-btn"><button class="btn btn-sm default" type="button"><i
                                 class="fa fa-calendar"></i></button></span>
@@ -254,7 +254,7 @@
                 ],
                 "iDisplayLength": 10,//页面显示数据数量
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/roleClass/list",
+                "sAjaxSource": "${rc.contextPath}/userGroup/list",
                 "aaSorting": [
                     [0, "desc"]
                 ],
@@ -274,7 +274,7 @@
 //                    {"sTitle": "备注说明", "mData": "descr"},
 //                    {"sTitle": "生效开始时间", "mData": "effectiveDateStart"},
 //                    {"sTitle": "生效结束时间", "mData": "effectiveDateEnd"},
-                    { "sTitle": "创建时间", "mData": "startCreated", "mRender": function (data, type, row) {
+                    { "sTitle": "创建时间", "mData": "createdTime", "mRender": function (data, type, row) {
                         if (data != null && "" != data) {
                             return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                         } else {
@@ -290,7 +290,7 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/roleClass/update/' + row.id
+                        var a = '<a href="${rc.contextPath}/userGroup/update/' + row.id
                                 + '" class="btn btn-xs blue"  title="编辑" >' +
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
@@ -405,7 +405,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/roleClass/delete-' + id,
+                                url: '${rc.contextPath}/userGroup/delete-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -500,7 +500,7 @@
                 return false;
             }
             bootbox.dialog({
-                message: "您是否确认删除名称为："+codes+"的角色类型",
+                message: "您是否确认删除名称为："+codes+"的用户组",
                 buttons: {
                     main: {
                         label: "确定",
@@ -508,7 +508,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/roleClass/deleteAll',
+                                url:'${rc.contextPath}/userGroup/deleteAll',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",

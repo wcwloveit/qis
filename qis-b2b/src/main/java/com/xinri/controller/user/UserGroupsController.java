@@ -1,11 +1,13 @@
-package com.xinri.controller.role;
+package com.xinri.controller.user;
 
 import com.app.api.DataTable;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.xinri.po.role.RoleClasses;
-import com.xinri.service.role.IRoleClassesService;
+import com.xinri.po.user.UserGroups;
+import com.xinri.service.user.IUserGroupsService;
 import com.xinri.vo.role.RoleClassesVo;
+import com.xinri.vo.users.UserGroupsVo;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,30 +22,31 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value="/roleClass")
-public class roleClassController extends BaseController {
+@RequestMapping(value="/userGroup")
+public class UserGroupsController extends BaseController {
+
     @Autowired
-    private IRoleClassesService roleClassesService;
+    private IUserGroupsService userGroupsService;
 
     /*
-    * 首页
-    * */
+   * 首页
+   * */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList(){
-        return "roleClass/list";
+        return "userGroup/list";
     }
 
     /*
-   * 分页列表
-   * */
+  * 分页列表
+  * */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public DataTable<RoleClassesVo> getItemList(DataTable<RoleClassesVo> dt, ServletRequest request){
+    public DataTable<UserGroupsVo> getItemList(DataTable<UserGroupsVo> dt, ServletRequest request){
         logger.info("获取产品列表开始");
         Map<String,Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
-        DataTable<RoleClassesVo> baseDatas = roleClassesService.findListByVo(dt, searchParams); //查询方法
+        DataTable<UserGroupsVo> userGroups = userGroupsService.findListByVo(dt, searchParams); //查询方法
         logger.info("获取产品列表结束始");
-        return baseDatas;
+        return userGroups;
     }
 
     /**
@@ -52,7 +55,7 @@ public class roleClassController extends BaseController {
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create(){
-        ModelAndView mv = new ModelAndView("/roleClass/roleClassForm");
+        ModelAndView mv = new ModelAndView("/userGroup/form");
         mv.addObject("action","create");
         return mv;
     }
@@ -63,12 +66,12 @@ public class roleClassController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView save(RoleClasses roleClasses,
+    public ModelAndView save(UserGroups userGroups,
                              RedirectAttributes attributes) {
         logger.info("新增产品开始");
-        ModelAndView mv = new ModelAndView("redirect:/roleClass/index"); //重定向
+        ModelAndView mv = new ModelAndView("redirect:/userGroup/index"); //重定向
         try {
-            roleClassesService.saveOrUpdate(roleClasses);
+            userGroupsService.saveOrUpdate(userGroups);
             attributes.addFlashAttribute("success",true);
             attributes.addFlashAttribute("message","添加产品成功");
             logger.info("新增产品完成");
@@ -85,23 +88,23 @@ public class roleClassController extends BaseController {
      */
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable("id") Long id, Model model) {
-        RoleClasses roleClasses = new RoleClasses();
-        roleClasses = roleClassesService.get(id);
+        UserGroups userGroups = new UserGroups();
+        userGroups = userGroupsService.get(id);
         model.addAttribute("action", "update");//跳转编辑的标示
-        model.addAttribute("roleClasses",roleClasses);//商品信息
-        return "/roleClass/roleClassForm";
+        model.addAttribute("roleClasses",userGroups);//商品信息
+        return "/userGroup/form"; //跳转到更新页面
     }
 
     /*
-  * 更新
-  * */
+* 更新
+* */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView updateitemDetail(RoleClasses roleClasses, RedirectAttributes attributes) {
+    public ModelAndView updateitemDetail(UserGroups userGroups, RedirectAttributes attributes) {
         logger.info("更新产品开始");
-        ModelAndView mv = new ModelAndView("redirect:/roleClass/index");
+        ModelAndView mv = new ModelAndView("redirect:/userGroup/index");
         try {
-            roleClasses.setIsNewRecord(false);
-            roleClassesService.saveOrUpdate(roleClasses);
+            userGroups.setIsNewRecord(false);
+            userGroupsService.saveOrUpdate(userGroups);
             attributes.addFlashAttribute("success",true);
             attributes.addFlashAttribute("message","更新产品成功");
             logger.info("更新产品完成");
@@ -123,10 +126,10 @@ public class roleClassController extends BaseController {
         JSONObject json = new JSONObject();
         try{
             //逻辑删除商品信息
-            RoleClasses roleClasses = new RoleClasses();
-            roleClasses.setId(id); //自己的是 编号
-            roleClasses.setIsDeleted(1);//把id为XX的哪一个实体类数据的IsDeleted 改为1
-            roleClassesService.saveOrUpdate(roleClasses);//跟新实体类
+            UserGroups userGroups = new UserGroups();
+            userGroups.setId(id); //自己的是 编号
+            userGroups.setIsDeleted(1);//把id为XX的哪一个实体类数据的IsDeleted 改为1
+            userGroupsService.saveOrUpdate(userGroups);//跟新实体类
             json.put("code","200");
             json.put("msg","删除成功");
         }catch(Exception e){
@@ -137,6 +140,7 @@ public class roleClassController extends BaseController {
         return json;
     }
 
+
     /**
      * 批量删除
      * @return 返回跳转链接
@@ -146,7 +150,7 @@ public class roleClassController extends BaseController {
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         Map<String, Boolean> map = new HashMap();
         try {
-            roleClassesService.batchDelete(ids);//batchDelete逻辑删除
+            userGroupsService.batchDelete(ids);//batchDelete逻辑删除
             map.put("stat", true);
         } catch (Exception e) {
             map.put("stat", false);
@@ -154,4 +158,6 @@ public class roleClassController extends BaseController {
         }
         return map;
     }
+
+
 }

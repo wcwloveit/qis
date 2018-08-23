@@ -15,5 +15,6 @@
         <pattern>/module/*</pattern>
         <pattern>/permissions/*</pattern>
 		<pattern>/roleClass/*</pattern>
+        <pattern>/userGroup/*</pattern>
     </decorator>
 </decorators>

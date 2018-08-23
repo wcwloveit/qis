@@ -1,11 +1,11 @@
 <html>
 <head>
 <#--判断action 等于create是新增   等于update是编辑修改-->
-    <title>角色新增<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if></title>
+    <title>用户组新增<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if></title>
     <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet"/>
     <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
     <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"/>
-    <#--<link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/global/plugins/select2/select2.css"/>-->
+<#--<link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/global/plugins/select2/select2.css"/>-->
     <link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/global/plugins/bootstrap-summernote/summernote.css">
     <link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
     <link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css"/>
@@ -24,11 +24,11 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="javascript:void(0);">数据</a>
+                <a href="javascript:void(0);">用户</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="javascript:void(0);">角色类型</a>
+                <a href="javascript:void(0);">用户组管理</a>
                 <i class="fa fa-angle-right"></i>
             </li>
         </ul>
@@ -49,7 +49,7 @@
             </div>
             <div class="portlet-body form">
             <#--寻找是哪个Controller-->
-                <form id="myForm" action="${rc.contextPath}/roleClass/${action}" class="form-horizontal" method="POST">
+                <form id="myForm" action="${rc.contextPath}/userGroup/${action}" class="form-horizontal" method="POST">
                     <div class="form-body">
                     <#--<h3 class="form-section">基本信息</h3>-->
                         <input type="hidden" class="form-control"  name="id" value="${roleClasses.id?if_exists}" >
@@ -90,19 +90,19 @@
 
                             </div>
 
-                            </div>
                         </div>
                     </div>
-                    <div class="form-actions fluid">
-                        <div class="col-md-offset-3 col-md-9">
-                            <button type="submit" class="btn green">提交</button>
-                            <button type="reset" class="btn red">重置</button>
-                        </div>
-                    </div>
-                </form>
             </div>
+            <div class="form-actions fluid">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn green">提交</button>
+                    <button type="reset" class="btn red">重置</button>
+                </div>
+            </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 
 
@@ -112,7 +112,7 @@
     <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
     <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js"></script>
     <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script>
-    <#--<script src="${rc.contextPath}/assets/global/plugins/select2/select2.min.js" type="text/javascript"></script>-->
+<#--<script src="${rc.contextPath}/assets/global/plugins/select2/select2.min.js" type="text/javascript"></script>-->
     <script src="${rc.contextPath}/assets/global/plugins/bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
     <script src="${rc.contextPath}/assets/global/plugins/bootstrap-summernote/lang/summernote-zh-CN.js" type="text/javascript"></script>
     <script type="text/javascript" src="${rc.contextPath}/assets/global/common/commonUtil.js"></script>
