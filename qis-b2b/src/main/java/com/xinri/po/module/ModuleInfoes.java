@@ -34,6 +34,8 @@ public class ModuleInfoes extends DataEntity<ModuleInfoes> {
 
     private Integer menuType;
 
+    private String icon;//图标
+
     private Integer sort;
 
     private Integer isEffective;
@@ -73,6 +75,14 @@ public class ModuleInfoes extends DataEntity<ModuleInfoes> {
      * endUpdatedOn字段查询条件结束
      */
     private String endModifiedOn;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
     public String getStartModifiedOn() {
         return startModifiedOn;

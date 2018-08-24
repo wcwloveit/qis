@@ -154,7 +154,7 @@
                         </li>
                         <li class="nav-item ">
                         <a href="javascript:;" class="nav-link nav-toggle">
-                        <i class="icon-settings"></i>
+                        <i class="<% if(resource.getIcon()!=null&&!"".equals(resource.getIcon())){ %><%= resource.getIcon()%><% }else{%>fa fa-home<% }%> %>"></i>
                         <span class="title"><%= resource.getName()%></span>
                         <span class="arrow"></span>
                         </a>
@@ -169,7 +169,7 @@
                                         <%}else{%><%=
                                                 res.getLinkUrl()%>
                                          <%}%>" class="nav-link ">
-                                <i class="icon-settings"></i>
+                                <i class="<% if(res.getIcon()!=null&&!"".equals(res.getIcon())){ %><%= res.getIcon()%><% }else{%>glyphicon glyphicon-tint<% }%> %>"></i>
                                 <span class="title"><%= res.getName() %></span>
                                 </a>
                                 </li><%

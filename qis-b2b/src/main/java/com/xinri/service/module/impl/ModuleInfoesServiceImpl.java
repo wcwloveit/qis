@@ -49,6 +49,9 @@ public class ModuleInfoesServiceImpl extends CrudService<ModuleInfoesMapper,Modu
                 jsTree.setIcon("glyphicon glyphicon-tint");
                 jsTree.setText(moduleInfo.getName());
             }
+            if (moduleInfo.getIcon()!=null&&!"".equals(moduleInfo.getIcon())){
+                jsTree.setIcon(moduleInfo.getIcon());
+            }
             jsTrees.add(jsTree);
         }
         return jsTrees;

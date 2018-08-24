@@ -213,7 +213,7 @@
                                     '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
                             if(row.isDeleted==1){
-                                return 已删除;
+                                return "已删除";
                             }else{
                                 return a+b+c;
                             }
