@@ -2,6 +2,7 @@ package com.xinri.service.module;
 import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.module.ModuleInfoes;
+import com.xinri.po.role.Roles;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
 
@@ -18,7 +19,8 @@ import java.util.Map;
 public interface IModuleInfoesService extends IBaseService<ModuleInfoes>{
     List<JsTree> getTree();
 
-    public AjaxStatus deleteModule(Long id);
+    AjaxStatus deleteModule(Long id);
 
+    DataTable<ModuleInfoes> getModulesForRole(DataTable<ModuleInfoes> dt, List<Long> ids);
 }
 

@@ -7,14 +7,18 @@ import com.xinri.po.permissionsToModule.ModuleInfoPermissions;
 import com.xinri.service.module.IModuleInfoesService;
 import com.xinri.service.permissions.IPermissionsService;
 import com.xinri.service.permissionsToModule.IPermissionsToModuleService;
+import com.xinri.service.roleModuleInfos.IRoleModuleInfosService;
+import com.xinri.service.roleModulePermissions.IRoleModuleInfoPermissionHeadsService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
+import com.xinri.vo.jstree.State;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,13 +37,19 @@ public class ModuleController extends BaseController {
     @Autowired
     private IPermissionsToModuleService permissionsToModuleService;
 
+    @Autowired
+    private IRoleModuleInfosService roleModuleInfosService;
+
+    @Autowired
+    private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
+
     /*
      * 首页
      * */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView findModuleList() {
         ModelAndView mv = new ModelAndView("/module/tree");
-        Permissions permission=new Permissions();
+        Permissions permission = new Permissions();
         permission.setIsDeleted(0);
         mv.addObject("permissions", permissionsService.findList(permission));//返回所有的权限信息供页面选择
         return mv;
@@ -49,6 +59,23 @@ public class ModuleController extends BaseController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public List<JsTree> list() {
         return moduleInfoesService.getTree();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "listForRole/{id}", method = RequestMethod.POST)
+    public List<JsTree> listForRole(@PathVariable(value = "id") Long id) {
+        List<JsTree> jsTrees = moduleInfoesService.getTree();
+        List<Long> ids = roleModuleInfosService.getModuleIds(id);
+
+        State state=new State();
+        state.setSelected(true);
+        for(JsTree jsTree:jsTrees){
+            if (ids.contains(jsTree.getId())&&jsTree.getParent()!="#"){
+                jsTree.setState(state);
+            }
+        }
+        return jsTrees;
     }
 
     /**
@@ -161,5 +188,22 @@ public class ModuleController extends BaseController {
             return false;   //同级下存在同名(ocde)的模块，返回false
         }
         return true;
+    }
+
+    @RequestMapping(value = "/getPermissions",method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> getPermissions(Long moduleId,Long roleId){
+        Map<String,Object> info=new HashMap<String,Object>();
+        List<Long> ids= permissionsToModuleService.getPermissionIds(moduleId);
+        List<Permissions> permissions=new ArrayList<>();
+        Permissions permission=new Permissions();
+        for (Long pid :ids){
+            permission=permissionsService.get(pid);
+            permissions.add(permission);
+        }
+        info.put("permissions",permissions);
+        List<Long> perIds=roleModuleInfoPermissionHeadsService.getPerIds(moduleId,roleId);
+        info.put("perIds",perIds);
+        return info;
     }
 }

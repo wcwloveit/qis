@@ -517,6 +517,18 @@
 		DELETE FROM MODULE_INFOES t 
 		<where>${whereSqlParam}</where>
 	</update>
-	
+
+	<select id="getModulesForRole" parameterType="java.util.List" resultMap="moduleInfoesResultMap">
+		SELECT
+		<include refid="moduleInfoesColumns" />
+		FROM MODULE_INFOES t
+		WHERE t.id in
+		<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		and t.is_menu=0
+		and t.is_deleted=0
+
+	</select>
 
 </mapper>

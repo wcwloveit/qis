@@ -207,13 +207,15 @@
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
                             var a = '<a href="${rc.contextPath}/role/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
-                            var b = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
+                            var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
+                                    '<i class="fa fa-map"></i>模块管理</a>';
+                            var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
                                     '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
                             if(row.isDeleted==1){
-                                return a;
+                                return 已删除;
                             }else{
-                                return a+b;
+                                return a+b+c;
                             }
                         }}
                 ]

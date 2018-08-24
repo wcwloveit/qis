@@ -58,9 +58,10 @@
 
             <div class="portlet-body">
 
-                <form id="myForm" action="${rc.contextPath}/role/${action?if_exists}"
+                <form id="roleForm" action="${rc.contextPath}/role/${action?if_exists}"
                       method="POST" class="form-horizontal">
                     <input id="id" name="id" value="${role.id?if_exists}" style="display: none">
+                    <input type="hidden" name="ids"/>
                     <div class="form-body">
                         <h3 class="form-section">角色名称</h3>
                         <div class="form-group">
@@ -85,12 +86,20 @@
                                 <input type="text" class="form-control" name="descr" id="descr" value="${role.desc?if_exists}"/>
                             </div>
                         </div>
+                        <h3 class="form-section">拥有模块</h3>
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="inputWarning">拥有模块<span class="required">*</span></label>
+                            <div class="col-md-9">
+                                <div id="moduleTree"></div>
+                            </div>
+                        </div>
+
 
                     </div>
                     <div class="form-actions">
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn green">提交</button>
+                                <button type="button" class="btn green" id="roleBtnSave">保存</button>
                                 <button type="button" class="btn default"
                                         onclick="javascript:window.location.href='${rc.contextPath}/role/index';">
                                     取消
@@ -128,10 +137,36 @@
             type="text/javascript"></script>
     <script type="text/javascript"
             src="${rc.contextPath}/assets/global/plugins/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script type="text/javascript">
+        var tree=$("#moduleTree").jstree({
+            "checkbox":{"keep_selected_style":false},
+            "core":{
+                "multiple":true,
+                "animation":0,
+                "themes":{
+                    theme:"classic",
+                    "dots":true,
+                    "icons":true
+                },
+                "check_callback":true,
+                'data': {
+                    'dataType': 'json',
+                    'type': "post",
+                    <#if role.id??>
+                        'url': "${rc.contextPath}/module/listForRole/${role.id?if_exists}",
+                    <#else>
+                        'url': "${rc.contextPath}/module/list",
+                    </#if>
+
+                }
+            },
+            "plugins":["wholerow","checkbox"],
+        });
+
         jQuery(function ($) {
 
-            var form = $('#myForm'), error = $('.alert-danger', form);
+            var form = $('#roleForm'), error = $('.alert-danger', form);
 
             form.validate({
                 errorElement: 'span',
@@ -179,7 +214,21 @@
             })
         });
 
+        $('#roleBtnSave').click(function(){
+            var modules=$.jstree.reference('#moduleTree').get_selected(true);
+            var module=new Array();
+            if(modules){
+                for(var i=0; i<modules.length; i++){
+                    var modu=modules[i]
+                    module.push(modu.id);
+                    if(modu.parent!="#"){
+                        module.push(modu.parent);
+                    }
+                }
+            }
+            $('input[name=ids]').val(module.join(","));
+            $('#roleForm').submit();
+        });
     </script>
-
 </content>
 </html>

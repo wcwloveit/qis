@@ -1,6 +1,9 @@
-package com.xinri.service.moduleInfo;
+package com.xinri.service.roleModulePermissions;
 import com.qis.common.service.IBaseService;
-import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
+import com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads;
+
+import java.util.List;
+
 /**
  * <p></p>
  * 类名:RoleModuleInfoPermissionHeadsService<br>
@@ -10,6 +13,9 @@ import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
 
 public interface IRoleModuleInfoPermissionHeadsService extends IBaseService<RoleModuleInfoPermissionHeads>{
 
+    List<Long> getIds(Long id);
+
+    List<Long> getPerIds(Long moduleId,Long roleId);
 
 }
 
