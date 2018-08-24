@@ -258,7 +258,7 @@
                                             <label class="control-label col-md-2">权限</label>
                                             <div class="col-md-10">
                                                 <#list permissions as permission>
-                                                    <input type="checkbox" value="${permission.id}" id="pers" name="pers">${permission.name}
+                                                    <input type="checkbox" value="${permission.id}" name="pers">${permission.name}
                                                 </#list>
                                             </div>
                                         </div>
@@ -453,14 +453,13 @@
                             $('.btn-children').enable();
                             $('.btn-parent').enable();
                         }
-
+                        $("input[name=pers]").removeProp("checked");
                         $("input[name=pers]").parents('span').removeClass("checked");
                         if(msg.myPers){
                             for(var i=0;i<msg.myPers.length;i++){
                                 var myPer=msg.myPers[i];
                                 var qdwd=myPer.permissionId;
-                                $("input[name=pers][value='" +myPer.permissionId+"']").parents('span').toggleClass("checked");
-                                $("input[name=pers][value='" +myPer.permissionId+"']").prop("checked", true);
+                                $("input[name=pers][value='" +myPer.permissionId+"']").prop("checked", true).parents('span').toggleClass("checked");
                             }
                         }
                         document.getElementById("parentModuleId").innerHTML = value;

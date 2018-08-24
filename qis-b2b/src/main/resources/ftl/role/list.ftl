@@ -164,7 +164,7 @@
                     [ 0, "desc" ]
                 ],
                 "aoColumnDefs": [
-                    { "bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7,8] }
+                    { "bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7] }
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
@@ -182,13 +182,6 @@
                         }},
                     { "sTitle": "唯一标识符", "mData": "guidId", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "状态", "mData": "isDeleted", "mRender": function (data, type, row) {
-                            if (data == '0') {
-                                return "存在";
-                            }else if (data == '1') {
-                                return "已删除";
-                            }
                         }},
                     { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
                             if (data != null && "" != data) {
