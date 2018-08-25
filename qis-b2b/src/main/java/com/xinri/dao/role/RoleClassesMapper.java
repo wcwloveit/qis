@@ -16,6 +16,6 @@ public interface RoleClassesMapper extends CrudDao<RoleClasses>{
 
  public List<RoleClassesVo> findListByVo(RoleClassesVo roleClassesVo);
 
- public int insertSelective(RoleClasses roleClasses);
+// public int insertSelective(RoleClasses roleClasses);
 }
 

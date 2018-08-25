@@ -5,10 +5,14 @@ import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.xinri.po.role.RoleClasses;
 import com.xinri.po.user.UserGroups;
+import com.xinri.po.user.UserUserGroups;
+import com.xinri.po.user.Users;
 import com.xinri.service.user.IUserGroupsService;
+import com.xinri.util.AjaxStatus;
 import com.xinri.vo.role.RoleClassesVo;
 import com.xinri.vo.users.UserGroupsVo;
 import net.sf.json.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -154,10 +158,63 @@ public class UserGroupsController extends BaseController {
             map.put("stat", true);
         } catch (Exception e) {
             map.put("stat", false);
-            logger.error("删除账号错误信息：{}", e);
+            logger.error("删除错误信息：{}", e);
         }
         return map;
     }
 
+    /**
+     * 分配人员列表
+     * @param dt
+     * @param roleId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="query-user-notinrole")
+    @ResponseBody
+    public DataTable queryNotInRoleList(DataTable<Users> dt, @RequestParam(value="roleId", required=false) String roleId, ServletRequest request){
+        Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
+        return userGroupsService.QueryUserNotInRidList(dt,searchParams,roleId);
+    }
+
+    /**
+     * 离开人员列表
+     * @param dt
+     * @param roleId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="query-user-list")
+    @ResponseBody
+    public DataTable queryMessList(DataTable<Users> dt, @RequestParam(value="roleId", required=false) String roleId, ServletRequest request){
+        Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
+        return userGroupsService.QueryUserByRidList(dt,searchParams,roleId);
+    }
+
+    /**
+     * 人员加入角色组
+     *
+     * @param roleId
+     * @param empId
+     *
+     * @return
+     */
+    @RequestMapping(value="join", method=RequestMethod.POST) @ResponseBody
+    public AjaxStatus join(@RequestParam("roleId") Long roleId, @RequestParam("empId") Long empId){
+        return userGroupsService.JoinRole(roleId,empId);
+    }
+
+    /**
+     * 人员离开人员组
+     *
+     * @param roleId
+     * @param empId
+     *
+     * @return
+     */
+    @RequestMapping(value="leave", method=RequestMethod.POST) @ResponseBody
+    public AjaxStatus leave(@RequestParam("roleId") Long roleId,@RequestParam("empId") Long empId){
+        return userGroupsService.LeaveRole(roleId,empId);
+    }
 
 }
