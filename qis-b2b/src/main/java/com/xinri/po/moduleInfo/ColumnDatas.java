@@ -37,6 +37,19 @@ public class ColumnDatas extends DataEntity<ColumnDatas>{
     	private String descFlexField5;
 
     	private String descFlexField6;
+
+    	private Integer IsDeleted;
+
+	@Override
+	public Integer getIsDeleted() {
+		return IsDeleted;
+	}
+
+	@Override
+	public void setIsDeleted(Integer isDeleted) {
+		IsDeleted = isDeleted;
+	}
+
 	/**
 	 * createdOn字段查询条件开始
 	 */

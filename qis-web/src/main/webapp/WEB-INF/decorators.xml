@@ -17,5 +17,6 @@
         <pattern>/permissions/*</pattern>
 		<pattern>/roleClass/*</pattern>
         <pattern>/userGroup/*</pattern>
+        <pattern>/column/*</pattern>
     </decorator>
 </decorators>

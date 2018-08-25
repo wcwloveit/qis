@@ -25,7 +25,6 @@ public class DeptmentsController extends BaseController{
     @Autowired
     private IDepartmentsService departmentsService;
 
-
     /**
      * 根据组织ID获取所有在此组织级别下的员工信息
      *
@@ -40,6 +39,5 @@ public class DeptmentsController extends BaseController{
         Map<String,Object> searchParams= Servlets.getParametersStartingWith(request,"search_");
         return  departmentsService.getDeptList(searchParams,id,dt);
     }
-
 
 }
