@@ -172,7 +172,7 @@
                     {"sTitle": "名称", "mData": "name"},
                     {"sTitle": "编号", "mData": "code"},
                     {"sTitle": "描述", "mData": "descr"},
-                    { "sTitle": "创建时间", "mData": "startCreated", "mRender": function (data, type, row) {
+                    { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
                         if (data != null && "" != data) {
                             return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                         } else {

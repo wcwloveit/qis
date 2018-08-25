@@ -40,6 +40,22 @@ public class ColumnDatas extends DataEntity<ColumnDatas>{
 
     	private Integer IsDeleted;
 
+    	private Date createdOn;
+
+
+
+	@Override
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	@Override
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+
+
 	@Override
 	public Integer getIsDeleted() {
 		return IsDeleted;
