@@ -6,6 +6,7 @@ import com.xinri.po.organizations.Organizations;
 import com.xinri.vo.org.OAOrgVo;
 import com.xinri.vo.org.OrgInfoVo;
 import com.xinri.vo.org.OrgListVo;
+import com.xinri.vo.org.request.OAOrgRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,10 @@ public interface IOrganizationsService extends IBaseService<Organizations>{
     public void syncOAOrg(List<OAOrgVo> orgList);
 
     public List<JsTree> getOrgTree(String supId);
+
+    public Map<String,Object> sealOrg(Long id,Map<String,Object> map);
+
+    public Organizations createOrg(OAOrgRequest request,Organizations org);
 
     public OrgInfoVo read(String id);
 

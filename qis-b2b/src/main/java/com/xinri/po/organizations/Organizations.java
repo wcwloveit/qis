@@ -34,7 +34,7 @@ public class Organizations extends DataEntity<Organizations>{
 
     	private String guidId;
 
-    	private Integer isEffective;
+    	private Integer isEffective; //0 正常使用 1 封存
 
     	private Date effectiveDateStart;
 

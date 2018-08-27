@@ -263,8 +263,23 @@
 		SELECT <include refid="departmentsColumns" />
 		FROM DEPARTMENTS t
 		<include refid="whereColumnBySelect"></include>
-		and oa_canceled!='1'
+		and is_effective=0
 	</select>
+
+	<resultMap type="com.xinri.po.departments.Departments" id="parentDeptMap">
+		<id column="id" property="id"/>
+		<collection property="children" ofType="Menu" column="id" select="findChildByParentId"/>
+	</resultMap>
+
+	<select id="findAllChildDept" parameterType="java.lang.String" resultMap="parentDeptMap">
+		SELECT id FROM DEPARTMENTS WHERE id=#{_parameter}
+	</select>
+
+	<select id="findChildByParentId" resultType="com.xinri.po.departments.Departments">
+		SELECT id FROM DEPARTMENTS WHERE parent_department_id = #{id} and is_effective=0
+	</select>
+
+
 	
     <!-- 新增并设置主键ID至参数对象 -->
 	<insert id="insert" parameterType="com.xinri.po.departments.Departments">

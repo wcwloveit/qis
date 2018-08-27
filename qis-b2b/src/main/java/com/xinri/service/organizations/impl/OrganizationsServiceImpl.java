@@ -6,11 +6,14 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.qis.common.persistence.Page;
 import com.xinri.po.departments.Departments;
+import com.xinri.po.user.Users;
 import com.xinri.service.departments.IDepartmentsService;
 import com.xinri.service.port.IPortService;
+import com.xinri.service.user.IUsersService;
 import com.xinri.vo.org.OAOrgVo;
 import com.xinri.vo.org.OrgInfoVo;
 import com.xinri.vo.org.OrgListVo;
+import com.xinri.vo.org.request.OAOrgRequest;
 import net.sf.ehcache.search.expression.Or;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.list.TreeList;
@@ -39,6 +42,9 @@ public class OrganizationsServiceImpl extends CrudService<OrganizationsMapper,Or
 
     @Autowired
     private IDepartmentsService departmentsService;
+
+    @Autowired
+    private IUsersService usersService;
 
     /**
      * 同步OA组织
@@ -72,7 +78,13 @@ public class OrganizationsServiceImpl extends CrudService<OrganizationsMapper,Or
                     orgtion.setDescr(vo.getOrgremark());
                     orgtion.setDescFlexField1(vo.getParentOrgId()+"") ;
                     orgtion.setIsDeleted(0);
-				    orgtion.setIsEffective(0);
+                    if(vo.getCanceled()==null||vo.getCanceled().equals("0")){//正常使用
+                        orgtion.setIsEffective(0);
+                        orgtion.setEffectiveDateStart(new Date());
+                    }else{//失效封存
+                        orgtion.setIsEffective(1);
+                        orgtion.setEffectiveDateEnd(new Date());
+                    }
 				    orgtion.setCreatedOn(new Date());
 
 
@@ -165,21 +177,6 @@ public class OrganizationsServiceImpl extends CrudService<OrganizationsMapper,Or
         if (infos.isEmpty()) {
             return treeList;
         }
-        //获取所有分部
-//        List<Organizations> orgs=new ArrayList<>();
-//        orgs=dao.initOrgList(new Organizations());
-//        Map<Long,Long> orgMap=new HashMap<>();
-//        for(Organizations o:orgs){
-//            orgMap.put(o.getId(),o.getParentOrganizationId());
-//        }
-//        //获取所有部门
-//        List<Departments> depts=new ArrayList<>();
-//        depts=departmentsService.getUserDept(new Departments());
-//        Map<Long,Long> deptMap=new HashMap<>();
-//        for(Departments d:depts){
-//            deptMap.put(d.getId(),d.getParentDepartmentId());
-//        }
-
         for(Object info : infos){
             JsTree jsTree=new JsTree();
             JsTreeState state = new JsTreeState();
@@ -197,13 +194,11 @@ public class OrganizationsServiceImpl extends CrudService<OrganizationsMapper,Or
                 Organizations sqlOrg=new Organizations();
                 sqlOrg.setParentOrganizationId(o.getId());
                 jsTree.setChildren(true);
+                Departments dept=new Departments();
+                dept.setOrganizationId(o.getId());
                 //不存在子节点
-                if(dao.initOrgList(sqlOrg)!=null){//不存在子分部
-                    Departments dept=new Departments();
-                    dept.setOrganizationId(o.getId());
-                    if(departmentsService.getUserDept(dept)==null){
+                if(dao.initOrgList(sqlOrg).size()==0&&departmentsService.getUserDept(dept).size()==0){//不存在子分部
                         jsTree.setChildren(false);
-                    }
                 }
             }else if(info instanceof Departments){
                 Departments d=(Departments)info;
@@ -224,6 +219,31 @@ public class OrganizationsServiceImpl extends CrudService<OrganizationsMapper,Or
         return treeList;
     }
 
+    @Override
+    public Organizations createOrg(OAOrgRequest request,Organizations org){
+        Organizations sqlOrg=new Organizations();
+        String odid = request.getSupId().substring(0,request.getSupId().length() - 1);
+        sqlOrg=dao.get(Long.parseLong(odid));
+        if(sqlOrg!=null){//查到
+            org.setId(sqlOrg.getId());
+            org.setOaNo(request.getOaNo());
+
+            org.setName(request.getName());
+            org.setDescr(request.getDescr());
+            org.setIsDeleted(0);
+            org.setIsEffective(0);
+            org.setCode(request.getCode());
+            if(request.getType().equals("sib")){//同级
+                org.setDepthLevel(sqlOrg.getDepthLevel()); //第一层
+                org.setParentOrganizationId(sqlOrg.getParentOrganizationId());
+            }else if(request.getType().equals("child")){//下级
+                org.setDepthLevel(sqlOrg.getDepthLevel()); //第一层
+                org.setParentOrganizationId(sqlOrg.getId());
+            }
+
+        }
+        return org;
+    }
 
     /**
      * 获取显示
@@ -259,6 +279,44 @@ public class OrganizationsServiceImpl extends CrudService<OrganizationsMapper,Or
 
         }
         return vo;
+    }
+
+    /**
+     * 封存组织
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Map<String,Object> sealOrg(Long id,Map<String,Object> map){
+        Organizations sqlOrg=new Organizations();
+        sqlOrg=dao.get(id);
+        Organizations updateOrg=new Organizations();
+        updateOrg.setId(id);
+        if(sqlOrg.getIsEffective()==0){//正常改封存
+            Users users=new Users();
+            users.setIsEffective(0);
+            users.setOrganizationId(id);
+            if(usersService.findList(users).size()>0){//存在用户
+                map.put("stat",false);
+                map.put("msg","该组织下存在用户！无法封存！");
+            }else{
+                updateOrg.setIsEffective(1);
+            }
+        }else {//封存改正常
+            updateOrg.setIsEffective(1);
+        }
+        try{
+            dao.update(updateOrg);
+            map.put("stat",true);
+        }catch (Exception e){
+            map.put("stat",false);
+            map.put("msg","封存出错！");
+            logger.error("封存分部出错！"+e);
+        }
+
+        return map;
+
     }
 
     /**
@@ -320,6 +378,8 @@ public class OrganizationsServiceImpl extends CrudService<OrganizationsMapper,Or
 
         return dt;
     }
+
+
 
 
 

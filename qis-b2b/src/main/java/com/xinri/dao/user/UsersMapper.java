@@ -1,6 +1,7 @@
 package com.xinri.dao.user;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
+import com.xinri.po.departments.Departments;
 import com.xinri.po.user.Users;
 
 import java.util.List;
@@ -14,5 +15,7 @@ import java.util.List;
 public interface UsersMapper extends CrudDao<Users>{
 
   public void insertUsersList(List<Users> users);
+
+  public List<Users> findAllDeptUsers(List<Departments> departments);
 }
 

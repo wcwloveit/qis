@@ -5,9 +5,11 @@ import com.qis.common.persistence.Page;
 import com.xinri.po.organizations.Organizations;
 import com.xinri.service.organizations.IOrganizationsService;
 import com.xinri.service.port.IPortService;
+import com.xinri.service.user.IUsersService;
 import com.xinri.vo.dept.OADepartmentVo;
 import com.xinri.vo.org.OAOrgVo;
 import com.xinri.vo.org.OrgListVo;
+import com.xinri.vo.org.request.OAOrgRequest;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,9 @@ public class DepartmentsServiceImpl extends CrudService<DepartmentsMapper,Depart
     @Autowired
     private IOrganizationsService organizationsService;
 
+    @Autowired
+    private IUsersService usersService;
+
     /**
      * 同步OA组织
      * @param deptList
@@ -65,10 +70,14 @@ public class DepartmentsServiceImpl extends CrudService<DepartmentsMapper,Depart
                 } else {//不存在，插入
 
                     dep.setName(vo.getDepartmentname());
-                    if(vo.getCanceled()==null){
-                        dep.setOaCanceled("-1");
+                    if(vo.getCanceled()==null||vo.getCanceled().equals("0")){
+                        dep.setOaCanceled("0");
+                        dep.setIsEffective(0);
+                        dep.setEffectiveDateStart(new Date());
                     }else{
                         dep.setOaCanceled(vo.getCanceled());
+                        dep.setIsEffective(1);
+                        dep.setEffectiveDateEnd(new Date());
                     }
 
                     dep.setDescr(vo.getDepartmentmark());
@@ -77,6 +86,8 @@ public class DepartmentsServiceImpl extends CrudService<DepartmentsMapper,Depart
                     dep.setIsDeleted(0);
                     dep.setCode(vo.getId() + "");
                     dep.setCreatedOn(new Date());
+
+
                     dep.setIsEffective(0);
                     Organizations sqlOrg = new Organizations();
 
@@ -124,6 +135,42 @@ public class DepartmentsServiceImpl extends CrudService<DepartmentsMapper,Depart
     public List<Departments> getUserDept(Departments departments){
         return dao.getUserDept(departments);
     }
+
+    @Override
+    @Transactional(readOnly = false)
+    public Map<String,Object> sealDept(Long id,Map<String,Object> map){
+        Departments departments=dao.get(id);
+        Departments updateDept=new Departments();
+        updateDept.setId(id);
+        if(departments.getIsEffective()==0){//封存
+            List<Departments> sqlDeptList=new ArrayList<>();
+            sqlDeptList=dao.findAllChildDept(id+"");
+            if(sqlDeptList.size()>0){//存在子部门
+                if(usersService.findAllDeptUsers(sqlDeptList).size()>0){
+                    map.put("stat",false);
+                    map.put("msg","该组织下存在用户！无法封存！");
+                }
+            }else {
+                updateDept.setIsEffective(1);
+                updateDept.setEffectiveDateEnd(new Date());
+            }
+        }else{
+
+            updateDept.setIsEffective(0);
+            updateDept.setEffectiveDateStart(new Date());
+        }
+        try{
+            dao.update(updateDept);
+            map.put("stat",true);
+        }catch (Exception e){
+            map.put("stat",false);
+            map.put("msg","封存出错！");
+            logger.error("封存部门出错！"+e);
+        }
+        return map;
+
+    }
+
 
 
     /**
@@ -191,6 +238,41 @@ public class DepartmentsServiceImpl extends CrudService<DepartmentsMapper,Depart
         dt.setAaData(page.getData());
 
         return dt;
+    }
+
+
+    /**
+     * 创建部门
+     * @param request
+     * @param dept
+     * @return
+     */
+    @Override
+    public Departments createDeparments(OAOrgRequest request, Departments dept){
+        Departments sqlDept=new Departments();
+        String odid = request.getSupId().substring(0,request.getSupId().length() - 1);
+        sqlDept=dao.get(Long.parseLong(odid));
+        if(sqlDept!=null){//查到
+            dept.setId(sqlDept.getId());
+            dept.setOaNo(request.getOaNo());
+
+            dept.setName(request.getName());
+            dept.setDescr(request.getDescr());
+            dept.setIsDeleted(0);
+            dept.setIsEffective(0);
+            dept.setCode(request.getCode());
+            dept.setOaCanceled(0+"");
+            dept.setOrganizationId(sqlDept.getOrganizationId());
+            if(request.getType().equals("sib")){//同级
+                dept.setDepthLevel(sqlDept.getDepthLevel()); //第一层
+                dept.setParentDepartmentId(sqlDept.getParentDepartmentId());
+            }else if(request.getType().equals("child")){//下级
+                dept.setDepthLevel(sqlDept.getDepthLevel()); //第一层
+                dept.setParentDepartmentId(sqlDept.getId());
+            }
+
+        }
+        return dept;
     }
 
 

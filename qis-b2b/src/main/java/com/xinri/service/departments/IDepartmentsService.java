@@ -4,6 +4,7 @@ import com.qis.common.service.IBaseService;
 import com.xinri.po.departments.Departments;
 import com.xinri.vo.dept.OADepartmentVo;
 import com.xinri.vo.org.OrgListVo;
+import com.xinri.vo.org.request.OAOrgRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,10 @@ public interface IDepartmentsService extends IBaseService<Departments>{
 
     public List<Departments> getUserDept(Departments departments);
 
+    public Departments createDeparments(OAOrgRequest request, Departments dept);
+
     public DataTable<OrgListVo> getDeptList(Map<String, Object> searchParams, String id, DataTable<OrgListVo> dt);
+
+    public Map<String,Object> sealDept(Long id,Map<String,Object> map);
 }
 

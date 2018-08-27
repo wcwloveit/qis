@@ -16,5 +16,7 @@ public interface DepartmentsMapper extends CrudDao<Departments>{
   public void insertDeptList(List<Departments> departments);
 
   public List<Departments> getUserDept(Departments departments);
+
+  public List<Departments> findAllChildDept(String id);
 }
 

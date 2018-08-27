@@ -271,7 +271,7 @@
 		SELECT <include refid="organizationsColumns" />
 		FROM ORGANIZATIONS t
 		<include refid="whereColumnBySelect"></include>
-		and (oa_canceled is null or oa_canceled=0)
+	    and is_effective=0 and is_deleted=0
 	</select>
 	
     <!-- 新增并设置主键ID至参数对象 -->

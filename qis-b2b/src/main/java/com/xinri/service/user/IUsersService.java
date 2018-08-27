@@ -1,6 +1,7 @@
 package com.xinri.service.user;
 import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
+import com.xinri.po.departments.Departments;
 import com.xinri.po.user.Users;
 import com.xinri.vo.users.OAUsersVo;
 import com.xinri.vo.users.UserListVo;
@@ -21,5 +22,6 @@ public interface IUsersService extends IBaseService<Users>{
 
     public DataTable<UserListVo> getUserList(Map<String, Object> searchParams, String id, DataTable<UserListVo> dt);
 
+    public List<Users> findAllDeptUsers(List<Departments> departments);
 }
 

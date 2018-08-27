@@ -53,13 +53,13 @@
 
                     <div class="actions" id="qisOrgInfo">
                         <div class="btn-group">
-                            <a class="btn green btn-parent">
-                                <span class="hidden-480">新增同级分部</span>
-                            </a>
-                            <button type="button" class="btn blue btn-children">
+                            <button type="button" class="btn greeen btn-new-org">
+                                <span class="hidden-480 span-org">新增同级分部</span>
+                            </button>
+                            <button type="button" class="btn blue btn-edit">
                                 <span class="hidden-480">编辑</span>
                             </button>
-                            <button id="editOrg" type="button" class="btn yellow btn-edit">
+                            <button id="editOrg" type="button" class="btn yellow btn-seal" onclick="sealOrg();">
                                 <span class="hidden-480">封存</span>
                             </button>
                         </div>
@@ -67,13 +67,13 @@
 
                     <div class="actions" id="qisParentOrg" style="display: none">
                         <div class="btn-group">
-                            <button type="button" class="btn green btn-children">
+                            <button type="button" class="btn green btn-org-parent">
                                 <span class="hidden-480">新增同级分部</span>
                             </button>
-                            <button type="button" class="btn blue btn-children">
+                            <button type="button" class="btn blue btn-org-child">
                                 <span class="hidden-480">新增下级分部</span>
                             </button>
-                            <button type="button" class="btn red btn-children">
+                            <button type="button" class="btn red btn-delete">
                                 <span class="hidden-480">批量删除</span>
                             </button>
                         </div>
@@ -81,13 +81,13 @@
 
                     <div class="actions" id="qisParentDept" style="display: none">
                         <div class="btn-group">
-                            <button type="button" class="btn green btn-children">
+                            <button type="button" class="btn green btn-dept-children">
                                 <span class="hidden-480">新增同级部门</span>
                             </button>
-                            <button type="button" class="btn blue btn-children">
+                            <button type="button" class="btn blue btn-dept-children">
                                 <span class="hidden-480">新增下级部门</span>
                             </button>
-                            <button type="button" class="btn red btn-children">
+                            <button type="button" class="btn red btn-delete">
                                 <span class="hidden-480">批量删除</span>
                             </button>
                         </div>
@@ -120,10 +120,16 @@
                     </ul>
 
 
-                    <form class="form-horizontal" action="${rc.contextPath}/system/organization/save" method="POST"
+                    <form class="form-horizontal" action="${rc.contextPath}/organization/save" method="POST"
                           id="orgForm">
                         <input type="hidden" name="id"/>
                         <input type="hidden" name="supId" value="0"/>
+                        <input type="hidden" name="type" value="0"/>
+
+                        <div class="alert alert-danger display-hide">
+                            <button class="close" data-close="alert"></button>
+                            请检查后再提交
+                        </div>
 
                         <div class="table-container">
                             <table class="table table-striped table-bordered table-hover">
@@ -190,16 +196,14 @@
                                 </tbody>
                             </table>
 
-                            <table class="table table-striped table-bordered table-hover" style="display: none">
+                            <table class="table table-striped table-bordered table-hover table-save" style="display: none">
                                 <tbody>
 
                                 <tr>
                                     <td colspan="4" align="center">
-                                        <button type="submit" id="form-btn-commit" style="display: none;">提交</button>
-                                        <button type="button" class="btn green" onclick="commitInf();">保存</button>
-                                        <button type="button" class="btn default"
-                                                onclick="javascript:window.location.href='${rc.contextPath}/zc/activity/index';">
-                                            取消
+                                        <button type="submit" class="btn green" disabled="disabled">保存</button>
+                                        <button type="button" class="btn default btn-cancel"
+                                                disabled="disabled">取消
                                         </button>
                                     </td>
                                     <input type="hidden" name="dates" id="dates">
@@ -310,10 +314,213 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
+
+<div id="show_createOrg" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet box blue">
+                        <div class="portlet-title">
+                            <button type="button" data-dismiss="modal" aria-hidden="true" class="close"></button>
+                            <h4 class="modal-title orgTitle">新增分部</h4>
+                        </div>
+                        <div class="portlet-body form">
+                            <form class="form-horizontal" action="${rc.contextPath}/organization/save" method="POST"
+                                  id="createOrgForm">
+                                <input type="hidden" name="id"/>
+                                <input type="hidden" name="supId" value="0"/>
+                                <input type="hidden" name="type" value="0"/>
+                                <input type="hidden" name="keepOrg">
+                                <input type="hidden" name="keepParentOrg">
+
+                                <div class="alert alert-danger display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                    请检查后再提交
+                                </div>
+
+                                <div class="table-container">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr role="row" class="heading">
+                                            <th colspan="2">基本信息</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">简称<span
+                                                    class="required">*</span></label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="name"
+                                                                   style="width: 400px;"
+                                                                   placeholder="请录入组织简称"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">全称<span
+                                                    class="required">*</span></label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="descr"
+                                                                   style="width: 400px;"
+                                                                   placeholder="请录入组织全称"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">所属分部<span
+                                                    class="required">*</span></label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="parentOrg"
+                                                                   style="width: 400px;"></td>
+                                        </tr>
+                                        <tr style="display:none" class="parentDepttr">
+                                            <td width="30%"><label class="control-label">上级部门<span
+                                                    class="required">*</span></label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="parentDept"
+
+                                                                   style="width: 400px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">OA编号</label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="oaNo"
+                                                                   style="width: 400px;"
+                                                                   ></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">U9编号</label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="u9No"
+                                                                   style="width: 400px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">QIS编号</label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="code"
+                                                                   style="width: 400px;"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-striped table-bordered table-hover table-save">
+                                        <tbody>
+
+                                        <tr>
+                                            <td colspan="4" align="center">
+                                                <button type="submit" class="btn green">保存</button>
+                                            </td>
+                                            <input type="hidden" name="dates" id="dates">
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="show_createOrg" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet box blue">
+                        <div class="portlet-title">
+                            <button type="button" data-dismiss="modal" aria-hidden="true" class="close"></button>
+                            <h4 class="modal-title orgTitle">新增人员</h4>
+                        </div>
+                        <div class="portlet-body form">
+                            <form class="form-horizontal" action="${rc.contextPath}/organization/save" method="POST"
+                                  id="createOrgForm">
+                                <input type="hidden" name="id"/>
+                                <input type="hidden" name="supId" value="0"/>
+                                <input type="hidden" name="type" value="0"/>
+                                <input type="hidden" name="keepOrg">
+                                <input type="hidden" name="keepParentOrg">
+
+                                <div class="alert alert-danger display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                    请检查后再提交
+                                </div>
+
+                                <div class="table-container">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr role="row" class="heading">
+                                            <th colspan="2">人员信息</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">编号<span
+                                                    class="required">*</span></label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="code"
+                                                                   style="width: 400px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">姓名<span
+                                                    class="required">*</span></label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="descr"
+                                                                   style="width: 400px;"
+                                                                   placeholder="请录入组织全称"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">部门<span
+                                                    class="required">*</span></label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="parentOrg"
+                                                                   style="width: 400px;"></td>
+                                        </tr>
+                                        <tr style="display:none" class="parentDepttr">
+                                            <td width="30%"><label class="control-label">移动电话<span
+                                                    class="required">*</span></label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="parentDept"
+
+                                                                   style="width: 400px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><label class="control-label">密码</label>
+                                            </td>
+                                            <td width="70%"><input type="text" name="oaNo"
+                                                                   style="width: 400px;"
+                                            ></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-striped table-bordered table-hover table-save">
+                                        <tbody>
+
+                                        <tr>
+                                            <td colspan="4" align="center">
+                                                <button type="submit" class="btn green">保存</button>
+                                            </td>
+                                            <input type="hidden" name="dates" id="dates">
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 
 </body>
@@ -373,34 +580,95 @@
             $('#limsg').addClass("active");
             getInfoInter();
             if (oid.indexOf("o") > 0) {
+                $('.span-org').html('新增同级分部');
                 $('#liUsers').hide();
                 $('#childOrg').show();
-                $('#parentDepttr').hide();
+                $('.parentDepttr').hide();
 
             } else if (oid.indexOf("d") > 0) {
+                $('.span-org').html('新增同级部门');
                 $('#liUsers').show();
                 $('#childOrg').hide();
-                $('#parentDepttr').show();
+                $('.parentDepttr').show();
             }
             console.log(oid + "," + text);
             if (oid) {
-                $.ajax({
-                    url: '${rc.contextPath}/organization/read/' + oid,
-                    type: 'GET',
-                    success: function (data) {
-
-                        $('input[name=supId]').val(oid);
-                        $('#name').val(data.name);
-                        $('#descr').val(data.descr);
-                        $('#parentOrg').val(data.parentOrgName);
-                        $('#parentDept').val(data.parentDeptName);
-                        $('#oaNo').val(data.oaNo);
-                        $('#u9No').val(data.u9No);
-                        $('#code').val(data.code);
-                    }
-                });
+                fillMsg(oid);
             }
         });
+
+        function fillMsg(oid){
+            $.ajax({
+                url: '${rc.contextPath}/organization/read/' + oid,
+                type: 'GET',
+                success: function (data) {
+                    $('input[name=supId]').val(oid);
+                    $('input[name=name]').val(data.name);
+                    $('input[name=descr]').val(data.descr);
+                    $('input[name=parentOrg]').val(data.parentOrgName);
+                    $('input[name=parentDept]').val(data.parentDeptName);
+                    $('input[name=oaNo]').val(data.oaNo);
+                    $('input[name=u9No]').val(data.u9No);
+                    $('input[name=code]').val(data.code);
+                    $('input[name=keepOrg]').val(data.name);
+                    $('input[name=keepParentOrg]').val(data.parentOrgName);
+                }
+            });
+        }
+
+        /**
+         * 封存
+         * @param orderNumber
+         */
+        function sealOrg(){
+            var oid = $('input[name=supId]').val();
+            var name=$('input[name=name]').val();
+            commonAccept({"id":oid},'确定要封存'+name+'吗？请确认该组织下无人员，否则无法封存！','封存组织','${rc.contextPath}/organization/sealOrg',1);
+        }
+
+        /**
+         * 判断是否封存成功
+         * @param orderNumber
+         */
+        function commonAccept(data,message,title,url,tip){
+            bootbox.dialog({
+                message:message,
+                title:title,
+                buttons:{
+                    main:{
+                        label:"取消",
+                        className:"gray",
+                        callback:function(){
+                            $(this).hide();
+                        }
+                    },
+                    success:{
+                        label:"确定",
+                        className:"green",
+                        callback:function(){
+                            $.ajax({
+                                url:url,
+                                type:'POST',
+                                data:data,
+                                dataType:"json",
+                                traditional:true,
+                                success:function(msg){
+                                    if(msg&&msg.stat){
+                                        bootbox.alert('已封存');
+
+                                        location.href='${rc.contextPath}/organization/index';
+                                    }else{
+                                        bootbox.alert(msg.msg);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
+
+
 
         /**
          * 清空所有框的action
@@ -416,11 +684,71 @@
 
         }
 
+        $('.btn-edit').click(function(){
+            $('#orgForm :input').each(function(a){
+                $(this).enable();
+                $(this).attr("readonly",false);
+            });
+            $('.table-save').show();
+            $('#qisOrgInfo').hide();
+            $('input[name=type]').val('sib');
+        });
+
+        //新增同级分部
+        $('.btn-org-parent').click(function(){
+            var keepname=$('input[name=keepParentOrg]').val();
+
+            cleanInfo();
+            $('input[name=id]').val(1);
+            $('input[name=parentOrg]').val(keepname);
+            $('#show_createOrg').modal('show');
+            $('input[name=type]').val('sib');
+        });
+
+        //新增下级分部
+        $('.btn-org-child').click(function(){
+            var keepname=$('input[name=keepOrg]').val();
+            cleanInfo();
+
+            $('input[name=id]').val(1);
+            $('input[name=parentOrg]').val(keepname);
+            $('#show_createOrg').modal('show');
+            $('input[name=type]').val('child');
+        });
+
+
+
+        $('.btn-new-org').click(function(){
+            cleanInfo();
+            $('input[name=id]').val(1);
+            $('#orgForm :input').each(function(a){
+                $(this).enable();
+                $(this).attr("readonly",false);
+            });
+
+            $('.table-save').show();
+            $('#qisOrgInfo').hide();
+            $('input[name=type]').val('sib');
+        });
+
+        function cleanInfo(){
+            $('input[name=code]').val('');
+            $('input[name=name]').val('');
+            $('input[name=descr]').val('');
+            $('input[name=oaNo]').val('');
+            $('input[name=u9No]').val('');
+        }
+
+
 
         function getInfoInter() {
             makeEmpty();
             $('#qisOrgInfo').show();
             $('#orgForm').show();
+            var oid=$('input[name=supId]').val();
+            if(oid){
+                fillMsg(oid);
+            }
         }
 
         function sendOrgInfo(url, table) {

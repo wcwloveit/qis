@@ -11,6 +11,7 @@ import com.qis.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -102,12 +103,13 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	public int saveOrUpdate(T entity) {
 	//	ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();// 取得当前用户信息
 		if (entity.getIsNewRecord()) {
-			if(entity.getCreatedBy()==null||0==entity.getCreatedBy()){
-				//entity.setCreatedBy(UserUtils.getUser().getStaffId());
-			//	if(user!=null){
-				//	entity.setCreatedBy(user.getId());
-			//	}
-			}
+//			if(entity.getCreatedBy()==null||0==entity.getCreatedBy()){
+//				//entity.setCreatedBy(UserUtils.getUser().getStaffId());
+//			//	if(user!=null){
+//				//	entity.setCreatedBy(user.getId());
+//			//	}
+//			}
+			entity.setCreatedOn(new Date());
 			entity.preInsert();
 			return dao.insertSelective(entity);
 		} else {

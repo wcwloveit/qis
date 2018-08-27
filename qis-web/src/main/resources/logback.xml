@@ -36,6 +36,10 @@
     <!--log4jdbc -->
     <logger name="jdbc.sqltiming" level="INFO" />
 
+    <logger name="com.xinri.dao" level="debug" additivity="false">
+        <appender-ref ref="debug" />
+    </logger>
+
     <logger name="org.springframework.web.servlet.mvc.method" level="ERROR" additivity="false" />
     <logger name="org.springframework.context.support" level="ERROR" additivity="false" />
     <!--<logger name="com.coracle.config.mapper.ConfigMapper" level="ERROR" additivity="false" />-->

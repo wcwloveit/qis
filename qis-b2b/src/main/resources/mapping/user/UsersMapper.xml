@@ -258,6 +258,17 @@
 		</choose>
 	</select>
 
+	<select id="findAllDeptUsers" resultMap="usersResultMap">
+	    select <include refid="usersColumns" />
+		from USERS t where id in
+		<foreach collection="list" index="index" item="dept" open="(" separator="," close=")">
+	             #{dept.id}
+		</foreach>
+		 and is_effective=0
+   </select>
+
+
+
     <!-- 查询所有列表 -->
 	<select id="findAllList" parameterType="com.xinri.po.user.Users" resultMap="usersResultMap">
 		SELECT

@@ -87,6 +87,7 @@ public class UsersServiceImpl extends CrudService<UsersMapper,Users>  implements
                     users.setIsEffective(0);
                     users.setPermissionOverFlag(0);
                     users.setCreatedOn(new Date());
+                    users.setIsEffective(0);
 
                     Departments dept = new Departments();//获取部门id
 
@@ -118,6 +119,16 @@ public class UsersServiceImpl extends CrudService<UsersMapper,Users>  implements
             logger.error("组织插入错误：" + e);
         }
 
+    }
+
+    /**
+     * 获取所有指定部门的人员
+     * @param departments
+     * @return
+     */
+    @Override
+    public List<Users> findAllDeptUsers(List<Departments> departments){
+        return dao.findAllDeptUsers(departments);
     }
 
     /**
