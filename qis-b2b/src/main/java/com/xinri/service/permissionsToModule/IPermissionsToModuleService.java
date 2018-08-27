@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IPermissionsToModuleService extends IBaseService<ModuleInfoPermissions> {
     int insert(ModuleInfoPermissions moduleInfoPermissions);
+
+    List<Long> getPermissionIds(Long id);
 }

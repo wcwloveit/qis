@@ -38,10 +38,10 @@
                                 <span class="hidden-480">新增</span>
                             </a>
 
-                            <a href="javascript:void(0)" class="btn red">
-                                <i class="fa fa-trash-o"></i>
-                                <span class="hidden-480"  onclick="deleteList();">批量删除</span>
-                            </a>
+                            <#--<a href="javascript:void(0)" class="btn red">-->
+                                <#--<i class="fa fa-trash-o"></i>-->
+                                <#--<span class="hidden-480"  onclick="deleteList();">批量删除</span>-->
+                            <#--</a>-->
 
                             <#--<a class="btn green" href="javascript:exportData();">-->
                                 <#--<i class="fa fa-download"></i>-->
@@ -60,6 +60,10 @@
                 </div>
             </#if>
                 <div id="tip"></div>
+
+                <#--隐藏的空格，用于存选中用户组数据-->
+               <input type="hidden"  id="roleId">
+
                 <div class="table-container">
                     <div class="table-actions-wrapper">
                     </div>
@@ -214,6 +218,97 @@
                 </div>
             </div>
 
+        <#--查看用户-->
+        <div id="user_list_div" class="modal fade" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">员工列表</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="tableDatas">
+                            <div class="col-md-12">
+                                <div class="portlet">
+                                    <div class="portlet-body">
+                                        <table class="table table-striped table-bordered table-hover" id="user_list_table">
+                                            <thead>
+                                            <tr role="row" class="heading">
+                                                <th width="15%">登录名</th>
+                                                <th width="15%">姓名</th>
+                                                <th width="15%">邮箱</th>
+                                                <th width="15%">操作</th>
+                                            </tr>
+                                            <tr role="row" class="filter">
+
+                                                <!-- 登录名 -->
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_loginName"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_name"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_email"></td>
+                                                <td>
+                                                    <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                    </button>
+                                                    <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <#--分配用户-->
+        <div id="user_list_div2" class="modal fade" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">员工列表</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="tableDatas">
+                            <div class="col-md-12">
+                                <div class="portlet">
+                                    <div class="portlet-body">
+                                        <table class="table table-striped table-bordered table-hover" id="user_list_table2">
+                                            <thead>
+                                            <tr role="row" class="heading">
+                                                <th width="15%">登录名</th>
+                                                <th width="15%">姓名</th>
+                                                <th width="15%">邮箱</th>
+                                                <th width="15%">操作</th>
+                                            </tr>
+                                            <tr role="row" class="filter">
+                                                <!-- 登录名 -->
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_loginName"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_name"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_email"></td>
+                                                <td>
+                                                    <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                    </button>
+                                                    <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         </div>
     </div>
 </div>
@@ -259,13 +354,14 @@
                     [0, "desc"]
                 ],
                 "aoColumnDefs": [
-                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4,5]}   //控制表格有多少列
+                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4]}   //控制表格有多少列
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
-                    { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
-                        return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
-                    }},
+//                    多选框
+//                    { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
+//                        return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
+//                    }},
                     {"sTitle": "名称", "mData": "name"},
                     {"sTitle": "编号", "mData": "code"},
                     {"sTitle": "描述", "mData": "descr"},
@@ -303,6 +399,9 @@
                                 + '\')" class="btn btn-xs red"  title="删除" >' +
                                 '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
+                        var b='<a class="btn btn-xs green" href="javascript:void(0);" onclick="seeUser(\''+row.id+'\')" title ="查看用户"><i class="fa fa-search"></i>查看用户</a>';
+                        var d='<a class="btn btn-xs green" href="javascript:void(0);" onclick="toUser(\''+row.id+'\')" title ="分配用户"><i class="glyphicon glyphicon-cog"></i>分配用户</a>';
+
                     <#--var d = '<a href="${rc.contextPath}/zc/itemMode/index-' + row.id-->
                     <#--+ '" class="btn btn-xs blue"  title="配置信息" >' +-->
                     <#--'<i class="glyphicon glyphicon-plus"></i>配置信息</a>';-->
@@ -327,15 +426,120 @@
                         if(row.isSynchro==1){    //isSynchro是自己写的字段
                             return "已删除";
                         }else{
-                            return a+c; //修改和逻辑删除
-                            // return a+g; //修改和物理删除
-//                            return a+b+d+c;
+                          //  return a+c; //修改和逻辑删除
+                            //return a+c+b;
+                            return a+c+b+d;
                         }
                     }
                     }
                 ]
             }
         });
+
+        //查看用户函数
+        function seeUser(id){
+            userGrid.setAjaxParam("roleId",id);
+            $("#roleId").val(id);
+            userGrid.getDataTable().fnDraw();
+            $('#user_list_div').modal('show');
+        }
+
+        var userGrid=new Datatable();
+        var $userList_data_table=$("#user_list_table");
+        userGrid.init({
+            src:$userList_data_table,
+            onSuccess:function(userGrid){
+                console.log(userGrid);
+            },
+            onError:function(userGrid){
+            },
+            dataTable:{
+                "bServerSide":true,
+                "sAjaxSource":"${rc.contextPath}/userGroup/query-user-list",
+                "aoColumnDefs":[
+                    { "bSortable":false,"aTargets":[ 0,1,2,3] }
+                ],//设置不排序得列
+                "aoColumns":[
+//                    { "sTitle":"登录名","mData":"loginName"},
+                    { "sTitle":"姓名","mData":"name"},
+//                    { "sTitle":"邮箱","mData":"email","mRender":function(data){
+//                        return "<a href='mailto:"+data+"'>"+data+"</a>";
+//                    }},
+                    { "sTitle":"操作","mData":"id","sDefaultContent":"","mRender":function(data,type,row){
+                        return'<a class="delete btn green btn-xs black" href="javascript:leave('+data+');"><i class="fa fa-level-down"></i>离开</a>';
+                    }}
+                ]
+            }
+        });
+
+
+
+        //分配用户信息
+        function toUser(id){
+            userGrid2.setAjaxParam("roleId",id);
+            $("#roleId").val(id);
+            userGrid2.getDataTable().fnDraw();
+            $('#user_list_div2').modal('show');
+        }
+
+        var userGrid2=new Datatable();
+        var $userList_data_table2=$("#user_list_table2");
+        userGrid2.init({
+            src:$userList_data_table2,
+            onSuccess:function(userGrid2){
+                console.log(userGrid2);
+            },
+            onError:function(userGrid2){
+            },
+            dataTable:{
+                "bServerSide":true,
+                "sAjaxSource":"${rc.contextPath}/userGroup/query-user-notinrole",
+                "aoColumnDefs":[
+                    { "bSortable":false,"aTargets":[ 0,1,2,3] }
+                ],//设置不排序得列
+                "aoColumns":[
+//                    { "sTitle":"登录名","mData":"loginName"},
+                    { "sTitle":"姓名","mData":"name"},
+//                    { "sTitle":"邮箱","mData":"email","mRender":function(data){
+//                        return "<a href='mailto:"+data+"'>"+data+"</a>";
+//                    }},
+                    { "sTitle":"操作","mData":"","sDefaultContent":"","mRender":function(data,type,row){
+                        return'<a class="delete btn green btn-xs black" href="javascript:join('+row.id+');"><i class="fa fa-level-up"></i>加入</a>';
+                    }}
+                ]
+            }
+        });
+
+        function join(id){
+            bootbox.dialog({
+                message: "确认此人员加入此用户组",
+                buttons: {
+                    success: {
+                        label: "确定",
+                        className: "green",
+                        callback: function() {
+                            $.ajax({
+                                url:'${rc.contextPath}/userGroup/join',
+                                type:'POST',
+                                traditional:true,
+                                data:{"roleId":$("#roleId").val(),"empId":id},
+                                success:function(){
+                                    userGrid2.getDataTable().fnDraw();
+                                    //成功以后刷新页面
+                                }
+                            });
+                        }
+                    },
+                    main: {
+                        label: "取消",
+                        className: "gray",
+                        callback: function() {
+                            $(this).hide();
+                        }
+                    }
+                }
+            });
+        }
 
         /**
          * 关闭提示信息

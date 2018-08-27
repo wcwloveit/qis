@@ -9,6 +9,16 @@
         .vakata-context {
             z-index: 999 !important;
         }
+        .pagination { display: inline-block; padding-left: 0; margin: 20px 0; border-radius: 4px; }
+        .pagination li { display: inline; }
+        .pagination li a { position: relative; float: left; padding: 6px 12px; margin-left: -1px; line-height: 1.428571429; text-decoration: none; background-color: #fff; border: 1px solid #ddd; }
+        .pagination li:first-child a { margin-left: 0; border-bottom-left-radius: 4px; border-top-left-radius: 4px; }
+        .pagination li:last-child a { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+        .pagination li a:hover, .pagination li a:focus { background-color: #eee; }
+        .pagination .active a, .pagination .active a:hover, .pagination .active a:focus { z-index: 2; color: #fff; cursor: default; background-color: #428bca; border-color: #428bca; }
+        .pagination .disabled a, .pagination .disabled a:hover, .pagination .disabled a:focus { color: #999; cursor: not-allowed; background-color: #fff; border-color: #ddd; }
+        .pagination-lg li a { padding: 10px 16px; font-size: 18px; }
+        .pagination-sm li a, .pagination-sm li span { padding: 5px 10px; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -224,15 +234,41 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="form-group" >
+                                            <label class="control-label col-md-3">图标</label>
+                                            <div class="col-md-7">
+                                                <div class="input-icon right">
+
+                                                    <i class="fa"></i>
+                                                    <input type="text" id="icon" class="form-control" name="icon"
+                                                           placeholder="请选择图标图标" readonly="true"/>
+                                                </div>
+
+                                            </div>
+                                            <span class="input-group-btn">
+                                                    <button id="icon_add" class="btn green"   onclick="showIconModul()" type="button"> 选择</button>
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row ">
+                                    <div class="col-md-6">
                                         <div class="form-group permissions"  style="display: none">
                                             <label class="control-label col-md-2">权限</label>
                                             <div class="col-md-10">
                                                 <#list permissions as permission>
-                                                    <input type="checkbox" value="${permission.id}" id="pers" name="pers">${permission.name}
+                                                    <input type="checkbox" value="${permission.id}" name="pers">${permission.name}
                                                 </#list>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+
+                                        </div>
+                                    </div>
+
                                 </div>
 
 
@@ -257,6 +293,87 @@
         </div>
     </div>
 </div>
+
+<div id="icon_add_div" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" style="width:900px;">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom:none;">
+                <button type="button" class="close"  data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="roletableDatas">
+                    <div class="col-md-12">
+                        <div class="portlet">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="fa fa-cogs"></i>图标列表</div>
+                                <div class="actions">
+                                    <div class="btn-group">
+                                        <select  class="form-control" id="_dlgCheckIcon" onchange="checkIcon()">
+                                            <option value="new">new</option>
+                                            <option value="web-application">web-application</option>
+                                            <option value="hand">hand</option>
+                                            <option value="transportation">transportation</option>
+                                            <option value="gender">gender</option>
+                                            <option value="file-type">file-type</option>
+                                            <option value="spinner">form-control</option>
+                                            <option value="payment">payment</option>
+                                            <option value="chart">chart</option>
+                                            <option value="currency">currency</option>
+                                            <option value="text-editor">text-editor</option>
+                                            <option value="directional">directional</option>
+                                            <option value="video-player">video-player</option>
+                                            <option value="brand">brand</option>
+                                            <option value="medical">medical</option>
+                                            <option value="simplelineicons-demo">simplelineicons-demo</option>
+                                            <option value="glyphicon">glyphicon</option>
+                                            <#--<option value="Basic Icons">Basic Icons</option>-->
+                                            <#--<option value="Circle Icons">Circle Icons</option>-->
+                                            <#--<option value="Solid Icons">Solid Icons</option>-->
+                                            <#--<option value="Large Size">Large Size</option>-->
+                                            <#--<option value="Small Size">Small Size</option>-->
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <!-- 必须加上row样式,不然高度为1px,不能显示边框 -->
+                                <div id="tab_1_2" class="tab-pane glyphicons-demo active">
+                                    <ul id="iconTable" class="bs-glyphicons bs-glyphicons-list">
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <table id="iconPageBar" class="col-md-8"
+                                           style="text-align: center; width: 100%;">
+                                        <tr>
+                                            <td class="form-inline">
+                                                <div class="pagination" id="iconPager"
+                                                     style="font-size: 18px; text-align: center; vertical-align: middle;"></div>
+                                                <span style="margin-top: 0px; size: 12px; color: #8a8a8a">跳转到</span>
+                                                <input type="text" id="toMPage"
+                                                       style="font-size: 18px; width: 50px; height: 30px;"
+                                                       class="input-inline page_input"
+                                                       onkeyup="if(isNaN(value))execCommand('undo');if(event.keyCode==32)execCommand('undo');"
+                                                       onafterpaste="if(isNaN(value))execCommand('undo'));if(event.keyCode==32)execCommand('undo');">
+                                                <button style="width: 40px; height: 30px;" id="gotoMPage"
+                                                        class="btn">
+                                                    GO
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="col-md-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
 <content tag="script">
     <script src="${rc.contextPath}/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
@@ -273,11 +390,9 @@
             type="text/javascript"></script>
     <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/js/localization/messages_zh.js"
             type="text/javascript"></script>
-<#--<script src="${rc.contextPath}/assets/global/plugins/JsTree/dist/JsTree.js" type="text/javascript"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script src="${rc.contextPath}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>
+    <script src="${rc.contextPath}/assets/drags/bootstrap-paginator.js" type="text/javascript"></script>
     <script type="text/javascript">
-
-
         var status = "";
         var form = $('#moduleForm'), module_id = 0;
         $("#moduleTree").jstree({
@@ -320,6 +435,7 @@
                         $('input[name=linkUrl]').val(data.linkUrl);
                         $('input[name=descr]').val(data.descr);
                         $('input[name=sort]').val(data.sort);
+                        $('input[name=icon]').val(data.icon);
                         $("select[name=isMenu] option[value='" + data.isMenu + "']").prop("selected", true);
                         $("select[name=isOpen] option[value='" + data.isOpen + "']").prop("selected", true);
                         $("select[name=menuType] option[value='" + data.menuType + "']").prop("selected", true);
@@ -337,14 +453,13 @@
                             $('.btn-children').enable();
                             $('.btn-parent').enable();
                         }
-
+                        $("input[name=pers]").removeProp("checked");
                         $("input[name=pers]").parents('span').removeClass("checked");
                         if(msg.myPers){
                             for(var i=0;i<msg.myPers.length;i++){
                                 var myPer=msg.myPers[i];
                                 var qdwd=myPer.permissionId;
-                                $("input[name=pers][value='" +myPer.permissionId+"']").parents('span').toggleClass("checked");
-                                $("input[name=pers][value='" +myPer.permissionId+"']").prop("checked", true);
+                                $("input[name=pers][value='" +myPer.permissionId+"']").prop("checked", true).parents('span').toggleClass("checked");
                             }
                         }
                         document.getElementById("parentModuleId").innerHTML = value;
@@ -554,6 +669,105 @@
                 }
             });
         });
+
+        /**获取所有的功能****/
+        var currentPage=1; //第几页
+        var pageCount = 32 ; //每页显示多少条记录数据
+        var totalPages=0;
+        //分页查询
+        var queryByPage=function(){
+            Metronic.startPageLoading();
+            $.ajax({
+                dataType:"json",
+                cache:true,
+                type:"GET",
+                url:"/qis/assets/global/newIcon.json",
+                traditional:true,
+                success:function(data){
+                    window.
+                    Metronic.stopPageLoading();
+                    var checkIcon = $("#_dlgCheckIcon").val();
+                    data = data[checkIcon];
+                    //删除所有子项
+                    $("#iconTable").empty();
+                    var total = 0 , str = '';
+                    $.each(data, function(i, n){
+                        str += '<li onclick="addIconImage(\''+n+'\');"><span class="'+n+'" style="font-size:24px;margin:5px auto 10px;display:block"></span><span>'+n+' </span></li>';
+                        total++ ;
+                    });
+                    if(data==null||data==undefined||total==0){
+                        return;
+                    }
+                    if(total<=pageCount){
+                        $("#iconPageBar").css({ visibility: "hidden" });
+                    }else{
+                        $("#iconPageBar").css({ visibility: "visible" });
+                        str = '' ;
+                        var start = (currentPage-1)*pageCount ;
+                        var k = 0 ;
+                        $.each(data, function(i, n){
+                            if(i>=start){
+                                str += '<li onclick="addIconImage(\''+n+'\');"><span class="'+n+'" style="font-size:24px;margin:5px auto 10px;display:block"></span><span>'+n+' </span></li>';
+                                k++ ;
+                            }
+                            if(pageCount==k){
+                                return false;
+                            }
+                        });
+                    }
+                    $("#iconTable").append(str) ;
+                    //总页数
+                    if(total%pageCount!=0){
+                        totalPages=parseInt(total/pageCount)+1;
+                    }else{
+                        totalPages=total/pageCount;
+                    }
+                    var options={
+                        currentPage:currentPage,
+                        totalPages:totalPages,
+                        onPageClicked:function(event,originalEvent,type,page){
+                            currentPage=page;
+                            queryByPage(currentPage,pageCount);
+                        }
+                    }
+                    $('#iconPager').bootstrapPaginator(options);
+                },
+                error:function(XMLHttpRequest,textStatus,errorThrown){
+                    bootbox.alert("网络异常,数据不能成功返回");
+                }
+            });
+        }
+        //初始化列表
+        queryByPage(currentPage,pageCount);
+        //翻页
+        $("#gotoMPage").bind("click",function(){
+            if($("#toMPage").val()==null||""==$("#toMPage").val()){
+                bootbox.alert("请输入跳转页码");
+                return;
+            }
+            var thisPage=parseInt($("#toMPage").val());
+            if(!( thisPage>0 && thisPage<=totalPages) ){
+                bootbox.alert("请输入正确跳转页码");
+                return;
+            }
+            $('#iconPager').bootstrapPaginator("show",thisPage);
+            currentPage=thisPage;
+            queryByPage(currentPage,pageCount);
+        });
+        function showIconModul(){
+            $('#icon_add_div').modal('show');
+        }
+        function checkIcon(){
+            this.currentPage=1; //第几页
+            this.pageCount = 32 ; //每页显示多少条记录数据
+            this.totalPages=0;
+            $('#toMPage').val('');
+            queryByPage(1,32);
+        }
+        function addIconImage(data){
+            $('#icon').val(data);
+            $('#icon_add_div').modal('hide');
+        }
 
     </script>
 </content>

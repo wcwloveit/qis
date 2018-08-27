@@ -164,7 +164,7 @@
                     [ 0, "desc" ]
                 ],
                 "aoColumnDefs": [
-                    { "bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7,8] }
+                    { "bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7] }
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
@@ -183,13 +183,6 @@
                     { "sTitle": "唯一标识符", "mData": "guidId", "mRender": function (data, type, row) {
                             return data;
                         }},
-                    { "sTitle": "状态", "mData": "isDeleted", "mRender": function (data, type, row) {
-                            if (data == '0') {
-                                return "存在";
-                            }else if (data == '1') {
-                                return "已删除";
-                            }
-                        }},
                     { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
                             if (data != null && "" != data) {
                                 return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
@@ -207,13 +200,15 @@
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
                             var a = '<a href="${rc.contextPath}/role/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
-                            var b = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
+                            var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
+                                    '<i class="fa fa-map"></i>模块管理</a>';
+                            var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
                                     '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
                             if(row.isDeleted==1){
-                                return a;
+                                return "已删除";
                             }else{
-                                return a+b;
+                                return a+b+c;
                             }
                         }}
                 ]

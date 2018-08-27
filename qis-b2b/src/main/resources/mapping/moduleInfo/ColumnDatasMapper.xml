@@ -46,6 +46,29 @@
 	  t.DESC_FLEX_FIELD6
   	</sql>
 
+ <!--VO查询条件-->
+	<sql id="whereColumnBySelectVo">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="name != null and name !=''">
+				AND t.NAME = #{name}
+			</if>
+			<if test="code != null and code !=''">
+				AND t.CODE = #{code}
+			</if>
+			<if test="descr != null and descr !=''">
+				AND t.DESCR = #{descr}
+			</if>
+
+			<if test="startCreatedOn != null and startCreatedOn !=''">
+				AND <![CDATA[ t.CREATED_ON >=str_to_date(concat(#{startCreatedOn},'00:00:00'),'%Y-%m-%d %T')]]>
+			</if>
+			<if test="endCreatedOn != null and endCreatedOn !=''">
+				AND <![CDATA[ t.CREATED_ON <= str_to_date(concat(#{endCreatedOn}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
+			</if>
+			AND t.IS_DELETED = 0
+		</trim>
+	</sql>
+
     <!-- 查询条件SQL -->
 	<sql id="whereColumnBySelect">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -232,7 +255,22 @@
 		FROM COLUMN_DATAS t 
 		<include refid="whereColumnBySelect"></include>
 	</select>
-	
+
+    <select id="findListByVo" resultType="com.xinri.vo.columnData.ColumnDataVo">
+		SELECT
+		<include refid="columnDatasColumns" />
+		FROM column_datas t
+		<include refid="whereColumnBySelectVo" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY t.ID DESC
+			</otherwise>
+		</choose>
+	</select>
+
     <!-- 新增并设置主键ID至参数对象 -->
 	<insert id="insert" parameterType="com.xinri.po.moduleInfo.ColumnDatas">
 

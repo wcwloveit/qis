@@ -1,10 +1,22 @@
 package com.xinri.controller.role;
 
 import com.app.api.DataTable;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
+import com.qis.util.Utils;
+import com.xinri.po.module.ModuleInfoes;
 import com.xinri.po.role.Roles;
+import com.xinri.po.roleModuleInfos.RoleModuleInfos;
+import com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads;
+import com.xinri.service.module.IModuleInfoesService;
+import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
+import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionLinesService;
 import com.xinri.service.role.IRolesService;
+import com.xinri.service.roleModuleInfos.IRoleModuleInfosService;
+import com.xinri.service.roleModulePermissions.IRoleModuleInfoPermissionHeadsService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +37,48 @@ public class RoleController extends BaseController {
     @Autowired
     private IRolesService rolesService;
 
+    @Autowired
+    private IRoleModuleInfosService roleModuleInfosService;
+
+    @Autowired
+    private IModuleInfoesService moduleInfoesService;
+
+    @Autowired
+    private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
+
     /*
      * 首页
      * */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findRoleList(){
         return "role/list";
+    }
+
+
+    /*
+     * 首页
+     * */
+    @RequestMapping(value = "module/{id}", method = RequestMethod.GET)
+    public ModelAndView findModuleList(@PathVariable(value = "id")Long id){
+        List<Long> moduleIds=roleModuleInfosService.getModuleIds(id);
+        if (CollectionUtils.isNotEmpty(moduleIds)){
+            ModelAndView mv=new ModelAndView("role/moduleList");
+            mv.addObject("role",rolesService.get(id));
+            return mv;
+        }else{
+            ModelAndView mv=new ModelAndView("role/list");
+            mv.addObject("message","当前角色下没有模块");
+            return mv;
+        }
+
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "moduleList/{id}", method = RequestMethod.POST)
+    public DataTable<ModuleInfoes> getModuleList(DataTable<ModuleInfoes> dt,@PathVariable(value = "id") Long id){
+        List<Long> ids=roleModuleInfosService.getModuleIds(id);
+        return moduleInfoesService.getModulesForRole(dt,ids);
     }
 
     /*
@@ -69,14 +117,28 @@ public class RoleController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView create(Roles role,
+    public ModelAndView create(Roles role,String ids,
                                RedirectAttributes attributes) {
         logger.info("新增角色开始");
+        List<Long> list=Lists.newArrayList();
+        if(!Strings.isNullOrEmpty(ids)){
+            for(String str : ids.split(",")){
+                list.add(Long.valueOf(str));
+            }
+            list=Utils.removeDuplicate(list);
+        }
+
         ModelAndView mv = new ModelAndView("redirect:/role/index");
         try {
             role.setIsDeleted(0);
             role.setIsEffective(0);
             rolesService.saveOrUpdate(role);
+            for(Long id:list){
+                RoleModuleInfos roleModuleInfo=new RoleModuleInfos();
+                roleModuleInfo.setRoleId(role.getId());
+                roleModuleInfo.setModuleInfoId(id);
+                roleModuleInfosService.saveOrUpdate(roleModuleInfo);
+            }
             attributes.addFlashAttribute("success",true);
             attributes.addFlashAttribute("message","添加角色成功");
             logger.info("新增角色完成");
@@ -109,12 +171,29 @@ public class RoleController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView update(Roles role, RedirectAttributes attributes) {
+    public ModelAndView update(Roles role,String ids, RedirectAttributes attributes) {
         logger.info("更新角色开始");
         ModelAndView mv = new ModelAndView("redirect:/role/index");
+        List<Long> list=Lists.newArrayList();
+        if(!Strings.isNullOrEmpty(ids)){
+            for(String str : ids.split(",")){
+                list.add(Long.valueOf(str));
+            }
+            list=Utils.removeDuplicate(list);
+        }
+        RoleModuleInfos roleModuleInfo=new RoleModuleInfos();
+        roleModuleInfo.setRoleId(role.getId());
+        roleModuleInfosService.removeByEntity(roleModuleInfo);
+
         try {
             role.setIsNewRecord(false);
             rolesService.saveOrUpdate(role);
+            for(Long id:list){
+                roleModuleInfo=new RoleModuleInfos();
+                roleModuleInfo.setRoleId(role.getId());
+                roleModuleInfo.setModuleInfoId(id);
+                roleModuleInfosService.saveOrUpdate(roleModuleInfo);
+            }
             attributes.addFlashAttribute("success",true);
             attributes.addFlashAttribute("message","更新角色成功");
             logger.info("更新角色完成");
@@ -155,4 +234,28 @@ public class RoleController extends BaseController {
         }
         return map;
     }
+
+    @RequestMapping(value = "permissionsSave",method = RequestMethod.POST)
+    public String permissionsSave(Long roleId,Long moduleId,String[] ids,RedirectAttributes redirectAttributes){
+        RoleModuleInfoPermissionHeads roleModuleInfoPermissionHead=new RoleModuleInfoPermissionHeads();
+        roleModuleInfoPermissionHead.setModuleId(moduleId);
+        roleModuleInfoPermissionHead.setRoleId(roleId);
+        roleModuleInfoPermissionHeadsService.removeByEntity(roleModuleInfoPermissionHead);
+        try {
+            for (String id :ids){
+                roleModuleInfoPermissionHead.setId(null);
+                roleModuleInfoPermissionHead.setIsNewRecord(true);
+                roleModuleInfoPermissionHead.setPermissionId(Long.valueOf(id));
+                roleModuleInfoPermissionHeadsService.saveOrUpdate(roleModuleInfoPermissionHead);
+            }
+            logger.info("roleModuleInfoPermissionHead成功");
+            redirectAttributes.addFlashAttribute("message","保存成功");
+        }catch (Exception e){
+            logger.error("roleModuleInfoPermissionHead成功",e);
+            redirectAttributes.addFlashAttribute("message","保存失败");
+        }
+        return "redirect:/role/module/"+roleId;
+    }
+
+
 }

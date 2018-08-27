@@ -274,7 +274,7 @@
 //                    {"sTitle": "备注说明", "mData": "descr"},
 //                    {"sTitle": "生效开始时间", "mData": "effectiveDateStart"},
 //                    {"sTitle": "生效结束时间", "mData": "effectiveDateEnd"},
-                    { "sTitle": "创建时间", "mData": "startCreated", "mRender": function (data, type, row) {
+                    { "sTitle": "创建时间", "mData": "", "mRender": function (data, type, row) {
                         if (data != null && "" != data) {
                             return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                         } else {

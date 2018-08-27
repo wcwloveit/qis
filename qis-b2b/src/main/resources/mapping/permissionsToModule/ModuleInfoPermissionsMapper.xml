@@ -436,4 +436,8 @@
 		</if>
 		</trim>
 	</delete>
+
+	<select id="getPermissionIds" parameterType="java.lang.Long" resultType="java.lang.Long">
+		  select permission_id FROM module_info_permissions where module_info_id = #{id}
+	</select>
 </mapper>

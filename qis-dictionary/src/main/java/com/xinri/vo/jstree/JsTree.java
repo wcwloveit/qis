@@ -9,7 +9,7 @@ public class JsTree {
 
     private String parent;
 
-
+    public State state;
 
     public Long getId() {
         return id;
@@ -43,6 +43,11 @@ public class JsTree {
         this.parent = parent;
     }
 
+    public State getState() {
+        return state;
+    }
 
-
+    public void setState(State state) {
+        this.state = state;
+    }
 }

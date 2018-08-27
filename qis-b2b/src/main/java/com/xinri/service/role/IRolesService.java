@@ -19,5 +19,7 @@ public interface IRolesService extends IBaseService<Roles> {
     DataTable<Roles> findListByVo(DataTable<Roles> dt, Map<String, Object> searchParams);
 
     public Boolean deleteOne(Long id);
+
+
 }
 

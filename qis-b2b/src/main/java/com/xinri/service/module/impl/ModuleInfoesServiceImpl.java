@@ -2,9 +2,12 @@ package com.xinri.service.module.impl;
 import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
+import com.qis.util.Utils;
 import com.xinri.po.baseData.BaseDatas;
+import com.xinri.po.role.Roles;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
 import com.xinri.po.module.ModuleInfoes;
@@ -13,6 +16,7 @@ import com.xinri.service.module.IModuleInfoesService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +49,9 @@ public class ModuleInfoesServiceImpl extends CrudService<ModuleInfoesMapper,Modu
                 jsTree.setIcon("glyphicon glyphicon-tint");
                 jsTree.setText(moduleInfo.getName());
             }
+            if (moduleInfo.getIcon()!=null&&!"".equals(moduleInfo.getIcon())){
+                jsTree.setIcon(moduleInfo.getIcon());
+            }
             jsTrees.add(jsTree);
         }
         return jsTrees;
@@ -76,5 +83,25 @@ public class ModuleInfoesServiceImpl extends CrudService<ModuleInfoesMapper,Modu
             status.setMessage("该数据不存在");
         }
         return status;
+    }
+
+    @Override
+    public DataTable<ModuleInfoes> getModulesForRole(DataTable<ModuleInfoes> dt, List<Long> ids) {
+        if (CollectionUtils.isNotEmpty(ids)){
+            try {
+                Page page = new Page(dt.pageNo()+1, dt.getiDisplayLength());
+                List<ModuleInfoes> moduleInfoes = new ArrayList<ModuleInfoes>(); //new list
+                moduleInfoes=dao.getModulesForRole(ids); //获取分页数据
+                page.setData(moduleInfoes);  //***
+                dt.setiTotalDisplayRecords(page.getTotalSize());
+                dt.setAaData(page.getData());
+            }catch (Exception e) {
+                e.printStackTrace();
+                logger.error("配置列表出错"+e.getMessage());
+            }
+            return dt;
+        }else{
+            return null;
+        }
     }
 }

@@ -37,6 +37,35 @@ public class ColumnDatas extends DataEntity<ColumnDatas>{
     	private String descFlexField5;
 
     	private String descFlexField6;
+
+    	private Integer IsDeleted;
+
+    	private Date createdOn;
+
+
+
+	@Override
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	@Override
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+
+
+	@Override
+	public Integer getIsDeleted() {
+		return IsDeleted;
+	}
+
+	@Override
+	public void setIsDeleted(Integer isDeleted) {
+		IsDeleted = isDeleted;
+	}
+
 	/**
 	 * createdOn字段查询条件开始
 	 */

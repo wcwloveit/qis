@@ -1,4 +1,4 @@
-package com.xinri.po.moduleInfo;
+package com.xinri.po.roleModulePermissions;
 import com.qis.common.persistence.DataEntity;
 
 import java.util.*;
@@ -37,6 +37,10 @@ public class RoleModuleInfoPermissionHeads extends DataEntity<RoleModuleInfoPerm
     	private Long moduleInfoPermissionId;
 
     	private Long roleId;
+
+    	private Long moduleId;
+
+    	private Long permissionId;
 	/**
 	 * createdOn字段查询条件开始
 	 */
@@ -73,10 +77,24 @@ public class RoleModuleInfoPermissionHeads extends DataEntity<RoleModuleInfoPerm
 	public void setEndModifiedOn(String endModifiedOn) {
 		this.endModifiedOn = endModifiedOn;
 	}
-	
-   
-  
-  
+
+
+	public Long getModuleId() {
+		return moduleId;
+	}
+
+	public void setModuleId(Long moduleId) {
+		this.moduleId = moduleId;
+	}
+
+	public Long getPermissionId() {
+		return permissionId;
+	}
+
+	public void setPermissionId(Long permissionId) {
+		this.permissionId = permissionId;
+	}
+
 	public String getDescr() {
 		return descr;
 	}

@@ -13,6 +13,6 @@ import java.util.Map;
  */
  @MyBatisDao
 public interface ModuleInfoPermissionsMapper extends CrudDao<ModuleInfoPermissions>{
-
+    List<Long> getPermissionIds(Long id);
 }
 

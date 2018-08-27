@@ -28,6 +28,7 @@
 	      	<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
 	      	<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
 	      	<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
+	      	<result column="ICON" property="icon" jdbcType="VARCHAR"/>
 	</resultMap>
 
     <!-- 列定义 -->
@@ -57,7 +58,8 @@
 	  t.DESC_FLEX_FIELD3,
 	  t.DESC_FLEX_FIELD4,
 	  t.DESC_FLEX_FIELD5,
-	  t.DESC_FLEX_FIELD6
+	  t.DESC_FLEX_FIELD6,
+	  t.ICON
   	</sql>
 
     <!-- 查询条件SQL -->
@@ -153,6 +155,9 @@
 			<if test="descFlexField6 != null and descFlexField6 !=''">
 				AND t.DESC_FLEX_FIELD6 = #{descFlexField6}
 			</if>
+			<if test="icon != null and icon !=''">
+				AND t.ICON = #{icon}
+			</if>
 		</trim>
 	</sql>
 
@@ -236,6 +241,9 @@
 			</if>
 			<if test="descFlexField6 != null">
 			t.DESC_FLEX_FIELD6 = #{descFlexField6},
+			</if>
+			<if test="icon != null">
+			t.ICON = #{icon},
 			</if>
 		</trim>
 	</sql>
@@ -372,6 +380,9 @@
 			<if test="descFlexField6 != null">
 				DESC_FLEX_FIELD6,
 			</if>
+			<if test="icon != null">
+				ICON,
+			</if>
 	    </trim>
 	    <trim prefix="values (" suffix=")" suffixOverrides="," >
 		  <if test="id != null">
@@ -452,6 +463,9 @@
 		  <if test="descFlexField6 != null">
 				#{descFlexField6,jdbcType=VARCHAR},
 		  </if>
+			<if test="icon != null">
+				#{icon,jdbcType=VARCHAR},
+		  </if>
 	    </trim>
   	</insert>
 
@@ -517,6 +531,18 @@
 		DELETE FROM MODULE_INFOES t 
 		<where>${whereSqlParam}</where>
 	</update>
-	
+
+	<select id="getModulesForRole" parameterType="java.util.List" resultMap="moduleInfoesResultMap">
+		SELECT
+		<include refid="moduleInfoesColumns" />
+		FROM MODULE_INFOES t
+		WHERE t.id in
+		<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		and t.is_menu=0
+		and t.is_deleted=0
+
+	</select>
 
 </mapper>
