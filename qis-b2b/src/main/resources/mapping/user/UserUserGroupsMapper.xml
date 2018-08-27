@@ -7,6 +7,37 @@
 	    <result column="USER_GROUP_ID" property="userGroupId" jdbcType="BIGINT"/>
 	</resultMap>
 
+	<resultMap id="usersResultMap" type="com.xinri.po.user.Users">
+		<id column="ID" property="id" jdbcType="BIGINT"/>
+		<result column="CURRENT_CONNECTIONS" property="currentConnections" jdbcType="BIGINT"/>
+		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="BIGINT"/>
+		<result column="TOTAL_CONNECTIONS" property="totalConnections" jdbcType="BIGINT"/>
+		<result column="ORGANIZATION_ID" property="organizationId" jdbcType="BIGINT"/>
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+		<result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR"/>
+		<result column="USER_NO" property="userNo" jdbcType="VARCHAR"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="USER_USE_TYPE" property="userUseType" jdbcType="INTEGER"/>
+		<result column="PERMISSION_OVER_FLAG" property="permissionOverFlag" jdbcType="INTEGER"/>
+		<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
+		<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
+		<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+		<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
+		<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
+		<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+		<result column="MODIFIED_ON" property="modifiedOn" jdbcType="TIMESTAMP"/>
+		<result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
+	</resultMap>
+
     <!-- 列定义 -->
 	<sql id="userUserGroupsColumns">
 	  t.ID,
@@ -179,6 +210,9 @@
 		DELETE FROM USER_USER_GROUPS t 
 		<where>${whereSqlParam}</where>
 	</update>
-	
 
+	<!-- 根据用户组id 获取所属用户 -->
+	<select id="getUserByUserGroupsId" parameterType="com.xinri.po.user.UserUserGroups" resultMap="usersResultMap">
+		SELECT * FROM USERS t WHERE t.IS_DELETED = 0 AND t.ID IN(SELECT USER_ID FROM USER_USER_GROUPS WHERE USER_GROUP_ID =#{userGroupId,jdbcType=BIGINT} AND IS_DELETED = 0)
+	</select>
 </mapper>

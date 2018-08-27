@@ -465,8 +465,8 @@
 //                    { "sTitle":"邮箱","mData":"email","mRender":function(data){
 //                        return "<a href='mailto:"+data+"'>"+data+"</a>";
 //                    }},
-                    { "sTitle":"操作","mData":"id","sDefaultContent":"","mRender":function(data,type,row){
-                        return'<a class="delete btn green btn-xs black" href="javascript:leave('+data+');"><i class="fa fa-level-down"></i>离开</a>';
+                    { "sTitle":"操作","mData":"","sDefaultContent":"","mRender":function(data,type,row){
+                        return'<a class="delete btn green btn-xs black" href="javascript:leave('+row.id+');"><i class="fa fa-level-down"></i>离开</a>';
                     }}
                 ]
             }
@@ -526,6 +526,36 @@
                                 success:function(){
                                     userGrid2.getDataTable().fnDraw();
                                     //成功以后刷新页面
+                                }
+                            });
+                        }
+                    },
+                    main: {
+                        label: "取消",
+                        className: "gray",
+                        callback: function() {
+                            $(this).hide();
+                        }
+                    }
+                }
+            });
+        }
+
+        function leave(id){
+            bootbox.dialog({
+                message: "确认此员工离开此角色",
+                buttons: {
+                    success: {
+                        label: "确定",
+                        className: "green",
+                        callback: function() {
+                            $.ajax({
+                                url:'${rc.contextPath}/userGroup/leave',
+                                type:'POST',
+                                traditional:true,
+                                data:{"roleId":$("#roleId").val(),"empId":id},
+                                success:function(){
+                                    userGrid.getDataTable().fnDraw();
                                 }
                             });
                         }
