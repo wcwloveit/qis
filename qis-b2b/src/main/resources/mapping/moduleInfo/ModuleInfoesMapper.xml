@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--创建人:汪震-->
+<!--创建时间:20180813-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xinri.dao.permissionsToModule.ModuleInfoPermissionsMapper">
-	<resultMap id="moduleInfoPermissionsResultMap" type="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
+<mapper namespace="com.xinri.dao.moduleInfo.ModuleInfoesMapper">
+	<resultMap id="moduleInfoesResultMap" type="com.xinri.po.moduleInfo.ModuleInfoes">
 		   <id column="ID" property="id" jdbcType="BIGINT"/>
+	      	<result column="NAME" property="name" jdbcType="VARCHAR"/>
+	      	<result column="CODE" property="code" jdbcType="VARCHAR"/>
+	      	<result column="LINK_URL" property="linkUrl" jdbcType="VARCHAR"/>
+	      	<result column="IS_MENU" property="isMenu" jdbcType="INTEGER"/>
+	      	<result column="IS_OPEN" property="isOpen" jdbcType="INTEGER"/>
+	      	<result column="DEPTH" property="depth" jdbcType="INTEGER"/>
+	      	<result column="PARENT_MODULE_ID" property="parentModuleId" jdbcType="BIGINT"/>
 	      	<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
 	      	<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
 	      	<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+	      	<result column="MENU_TYPE" property="menuType" jdbcType="INTEGER"/>
+			<result column="SORT" property="sort" jdbcType="INTEGER"/>
 	      	<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
 	      	<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
 	      	<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
@@ -19,16 +30,24 @@
 	      	<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
 	      	<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
 	      	<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
-	      	<result column="MODULE_INFO_ID" property="moduleInfoId" jdbcType="BIGINT"/>
-	      	<result column="PERMISSION_ID" property="permissionId" jdbcType="BIGINT"/>
+	      	<result column="ICON" property="icon" jdbcType="VARCHAR"/>
 	</resultMap>
 
     <!-- 列定义 -->
-	<sql id="moduleInfoPermissionsColumns">
+	<sql id="moduleInfoesColumns">
 	  t.ID,
+	  t.NAME,
+	  t.CODE,
+	  t.LINK_URL,
+	  t.IS_MENU,
+	  t.IS_OPEN,
+	  t.DEPTH,
+	  t.PARENT_MODULE_ID,
 	  t.IS_DELETED,
 	  t.DESCR,
 	  t.GUID_ID,
+	  t.MENU_TYPE,
+	  t.SORT,
 	  t.IS_EFFECTIVE,
 	  t.EFFECTIVE_DATE_START,
 	  t.EFFECTIVE_DATE_END,
@@ -42,8 +61,7 @@
 	  t.DESC_FLEX_FIELD4,
 	  t.DESC_FLEX_FIELD5,
 	  t.DESC_FLEX_FIELD6,
-	  t.MODULE_INFO_ID,
-	  t.PERMISSION_ID
+	  t.ICON
   	</sql>
 
     <!-- 查询条件SQL -->
@@ -51,6 +69,27 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="id != null">
 				AND t.ID = #{id}
+			</if>
+			<if test="name != null and name !=''">
+				AND t.NAME = #{name}
+			</if>
+			<if test="code != null and code !=''">
+				AND t.CODE = #{code}
+			</if>
+			<if test="linkUrl != null and linkUrl !=''">
+				AND t.LINK_URL = #{linkUrl}
+			</if>
+			<if test="isMenu != null">
+				AND t.IS_MENU = #{isMenu}
+			</if>
+			<if test="isOpen != null">
+				AND t.IS_OPEN = #{isOpen}
+			</if>
+			<if test="depth != null">
+				AND t.DEPTH = #{depth}
+			</if>
+			<if test="parentModuleId != null">
+				AND t.PARENT_MODULE_ID = #{parentModuleId}
 			</if>
 			<if test="isDeleted != null">
 				AND t.IS_DELETED = #{isDeleted}
@@ -60,6 +99,12 @@
 			</if>
 			<if test="guidId != null and guidId !=''">
 				AND t.GUID_ID = #{guidId}
+			</if>
+			<if test="menuType != null">
+				AND t.MENU_TYPE = #{menuType}
+			</if>
+			<if test="sort != null">
+				AND t.SORT = #{sort}
 			</if>
 			<if test="isEffective != null">
 				AND t.IS_EFFECTIVE = #{isEffective}
@@ -112,11 +157,8 @@
 			<if test="descFlexField6 != null and descFlexField6 !=''">
 				AND t.DESC_FLEX_FIELD6 = #{descFlexField6}
 			</if>
-			<if test="moduleInfoId != null">
-				AND t.MODULE_INFO_ID = #{moduleInfoId}
-			</if>
-			<if test="permissionId != null">
-				AND t.PERMISSION_ID = #{permissionId}
+			<if test="icon != null and icon !=''">
+				AND t.ICON = #{icon}
 			</if>
 		</trim>
 	</sql>
@@ -127,6 +169,27 @@
 			<if test="id != null">
 			t.ID = #{id},
 			</if>
+			<if test="name != null">
+			t.NAME = #{name},
+			</if>
+			<if test="code != null">
+			t.CODE = #{code},
+			</if>
+			<if test="linkUrl != null">
+			t.LINK_URL = #{linkUrl},
+			</if>
+			<if test="isMenu != null">
+			t.IS_MENU = #{isMenu},
+			</if>
+			<if test="isOpen != null">
+			t.IS_OPEN = #{isOpen},
+			</if>
+			<if test="depth != null">
+			t.DEPTH = #{depth},
+			</if>
+			<if test="parentModuleId != null">
+			t.PARENT_MODULE_ID = #{parentModuleId},
+			</if>
 			<if test="isDeleted != null">
 			t.IS_DELETED = #{isDeleted},
 			</if>
@@ -135,6 +198,12 @@
 			</if>
 			<if test="guidId != null">
 			t.GUID_ID = #{guidId},
+			</if>
+			<if test="menuType != null">
+				t.MENU_TYPE = #{menuType},
+			</if>
+			<if test="sort != null">
+				t.SORT = #{sort},
 			</if>
 			<if test="isEffective != null">
 			t.IS_EFFECTIVE = #{isEffective},
@@ -175,43 +244,32 @@
 			<if test="descFlexField6 != null">
 			t.DESC_FLEX_FIELD6 = #{descFlexField6},
 			</if>
-			<if test="moduleInfoId != null">
-			t.MODULE_INFO_ID = #{moduleInfoId},
-			</if>
-			<if test="permissionId != null">
-			t.PERMISSION_ID = #{permissionId},
+			<if test="icon != null">
+			t.ICON = #{icon},
 			</if>
 		</trim>
 	</sql>
 
     <!-- 根据主键ID获取数据 -->
-	<select id="get" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions" resultMap="moduleInfoPermissionsResultMap">
-		SELECT <include refid="moduleInfoPermissionsColumns" /> 
-		FROM MODULE_INFO_PERMISSIONS t 
+	<select id="get" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" resultMap="moduleInfoesResultMap">
+		SELECT <include refid="moduleInfoesColumns" /> 
+		FROM MODULE_INFOES t 
 		WHERE t.ID = #{id}
 	</select>
     <!-- 查询列表可以根据分页进行查询 -->
-	<select id="findList" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions" resultMap="moduleInfoPermissionsResultMap">
+	<select id="findList" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" resultMap="moduleInfoesResultMap">
 		SELECT
-		<include refid="moduleInfoPermissionsColumns" /> 
-		FROM MODULE_INFO_PERMISSIONS t 
+		<include refid="moduleInfoesColumns" /> 
+		FROM MODULE_INFOES t 
 		<include refid="whereColumnBySelect" />
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}			
-			</when>
-				<otherwise>
-				ORDER BY t.ID DESC
-				</otherwise>
-			
-		</choose>
+		ORDER BY sort,modified_on DESC,created_on DESC
 	</select>
 
     <!-- 查询所有列表 -->
-	<select id="findAllList" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions" resultMap="moduleInfoPermissionsResultMap">
+	<select id="findAllList" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" resultMap="moduleInfoesResultMap">
 		SELECT
-		<include refid="moduleInfoPermissionsColumns" /> 
-		FROM MODULE_INFO_PERMISSIONS t 	
+		<include refid="moduleInfoesColumns" /> 
+		FROM MODULE_INFOES t 	
 		<include refid="whereColumnBySelect" />
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -227,27 +285,48 @@
 	</select>
 
     <!-- 根据条件查询对象 -->
-	<select id="getByEntity" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions" resultMap="moduleInfoPermissionsResultMap">
-		SELECT <include refid="moduleInfoPermissionsColumns" /> 
-		FROM MODULE_INFO_PERMISSIONS t 
+	<select id="getByEntity" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" resultMap="moduleInfoesResultMap">
+		SELECT <include refid="moduleInfoesColumns" /> 
+		FROM MODULE_INFOES t 
 		<include refid="whereColumnBySelect"></include>
 	</select>
 	
     <!-- 新增并设置主键ID至参数对象 -->
-	<insert id="insert" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
+	<insert id="insert" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
 
-		INSERT INTO MODULE_INFO_PERMISSIONS
-			(ID, IS_DELETED, DESCR, GUID_ID, IS_EFFECTIVE, EFFECTIVE_DATE_START, EFFECTIVE_DATE_END, CREATED_ON, CREATED_BY, MODIFIED_ON, MODIFIED_BY, DESC_FLEX_FIELD1, DESC_FLEX_FIELD2, DESC_FLEX_FIELD3, DESC_FLEX_FIELD4, DESC_FLEX_FIELD5, DESC_FLEX_FIELD6, MODULE_INFO_ID, PERMISSION_ID)
+		INSERT INTO MODULE_INFOES
+			(ID, NAME, CODE, LINK_URL, IS_MENU, IS_OPEN, DEPTH, PARENT_MODULE_ID, IS_DELETED, DESCR, GUID_ID,MENU_TYPE,SORT, IS_EFFECTIVE, EFFECTIVE_DATE_START, EFFECTIVE_DATE_END, CREATED_ON, CREATED_BY, MODIFIED_ON, MODIFIED_BY, DESC_FLEX_FIELD1, DESC_FLEX_FIELD2, DESC_FLEX_FIELD3, DESC_FLEX_FIELD4, DESC_FLEX_FIELD5, DESC_FLEX_FIELD6)
 		VALUES
-			(#{id}, #{isDeleted}, #{descr}, #{guidId}, #{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{createdOn}, #{createdBy}, #{modifiedOn}, #{modifiedBy}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6}, #{moduleInfoId}, #{permissionId})
+			(#{id}, #{name}, #{code}, #{linkUrl}, #{isMenu}, #{isOpen}, #{depth}, #{parentModuleId}, #{isDeleted}, #{descr}, #{guidId},#{menuType}, #{sort},#{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{createdOn}, #{createdBy}, #{modifiedOn}, #{modifiedBy}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6})
 	</insert>
     <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
-	<insert id="insertSelective" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="insertSelective" parameterType="com.xinri.po.moduleInfo.ModuleInfoes" useGeneratedKeys="true" keyProperty="id" >
 		
-	    INSERT INTO MODULE_INFO_PERMISSIONS
+	    INSERT INTO MODULE_INFOES
 	    <trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="id != null">
 				ID,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="code != null">
+				CODE,
+			</if>
+			<if test="linkUrl != null">
+				LINK_URL,
+			</if>
+			<if test="isMenu != null">
+				IS_MENU,
+			</if>
+			<if test="isOpen != null">
+				IS_OPEN,
+			</if>
+			<if test="depth != null">
+				DEPTH,
+			</if>
+			<if test="parentModuleId != null">
+				PARENT_MODULE_ID,
 			</if>
 			<if test="isDeleted != null">
 				IS_DELETED,
@@ -257,6 +336,12 @@
 			</if>
 			<if test="guidId != null">
 				GUID_ID,
+			</if>
+			<if test="menuType != null">
+				MENU_TYPE,
+			</if>
+			<if test="sort != null">
+				SORT,
 			</if>
 			<if test="isEffective != null">
 				IS_EFFECTIVE,
@@ -297,16 +382,34 @@
 			<if test="descFlexField6 != null">
 				DESC_FLEX_FIELD6,
 			</if>
-			<if test="moduleInfoId != null">
-				MODULE_INFO_ID,
-			</if>
-			<if test="permissionId != null">
-				PERMISSION_ID,
+			<if test="icon != null">
+				ICON,
 			</if>
 	    </trim>
 	    <trim prefix="values (" suffix=")" suffixOverrides="," >
 		  <if test="id != null">
 				#{id,jdbcType=BIGINT},
+		  </if>
+		  <if test="name != null">
+				#{name,jdbcType=VARCHAR},
+		  </if>
+		  <if test="code != null">
+				#{code,jdbcType=VARCHAR},
+		  </if>
+		  <if test="linkUrl != null">
+				#{linkUrl,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isMenu != null">
+				#{isMenu,jdbcType=INTEGER},
+		  </if>
+		  <if test="isOpen != null">
+				#{isOpen,jdbcType=INTEGER},
+		  </if>
+		  <if test="depth != null">
+				#{depth,jdbcType=INTEGER},
+		  </if>
+		  <if test="parentModuleId != null">
+				#{parentModuleId,jdbcType=BIGINT},
 		  </if>
 		  <if test="isDeleted != null">
 				#{isDeleted,jdbcType=INTEGER},
@@ -317,6 +420,12 @@
 		  <if test="guidId != null">
 				#{guidId,jdbcType=VARCHAR},
 		  </if>
+			<if test="menuType != null">
+				#{menuType,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=VARCHAR},
+			</if>
 		  <if test="isEffective != null">
 				#{isEffective,jdbcType=INTEGER},
 		  </if>
@@ -356,18 +465,15 @@
 		  <if test="descFlexField6 != null">
 				#{descFlexField6,jdbcType=VARCHAR},
 		  </if>
-		  <if test="moduleInfoId != null">
-				#{moduleInfoId,jdbcType=BIGINT},
-		  </if>
-		  <if test="permissionId != null">
-				#{permissionId,jdbcType=BIGINT},
+			<if test="icon != null">
+				#{icon,jdbcType=VARCHAR},
 		  </if>
 	    </trim>
   	</insert>
 
     <!-- 根据主键ID进行修改 -->
-  	<update id="update" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
-		UPDATE MODULE_INFO_PERMISSIONS t 
+  	<update id="update" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+		UPDATE MODULE_INFOES t 
 		<include refid="whereColumnByUpdate"></include>
 		<where>
 			t.ID = #{id,jdbcType=BIGINT}
@@ -375,22 +481,22 @@
 	</update>
 
     <!-- 根据条件进行修改 -->
-	<update id="updateByCondition" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
-		UPDATE MODULE_INFO_PERMISSIONS t 
+	<update id="updateByCondition" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+		UPDATE MODULE_INFOES t 
 		<include refid="whereColumnByUpdate"></include>
 		<where>${whereSqlParam}</where>
 	</update>
 
     <!-- 根据主键ID进行逻辑删除 -->
-	<update id="delete" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
-		UPDATE MODULE_INFO_PERMISSIONS t SET 
+	<update id="delete" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+		UPDATE MODULE_INFOES t SET 
 		t.IS_DELETED = 1
 		WHERE t.ID = #{id,jdbcType=BIGINT}
 	</update>
 
     <!-- 根据主键ID进行批量逻辑删除 -->
 	<update id="batchDelete" parameterType="java.util.List">
-		UPDATE MODULE_INFO_PERMISSIONS t SET 
+		UPDATE MODULE_INFOES t SET 
 		t.IS_DELETED = 1
 		WHERE t.ID IN
 		<foreach item="item" collection="list" index="index" open="("
@@ -400,21 +506,21 @@
 	</update>
 
     <!-- 根据条件进行逻辑删除 -->
-	<update id="deleteByEntity" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
-		UPDATE MODULE_INFO_PERMISSIONS t SET 
+	<update id="deleteByEntity" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+		UPDATE MODULE_INFOES t SET 
 			t.IS_DELETED = 1
 		<include refid="whereColumnBySelect"/>
 	</update>
 
     <!-- 根据主键ID进行物理删除 -->
-	<delete id="remove" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
-		DELETE FROM MODULE_INFO_PERMISSIONS t 
-		WHERE t.ID = #{id,jdbcType=BIGINT}
+	<delete id="remove" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+		DELETE FROM MODULE_INFOES
+		WHERE ID = #{id,jdbcType=BIGINT}
 	</delete>
 
     <!-- 根据主键ID进行批量物理删除 -->
 	<delete id="batchRemove" parameterType="java.util.List">
-		DELETE FROM MODULE_INFO_PERMISSIONS t 
+		DELETE FROM MODULE_INFOES t 
 		WHERE t.ID IN
 		<foreach item="item" collection="list" index="index" open="("
 			separator="," close=")">
@@ -423,21 +529,22 @@
 	</delete>
 
     <!-- 根据条件进行物理删除 -->
-	<update id="removeByCondition" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
-		DELETE FROM MODULE_INFO_PERMISSIONS t
+	<update id="removeByCondition" parameterType="com.xinri.po.moduleInfo.ModuleInfoes">
+		DELETE FROM MODULE_INFOES t 
 		<where>${whereSqlParam}</where>
 	</update>
 
-	<delete id="removeByEntity" parameterType="com.xinri.po.permissionsToModule.ModuleInfoPermissions">
-		delete FROM MODULE_INFO_PERMISSIONS
-		<trim prefix="WHERE" prefixOverrides="AND | OR">
-		<if test="moduleInfoId != null">
-			AND MODULE_INFO_ID = #{moduleInfoId}
-		</if>
-		</trim>
-	</delete>
+	<select id="getModulesForRole" parameterType="java.util.List" resultMap="moduleInfoesResultMap">
+		SELECT
+		<include refid="moduleInfoesColumns" />
+		FROM MODULE_INFOES t
+		WHERE t.id in
+		<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		and t.is_menu=0
+		and t.is_deleted=0
 
-	<select id="getPermissionIds" parameterType="java.lang.Long" resultType="java.lang.Long">
-		  select permission_id FROM module_info_permissions where module_info_id = #{id}
 	</select>
+
 </mapper>

@@ -1,17 +1,13 @@
-package com.xinri.po.roleModuleInfos;
-
+package com.xinri.po.moduleInfo;
 import com.qis.common.persistence.DataEntity;
 
-import java.util.Date;
-
+import java.util.*;
 /**
- * <p></p>
- * 类名:ModuleInfoPermissionspo<br>
- * 创建人:xiashanyong<br>
- * 创建时间:20180813<br>
+ * 创建人:汪震
+ * 创建时间:20180813
  */
  
-public class RoleModuleInfos extends DataEntity<RoleModuleInfos>{
+public class ModuleInfoPermissions extends DataEntity<ModuleInfoPermissions>{
 
 
     	private String descr;
@@ -38,7 +34,7 @@ public class RoleModuleInfos extends DataEntity<RoleModuleInfos>{
 
     	private Long moduleInfoId;
 
-    	private Long roleId;
+    	private Long permissionId;
 	/**
 	 * createdOn字段查询条件开始
 	 */
@@ -189,17 +185,18 @@ public class RoleModuleInfos extends DataEntity<RoleModuleInfos>{
     	public void setModuleInfoId(Long moduleInfoId) {
 		this.moduleInfoId = moduleInfoId;
 	}
-
-
-	public Long getRoleId() {
-		return roleId;
+    
+  
+	public Long getPermissionId() {
+		return permissionId;
 	}
-
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
+	
+    	public void setPermissionId(Long permissionId) {
+		this.permissionId = permissionId;
 	}
-
-	public String getStartCreatedOn(){
+    
+  
+ public String getStartCreatedOn(){
 		return this.startCreatedOn;
 	}
 
@@ -273,7 +270,9 @@ public class RoleModuleInfos extends DataEntity<RoleModuleInfos>{
 		sb.append(moduleInfoId);
 		sb.append(",");   
 		
-
+		sb.append("permissionId=");
+		sb.append(permissionId);
+		sb.append("]");
    
 		
 		return sb.toString();

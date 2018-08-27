@@ -1,5 +1,9 @@
 package com.xinri.vo.jstree;
 
+/**
+ * 创建人:汪震
+ * 创建时间:20180813
+ */
 public class State {
 
     public Boolean disabled = false;

@@ -22,10 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p></p>
- * 类名:BaseDatasServiceImpl<br>
- * 创建人:xiashanyong<br>
- * 创建时间:20180813<br>
+ * 创建人:汪震
+ * 创建时间:20180813
  */
 @Service("baseDatasService")
 public class BaseDatasServiceImpl extends CrudService<BaseDatasMapper, BaseDatas> implements IBaseDatasService {
@@ -62,8 +60,8 @@ public class BaseDatasServiceImpl extends CrudService<BaseDatasMapper, BaseDatas
     }
 
     @Override
-    public List<BaseDatas> findParents(Long  id) {
-        BaseDatas baseData=new BaseDatas();
+    public List<BaseDatas> findParents(Long id) {
+        BaseDatas baseData = new BaseDatas();
         baseData.setBaseDataTypeId(id);
         return baseDatasMapper.findList(baseData);
     }
@@ -72,7 +70,7 @@ public class BaseDatasServiceImpl extends CrudService<BaseDatasMapper, BaseDatas
         AjaxStatus status = new AjaxStatus(true);
         //是否为类，以及类下是否有引用
         BaseDatas baseData = dao.get(id);
-        if (baseData != null && baseData.getParentBaseDataId() ==0) {
+        if (baseData != null && baseData.getParentBaseDataId() == 0) {
             baseData = new BaseDatas();
             baseData.setParentBaseDataId(id);
             List<BaseDatas> baseDatas = dao.findList(baseData);
@@ -84,7 +82,7 @@ public class BaseDatasServiceImpl extends CrudService<BaseDatasMapper, BaseDatas
                 status.setSuccess(false);
                 status.setMessage("该类被引用，不可删除");
             }
-        } else if (baseData != null && baseData.getParentBaseDataId() !=0) {
+        } else if (baseData != null && baseData.getParentBaseDataId() != 0) {
             dao.remove(id);
             status.setSuccess(true);
         } else {

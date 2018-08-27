@@ -11,6 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * 创建人:汪震
+ * 创建时间:20180813
+ */
 @Service("dictionaryService")
 public class DictionaryService extends CrudService<DictionaryMapper, Dictionary> implements IDictionaryService {
 
@@ -60,7 +64,7 @@ public class DictionaryService extends CrudService<DictionaryMapper, Dictionary>
     }
 
     /**
-     * @param  dicKey
+     * @param dicKey
      * @return
      * @description 通过dicKey获取数据
      */
@@ -77,18 +81,19 @@ public class DictionaryService extends CrudService<DictionaryMapper, Dictionary>
 
     /**
      * 查询指定数据值
+     *
      * @param dicKey
      * @param subKey
      * @return
      */
-    public String getDicValue(String dicKey,String subKey){
+    public String getDicValue(String dicKey, String subKey) {
         Dictionary dictionary = new Dictionary();
         dictionary.setDicKey(dicKey);
         Dictionary dc = dao.getByEntity(dictionary);
         dictionary = new Dictionary();
         dictionary.setDicPid(dc.getId());
         dictionary.setDicKey(subKey);
-        dictionary=dao.getByEntity(dictionary);
+        dictionary = dao.getByEntity(dictionary);
         return dictionary.getDicValue();
     }
 
@@ -111,6 +116,7 @@ public class DictionaryService extends CrudService<DictionaryMapper, Dictionary>
 
     /**
      * 查询指定数据值
+     *
      * @param dicKey
      * @param subValue
      * @return
@@ -123,10 +129,10 @@ public class DictionaryService extends CrudService<DictionaryMapper, Dictionary>
         dictionary = new Dictionary();
         dictionary.setDicPid(dc.getId());
         dictionary.setDicValue(subValue);
-        dictionary=dao.getByEntity(dictionary);
-        if(dictionary==null){
+        dictionary = dao.getByEntity(dictionary);
+        if (dictionary == null) {
             return "";
-        }else{
+        } else {
             return dictionary.getDicKey();
         }
     }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--创建人:汪震-->
+<!--创建时间:20180813-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xinri.dao.roleModulePermissions.RoleModuleInfoPermissionHeadsMapper">
+<mapper namespace="com.xinri.dao.moduleInfo.RoleModuleInfoPermissionHeadsMapper">
     <resultMap id="roleModuleInfoPermissionHeadsResultMap"
-               type="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+               type="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
         <result column="DESCR" property="descr" jdbcType="VARCHAR"/>
@@ -204,7 +206,7 @@
     </sql>
 
     <!-- 根据主键ID获取数据 -->
-    <select id="get" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads"
+    <select id="get" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads"
             resultMap="roleModuleInfoPermissionHeadsResultMap">
         SELECT
         <include refid="roleModuleInfoPermissionHeadsColumns"/>
@@ -212,7 +214,7 @@
         WHERE t.ID = #{id}
     </select>
     <!-- 查询列表可以根据分页进行查询 -->
-    <select id="findList" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads"
+    <select id="findList" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads"
             resultMap="roleModuleInfoPermissionHeadsResultMap">
         SELECT
         <include refid="roleModuleInfoPermissionHeadsColumns"/>
@@ -230,7 +232,7 @@
     </select>
 
     <!-- 查询所有列表 -->
-    <select id="findAllList" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads"
+    <select id="findAllList" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads"
             resultMap="roleModuleInfoPermissionHeadsResultMap">
         SELECT
         <include refid="roleModuleInfoPermissionHeadsColumns"/>
@@ -250,7 +252,7 @@
     </select>
 
     <!-- 根据条件查询对象 -->
-    <select id="getByEntity" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads"
+    <select id="getByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads"
             resultMap="roleModuleInfoPermissionHeadsResultMap">
         SELECT
         <include refid="roleModuleInfoPermissionHeadsColumns"/>
@@ -259,7 +261,7 @@
     </select>
 
     <!-- 新增并设置主键ID至参数对象 -->
-    <insert id="insert" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+    <insert id="insert" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
 
 		INSERT INTO ROLE_MODULE_INFO_PERMISSION_HEADS
 			(ID, IS_DELETED, DESCR, GUID_ID, IS_EFFECTIVE, EFFECTIVE_DATE_START, EFFECTIVE_DATE_END, CREATED_ON, CREATED_BY, MODIFIED_ON, MODIFIED_BY, DESC_FLEX_FIELD1, DESC_FLEX_FIELD2, DESC_FLEX_FIELD3, DESC_FLEX_FIELD4, DESC_FLEX_FIELD5, DESC_FLEX_FIELD6, MODULE_INFO_PERMISSION_ID, ROLE_ID)
@@ -267,7 +269,7 @@
 			(#{id}, #{isDeleted}, #{descr}, #{guidId}, #{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{createdOn}, #{createdBy}, #{modifiedOn}, #{modifiedBy}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6}, #{moduleInfoPermissionId}, #{roleId})
 	</insert>
     <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
-    <insert id="insertSelective" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads"
+    <insert id="insertSelective" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads"
             useGeneratedKeys="true" keyProperty="id">
 
         INSERT INTO ROLE_MODULE_INFO_PERMISSION_HEADS
@@ -404,7 +406,7 @@
     </insert>
 
     <!-- 根据主键ID进行修改 -->
-    <update id="update" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+    <update id="update" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
         UPDATE ROLE_MODULE_INFO_PERMISSION_HEADS t
         <include refid="whereColumnByUpdate"></include>
         <where>
@@ -413,14 +415,14 @@
     </update>
 
     <!-- 根据条件进行修改 -->
-    <update id="updateByCondition" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+    <update id="updateByCondition" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
         UPDATE ROLE_MODULE_INFO_PERMISSION_HEADS t
         <include refid="whereColumnByUpdate"></include>
         <where>${whereSqlParam}</where>
     </update>
 
     <!-- 根据主键ID进行逻辑删除 -->
-    <update id="delete" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+    <update id="delete" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
 		UPDATE ROLE_MODULE_INFO_PERMISSION_HEADS t SET 
 		t.IS_DELETED = 1
 		WHERE t.ID = #{id,jdbcType=BIGINT}
@@ -438,14 +440,14 @@
     </update>
 
     <!-- 根据条件进行逻辑删除 -->
-    <update id="deleteByEntity" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+    <update id="deleteByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
         UPDATE ROLE_MODULE_INFO_PERMISSION_HEADS t SET
         t.IS_DELETED = 1
         <include refid="whereColumnBySelect"/>
     </update>
 
     <!-- 根据主键ID进行物理删除 -->
-    <delete id="remove" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+    <delete id="remove" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
 		DELETE FROM ROLE_MODULE_INFO_PERMISSION_HEADS t 
 		WHERE t.ID = #{id,jdbcType=BIGINT}
 	</delete>
@@ -461,12 +463,12 @@
     </delete>
 
     <!-- 根据条件进行物理删除 -->
-    <update id="removeByCondition" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+    <update id="removeByCondition" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
         DELETE FROM ROLE_MODULE_INFO_PERMISSION_HEADS t
         <where>${whereSqlParam}</where>
     </update>
 
-    <!--<delete id="removeByEntity" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">-->
+    <!--<delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">-->
         <!--delete FROM ROLE_MODULE_INFO_PERMISSION_HEADS-->
         <!--<trim prefix="WHERE" prefixOverrides="AND | OR">-->
             <!--<if test="roleId != null">-->
@@ -486,7 +488,7 @@
 		  where module_id = #{0} and role_id = #{1}
 	</select>
 
-    <delete id="removeByEntity" parameterType="com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads">
+    <delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
         delete FROM role_module_info_permission_heads
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="moduleId != null">

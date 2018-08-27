@@ -7,7 +7,11 @@ import com.xinri.vo.dictionary.DictionaryVo;
 
 import java.util.List;
 
-public interface IDictionaryService  extends IBaseService<Dictionary> {
+/**
+ * 创建人:汪震
+ * 创建时间:20180813
+ */
+public interface IDictionaryService extends IBaseService<Dictionary> {
     public List<DictionaryVo> findListByVo(DictionaryVo dictionaryVo);
 
     public AjaxStatus DeleteDic(Long id);

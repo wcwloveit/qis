@@ -6,10 +6,8 @@ import com.xinri.po.permissions.Permissions;
 import java.util.Map;
 
 /**
- * <p></p>
- * 类名:PermissionsService<br>
- * 创建人:xiashanyong<br>
- * 创建时间:20180813<br>
+ * 创建人:汪震
+ * 创建时间:20180813
  */
 
 public interface IPermissionsService extends IBaseService<Permissions>{

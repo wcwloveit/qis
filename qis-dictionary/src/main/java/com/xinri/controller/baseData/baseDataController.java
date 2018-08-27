@@ -22,6 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 创建人:汪震
+ * 创建时间:20180813
+ */
 @Controller
 @RequestMapping(value = "/baseData")
 public class baseDataController extends BaseController {
@@ -36,15 +40,18 @@ public class baseDataController extends BaseController {
      * */
     @RequestMapping(value = "index/{id}", method = RequestMethod.GET)
     public ModelAndView findLogList(@PathVariable("id") Long id) {
+        logger.info("findLogList开始");
         ModelAndView mv = new ModelAndView("/baseData/tree");
         mv.addObject("id", id);
         mv.addObject("name", baseDatasTypesService.get(id).getName());
+        logger.info("findLogList结束");
         return mv;
     }
 
     @ResponseBody
     @RequestMapping(value = "list/{id}", method = RequestMethod.POST)
     public List<JsTree> list(@PathVariable("id") Long id) {
+        logger.info("获取树");
         return baseDatasService.getTree(id);
     }
 
@@ -56,11 +63,13 @@ public class baseDataController extends BaseController {
     @RequestMapping(value = "read-category/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Map readAll(@PathVariable Long id) {
+        logger.info("readAll开始");
         Map map = new HashMap();
         Long baseDataTypeId = baseDatasService.get(id).getBaseDataTypeId();
         map.put("baseData", baseDatasService.get(id));
         map.put("category", getCategoryList(baseDataTypeId));
         map.put("types", getTypeList());
+        logger.info("readAll结束");
         return map;
     }
 
@@ -72,12 +81,14 @@ public class baseDataController extends BaseController {
     @RequestMapping(value = "categoryList", method = RequestMethod.POST)
     @ResponseBody
     public List<BaseDatas> getCategoryList(Long id) {
+        logger.info("getCategoryList开始");
         return baseDatasService.findParents(id);
     }
 
     @RequestMapping(value = "typeList", method = RequestMethod.POST)
     @ResponseBody
     public List<BaseDataTypes> getTypeList() {
+        logger.info("getTypeList开始");
         return baseDatasTypesService.findAllList();
     }
 
@@ -89,14 +100,16 @@ public class baseDataController extends BaseController {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView create(BaseDatas baseData) {
+        logger.info("create开始");
         if (baseData.getId() != null) {
             baseData.setIsNewRecord(false);
         }
-        if(baseData.getParentBaseDataId()==null){
+        if (baseData.getParentBaseDataId() == null) {
             baseData.setParentBaseDataId(0L);
         }
         baseDatasService.saveOrUpdate(baseData);
-        ModelAndView mv = new ModelAndView("redirect:/baseData/index/"+baseData.getBaseDataTypeId());
+        ModelAndView mv = new ModelAndView("redirect:/baseData/index/" + baseData.getBaseDataTypeId());
+        logger.info("create结束");
         return mv;
     }
 
@@ -109,6 +122,7 @@ public class baseDataController extends BaseController {
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public AjaxStatus delete(@PathVariable("id") Long id) {
+        logger.info("delete数据"+id);
         return baseDatasService.DeleteDic(id);
     }
 
@@ -121,7 +135,8 @@ public class baseDataController extends BaseController {
      */
     @RequestMapping(value = "/checkExist", method = RequestMethod.GET)
     @ResponseBody
-    public Boolean Check(String name, Long pid, String status, Long id,Long bid) {
+    public Boolean Check(String name, Long pid, String status, Long id, Long bid) {
+        logger.info("check开始");
         if (id != 0 && "update".equals(status) && name.equals(baseDatasService.get(id).getName())) {
             return true; //如果是修改且改之前和改之后的dicValue一样的话则直接返回true
         }
@@ -130,6 +145,7 @@ public class baseDataController extends BaseController {
         baseData.setBaseDataTypeId(bid);
         baseData.setName(name);
         List<BaseDatas> baseDatas = baseDatasService.findList(baseData);
+        logger.info("check结束");
         if (CollectionUtils.isNotEmpty(baseDatas)) {
             return false;   //同级下存在同名(dicValue)的数据，返回false
         }

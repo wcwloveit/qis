@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--创建人:汪震-->
+<!--创建时间:20180813-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinri.dao.dictionary.DictionaryMapper">
     <resultMap id="dictionaryResultMap" type="com.xinri.po.dictionary.Dictionary">

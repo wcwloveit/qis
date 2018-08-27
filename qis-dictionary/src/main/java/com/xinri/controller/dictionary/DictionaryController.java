@@ -150,30 +150,29 @@ public class DictionaryController {
 
     @RequestMapping(value = "/reads", method = RequestMethod.GET)
     @ResponseBody
-    public List<Dictionary> reads(String dicKey){
+    public List<Dictionary> reads(String dicKey) {
         return dictionaryService.reads(dicKey);
     }
 
     @RequestMapping(value = "/batchSaveDictionary", method = RequestMethod.GET)
     @ResponseBody
-    public void batchSaveDictionary(List<Dictionary> list){
+    public void batchSaveDictionary(List<Dictionary> list) {
         dictionaryService.batchSaveDictionary(list);
     }
 
     @RequestMapping(value = "/getDicValue", method = RequestMethod.GET)
     @ResponseBody
-    public String getDicValue(String dicKey, String subKey){
-        return dictionaryService.getDicValue(dicKey,subKey);
+    public String getDicValue(String dicKey, String subKey) {
+        return dictionaryService.getDicValue(dicKey, subKey);
     }
 
 //    public String getRemark(String dicKey, String subKey);
 
     @RequestMapping(value = "/getDicKey", method = RequestMethod.GET)
     @ResponseBody
-    public String getDicKey(String dicValue, String subKey){
-        return dictionaryService.getDicKey(dicValue,subKey);
+    public String getDicKey(String dicValue, String subKey) {
+        return dictionaryService.getDicKey(dicValue, subKey);
     }
-
 
 
 }
