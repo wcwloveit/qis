@@ -1,6 +1,9 @@
 package com.xinri.service.moduleInfo;
+import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
+
+import java.util.Map;
 /**
  * <p></p>
  * 类名:ModuleInfoColumnDatasService<br>
@@ -11,5 +14,6 @@ import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 public interface IModuleInfoColumnDatasService extends IBaseService<ModuleInfoColumnDatas>{
 
 
+    DataTable<ModuleInfoColumnDatas> findListA(DataTable<ModuleInfoColumnDatas> dt, Map<String, Object> searchParams);
 }
 

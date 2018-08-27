@@ -1,14 +1,13 @@
 package com.xinri.controller.module;
 
 import com.qis.common.web.BaseController;
+import com.xinri.po.moduleInfo.ColumnDatas;
+import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
-import com.xinri.service.moduleInfo.IModuleInfoesService;
+import com.xinri.service.moduleInfo.*;
 import com.xinri.service.permissions.IPermissionsService;
-import com.xinri.service.moduleInfo.IPermissionsToModuleService;
-import com.xinri.service.moduleInfo.IRoleModuleInfosService;
-import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
 import com.xinri.vo.jstree.State;
@@ -47,6 +46,12 @@ public class ModuleController extends BaseController {
     @Autowired
     private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
 
+    @Autowired
+    private IColumnDatasService columnDatasService;
+
+    @Autowired
+    private IModuleInfoColumnDatasService moduleInfoColumnDatasService;
+
     /*
      * 首页
      * */
@@ -57,6 +62,9 @@ public class ModuleController extends BaseController {
         Permissions permission = new Permissions();
         permission.setIsDeleted(0);
         mv.addObject("permissions", permissionsService.findList(permission));//返回所有的权限信息供页面选择
+        ColumnDatas columnData = new ColumnDatas();
+        columnData.setIsDeleted(0);
+        mv.addObject("columnDatas", columnDatasService.findList (columnData));
         logger.info("findModuleList结束");
         return mv;
     }
@@ -101,7 +109,11 @@ public class ModuleController extends BaseController {
         moduleInfoPermission.setModuleInfoId(id);
         map.put("module", moduleInfoesService.get(id));
         map.put("myPers", permissionsToModuleService.findList(moduleInfoPermission));
+
         map.put("parents", getParents());
+        ModuleInfoColumnDatas moduleInfoColumnData=new ModuleInfoColumnDatas();
+        moduleInfoColumnData.setModuleInfoId(id);
+        map.put("mycolumns",moduleInfoColumnDatasService.findList(moduleInfoColumnData));
         logger.info("getInfos结束");
         return map;
     }
@@ -124,7 +136,7 @@ public class ModuleController extends BaseController {
     /**
      * 新建或修改
      *
-     * @param 模块信息和是否有效
+     * @param模块信息和是否有效
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -156,7 +168,7 @@ public class ModuleController extends BaseController {
     /**
      * 物理删除
      *
-     * @param 要删除的模块的id
+     * @param要删除的模块的id
      * @return 状态信息
      */
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
@@ -172,7 +184,7 @@ public class ModuleController extends BaseController {
     /**
      * 检查同级下是否存在同名(dicValue)的模块
      *
-     * @param dicValue(值)，dicPid(父级编号)，status(是修改还是新增)，id
+     * @paramdicValue(值)，dicPid(父级编号)，status(是修改还是新增)，id
      * @return
      */
     @RequestMapping(value = "/checkExist", method = RequestMethod.GET)

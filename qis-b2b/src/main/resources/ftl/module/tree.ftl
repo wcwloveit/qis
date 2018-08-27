@@ -252,20 +252,31 @@
                                     </div>
                                 </div>
 
+
                                 <div class="row ">
                                     <div class="col-md-6">
                                         <div class="form-group permissions"  style="display: none">
                                             <label class="control-label col-md-2">权限</label>
                                             <div class="col-md-10">
-                                                <#list permissions as permission>
-                                                    <input type="checkbox" value="${permission.id}" name="pers">${permission.name}
-                                                </#list>
+                                            <#list permissions as permission>
+                                                <input type="checkbox" value="${permission.id}" name="pers">${permission.name}
+                                            </#list>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-
+                                            <div class="col-md-6">
+                                                <div class="form-group columnDatas" style="display: none">
+                                                    <label class="control-label col-md-2">可控列</label>
+                                                    <div class="col-md-10">
+                                                    <#list columnDatas as columnData>
+                                                       <div class="hiddenCheck"> <input type="checkbox"  value="${columnData.id}" name="columns">${columnData.name}
+                                                       </div>
+                                                    </#list>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -326,11 +337,11 @@
                                             <option value="medical">medical</option>
                                             <option value="simplelineicons-demo">simplelineicons-demo</option>
                                             <option value="glyphicon">glyphicon</option>
-                                            <#--<option value="Basic Icons">Basic Icons</option>-->
-                                            <#--<option value="Circle Icons">Circle Icons</option>-->
-                                            <#--<option value="Solid Icons">Solid Icons</option>-->
-                                            <#--<option value="Large Size">Large Size</option>-->
-                                            <#--<option value="Small Size">Small Size</option>-->
+                                        <#--<option value="Basic Icons">Basic Icons</option>-->
+                                        <#--<option value="Circle Icons">Circle Icons</option>-->
+                                        <#--<option value="Solid Icons">Solid Icons</option>-->
+                                        <#--<option value="Large Size">Large Size</option>-->
+                                        <#--<option value="Small Size">Small Size</option>-->
 
                                         </select>
                                     </div>
@@ -390,7 +401,7 @@
             type="text/javascript"></script>
     <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/js/localization/messages_zh.js"
             type="text/javascript"></script>
-<script src="${rc.contextPath}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>
+    <script src="${rc.contextPath}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>
     <script src="${rc.contextPath}/assets/drags/bootstrap-paginator.js" type="text/javascript"></script>
     <script type="text/javascript">
         var status = "";
@@ -442,6 +453,7 @@
                         var value = "";
                         if (data.parentModuleId != 0) {
                             $(".permissions").attr("style","display:block;");
+                            $(".columnDatas").attr("style","display:block;");
                             for (var i = 0; i < msg.parents.length; i++) {
                                 var obj = msg.parents[i];
                                 value = value + "<option value=" + obj.id + ">" + obj.name + "</option>";
@@ -450,16 +462,30 @@
                             $('.btn-children').attr('disabled', "disabled");
                         } else {
                             $(".permissions").attr("style","display:none;");
+                            $(".columnDatas").attr("style","display:none;");
                             $('.btn-children').enable();
                             $('.btn-parent').enable();
                         }
                         $("input[name=pers]").removeProp("checked");
                         $("input[name=pers]").parents('span').removeClass("checked");
+
+
+
+                        $(".hiddenCheck").hide();
+                        $("input[name=columns]").removeProp("checked");
+                        $("input[name=columns]").parents('span').removeClass("checked");
                         if(msg.myPers){
                             for(var i=0;i<msg.myPers.length;i++){
                                 var myPer=msg.myPers[i];
                                 var qdwd=myPer.permissionId;
                                 $("input[name=pers][value='" +myPer.permissionId+"']").prop("checked", true).parents('span').toggleClass("checked");
+                            }
+                        }
+                        if(msg.mycolumns){
+                            for(var i=0;i<msg.mycolumns.length;i++){
+                                var mycolumn=msg.mycolumns[i];
+                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").attr("style","display:block;").prop("checked", true).parents('span').toggleClass("checked");
+                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").parents(".hiddenCheck").attr("style","display:block");
                             }
                         }
                         document.getElementById("parentModuleId").innerHTML = value;
@@ -524,9 +550,9 @@
                             "code": function () {
                                 return $(" input[ name='code' ] ").val();
                             },
-                             "status": function () {
+                            "status": function () {
                                 return status;
-                             },
+                            },
                             "id": function () {
                                 var id = $("input[name=id]").val();
                                 if (!id)
@@ -681,7 +707,7 @@
                 dataType:"json",
                 cache:true,
                 type:"GET",
-                url:"${rc.contextPath}/assets/global/newIcon.json",
+                url: "${rc.contextPath}/assets/global/newIcon.json",
                 traditional:true,
                 success:function(data){
                     window.
@@ -733,7 +759,7 @@
                     $('#iconPager').bootstrapPaginator(options);
                 },
                 error:function(XMLHttpRequest,textStatus,errorThrown){
-                    bootbox.alert("网络异常,数据不能成功返回");
+//                    bootbox.alert("网络异常,数据不能成功返回");
                 }
             });
         }

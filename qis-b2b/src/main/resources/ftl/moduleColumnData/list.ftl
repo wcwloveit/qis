@@ -32,14 +32,17 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green btn-parent" href="${rc.contextPath}/permissions/column/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/column/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
+
                             <a href="javascript:void(0)" class="btn red">
                                 <i class="fa fa-trash-o"></i>
                                 <span class="hidden-480"  onclick="deleteList();">批量删除</span>
                             </a>
+
+
                         </div>
                     </div>
                 </div>
@@ -57,24 +60,18 @@
                     </div>
                     <div id="data_table_search">
 
-                        <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">名称</b>
-                            <input type="text" class="input-sm form-filter" name="search_ColumnData_name"
-                                   id="search_ColumnData_name" placeholder="名称"/>
-                        </label>
 
-                        <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">编号</b>
-                            <input type="text" class="input-sm form-filter" name="search_ColumnData_code"
-                                   id="search_ColumnData_code" placeholder="编号"/>
-                        </label>
 
                         <label style="float:left;margin-right:5px;">
                             <b class="form-control input-inline" style="border: 0px; text-align: left;">描述</b>
                             <input type="text" class="input-sm form-filter" name="search_ColumnData_descr"
                                    id="search_ColumnData_descr" placeholder="描述"/>
                         </label>
-
+                        <label style="float:left;margin-right:5px;">
+                            <b class="form-control input-inline" style="border: 0px; text-align: left;">唯一标识符</b>
+                            <input type="text" class="input-sm form-filter" name="search_ColumnData_descr"
+                                   id="search_ColumnData_guidId" placeholder="唯一标识符"/>
+                        </label>
 
                         <label style="float:left;margin-right:5px;">
                             <div class="form-control input-inline"
@@ -154,7 +151,7 @@
                 ],
                 "iDisplayLength": 10,//页面显示数据数量
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/permissions/column/list",
+                "sAjaxSource": "${rc.contextPath}/permissions/moduleColumn/list",
                 "aaSorting": [
                     [0, "desc"]
                 ],
@@ -166,9 +163,9 @@
                     { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
                         return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
                     }},
-                    {"sTitle": "名称", "mData": "name"},
-                    {"sTitle": "编号", "mData": "code"},
+
                     {"sTitle": "描述", "mData": "descr"},
+                    {"sTitle": "唯一标识符", "mData": "guidId"},
                     { "sTitle": "是否生效", "sDefaultContent": "", "mRender": function (data, type, row) {
                         if(row.isEffective==1){
                             var a = '<span style="color: #8a8a8a">失效</span>';
@@ -177,7 +174,15 @@
                             return "生效";
                         }
                     }},
+
                     { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
+                        if (data != null && "" != data) {
+                            return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
+                        } else {
+                            return "";
+                        }
+                    }},
+                    { "sTitle": "更新日期", "mData": "modifiedOn", "mRender": function (data, type, row) {
                         if (data != null && "" != data) {
                             return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                         } else {
@@ -279,7 +284,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/permissions/column/delete-' + id,
+                                url: '${rc.contextPath}/column/delete-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -345,7 +350,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/permissions/column/deleteAll',
+                                url:'${rc.contextPath}/column/deleteAll',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",
