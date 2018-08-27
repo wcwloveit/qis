@@ -145,7 +145,7 @@
 
                     <div class="col-md-9">
                         <select name="roles" id="roles" multiple="multiple" class="select" style="width: 100%;">
-                        
+
                         </select>
                     </div>
                 </div>
