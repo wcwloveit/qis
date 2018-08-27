@@ -1,16 +1,13 @@
-package com.xinri.po.module;
+package com.xinri.po.moduleInfo;
 
 import com.qis.common.persistence.DataEntity;
 
 import java.util.*;
 
 /**
- * <p></p>
- * 类名:ModuleInfoespo<br>
- * 创建人:xiashanyong<br>
- * 创建时间:20180813<br>
+ * 创建人:汪震
+ * 创建时间:20180813
  */
-
 public class ModuleInfoes extends DataEntity<ModuleInfoes> {
 
 

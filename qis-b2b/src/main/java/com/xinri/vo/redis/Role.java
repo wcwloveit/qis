@@ -1,7 +1,6 @@
 package com.xinri.vo.redis;
 
-import com.xinri.po.module.ModuleInfoes;
-import com.xinri.po.role.Roles;
+import com.xinri.po.moduleInfo.ModuleInfoes;
 
 import java.util.List;
 

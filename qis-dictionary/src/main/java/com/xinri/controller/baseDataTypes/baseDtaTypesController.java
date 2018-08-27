@@ -16,6 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 创建人:汪震
+ * 创建时间:20180813
+ */
 @Controller
 @RequestMapping(value = "/baseDataTypes")
 public class baseDtaTypesController extends BaseController {
@@ -28,6 +32,7 @@ public class baseDtaTypesController extends BaseController {
      * */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
+        logger.info("findTypesList");
         return "baseDataTypes/list";
     }
 
@@ -36,9 +41,9 @@ public class baseDtaTypesController extends BaseController {
      * */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public DataTable<BaseDataTypes> getItemList(DataTable<BaseDataTypes> dt, ServletRequest request){
+    public DataTable<BaseDataTypes> getItemList(DataTable<BaseDataTypes> dt, ServletRequest request) {
         logger.info("获取角色列表开始");
-        Map<String,Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
+        Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
         DataTable<BaseDataTypes> baseDatas = baseDatasTypesService.findListByVo(dt, searchParams); //查询方法
         logger.info("获取角色列表结束");
         return baseDatas;
@@ -46,18 +51,22 @@ public class baseDtaTypesController extends BaseController {
 
     /**
      * 跳转新增
+     *
      * @return
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
-    public ModelAndView create(){
+    public ModelAndView create() {
+        logger.info("跳转新增页面开始");
         ModelAndView mv = new ModelAndView("/baseDataTypes/form");
-        mv.addObject("action","create");
+        mv.addObject("action", "create");
+        logger.info("跳转新增页面开始");
         return mv;
     }
 
 
     /**
      * 新建
+     *
      * @param attributes
      * @return
      */
@@ -70,8 +79,8 @@ public class baseDtaTypesController extends BaseController {
             baseDataTypes.setIsDeleted(0);
             baseDataTypes.setIsEffective(0);
             baseDatasTypesService.saveOrUpdate(baseDataTypes);
-            attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","添加类型成功");
+            attributes.addFlashAttribute("success", true);
+            attributes.addFlashAttribute("message", "添加类型成功");
             logger.info("新增类型完成");
         } catch (Exception e) {
             logger.error("新增类型报错：", e);
@@ -83,20 +92,24 @@ public class baseDtaTypesController extends BaseController {
 
     /**
      * 更新状态
+     *
      * @param id
      * @return
      */
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
+        logger.info("跳转更新页面开始");
         ModelAndView mv = new ModelAndView("/baseDataTypes/form");
         BaseDataTypes baseDataTypes = baseDatasTypesService.get(id);
-        mv.addObject("baseDataTypes",baseDataTypes);
+        mv.addObject("baseDataTypes", baseDataTypes);
         mv.addObject("action", "update");//跳转编辑的标示
+        logger.info("跳转更新页面结束");
         return mv;
     }
 
     /**
      * 更新
+     *
      * @param zcActivity
      * @param attributes
      * @return
@@ -108,8 +121,8 @@ public class baseDtaTypesController extends BaseController {
         try {
             baseDataTypes.setIsNewRecord(false);
             baseDatasTypesService.saveOrUpdate(baseDataTypes);
-            attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","更新类型成功");
+            attributes.addFlashAttribute("success", true);
+            attributes.addFlashAttribute("message", "更新类型成功");
             logger.info("更新类型完成");
         } catch (Exception e) {
             logger.error("更新类型报错：", e);
@@ -120,13 +133,15 @@ public class baseDtaTypesController extends BaseController {
 
     /**
      * 根据Id逻辑删除
+     *
      * @param id
      * @return
      */
-    @RequestMapping(value = "deleteOne-{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
-        return  baseDatasTypesService.deleteOne(id);
+        logger.info("删除数据"+id);
+        return baseDatasTypesService.deleteOne(id);
     }
 
     /**
@@ -134,23 +149,22 @@ public class baseDtaTypesController extends BaseController {
      *
      * @return 返回跳转链接
      */
-    @RequestMapping(value="delete-all",method=RequestMethod.POST) @ResponseBody
-    public Map<String,Boolean> deleteAll(@RequestParam("ids") List<Long> ids){
-        Map<String,Boolean> map=new HashMap<String,Boolean>();
-        try{
-            for (Long id:ids){
+    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
+        logger.info("删除全部数据");
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        try {
+            for (Long id : ids) {
                 baseDatasTypesService.deleteOne(id);
             }
-            map.put("stat",true);
-        }catch(Exception e){
-            map.put("stat",false);
-            logger.info("删除角色错误信息："+e);
+            map.put("stat", true);
+        } catch (Exception e) {
+            map.put("stat", false);
+            logger.info("删除角色错误信息：" + e);
         }
         return map;
     }
-
-
-
 
 
 }

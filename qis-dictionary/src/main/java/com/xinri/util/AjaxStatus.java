@@ -1,5 +1,9 @@
 package com.xinri.util;
 
+/**
+ * 创建人:汪震
+ * 创建时间:20180813
+ */
 public class AjaxStatus {
     private Boolean success;
     private String code;

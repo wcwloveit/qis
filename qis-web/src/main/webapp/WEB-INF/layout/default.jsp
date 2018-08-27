@@ -1,6 +1,6 @@
-    <%@ page import="com.xinri.po.module.ModuleInfoes" %>
+    <%@ page import="com.xinri.po.moduleInfo.ModuleInfoes" %>
         <%@ page import="java.util.Collections" %>
-        <%@ page import="com.xinri.service.module.impl.ModuleInfoesServiceImpl" %>
+        <%@ page import="com.xinri.service.moduleInfo.impl.ModuleInfoesServiceImpl" %>
         <%@ page contentType="text/html;charset=UTF-8" language="java" %>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
@@ -155,7 +155,7 @@
                         </li>
                         <li class="nav-item <%=url.startsWith(resource.getLinkUrl())?"active open":""%>">
                             <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-settings"></i>
+            <i class="<% if(resource.getIcon()!=null&&!"".equals(resource.getIcon())){ %><%= resource.getIcon()%><% }else{%>fa fa-home<% }%> %>"></i>
                                 <span class="title"><%= resource.getName()%></span>
                                 <span class="arrow"></span>
                             </a>
@@ -170,7 +170,7 @@
                                             <%}else{%><%=
                                                 res.getLinkUrl()%>
                                             <%}%>" class="nav-link ">
-                                               <i class="icon-settings"></i>
+            <i class="<% if(res.getIcon()!=null&&!"".equals(res.getIcon())){ %><%= res.getIcon()%><% }else{%>glyphicon glyphicon-tint<% }%> %>"></i>
                                                <span class="title"><%= res.getName() %></span>
                                         </a>
                                    </li><%

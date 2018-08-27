@@ -1,14 +1,13 @@
-package com.xinri.dao.roleModulePermissions;
+package com.xinri.dao.moduleInfo;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
-import com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads;
+import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
 
 import java.util.List;
 
 /**
- * 类名:RoleModuleInfoPermissionHeadsMapper<br>
- * 创建人:xiashanyong<br>
- * 创建时间:20180813<br>
+ * 创建人:汪震
+ * 创建时间:20180813
  */
  @MyBatisDao
 public interface RoleModuleInfoPermissionHeadsMapper extends CrudDao<RoleModuleInfoPermissionHeads>{

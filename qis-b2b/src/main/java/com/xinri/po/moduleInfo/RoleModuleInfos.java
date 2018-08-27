@@ -1,15 +1,15 @@
-package com.xinri.po.roleModulePermissions;
+package com.xinri.po.moduleInfo;
+
 import com.qis.common.persistence.DataEntity;
 
-import java.util.*;
+import java.util.Date;
+
 /**
- * <p></p>
- * 类名:RoleModuleInfoPermissionHeadspo<br>
- * 创建人:xiashanyong<br>
- * 创建时间:20180813<br>
+ * 创建人:汪震
+ * 创建时间:20180813
  */
  
-public class RoleModuleInfoPermissionHeads extends DataEntity<RoleModuleInfoPermissionHeads>{
+public class RoleModuleInfos extends DataEntity<RoleModuleInfos>{
 
 
     	private String descr;
@@ -34,13 +34,9 @@ public class RoleModuleInfoPermissionHeads extends DataEntity<RoleModuleInfoPerm
 
     	private String descFlexField6;
 
-    	private Long moduleInfoPermissionId;
+    	private Long moduleInfoId;
 
     	private Long roleId;
-
-    	private Long moduleId;
-
-    	private Long permissionId;
 	/**
 	 * createdOn字段查询条件开始
 	 */
@@ -77,24 +73,10 @@ public class RoleModuleInfoPermissionHeads extends DataEntity<RoleModuleInfoPerm
 	public void setEndModifiedOn(String endModifiedOn) {
 		this.endModifiedOn = endModifiedOn;
 	}
-
-
-	public Long getModuleId() {
-		return moduleId;
-	}
-
-	public void setModuleId(Long moduleId) {
-		this.moduleId = moduleId;
-	}
-
-	public Long getPermissionId() {
-		return permissionId;
-	}
-
-	public void setPermissionId(Long permissionId) {
-		this.permissionId = permissionId;
-	}
-
+	
+   
+  
+  
 	public String getDescr() {
 		return descr;
 	}
@@ -198,25 +180,24 @@ public class RoleModuleInfoPermissionHeads extends DataEntity<RoleModuleInfoPerm
 	}
     
   
-	public Long getModuleInfoPermissionId() {
-		return moduleInfoPermissionId;
+	public Long getModuleInfoId() {
+		return moduleInfoId;
 	}
 	
-    	public void setModuleInfoPermissionId(Long moduleInfoPermissionId) {
-		this.moduleInfoPermissionId = moduleInfoPermissionId;
+    	public void setModuleInfoId(Long moduleInfoId) {
+		this.moduleInfoId = moduleInfoId;
 	}
-    
-  
+
+
 	public Long getRoleId() {
 		return roleId;
 	}
-	
-    	public void setRoleId(Long roleId) {
+
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
-    
-  
- public String getStartCreatedOn(){
+
+	public String getStartCreatedOn(){
 		return this.startCreatedOn;
 	}
 
@@ -286,13 +267,11 @@ public class RoleModuleInfoPermissionHeads extends DataEntity<RoleModuleInfoPerm
 		sb.append(descFlexField6);
 		sb.append(",");   
 		
-		sb.append("moduleInfoPermissionId=");
-		sb.append(moduleInfoPermissionId);
+		sb.append("moduleInfoId=");
+		sb.append(moduleInfoId);
 		sb.append(",");   
 		
-		sb.append("roleId=");
-		sb.append(roleId);
-		sb.append("]");
+
    
 		
 		return sb.toString();
