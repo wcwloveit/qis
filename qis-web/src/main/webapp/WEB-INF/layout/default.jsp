@@ -141,6 +141,7 @@
         <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
         <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <%
+                String url=request.getServletPath();
                 org.springframework.context.ApplicationContext ctx = org.springframework.web.context.ContextLoader.getCurrentWebApplicationContext();
                 ModuleInfoes moduleInfoes=new ModuleInfoes();
                 moduleInfoes.setIsDeleted(0);
@@ -152,27 +153,27 @@
                         <li class="heading">
                                 <h3 class="uppercase"><%= resource.getName()%></h3>
                         </li>
-                        <li class="nav-item ">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                        <i class="icon-settings"></i>
-                        <span class="title"><%= resource.getName()%></span>
-                        <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                        <%
-                             for (ModuleInfoes res : resources) {
-                                 if (res.getParentModuleId()==resource.getId()){
-                         %>
-                                <li class="nav-item ">
-                                <a href="<% if(res.getMenuType()==1){ %>
-                                        ${ctx}<%=res.getLinkUrl()%>
-                                        <%}else{%><%=
-                                                res.getLinkUrl()%>
-                                         <%}%>" class="nav-link ">
+                        <li class="nav-item <%=url.startsWith(resource.getLinkUrl())?"active open":""%>">
+                            <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
-                                <span class="title"><%= res.getName() %></span>
-                                </a>
-                                </li><%
+                                <span class="title"><%= resource.getName()%></span>
+                                <span class="arrow"></span>
+                            </a>
+                            <ul class="sub-menu">
+                            <%
+                                  for (ModuleInfoes res : resources) {
+                                      if (res.getParentModuleId()==resource.getId()){
+                             %>
+                                  <li class="nav-item <%=url.contains(res.getLinkUrl())?"active":""%>">
+                                        <a href="<% if(res.getMenuType()==1){ %>
+                                            ${ctx}<%=res.getLinkUrl()%>
+                                            <%}else{%><%=
+                                                res.getLinkUrl()%>
+                                            <%}%>" class="nav-link ">
+                                               <i class="icon-settings"></i>
+                                               <span class="title"><%= res.getName() %></span>
+                                        </a>
+                                   </li><%
                             }
                         }
                         %></ul></li><%
