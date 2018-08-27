@@ -681,7 +681,7 @@
                 dataType:"json",
                 cache:true,
                 type:"GET",
-                url:"/qis/assets/global/newIcon.json",
+                url:"${rc.contextPath}/assets/global/newIcon.json",
                 traditional:true,
                 success:function(data){
                     window.
