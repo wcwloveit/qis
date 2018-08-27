@@ -143,8 +143,10 @@ public class UsersServiceImpl extends CrudService<UsersMapper,Users>  implements
 
         List<UserListVo> orgListVos=new ArrayList<>();
         Users sqlUser=new Users();
-        Long odid = Long.parseLong(id.substring(0,id.length() - 1));
-        sqlUser.setDepartmentId(odid);
+        if(id!=""||id!=null){
+            Long odid = Long.parseLong(id.substring(0,id.length() - 1));
+            sqlUser.setDepartmentId(odid);
+        }
 
         List<Users> deptList=new ArrayList<>();
 

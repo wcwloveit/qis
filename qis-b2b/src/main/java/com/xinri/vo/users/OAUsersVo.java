@@ -3,7 +3,7 @@ package com.xinri.vo.users;
 public class OAUsersVo {
 
 
-    public int deptid ;
+    public Long deptid ;
 
     public String username ;
 
@@ -25,13 +25,31 @@ public class OAUsersVo {
 
     public String lastmoddate ;
 
+    public String depname;
 
+    public String password;
 
-    public int getDeptid() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getDepname() {
+        return depname;
+    }
+
+    public void setDepname(String depname) {
+        this.depname = depname;
+    }
+
+    public Long getDeptid() {
         return deptid;
     }
 
-    public void setDeptid(int deptid) {
+    public void setDeptid(Long deptid) {
         this.deptid = deptid;
     }
 

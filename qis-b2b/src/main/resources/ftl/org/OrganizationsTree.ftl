@@ -424,8 +424,7 @@
     </div>
 </div>
 
-
-<div id="show_createOrg" class="modal fade" tabindex="-1" aria-hidden="true">
+<div id="show_createUsers" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="row">
@@ -433,16 +432,12 @@
                     <div class="portlet box blue">
                         <div class="portlet-title">
                             <button type="button" data-dismiss="modal" aria-hidden="true" class="close"></button>
-                            <h4 class="modal-title orgTitle">新增人员</h4>
+                            <h4 class="modal-title usersTitle">新增人员</h4>
                         </div>
                         <div class="portlet-body form">
                             <form class="form-horizontal" action="${rc.contextPath}/organization/save" method="POST"
                                   id="createOrgForm">
                                 <input type="hidden" name="id"/>
-                                <input type="hidden" name="supId" value="0"/>
-                                <input type="hidden" name="type" value="0"/>
-                                <input type="hidden" name="keepOrg">
-                                <input type="hidden" name="keepParentOrg">
 
                                 <div class="alert alert-danger display-hide">
                                     <button class="close" data-close="alert"></button>
@@ -468,7 +463,7 @@
                                             <td width="30%"><label class="control-label">姓名<span
                                                     class="required">*</span></label>
                                             </td>
-                                            <td width="70%"><input type="text" name="descr"
+                                            <td width="70%"><input type="text" name="name"
                                                                    style="width: 400px;"
                                                                    placeholder="请录入组织全称"></td>
                                         </tr>
@@ -887,7 +882,6 @@
                                     } else {
                                         return a;
                                     }
-
                                 }
                                 }
 
