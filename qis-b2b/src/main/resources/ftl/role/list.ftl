@@ -30,6 +30,7 @@
                </div>
            </#if>
         <div class="portlet light portlet-fit portlet-datatable bordered">
+            <input type="hidden"  id="roleId">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-settings font-dark"></i>
@@ -119,6 +120,96 @@
                 </div>
 
             </div>
+
+            <div id="group_list_div" class="modal fade" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog" style="width:800px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">组织列表</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" id="tableDatas">
+                                <div class="col-md-12">
+                                    <div class="portlet">
+                                        <div class="portlet-body">
+                                            <table class="table table-striped table-bordered table-hover" id="group_list_table">
+                                                <thead>
+                                                <tr role="row" class="heading">
+                                                    <th width="25%">用户组名称</th>
+                                                    <th width="25%">用户组编号</th>
+                                                    <th width="25%">用户组描述</th>
+                                                    <th width="25%">操作</th>
+                                                </tr>
+                                                <tr role="row" class="filter">
+
+                                                    <!-- 登录名 -->
+                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_name"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_code"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_descr"></td>
+                                                    <td>
+                                                        <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                        </button>
+                                                        <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group_list_div2" class="modal fade" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog" style="width:800px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">组织列表</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" id="tableDatas">
+                                <div class="col-md-12">
+                                    <div class="portlet">
+                                        <div class="portlet-body">
+                                            <table class="table table-striped table-bordered table-hover" id="group_list_table2">
+                                                <thead>
+                                                <tr role="row" class="heading">
+                                                    <th width="25%">用户组名称</th>
+                                                    <th width="25%">用户组编号</th>
+                                                    <th width="25%">用户组描述</th>
+                                                    <th width="25%">操作</th>
+                                                </tr>
+                                                <tr role="row" class="filter">
+                                                    <!-- 登录名 -->
+                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_name"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_code"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_descr"></td>
+                                                    <td>
+                                                        <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                        </button>
+                                                        <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -202,22 +293,147 @@
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
                             var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
                                     '<i class="fa fa-map"></i>模块管理</a>';
-                            var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
+                            var c='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="seegroup(\''+row.id+'\')" title ="查看组织"><i class="fa fa-search"></i>查看组织</a>';
+                            var d='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="togroup(\''+row.id+'\')" title ="分配组织"><i class="fa fa-search"></i>分配组织</a>';
+                            var e = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
                                     '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
                             if(row.isDeleted==1){
                                 return "已删除";
                             }else{
-                                return a+b+c;
+                                return a+b+c+d+e;
                             }
                         }}
                 ]
             }
         });
 
+        var groupGrid=new Datatable();
+        var $group_list_table=$("#group_list_table");
+        groupGrid.init({
+            src:$group_list_table,
+            onSuccess:function(groupGrid){
+                console.log(groupGrid);
+            },
+            onError:function(groupGrid){
+            },
+            dataTable:{
+                "bServerSide":true,
+                "sAjaxSource":"${rc.contextPath}/role/query-group-list",
+                "aoColumnDefs":[
+                    { "bSortable":false,"aTargets":[ 0,1,2,3] }
+                ],//设置不排序得列
+                "aoColumns":[
+                    { "sTitle":"组织名称","mData":"name"},
+                    { "sTitle":"组织编号","mData":"code"},
+                    { "sTitle":"组织描述","mData":"descr"},
+                    { "sTitle":"操作","mData":"id","sDefaultContent":"","mRender":function(data,type,row){
+                            return'<a class="delete btn green btn-xs black" href="javascript:leave('+data+');"><i class="fa fa-level-down"></i>离开</a>';
+                        }}
+                ]
+            }
+        });
 
+        var groupGrid2=new Datatable();
+        var $groupList_data_table2=$("#group_list_table2");
+        groupGrid2.init({
+            src:$groupList_data_table2,
+            onSuccess:function(groupGrid2){
+                console.log(groupGrid2);
+            },
+            onError:function(groupGrid2){
+            },
+            dataTable:{
+                "bServerSide":true,
+                "sAjaxSource":"${rc.contextPath}/role/query-group-notinrole",
+                "aoColumnDefs":[
+                    { "bSortable":false,"aTargets":[ 0,1,2,3] }
+                ],//设置不排序得列
+                "aoColumns":[
+                    { "sTitle":"组织名称","mData":"name"},
+                    { "sTitle":"组织编号","mData":"code"},
+                    { "sTitle":"组织描述","mData":"descr"},
+                    { "sTitle":"操作","mData":"id","sDefaultContent":"","mRender":function(data,type,row){
+                            return'<a class="delete btn green btn-xs black" href="javascript:join('+data+');"><i class="fa fa-level-up"></i>加入</a>';
+                        }}
+                ]
+            }
+        });
 
+        function seegroup(id){
+            groupGrid.setAjaxParam("roleId",id);
+            $("#roleId").val(id);
+            groupGrid.getDataTable().fnDraw();
+            $('#group_list_div').modal('show');
+        }
 
+        function togroup(id){
+            groupGrid2.setAjaxParam("roleId",id);
+            $("#roleId").val(id);
+            groupGrid2.getDataTable().fnDraw();
+            $('#group_list_div2').modal('show');
+        }
+
+        function join(id){
+            bootbox.dialog({
+                message: "确认此组织加入此角色",
+                buttons: {
+                    success: {
+                        label: "确定",
+                        className: "green",
+                        callback: function() {
+                            $.ajax({
+                                url:'${rc.contextPath}/role/join',
+                                type:'POST',
+                                traditional:true,
+                                data:{"roleId":$("#roleId").val(),"groupId":id},
+                                success:function(){
+                                    groupGrid2.getDataTable().fnDraw();
+                                    groupGrid2.getDataTable().fnDraw();
+                                }
+                            });
+                        }
+                    },
+                    main: {
+                        label: "取消",
+                        className: "gray",
+                        callback: function() {
+                            $(this).hide();
+                        }
+                    }
+                }
+            });
+        }
+        function leave(id){
+            bootbox.dialog({
+                message: "确认此组织离开此角色",
+                buttons: {
+                    success: {
+                        label: "确定",
+                        className: "green",
+                        callback: function() {
+                            $.ajax({
+                                url:'${rc.contextPath}/role/leave',
+                                type:'POST',
+                                traditional:true,
+                                data:{"roleId":$("#roleId").val(),"groupId":id},
+                                success:function(){
+                                    groupGrid.getDataTable().fnDraw();
+                                    groupGrid.getDataTable().fnDraw();
+                                }
+                            });
+                        }
+                    },
+                    main: {
+                        label: "取消",
+                        className: "gray",
+                        callback: function() {
+                            $(this).hide();
+                        }
+                    }
+                }
+            });
+        }
 
         /**
          * 关闭提示信息

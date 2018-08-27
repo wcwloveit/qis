@@ -10,12 +10,15 @@ import com.xinri.po.module.ModuleInfoes;
 import com.xinri.po.role.Roles;
 import com.xinri.po.roleModuleInfos.RoleModuleInfos;
 import com.xinri.po.roleModulePermissions.RoleModuleInfoPermissionHeads;
+import com.xinri.po.user.UserGroups;
 import com.xinri.service.module.IModuleInfoesService;
 import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
 import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionLinesService;
+import com.xinri.service.role.IRoleUserGroupsService;
 import com.xinri.service.role.IRolesService;
 import com.xinri.service.roleModuleInfos.IRoleModuleInfosService;
 import com.xinri.service.roleModulePermissions.IRoleModuleInfoPermissionHeadsService;
+import com.xinri.util.AjaxStatus;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +48,9 @@ public class RoleController extends BaseController {
 
     @Autowired
     private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
+
+    @Autowired
+    private IRoleUserGroupsService roleUserGroupsService;
 
     /*
      * 首页
@@ -256,6 +262,53 @@ public class RoleController extends BaseController {
         }
         return "redirect:/role/module/"+roleId;
     }
+
+    /**
+     * 查询某个角色下的组织
+     *
+     * @param dt
+     * @param roleId
+     * @param request
+     *
+     * @return
+     */
+    @RequestMapping(value="query-group-list") @ResponseBody
+    public DataTable queryMessList(DataTable<UserGroups> dt,@RequestParam(value="roleId", required=false) String roleId,ServletRequest request){
+        Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
+        return roleUserGroupsService.QueryUserByRoleIdList(dt,searchParams,roleId);
+    }
+
+    @RequestMapping(value="query-group-notinrole") @ResponseBody
+    public DataTable queryNotInRoleList(DataTable<UserGroups> dt, @RequestParam(value="roleId", required=false) String roleId, ServletRequest request){
+        Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
+        return roleUserGroupsService.QueryGroupNotInRoleIdList(dt,searchParams,roleId);
+    }
+
+    /**
+     * 员工加入角色
+     *
+     * @param roleId
+     * @param empId
+     *
+     * @return
+     */
+    @RequestMapping(value="join", method=RequestMethod.POST) @ResponseBody
+    public AjaxStatus join(@RequestParam("roleId") Long roleId, @RequestParam("groupId") Long groupId){
+        return roleUserGroupsService.JoinRole(roleId,groupId);
+    }
+    /**
+     * 员工离开角色
+     *
+     * @param roleId
+     * @param empId
+     *
+     * @return
+     */
+    @RequestMapping(value="leave", method=RequestMethod.POST) @ResponseBody
+    public AjaxStatus leave(@RequestParam("roleId") Long roleId,@RequestParam("groupId") Long groupId){
+        return roleUserGroupsService.LeaveRole(roleId,groupId);
+    }
+
 
 
 }

@@ -177,6 +177,77 @@
 		DELETE FROM ROLE_USER_GROUPS t 
 		<where>${whereSqlParam}</where>
 	</update>
+
+	<sql id="userGroupsColumns">
+	  t.ID,
+	  t.NAME,
+	  t.CODE,
+	  t.IS_DELETED,
+	  t.DESCR,
+	  t.GUID_ID,
+	  t.IS_EFFECTIVE,
+	  t.EFFECTIVE_DATE_START,
+	  t.EFFECTIVE_DATE_END,
+	  t.CREATED_ON,
+	  t.CREATED_BY,
+	  t.MODIFIED_ON,
+	  t.MODIFIED_BY,
+	  t.DESC_FLEX_FIELD1,
+	  t.DESC_FLEX_FIELD2,
+	  t.DESC_FLEX_FIELD3,
+	  t.DESC_FLEX_FIELD4,
+	  t.DESC_FLEX_FIELD5,
+	  t.DESC_FLEX_FIELD6
+  	</sql>
+
+	<!-- 根据主键ID获取数据 -->
+	<select id="findGroupNotInRoleId" parameterType="com.xinri.po.user.UserGroups" resultMap="com.xinri.dao.user.UserGroupsMapper.userGroupsResultMap">
+		SELECT <include refid="userGroupsColumns" />
+		from user_groups t
+		where id
+		not in(
+			select user_group_id
+			from role_user_groups
+			where role_id = #{roleId}
+		)
+		<if test="name != null and name != ''">
+			AND t.NAME LIKE '${name}'
+		</if>
+		<if test="code != null and code != ''">
+			AND t.CODE LIKE '${code}'
+		</if>
+		<if test="descr != null and descr != ''">
+			AND t.DESCR LIKE '${descr}'
+		</if>
+	</select>
+
+	<select id="findGroupByRoleId" parameterType="com.xinri.po.user.UserGroups" resultMap="com.xinri.dao.user.UserGroupsMapper.userGroupsResultMap">
+		SELECT <include refid="userGroupsColumns" />
+		from user_groups t
+		where id
+		in(
+			select user_group_id
+			from role_user_groups
+			where role_id = #{roleId}
+		)
+		<if test="name != null and name != ''">
+			AND t.NAME LIKE '${name}'
+		</if>
+		<if test="code != null and code != ''">
+			AND t.CODE LIKE '${code}'
+		</if>
+		<if test="descr != null and descr != ''">
+			AND t.DESCR LIKE '${descr}'
+		</if>
+	</select>
+
+	<delete id="removeByEntity" parameterType="com.xinri.po.role.RoleUserGroups">
+		delete FROM ROLE_USER_GROUPS
+		WHERE
+		ROLE_ID = #{roleId}
+		AND
+		USER_GROUP_ID = #{userGroupId}
+	</delete>
 	
 
 </mapper>
