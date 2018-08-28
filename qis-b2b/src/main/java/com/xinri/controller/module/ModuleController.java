@@ -221,6 +221,7 @@ public class ModuleController extends BaseController {
         ModuleInfoes module = new ModuleInfoes();
         module.setParentModuleId(pid);
         module.setName(name);
+        module.setIsDeleted(0);
         List<ModuleInfoes> modules = moduleInfoesService.findList(module);
         logger.info("check结束");
         if (CollectionUtils.isNotEmpty(modules)) {
@@ -239,6 +240,7 @@ public class ModuleController extends BaseController {
         }
         ModuleInfoes module = new ModuleInfoes();
         module.setCode(code);
+        module.setIsDeleted(0);
         List<ModuleInfoes> modules = moduleInfoesService.findList(module);
         logger.info("checkCode结束");
         if (CollectionUtils.isNotEmpty(modules)) {
