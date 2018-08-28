@@ -271,8 +271,7 @@
                                                     <label class="control-label col-md-2">可控列</label>
                                                     <div class="col-md-10">
                                                     <#list columnDatas as columnData>
-                                                       <div class="hiddenCheck"> <input type="checkbox"  value="${columnData.id}" name="columns">${columnData.name}
-                                                       </div>
+                                                           <input type="checkbox"  value="${columnData.id}" name="columns">${columnData.name}
                                                     </#list>
                                                     </div>
                                                 </div>
@@ -385,6 +384,33 @@
 </div>
 
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="modalStr" style="text-align: center;"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <!--<button type="button" class="btn btn-primary">
+
+        </button>-->
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+
 </body>
 <content tag="script">
     <script src="${rc.contextPath}/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
@@ -458,7 +484,6 @@
                                 var obj = msg.parents[i];
                                 value = value + "<option value=" + obj.id + ">" + obj.name + "</option>";
                             }
-
                             $('.btn-children').attr('disabled', "disabled");
                         } else {
                             $(".permissions").attr("style","display:none;");
@@ -468,10 +493,7 @@
                         }
                         $("input[name=pers]").removeProp("checked");
                         $("input[name=pers]").parents('span').removeClass("checked");
-
-
-
-                        $(".hiddenCheck").hide();
+//  $(".hiddenCheck").hide();
                         $("input[name=columns]").removeProp("checked");
                         $("input[name=columns]").parents('span').removeClass("checked");
                         if(msg.myPers){
@@ -482,10 +504,12 @@
                             }
                         }
                         if(msg.mycolumns){
+                            console.log(msg.mycolumns);
                             for(var i=0;i<msg.mycolumns.length;i++){
                                 var mycolumn=msg.mycolumns[i];
-                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").attr("style","display:block;").prop("checked", true).parents('span').toggleClass("checked");
-                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").parents(".hiddenCheck").attr("style","display:block");
+                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").prop("checked", true).parents('span').toggleClass("checked");
+//                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").attr("style","display:block;").prop("checked", true).parents('span').toggleClass("checked");
+//                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").parents(".hiddenCheck").attr("style","display:block");
                             }
                         }
                         document.getElementById("parentModuleId").innerHTML = value;
@@ -635,6 +659,7 @@
                     $("select[name=parentModuleId] option[value='" + data.id + "']").attr("selected", "selected");
                 }
             });
+
             $('#moduleForm :input').each(function (a) {
                 $(this).enable();
                 $(this).attr("readonly", false);
@@ -794,6 +819,25 @@
             $('#icon').val(data);
             $('#icon_add_div').modal('hide');
         }
+
+
+
+        $(".editColumn").click(function(){
+           var moudleId = $('input[name=id]').val();
+            $.ajax({
+                url: '${rc.contextPath}/module/get-infos/'+moudleId,
+                type: 'GET',
+                success: function (msg) {
+                    console.log(msg);
+
+
+//                    $("#myModal").modal();
+
+
+
+                }
+            });
+        })
 
     </script>
 </content>

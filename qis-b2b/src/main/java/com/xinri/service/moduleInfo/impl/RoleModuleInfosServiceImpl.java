@@ -2,6 +2,7 @@ package com.xinri.service.moduleInfo.impl;
 
 import com.qis.common.service.CrudService;
 import com.xinri.dao.moduleInfo.RoleModuleInfosMapper;
+import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 import com.xinri.po.moduleInfo.RoleModuleInfos;
 import com.xinri.service.moduleInfo.IRoleModuleInfosService;
 import org.springframework.stereotype.Service;
@@ -18,4 +19,6 @@ public class RoleModuleInfosServiceImpl extends CrudService<RoleModuleInfosMappe
     public List<Long> getModuleIds(Long id) {
         return dao.getModuleIds(id);
     }
+
+
 }

@@ -427,6 +427,15 @@
 		DELETE FROM MODULE_INFO_COLUMN_DATAS t 
 		<where>${whereSqlParam}</where>
 	</update>
+
+	<delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.ModuleInfoColumnDatas">
+		delete FROM MODULE_INFO_COLUMN_DATAS
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="moduleInfoId != null">
+				AND MODULE_INFO_ID = #{moduleInfoId}
+			</if>
+		</trim>
+	</delete>
 	
 
 </mapper>

@@ -12,15 +12,15 @@ import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
 import com.xinri.vo.jstree.State;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * 创建人:汪震
@@ -62,9 +62,13 @@ public class ModuleController extends BaseController {
         Permissions permission = new Permissions();
         permission.setIsDeleted(0);
         mv.addObject("permissions", permissionsService.findList(permission));//返回所有的权限信息供页面选择
+
+
         ColumnDatas columnData = new ColumnDatas();
         columnData.setIsDeleted(0);
         mv.addObject("columnDatas", columnDatasService.findList (columnData));
+ //返回所有的可控数据列信息供页面选择
+
         logger.info("findModuleList结束");
         return mv;
     }
@@ -109,8 +113,8 @@ public class ModuleController extends BaseController {
         moduleInfoPermission.setModuleInfoId(id);
         map.put("module", moduleInfoesService.get(id));
         map.put("myPers", permissionsToModuleService.findList(moduleInfoPermission));
-
         map.put("parents", getParents());
+
         ModuleInfoColumnDatas moduleInfoColumnData=new ModuleInfoColumnDatas();
         moduleInfoColumnData.setModuleInfoId(id);
         map.put("mycolumns",moduleInfoColumnDatasService.findList(moduleInfoColumnData));
@@ -140,7 +144,11 @@ public class ModuleController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView create(ModuleInfoes moduleinfo, String[] pers) {
+    public ModelAndView create(ModuleInfoes moduleinfo,HttpServletRequest request) {
+        Map<String,String> parmMap=new HashMap<String,String>();
+        Map<String,String[]> map= request.getParameterMap();
+        String[] columns=map.get("columns");
+        String[] pers = map.get("pers");
         logger.info("create开始");
         if (moduleinfo.getId() != null) {
             moduleinfo.setIsNewRecord(false);
@@ -148,16 +156,32 @@ public class ModuleController extends BaseController {
         if (moduleinfo.getParentModuleId() == null) {
             moduleinfo.setParentModuleId(0L);
         }
+
         moduleInfoesService.saveOrUpdate(moduleinfo);
+
         ModuleInfoPermissions moduleInfoPermissions = new ModuleInfoPermissions();
         moduleInfoPermissions.setModuleInfoId(moduleinfo.getId());
+
+        ModuleInfoColumnDatas moduleInfoColumnDatas = new ModuleInfoColumnDatas();
+        moduleInfoColumnDatas.setModuleInfoId(moduleinfo.getId());
+
         permissionsToModuleService.removeByEntity(moduleInfoPermissions);
+        moduleInfoColumnDatasService.removeByEntity(moduleInfoColumnDatas);
+
         if (pers != null && moduleinfo.getParentModuleId() != 0) {
             for (String per : pers) {
                 moduleInfoPermissions.setIsNewRecord(true);
                 moduleInfoPermissions.setId(null);
                 moduleInfoPermissions.setPermissionId(Long.valueOf(per));
                 permissionsToModuleService.saveOrUpdate(moduleInfoPermissions);
+            }
+        }
+        if (columns != null && moduleinfo.getParentModuleId() != 0) {
+            for (String columnData : columns) {
+                moduleInfoColumnDatas.setIsNewRecord(true);
+                moduleInfoColumnDatas.setId(null);
+                moduleInfoColumnDatas.setColumnDataId(Long.valueOf(columnData));
+                moduleInfoColumnDatasService.saveOrUpdate(moduleInfoColumnDatas);
             }
         }
         ModelAndView mv = new ModelAndView("redirect:/module/index/");
