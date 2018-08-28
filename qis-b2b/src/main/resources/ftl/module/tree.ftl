@@ -251,37 +251,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <div class="row ">
-                                    <div class="col-md-6">
-                                        <div class="form-group permissions"  style="display: none">
-                                            <label class="control-label col-md-2">权限</label>
-                                            <div class="col-md-10">
-                                            <#list permissions as permission>
-                                                <input type="checkbox" value="${permission.id}" name="pers">${permission.name}
-                                            </#list>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-6">
-                                                <div class="form-group columnDatas" style="display: none">
-                                                    <label class="control-label col-md-2">可控列</label>
-                                                    <div class="col-md-10">
-                                                    <#list columnDatas as columnData>
-                                                           <input type="checkbox"  value="${columnData.id}" name="columns">${columnData.name}
-                                                    </#list>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
                                 <div class="form-actions fluid">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -383,34 +352,6 @@
     </div>
 </div>
 
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="modalStr" style="text-align: center;"></div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                </button>
-                <!--<button type="button" class="btn btn-primary">
-
-        </button>-->
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-</div>
-
 </body>
 <content tag="script">
     <script src="${rc.contextPath}/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
@@ -478,39 +419,14 @@
                         $("select[name=menuType] option[value='" + data.menuType + "']").prop("selected", true);
                         var value = "";
                         if (data.parentModuleId != 0) {
-                            $(".permissions").attr("style","display:block;");
-                            $(".columnDatas").attr("style","display:block;");
                             for (var i = 0; i < msg.parents.length; i++) {
                                 var obj = msg.parents[i];
                                 value = value + "<option value=" + obj.id + ">" + obj.name + "</option>";
                             }
                             $('.btn-children').attr('disabled', "disabled");
                         } else {
-                            $(".permissions").attr("style","display:none;");
-                            $(".columnDatas").attr("style","display:none;");
                             $('.btn-children').enable();
                             $('.btn-parent').enable();
-                        }
-                        $("input[name=pers]").removeProp("checked");
-                        $("input[name=pers]").parents('span').removeClass("checked");
-//  $(".hiddenCheck").hide();
-                        $("input[name=columns]").removeProp("checked");
-                        $("input[name=columns]").parents('span').removeClass("checked");
-                        if(msg.myPers){
-                            for(var i=0;i<msg.myPers.length;i++){
-                                var myPer=msg.myPers[i];
-                                var qdwd=myPer.permissionId;
-                                $("input[name=pers][value='" +myPer.permissionId+"']").prop("checked", true).parents('span').toggleClass("checked");
-                            }
-                        }
-                        if(msg.mycolumns){
-                            console.log(msg.mycolumns);
-                            for(var i=0;i<msg.mycolumns.length;i++){
-                                var mycolumn=msg.mycolumns[i];
-                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").prop("checked", true).parents('span').toggleClass("checked");
-//                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").attr("style","display:block;").prop("checked", true).parents('span').toggleClass("checked");
-//                                $("input[name=columns][value='" +mycolumn.columnDataId+"']").parents(".hiddenCheck").attr("style","display:block");
-                            }
                         }
                         document.getElementById("parentModuleId").innerHTML = value;
                         $("select[name=parentModuleId] option[value='" + data.parentModuleId + "']").prop("selected", true);
@@ -629,7 +545,6 @@
             form.resetForm();
             $('input[name=id]').val("");
             $('select[name=parentModuleId]').val("");
-            $(".permissions").attr("style","display:none;");
             $('#moduleForm :input').each(function (a) {
                 $(this).enable();
                 $(this).attr("readonly", false);
@@ -643,7 +558,6 @@
         });
         $('.btn-children').click(function () {
             form.resetForm();
-            $(".permissions").attr("style","display:block;");
             $('input[name=id]').val("");
             $.ajax({
                 url: '${rc.contextPath}/module/get-infos/'+module_id,
@@ -819,25 +733,6 @@
             $('#icon').val(data);
             $('#icon_add_div').modal('hide');
         }
-
-
-
-        $(".editColumn").click(function(){
-           var moudleId = $('input[name=id]').val();
-            $.ajax({
-                url: '${rc.contextPath}/module/get-infos/'+moudleId,
-                type: 'GET',
-                success: function (msg) {
-                    console.log(msg);
-
-
-//                    $("#myModal").modal();
-
-
-
-                }
-            });
-        })
 
     </script>
 </content>

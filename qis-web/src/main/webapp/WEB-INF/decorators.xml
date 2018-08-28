@@ -14,6 +14,8 @@
         <pattern>/baseDataTypes/*</pattern>
         <pattern>/role/*</pattern>
         <pattern>/module/*</pattern>
+        <pattern>/modulePermissions/*</pattern>
+        <pattern>/moduleColumnDatas/*</pattern>
         <pattern>/permissions/*</pattern>
 		<pattern>/roleClass/*</pattern>
         <pattern>/userGroup/*</pattern>
