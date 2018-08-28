@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--创建人:汪震-->
+<!--创建时间:20180813-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinri.dao.user.SysUserMapper">
 	<resultMap id="sysUserResultMap" type="com.xinri.po.user.SysUser">
@@ -17,6 +19,7 @@
 	      	<result column="STATUS" property="status" jdbcType="INTEGER"/>
 	      	<result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP"/>
 	      	<result column="VERSION" property="version" jdbcType="INTEGER"/>
+			<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
 	</resultMap>
 
     <!-- 列定义 -->
@@ -35,7 +38,8 @@
 	  t.DEPTID,
 	  t.STATUS,
 	  t.CREATETIME,
-	  t.VERSION
+	  t.VERSION,
+	  t.IS_DELETED
   	</sql>
 
     <!-- 查询条件SQL -->
@@ -62,12 +66,12 @@
 				AND t.NAME = #{name}
 			</if>
 
-			<if test="startBirthday != null and startBirthday !=''">
-				AND <![CDATA[ t.BIRTHDAY >=str_to_date(concat(#{startBirthday},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endBirthday != null and endBirthday !=''">
-				AND <![CDATA[ t.BIRTHDAY <= str_to_date(concat(#{endBirthday}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
+			<!--<if test="startBirthday != null and startBirthday !=''">-->
+				<!--AND <![CDATA[ t.BIRTHDAY >=str_to_date(concat(#{startBirthday},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endBirthday != null and endBirthday !=''">-->
+				<!--AND <![CDATA[ t.BIRTHDAY <= str_to_date(concat(#{endBirthday}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
 
 			<if test="sex != null">
 				AND t.SEX = #{sex}
@@ -90,16 +94,25 @@
 			<if test="status != null">
 				AND t.STATUS = #{status}
 			</if>
-			<if test="startCreatetime != null and startCreatetime !=''">
-				AND <![CDATA[ t.CREATETIME >=str_to_date(concat(#{startCreatetime},'00:00:00'),'%Y-%m-%d %T')]]>
+			<!--<if test="startCreatetime != null and startCreatetime !=''">-->
+				<!--AND <![CDATA[ t.CREATETIME >=str_to_date(concat(#{startCreatetime},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endCreatetime != null and endCreatetime !=''">-->
+				<!--AND <![CDATA[ t.CREATETIME <= str_to_date(concat(#{endCreatetime}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<if test="isDeleted != null">
+				AND t.IS_DELETED = #{isDeleted}
 			</if>
-			<if test="endCreatetime != null and endCreatetime !=''">
-				AND <![CDATA[ t.CREATETIME <= str_to_date(concat(#{endCreatetime}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
+			<if test="startBirth != null and startBirth !=''">
+				AND <![CDATA[ t.BIRTHDAY >= str_to_date(concat(#{startBirth},'00:00:00'),'%Y-%m-%d %T')]]>
 			</if>
-
+			<if test="endBirth != null and endBirth !=''">
+				AND <![CDATA[ t.BIRTHDAY <= str_to_date(concat(#{endBirth},'23:59:59'),'%Y-%m-%d %T')]]>
+			</if>
 			<if test="version != null">
 				AND t.VERSION = #{version}
 			</if>
+
 		</trim>
 	</sql>
 
@@ -400,6 +413,26 @@
 		DELETE FROM SYS_USER t 
 		<where>${whereSqlParam}</where>
 	</update>
-	
 
+	<resultMap id="sysUserResultVoMap" type="com.xinri.vo.users.SysUserVo" extends="sysUserResultMap">
+		<result column="DEPT_NAME" property="dept" jdbcType="VARCHAR"/>
+		<result column="ROLE_NAME" property="role" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<select id="findListByVo" parameterType="com.xinri.vo.users.SysUserVo" resultMap="sysUserResultVoMap">
+		SELECT
+		<include refid="sysUserColumns" />,d.NAME DEPT_NAME,r.NAME ROLE_NAME
+		FROM SYS_USER t
+		LEFT JOIN DEPARTMENTS d ON t.DEPTID=d.ID
+		LEFT JOIN ROLES r ON t.ROLEID=r.ID
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY t.ID DESC
+			</otherwise>
+		</choose>
+	</select>
 </mapper>
