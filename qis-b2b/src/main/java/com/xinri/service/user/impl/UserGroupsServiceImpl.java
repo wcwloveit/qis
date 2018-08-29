@@ -36,7 +36,8 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
     @Autowired
     private UsersMapper userDao;
 
-
+    @Autowired
+    private UserUserGroupsMapper userUserGroupsMapper;
 
     @Autowired
     private IUserUserGroupsService userUserGroupsService;
@@ -170,16 +171,23 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
     @Transactional(readOnly=false)
     public AjaxStatus LeaveRole(Long userGroupId,Long userId){
         AjaxStatus as=new AjaxStatus(true);
+        try {
         //根据用户id获取用户数据
         UserUserGroups  userUserGroups = new UserUserGroups();
         userUserGroups.setUserId(userId); //添加用户id
         userUserGroups.setUserGroupId(userGroupId);//添加用户组id
         List<UserUserGroups> userUserGroupsPo =userUserGroupsService.findAllList(userUserGroups);
        // List<UserUserGroups> userUserGroupsPo =userUserGroupsService.findByCondition(userUserGroups);
-        for (int i=0;i<userUserGroupsPo.size();i++){
-           Long id= userUserGroupsPo.get(i).getId();
-            //调用 人员与用户组
-            userUserGroupsService.deleteById(id);
+            if(userUserGroupsPo.size()>0){
+                userUserGroupsService.delete(userUserGroups);
+//            for(UserUserGroups userUserGroup:userUserGroupsPo){
+////               Users user = userDao.get(userUserGroup.getUserId());
+//                userUserGroupsService.deleteById( userUserGroup.getId());
+//            }
+        }
+        } catch (Exception e ){
+            as = new AjaxStatus(false);
+            logger.error("退出人员报错：", e);
         }
         return as;
     }
@@ -201,25 +209,28 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
 //                email="%"+searchParams.get("LIKE_email").toString().trim().toUpperCase()+"%";
 //            }
 //        }
-        Users users= new Users();
-        List<Long> list2 = new ArrayList<Long>();
-        List<Users> list =new ArrayList<Users>();
+//        Users users= new Users();
+//        List<Long> list2 = new ArrayList<Long>();
+//        List<Users> list =new ArrayList<Users>();
+
+//        List<UserUserGroups> list1 = userUserGroupsService.findAllList(userUserGroups);
+//        List<Users> usersList = new ArrayList<Users>();
+//
+//        if(list1.size()>0){
+//            for(UserUserGroups userUserGroup:list1){
+//               Users user = userDao.get(userUserGroup.getUserId());
+//                usersList.add(user);
+//            }
+//        }
+//
+//        for (int j=0;j<list1.size();j++){
+//            Users li=userDao.get( list1.get(j).getUserId());
+//            list.add(users);
+//        }
+        List<Users> list=new ArrayList<Users>();
         UserUserGroups userUserGroups = new UserUserGroups();
         userUserGroups.setUserGroupId(Long.valueOf(roleId));
-        List<UserUserGroups> list1 = userUserGroupsService.findAllList(userUserGroups);
-        List<Users> usersList = new ArrayList<Users>();
-
-        if(list1.size()>0){
-            for(UserUserGroups userUserGroup:list1){
-               Users user = userDao.get(userUserGroup.getUserId());
-                usersList.add(user);
-            }
-        }
-
-        for (int j=0;j<list1.size();j++){
-            Users li=userDao.get( list1.get(j).getUserId());
-            list.add(users);
-        }
+         list = userUserGroupsMapper.getUserByUserGroupsId(userUserGroups);
 
         dt.setiTotalDisplayRecords(list.size());
         int begin=pageSize*(pageNo-1);

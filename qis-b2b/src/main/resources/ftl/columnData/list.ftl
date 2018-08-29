@@ -32,17 +32,14 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green btn-parent" href="${rc.contextPath}/column/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/permissions/column/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
-
                             <a href="javascript:void(0)" class="btn red">
                                 <i class="fa fa-trash-o"></i>
                                 <span class="hidden-480"  onclick="deleteList();">批量删除</span>
                             </a>
-
-
                         </div>
                     </div>
                 </div>
@@ -157,7 +154,7 @@
                 ],
                 "iDisplayLength": 10,//页面显示数据数量
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/column/list",
+                "sAjaxSource": "${rc.contextPath}/permissions/column/list",
                 "aaSorting": [
                     [0, "desc"]
                 ],
@@ -172,6 +169,14 @@
                     {"sTitle": "名称", "mData": "name"},
                     {"sTitle": "编号", "mData": "code"},
                     {"sTitle": "描述", "mData": "descr"},
+                    { "sTitle": "是否生效", "sDefaultContent": "", "mRender": function (data, type, row) {
+                        if(row.isEffective==1){
+                            var a = '<span style="color: #8a8a8a">失效</span>';
+                            return a;
+                        }else{
+                            return "生效";
+                        }
+                    }},
                     { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
                         if (data != null && "" != data) {
                             return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
@@ -182,7 +187,7 @@
 
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/column/update/' + row.id
+                        var a = '<a href="${rc.contextPath}/permissions/column/update/' + row.id
                                 + '" class="btn btn-xs blue"  title="编辑" >' +
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
@@ -274,7 +279,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/column/delete-' + id,
+                                url: '${rc.contextPath}/permissions/column/delete-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -340,7 +345,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/column/deleteAll',
+                                url:'${rc.contextPath}/permissions/column/deleteAll',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",

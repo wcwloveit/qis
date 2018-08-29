@@ -3,7 +3,11 @@ package com.xinri.controller.permissions;
 import com.app.api.DataTable;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
+import com.xinri.po.moduleInfo.ModuleInfoPermissions;
+import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
+import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
+import com.xinri.service.moduleInfo.IModuleInfoesService;
 import com.xinri.service.permissions.IPermissionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +30,12 @@ public class permissionsController extends BaseController {
 
     @Autowired
     private IPermissionsService permissionsService;
+
+    @Autowired
+    private IModuleInfoesService moduleInfoesService;
+
+    @Autowired
+    private IModuleInfoPermissionsService moduleInfoPermissionsService;
 
     /*
      * 首页
@@ -80,10 +90,21 @@ public class permissionsController extends BaseController {
                                RedirectAttributes attributes) {
         logger.info("新增权限开始");
         ModelAndView mv = new ModelAndView("redirect:/permissions/index");
+        ModuleInfoPermissions moduleInfoPermission=new ModuleInfoPermissions();
+        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findAllList();
         try {
             permissions.setIsDeleted(0);
             permissions.setIsEffective(0);
             permissionsService.saveOrUpdate(permissions);
+            for (ModuleInfoes moduleInfo : moduleInfoes) {
+                moduleInfoPermission.setId(null);
+                moduleInfoPermission.setIsNewRecord(true);
+                Long moduleInfoId=moduleInfo.getId();
+                Long permissionId=permissions.getId();
+                moduleInfoPermission.setModuleInfoId(moduleInfoId);
+                moduleInfoPermission.setPermissionId(permissionId);
+                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
+            }
             attributes.addFlashAttribute("success", true);
             attributes.addFlashAttribute("message", "添加权限成功");
             logger.info("新增权限完成");

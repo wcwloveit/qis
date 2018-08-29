@@ -1,12 +1,12 @@
 package com.xinri.po.user;
+
 import com.qis.common.persistence.DataEntity;
-import java.math.*;
-import java.util.*;
+
+import java.util.Date;
+
 /**
- * <p>管理员表</p>
- * 类名:SysUserpo<br>
- * 创建人:xiashanyong<br>
- * 创建时间:20180813<br>
+ * 创建人:汪震
+ * 创建时间:20180813
  */
  
 public class SysUser extends DataEntity<SysUser>{

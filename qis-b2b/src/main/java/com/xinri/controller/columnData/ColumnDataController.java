@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value="/column")
+@RequestMapping(value="/permissions/column")
 public class ColumnDataController extends BaseController {
 
     @Autowired
@@ -36,7 +36,6 @@ public class ColumnDataController extends BaseController {
     }
 
     /*
-   * 分页列表
    * */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
@@ -70,7 +69,7 @@ public class ColumnDataController extends BaseController {
     public ModelAndView save(ColumnDatas columnDatas,
                              RedirectAttributes attributes) {
             logger.info("新增产品开始");
-            ModelAndView mv = new ModelAndView("redirect:/column/index"); //重定向
+            ModelAndView mv = new ModelAndView("redirect:/permissions/column/index"); //重定向
             try {
             columnDatasService.saveOrUpdate(columnDatas);
             attributes.addFlashAttribute("success",true);
@@ -104,7 +103,7 @@ public class ColumnDataController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(ColumnDatas columnDatas, RedirectAttributes attributes) {
         logger.info("更新产品开始");
-        ModelAndView mv = new ModelAndView("redirect:/column/index");
+        ModelAndView mv = new ModelAndView("redirect:/permissions/column/index");
         try {
             columnDatas.setIsNewRecord(false);
             columnDatasService.saveOrUpdate(columnDatas);

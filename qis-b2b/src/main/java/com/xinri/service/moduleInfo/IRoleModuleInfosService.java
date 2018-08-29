@@ -1,6 +1,7 @@
 package com.xinri.service.moduleInfo;
 
 import com.qis.common.service.IBaseService;
+
 import com.xinri.po.moduleInfo.RoleModuleInfos;
 
 import java.util.List;
@@ -11,4 +12,5 @@ import java.util.List;
  */
 public interface IRoleModuleInfosService extends IBaseService<RoleModuleInfos> {
     List<Long> getModuleIds(java.lang.Long id);
+
 }

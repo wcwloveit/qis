@@ -1,7 +1,8 @@
 package com.qis.shiro;
 
 //import com.coracle.xsimple.service.safety.LogService;
-import com.app.ShiroUser;
+
+import com.qis.ShiroUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.SessionException;
 import org.apache.shiro.subject.Subject;
@@ -9,7 +10,6 @@ import org.apache.shiro.web.filter.authc.LogoutFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 public class SystemLogoutFilter extends LogoutFilter {
 

@@ -49,7 +49,7 @@
             </div>
             <div class="portlet-body form">
             <#--寻找是哪个Controller-->
-                <form id="myForm" action="${rc.contextPath}/column/${action}" class="form-horizontal" method="POST">
+                <form id="myForm" action="${rc.contextPath}/permissions/column/${action}" class="form-horizontal" method="POST">
                     <div class="form-body">
                     <#--<h3 class="form-section">基本信息</h3>-->
                         <input type="hidden" class="form-control"  name="id" value="${ColumnDatas.id?if_exists}" >
@@ -88,7 +88,23 @@
                                     </div>
                                 </div>
 
-                            </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" style="width: 87px;text-align: left;padding-right: 0">
+                                        是否生效<span class="required">
+                                        *
+										</span></label>
+                                    <div class="col-md-10">
+                                        <select name="isEffective" class="select">
+                                            <option value="0"
+<#if ColumnDatas.isEffective == 0>selected</#if> >
+                                                生效</option>
+                                            <option value="1"
+<#if ColumnDatas.isEffective == 1>selected</#if> >
+                                                失效</option>
+                                        </select>
+
+                                    </div>
+
 
                             </div>
                         </div>

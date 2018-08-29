@@ -1,4 +1,9 @@
-package com.qis.service.system;
+package com.xinri.service;
+
+//import com.xinri.dao.user.SysUserMapper;
+//import com.xinri.po.user.SysUser;
+import com.kingnode.diva.security.utils.Digests;
+import com.kingnode.diva.utils.Encodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author chirs@zhoujin.com (Chirs Chou)
+ * @author 夏善勇
  */
 @Component @Transactional(readOnly=true) public class ResourceService {
     public static final String HASH_ALGORITHM="SHA-1";
@@ -20,25 +25,35 @@ import javax.servlet.http.HttpServletRequest;
     @Autowired
     private  HttpServletRequest request;
 
+//    @Autowired
+//    private SysUserMapper sysUserDao;
+
 
     private CacheManager cacheManager;
 
 
+    /**
+     * 更新密码
+     * 创建人 夏善勇 2018-8-28
+     * @param password
+     * @param id
+     * @return
+     */
 //    public Boolean changePassword(String password,Long id){
-//        KnUser u=userDao.findOne(id);
-//        byte[] hashPassword=Digests.sha1(password.getBytes(),Encodes.decodeHex(u.getSalt()),HASH_INTERATIONS);
+//        SysUser u=sysUserDao.get(id);
+//        byte[] hashPassword = Digests.sha1(password.getBytes(), Encodes.decodeHex(u.getSalt()),HASH_INTERATIONS);
 //        u.setPassword(Encodes.encodeHex(hashPassword));
-//        userDao.save(u);
+//        sysUserDao.update(u);
 //        return true;
 //    }
     
-//
-//
-//    private void entryptPassword(KnUser user){
+
+
+//    private void entryptPassword(SysUser user){
 //        byte[] hashPassword=Digests.sha1(user.getPlainPassword().getBytes(),Encodes.decodeHex(user.getSalt()),HASH_INTERATIONS);
 //        user.setPassword(Encodes.encodeHex(hashPassword));
 //    }
-
+//
 //    /**
 //     * 修改密码
 //     *
@@ -49,8 +64,8 @@ import javax.servlet.http.HttpServletRequest;
 //     *
 //     * @throws Exception
 //     */
-//    @Transactional(readOnly=false) public Map<String,String> ChangePassword(String oldPassword,String newPassword) throws Exception{
-//        Map map=new HashMap();
+//    @Transactional(readOnly=false) public Map<String,String> ChangePassword(String oldPassword, String newPassword) throws Exception{
+//        Map map = new HashMap();
 //        KnUser ku=userDao.findOne(Users.id());
 //        KnUser knUser=new KnUser();
 //        knUser.setLoginName(ku.getLoginName());
@@ -71,5 +86,15 @@ import javax.servlet.http.HttpServletRequest;
 //        }
 //        return map;
 //    }
+
+
+
+    public static void main(String[] args) {
+        String a = Encodes.encodeHex(Digests.generateSalt(SALT_SIZE));
+        byte[] hashPassword=Digests.sha1("123456".getBytes(), Encodes.decodeHex(a),HASH_INTERATIONS);
+        String b =Encodes.encodeHex(hashPassword);
+        System.out.println(a);
+        System.out.println(b);
+    }
 
 }

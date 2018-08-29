@@ -2,6 +2,10 @@ package com.xinri.dao.user;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.user.UserUserGroups;
+import com.xinri.po.user.Users;
+
+import java.util.List;
+
 /**
  * 类名:UserUserGroupsMapper<br>
  * 创建人:xiashanyong<br>
@@ -9,6 +13,8 @@ import com.xinri.po.user.UserUserGroups;
  */
  @MyBatisDao
 public interface UserUserGroupsMapper extends CrudDao<UserUserGroups>{
+
+ public List<Users> getUserByUserGroupsId(UserUserGroups userUserGroups);
 
 }
 

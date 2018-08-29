@@ -3,25 +3,21 @@ package com.xinri.controller.module;
 import com.qis.common.web.BaseController;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
-import com.xinri.po.moduleInfo.ModuleInfoPermissions;
-import com.xinri.service.moduleInfo.IModuleInfoesService;
+import com.xinri.service.moduleInfo.*;
 import com.xinri.service.permissions.IPermissionsService;
-import com.xinri.service.moduleInfo.IPermissionsToModuleService;
-import com.xinri.service.moduleInfo.IRoleModuleInfosService;
-import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
 import com.xinri.vo.jstree.State;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * 创建人:汪震
@@ -36,16 +32,18 @@ public class ModuleController extends BaseController {
     private IModuleInfoesService moduleInfoesService;
 
     @Autowired
-    private IPermissionsService permissionsService;
-
-    @Autowired
-    private IPermissionsToModuleService permissionsToModuleService;
-
-    @Autowired
     private IRoleModuleInfosService roleModuleInfosService;
 
     @Autowired
+    private IModuleInfoPermissionsService moduleInfoPermissionsService;
+
+    @Autowired
+    private IPermissionsService permissionsService;
+
+    @Autowired
     private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
+
+
 
     /*
      * 首页
@@ -54,9 +52,6 @@ public class ModuleController extends BaseController {
     public ModelAndView findModuleList() {
         logger.info("findModuleList开始");
         ModelAndView mv = new ModelAndView("/module/tree");
-        Permissions permission = new Permissions();
-        permission.setIsDeleted(0);
-        mv.addObject("permissions", permissionsService.findList(permission));//返回所有的权限信息供页面选择
         logger.info("findModuleList结束");
         return mv;
     }
@@ -97,10 +92,7 @@ public class ModuleController extends BaseController {
     public Map getInfos(@PathVariable Long id) {
         logger.info("getInfos开始");
         Map map = new HashMap();
-        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
-        moduleInfoPermission.setModuleInfoId(id);
         map.put("module", moduleInfoesService.get(id));
-        map.put("myPers", permissionsToModuleService.findList(moduleInfoPermission));
         map.put("parents", getParents());
         logger.info("getInfos结束");
         return map;
@@ -124,11 +116,11 @@ public class ModuleController extends BaseController {
     /**
      * 新建或修改
      *
-     * @param 模块信息和是否有效
+     * @param模块信息和是否有效
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView create(ModuleInfoes moduleinfo, String[] pers) {
+    public ModelAndView create(ModuleInfoes moduleinfo) {
         logger.info("create开始");
         if (moduleinfo.getId() != null) {
             moduleinfo.setIsNewRecord(false);
@@ -137,17 +129,6 @@ public class ModuleController extends BaseController {
             moduleinfo.setParentModuleId(0L);
         }
         moduleInfoesService.saveOrUpdate(moduleinfo);
-        ModuleInfoPermissions moduleInfoPermissions = new ModuleInfoPermissions();
-        moduleInfoPermissions.setModuleInfoId(moduleinfo.getId());
-        permissionsToModuleService.removeByEntity(moduleInfoPermissions);
-        if (pers != null && moduleinfo.getParentModuleId() != 0) {
-            for (String per : pers) {
-                moduleInfoPermissions.setIsNewRecord(true);
-                moduleInfoPermissions.setId(null);
-                moduleInfoPermissions.setPermissionId(Long.valueOf(per));
-                permissionsToModuleService.saveOrUpdate(moduleInfoPermissions);
-            }
-        }
         ModelAndView mv = new ModelAndView("redirect:/module/index/");
         logger.info("create结束");
         return mv;
@@ -156,23 +137,21 @@ public class ModuleController extends BaseController {
     /**
      * 物理删除
      *
-     * @param 要删除的模块的id
+     * @param要删除的模块的id
      * @return 状态信息
      */
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public AjaxStatus delete(@PathVariable("id") Long id) {
         logger.info("delete"+id);
-//        ModuleInfoPermissions moduleInfoPermissions = new ModuleInfoPermissions();
-//        moduleInfoPermissions.setModuleInfoId(id);
-//        permissionsToModuleService.removeByEntity(moduleInfoPermissions);
+
         return moduleInfoesService.deleteModule(id);
     }
 
     /**
      * 检查同级下是否存在同名(dicValue)的模块
      *
-     * @param dicValue(值)，dicPid(父级编号)，status(是修改还是新增)，id
+     * @paramdicValue(值)，dicPid(父级编号)，status(是修改还是新增)，id
      * @return
      */
     @RequestMapping(value = "/checkExist", method = RequestMethod.GET)
@@ -185,12 +164,12 @@ public class ModuleController extends BaseController {
         ModuleInfoes module = new ModuleInfoes();
         module.setParentModuleId(pid);
         module.setName(name);
+        module.setIsDeleted(0);
         List<ModuleInfoes> modules = moduleInfoesService.findList(module);
         logger.info("check结束");
         if (CollectionUtils.isNotEmpty(modules)) {
             return false;   //同级下存在同名(name)的模块，返回false
         }
-
         return true;
     }
 
@@ -203,6 +182,7 @@ public class ModuleController extends BaseController {
         }
         ModuleInfoes module = new ModuleInfoes();
         module.setCode(code);
+        module.setIsDeleted(0);
         List<ModuleInfoes> modules = moduleInfoesService.findList(module);
         logger.info("checkCode结束");
         if (CollectionUtils.isNotEmpty(modules)) {
@@ -216,7 +196,7 @@ public class ModuleController extends BaseController {
     public Map<String, Object> getPermissions(Long moduleId, Long roleId) {
         logger.info("getPermissions开始");
         Map<String, Object> info = new HashMap<String, Object>();
-        List<Long> ids = permissionsToModuleService.getPermissionIds(moduleId);
+        List<Long> ids = moduleInfoPermissionsService.getPermissionIds(moduleId);
         List<Permissions> permissions = new ArrayList<>();
         Permissions permission = new Permissions();
         for (Long pid : ids) {
