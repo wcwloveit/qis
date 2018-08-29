@@ -1,7 +1,9 @@
 package com.xinri.po.user;
+
 import com.qis.common.persistence.DataEntity;
-import java.math.*;
-import java.util.*;
+
+import java.util.Date;
+
 /**
  * 创建人:汪震
  * 创建时间:20180813

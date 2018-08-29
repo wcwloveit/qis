@@ -103,12 +103,12 @@
 			<if test="isDeleted != null">
 				AND t.IS_DELETED = #{isDeleted}
 			</if>
-			<if test="startBirth != null and startBirth !=''">
-				AND <![CDATA[ t.BIRTHDAY >= str_to_date(concat(#{startBirth},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endBirth != null and endBirth !=''">
-				AND <![CDATA[ t.BIRTHDAY <= str_to_date(concat(#{endBirth},'23:59:59'),'%Y-%m-%d %T')]]>
-			</if>
+			<!--<if test="startBirth != null and startBirth !=''">-->
+				<!--AND <![CDATA[ t.BIRTHDAY >= str_to_date(concat(#{startBirth},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endBirth != null and endBirth !=''">-->
+				<!--AND <![CDATA[ t.BIRTHDAY <= str_to_date(concat(#{endBirth},'23:59:59'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
 			<if test="version != null">
 				AND t.VERSION = #{version}
 			</if>

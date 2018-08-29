@@ -6,19 +6,24 @@
         <pattern>/logout</pattern>
     </excludes>
     <decorator name="default" page="default.jsp">
+
         <pattern>/main</pattern>
         <pattern>/organization/*</pattern>
         <pattern>/log/*</pattern>
-        <pattern>/dictionary/*</pattern>
-        <pattern>/baseData/*</pattern>
-        <pattern>/baseDataTypes/*</pattern>
+        <pattern>/user/*</pattern>
+        <pattern>/org/*</pattern>
         <pattern>/role/*</pattern>
         <pattern>/module/*</pattern>
+        <pattern>/dictionary/*</pattern>
+
+        <pattern>/baseData/*</pattern>
+        <pattern>/baseDataTypes/*</pattern>
+        <pattern>/permissions/*</pattern>
+        <pattern>/roleClass/*</pattern>
+        <pattern>/userGroup/*</pattern>
+
         <pattern>/modulePermissions/*</pattern>
         <pattern>/moduleColumnDatas/*</pattern>
-        <pattern>/permissions/*</pattern>
-		<pattern>/roleClass/*</pattern>
-        <pattern>/userGroup/*</pattern>
         <pattern>/column/*</pattern>
         <pattern>/sysUser/*</pattern>
     </decorator>

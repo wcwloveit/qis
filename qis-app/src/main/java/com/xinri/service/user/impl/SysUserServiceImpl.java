@@ -1,14 +1,14 @@
-package com.xinri.service.SysUser.impl;
+package com.xinri.service.user.impl;
 
 import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
+import com.qis.common.service.CrudService;
 import com.xinri.dao.user.SysUserMapper;
 import com.xinri.po.user.SysUser;
 import com.xinri.service.user.ISysUserService;
 import com.xinri.vo.users.SysUserVo;
 import org.springframework.stereotype.Service;
-import com.qis.common.service.CrudService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;

@@ -244,8 +244,10 @@
         <groupId>com.xinri</groupId>
         <artifactId>qis-b2b</artifactId>
     </dependency>
-
-
+    <dependency>
+        <groupId>com.xinri</groupId>
+        <artifactId>qis-app</artifactId>
+    </dependency>
 
     <dependency>
         <groupId>junit</groupId>

@@ -405,6 +405,11 @@
                 <artifactId>qis-service</artifactId>
                 <version>${qis_version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.xinri</groupId>
+                <artifactId>qis-app</artifactId>
+                <version>${qis_version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -428,6 +433,7 @@
         <module>qis-service</module>
         <module>qis-b2b</module>
         <module>qis-syslog</module>
+        <module>qis-app</module>
     </modules>
 
     <build>

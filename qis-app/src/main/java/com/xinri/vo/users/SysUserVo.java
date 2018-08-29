@@ -2,8 +2,6 @@ package com.xinri.vo.users;
 
 import com.xinri.po.user.SysUser;
 
-import java.util.Date;
-
 /**
  * 创建人:汪震
  * 创建时间:20180813

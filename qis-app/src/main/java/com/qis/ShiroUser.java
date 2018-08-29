@@ -1,4 +1,4 @@
-package com.app;
+package com.qis;
 
 import com.google.common.base.Objects;
 
@@ -14,7 +14,7 @@ public class ShiroUser implements Serializable{
     public Long id;
     public String loginName;
     public String name;
-    public ShiroUser(Long id,String loginName,String name){
+    public ShiroUser(Long id, String loginName, String name){
         this.id=id;
         this.loginName=loginName;
         this.name=name;

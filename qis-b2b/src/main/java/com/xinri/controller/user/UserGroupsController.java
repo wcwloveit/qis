@@ -12,7 +12,6 @@ import com.xinri.util.AjaxStatus;
 import com.xinri.vo.role.RoleClassesVo;
 import com.xinri.vo.users.UserGroupsVo;
 import net.sf.json.JSONObject;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,9 +1,12 @@
 package com.qis.shiro;
 
-import com.app.ShiroUser;
-import com.qis.common.persistence.util.LoginUser;
-import com.qis.common.util.Encodes;
-import com.qis.service.system.ResourceService;
+
+
+import com.kingnode.diva.utils.Encodes;
+import com.qis.ShiroUser;
+import com.xinri.po.user.SysUser;
+import com.xinri.service.ResourceService;
+import com.xinri.service.user.ISysUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -20,11 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
-
 public class ShiroDbRealm extends AuthorizingRealm {
     private static Logger logger = LoggerFactory.getLogger(ShiroDbRealm.class);
     protected ResourceService resourceService;
+    @Autowired
+    private ISysUserService sysUserService;
 //    private KnLogDao logDao;
 //    @Autowired
 //    private KnEmployeeDao employeeDao;
@@ -32,6 +35,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
 //    private SystemService systemService;
     @Autowired
     private  HttpServletRequest request;
+
+    //    @Autowired
+//    private SystemService systemService;
 
 //    @Autowired
 //    public void setLogDao(KnLogDao logDao) {
@@ -45,9 +51,25 @@ public class ShiroDbRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
           String username = String.valueOf(((UsernamePasswordToken) token).getUsername());
           String password = String.valueOf(((UsernamePasswordToken) token).getPassword());
-          SimpleAuthenticationInfo auth;
-          AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(new ShiroUser(1L,username,username), "123456", this.getName());
-          return authcInfo;
+//          SimpleAuthenticationInfo auth;
+//          AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(new ShiroUser(1L,username,username), "123456", this.getName());
+//        return authcInfo;
+          SysUser users = new SysUser();
+          users.setAccount(username);
+          users.setIsDeleted(0);
+          SysUser sysUser = sysUserService.get(users);
+          if(sysUser!= null){
+              byte[] salt = Encodes.decodeHex(sysUser.getSalt());
+              SimpleAuthenticationInfo auth;
+              auth = new SimpleAuthenticationInfo(new ShiroUser(sysUser.getId(),sysUser.getAccount(),sysUser.getName()),
+                      sysUser.getPassword(), ByteSource.Util.bytes(salt), getName());
+              return auth;
+          }else{
+              throw new UnknownAccountException();
+          }
+
+
+
 
 
      //   KnUser user = resourceService.FindUserByLoginName(((UsernamePasswordToken) token).getUsername());
@@ -88,7 +110,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+//        SysUser shiroUser = (SysUser) principals.getPrimaryPrincipal();
         ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
+
         // 单独定一个集合对象
         List<String> permissions = new ArrayList<String>();
         permissions.add("authc");
@@ -108,19 +132,21 @@ public class ShiroDbRealm extends AuthorizingRealm {
         return simpleAuthorizationInfo;
     }
 
-//    /**
-//     * 设定Password校验的Hash算法与迭代次数.
-//     */
-//    @PostConstruct
-//    public void initCredentialsMatcher() {
-//        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(ResourceService.HASH_ALGORITHM);
-//        matcher.setHashIterations(ResourceService.HASH_INTERATIONS);
-//        setCredentialsMatcher(matcher);
-//    }
+    /**
+     * 设定Password校验的Hash算法与迭代次数.
+     */
+    @PostConstruct
+    public void initCredentialsMatcher() {
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(ResourceService.HASH_ALGORITHM);
+        matcher.setHashIterations(ResourceService.HASH_INTERATIONS);
+        setCredentialsMatcher(matcher);
+    }
 
     public void setResourceService(ResourceService resourceService) {
         this.resourceService = resourceService;
     }
+
+
 
 //    /**
 //     * 记录登录日志

@@ -20,6 +20,10 @@
         </dependency>
         <dependency>
             <groupId>com.xinri</groupId>
+            <artifactId>qis-app</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xinri</groupId>
             <artifactId>qis-framework</artifactId>
         </dependency>
         <dependency>

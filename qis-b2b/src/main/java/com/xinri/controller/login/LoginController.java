@@ -15,10 +15,10 @@ public class LoginController extends BaseController {
     //跳转登录页
     @RequestMapping(value="login",method= RequestMethod.GET)
     public String submitLogin( Model model) {
-        return "/login";
+        Subject s = SecurityUtils.getSubject();
+		return s.isRemembered() || s.isAuthenticated() ? "redirect:main" : "login";
+
     }
-
-
     //登录请求
     @RequestMapping(value="login",method= RequestMethod.POST)
     public String login(String username, String password, Boolean rememberMe, Model model) {
@@ -43,4 +43,6 @@ public class LoginController extends BaseController {
     public String index( Model model) {
         return "login/form";
     }
+
+
 }
