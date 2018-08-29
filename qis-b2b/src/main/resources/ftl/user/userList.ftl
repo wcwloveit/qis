@@ -143,11 +143,11 @@
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
-                    {"sTitle": "序号", "mData": "id"},
+                    {"sTitle": "序号", "mData": "id","sClass":"center"},
                     {"sTitle": "ID", "mData": "no"},
-                    {"sTitle": "姓名", "mData": "userName"},
-                    {"sTitle": "编号", "mData": "userCode"},
-                    {"sTitle": "登陆名称", "mData": "loginid"},
+                    {"sTitle": "姓名", "mData": "userName","sClass":"center"},
+                    {"sTitle": "编号", "mData": "userCode","sClass":"center"},
+                    {"sTitle": "登陆名称", "mData": "loginid","sClass":"center"},
                     {
                         "sTitle": "状态", "mRender": function (data, type, full) {
                         if (full.userStatus == 1) {
@@ -155,18 +155,17 @@
                         } else {
                             return "正常";
                         }
-
                     }
                     },
-                    {"sTitle": "手机号", "mData": "userMobile"},
+                    {"sTitle": "手机号", "mData": "userMobile","sClass":"center"},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, full) {
                         var a = '<a href="${rc.contextPath}/user/update/' + full.no + '" class="btn default btn-xs green" >编辑</a>';
-                        var b = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.no + ',1\')" class="btn btn-xs red"  title="封存" >' +
+                        var b = '<a href="javascript:void(0);" onclick="deleteOne(\'' + full.no + ',1\')" class="btn btn-xs red"  title="封存" >' +
                                 '<i class="glyphicon glyphicon-trash"></i>封存</a>';
-                        var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.no + ',2\')" class="btn btn-xs red"  title="封存" >' +
-                                '<i class="glyphicon glyphicon-trash"></i>解封</a>';
-                        if (full.orgStatus == 1) {
+                        var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + full.no + ',2\')" class="btn btn-xs yellow"  title="封存" >' +
+                                '<i class="glyphicon glyphicon-retweet"></i>解封</a>';
+                        if (full.userStatus == 0) {
                             return a+b;
                         } else {
                             return b+c;

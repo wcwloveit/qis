@@ -2,6 +2,7 @@ package com.xinri.vo.users;
 
 public class OAUsersVo {
 
+    public Long id;
 
     public Long deptid ;
 
@@ -28,6 +29,14 @@ public class OAUsersVo {
     public String depname;
 
     public String password;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getPassword() {
         return password;

@@ -1,18 +1,14 @@
 <html>
 <head>
     <title>员工管理|新建员工</title>
-    <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet"/>
-    <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
-    <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"/>
-    <link href="${rc.contextPath}/assets/global/plugins/select2/select2.css" rel="stylesheet" type="text/css"/>
-    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-summernote/summernote.css" rel="stylesheet" type="text/css">
-    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css"/>
-    <link href="${rc.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css"/>
-    <link href="${rc.contextPath}/assets/global/plugins/select2/select2.css" rel="stylesheet" type="text/css"/>
-    <link href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css" rel="stylesheet"/>
-    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="${rc.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css"/>
-</head>
+    <link href="${rc.contextPath}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="${rc.contextPath}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css"
+          type="text/css"/></head>
 <body>
 <div class="row">
     <div class="col-md-12">
@@ -33,7 +29,12 @@
             <div class="caption">
                 <i class="fa fa-plus-square"></i><#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if>员工
             </div>
+
+            <div class="actions">
+                <a href="javascript:history.back(-1)" class="btn grey">返回</a>
+            </div>
         </div>
+
         <div class="portlet-body form">
         <form class="form-horizontal form-bordered" role="form" id="employeeForm" action="${rc.contextPath}/system/employee/${action}" method="post" enctype="multipart/form-data">
         <input name="id" type="hidden" value="${e.id}"/>
@@ -50,7 +51,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            <input name="userName" type="text" class="form-control" placeholder="请输入用户名" value="${u.lastname}">
+                            <input name="lastname" type="text" class="form-control" placeholder="请输入用户名" value="${u.lastname}">
                         </div>
                     </div>
                 </div>
@@ -63,7 +64,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                            <input check-type='required' name="loginName" type="text" class="form-control"
+                            <input check-type='required' name="username" type="text" class="form-control"
                                    placeholder="请输入登录名" value="${u.username}">
                         </div>
                     </div>
@@ -78,7 +79,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input name="email" type="text" class="grayTips form-control"
+                            <input name="workcode" type="text" class="grayTips form-control"
                                    placeholder="工号" value="${u.workcode}">
                         </div>
                     </div>
@@ -92,7 +93,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                            <input check-type='required' name="plainPassword" type="password" class="form-control" placeholder="请输入登录密码" >
+                            <input check-type='required' name="password" type="password" class="form-control" placeholder="请输入登录密码" >
                         </div>
                     </div>
                 </div>
@@ -119,7 +120,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
-                            <input type="text" class="form-control" isMobile="true" name="phone" minlength="11" value="${u.mobile}">
+                            <input type="text" class="form-control" isMobile="true" name="telephone" minlength="11" value="${u.mobile}">
                         </div>
                     </div>
                 </div>
@@ -130,11 +131,11 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="col-md-3 control-label">组织<span class="required">&nbsp;</span></label>
-                    <input type="text" name="orgName" style="width: 400px;"  class="form-control" readonly="true" value="${u.depName}">
-                    <input type="text" name="orgId" style="width: 400px;"  type="hidden">
+
 
                     <div class="col-md-9" style="heigiht:300px">
-                        <input type="hidden" name="empOrg">
+                        <input type="text" name="depname" style="width: 400px;"  class="form-control" readonly="true" value="${u.depName}">
+                        <input type="hidden" name="depId" style="width: 400px;" value="${u.depName}">
                         <div id="orgTree"></div>
                     </div>
                 </div>
@@ -154,7 +155,7 @@
         <div class="form-actions fluid">
             <div class="col-md-offset-5 ">
                 <button type="submit" class="btn green">保存</button>
-                <button type="button" class="btn default return" onclick="javascript:window.location.href='${rc.contextPath}/system/employee';">取消</button>
+                <button type="button" class="btn default return" onclick="javascript:window.location.href='${rc.contextPath}/user/index';">取消</button>
             </div>
         </div>
         </div>
@@ -165,22 +166,24 @@
 </body>
 <content tag="script">
     <script src="${rc.contextPath}/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/select2/select2.min.js" type="text/javascript"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/data-tables/jquery.dataTables.js" type="text/javascript"></script>
+
+    <script src="${rc.contextPath}/assets/global/plugins/select2/js/select2.min.js" type="text/javascript"></script>
+
+    <script src="${rc.contextPath}/assets/global/plugins/data-tables/jquery.dataTables.js"
+            type="text/javascript"></script>
     <script src="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.js" type="text/javascript"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/select2/select2.min.js" type="text/javascript"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jstree/dist/jstree.js"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/js/lib/jquery.form.js" type="text/javascript"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/js/jquery.validate.js" type="text/javascript"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-process.js"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-validate.js"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-ui.js"></script>
-    <script type="text/javascript" src="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="${rc.contextPath}/assets/global/common/commonUtil.js"></script>
+    <script src="${rc.contextPath}/assets/global/scripts/datatable.js" type="text/javascript"></script>
+    <script src="${rc.contextPath}/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/lib/jquery.form.js"
+            type="text/javascript"></script>
+    <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+            type="text/javascript">
+    </script>
+    <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/js/additional-methods.min.js"
+            type="text/javascript"></script>
+    <script src="${rc.contextPath}/assets/global/plugins/jquery-validation/js/localization/messages_zh.js"
+            type="text/javascript"></script>
+    <script src="${rc.contextPath}/assets/global/plugins/jstree/dist/jstree.js" type="text/javascript"></script>
     <script type="text/javascript">
         var oid,text;
 
@@ -195,7 +198,7 @@
                 "check_callback":true,
                 "data": {
                     "type": "POST",
-                    "url": "${rc.contextPath}/user/list",
+                    "url": "${rc.contextPath}/organization/list",
                     "data": function (node) {
                         if (node.text) {
                             return {"supId": node.id};

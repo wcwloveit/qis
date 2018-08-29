@@ -23,5 +23,7 @@ public interface IUsersService extends IBaseService<Users>{
     public DataTable<UserListVo> getUserList(Map<String, Object> searchParams, String id, DataTable<UserListVo> dt);
 
     public List<Users> findAllDeptUsers(List<Departments> departments);
+
+    public void createUser(OAUsersVo vo,String type);
 }
 

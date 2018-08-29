@@ -143,7 +143,7 @@ public class UsersServiceImpl extends CrudService<UsersMapper,Users>  implements
 
         List<UserListVo> orgListVos=new ArrayList<>();
         Users sqlUser=new Users();
-        if(id!=""||id!=null){
+        if(!id.equals("")){
             Long odid = Long.parseLong(id.substring(0,id.length() - 1));
             sqlUser.setDepartmentId(odid);
         }
@@ -198,6 +198,42 @@ public class UsersServiceImpl extends CrudService<UsersMapper,Users>  implements
         dt.setAaData(page.getData());
 
         return dt;
+    }
+
+
+    @Override
+    public void createUser(OAUsersVo vo,String type){
+        Users users=new Users();
+        users.setUserName(vo.getWorkcode());
+
+        users.setMobilePhone(vo.getTelephone());
+        users.setUserNo(vo.getUsername());
+        users.setName(vo.getLastname());
+        users.setDepartmentId(vo.getDeptid());
+        Departments departments=new Departments();
+
+        try{
+            departmentsService.get(vo.getDeptid());
+            users.setOrganizationId(departments.getOrganizationId());
+            if(type.equals("create")){
+                users.setIsDeleted(0);
+                users.setIsEffective(0);
+                users.setPermissionOverFlag(0);
+                users.setCreatedOn(new Date());
+                users.setIsEffective(0);
+                users.setEffectiveDateStart(new Date());
+                users.setPassword(vo.getPassword());
+                users.setUserUseType(0);
+                dao.insert(users);
+            }else if(type.equals("update")){
+                users.setId(vo.getId());
+                dao.update(users);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 

@@ -37,28 +37,63 @@ public class UsersController extends BaseController{
     @Autowired
     private IDepartmentsService departmentsService;
 
+    /**
+     * 主页
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "index",method = RequestMethod.GET)
     public String findUsers(Model model) {
         return "user/userList";
     }
 
 
-    @RequestMapping(value = "list",method = RequestMethod.GET)
+    /**
+     * 用户列表
+     * @param dt
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "list",method = RequestMethod.POST)
+    @ResponseBody
     public DataTable<UserListVo> findUsersList(DataTable<UserListVo> dt, ServletRequest request){
         Map<String,Object> searchParams= Servlets.getParametersStartingWith(request,"search_");
         return  usersService.getUserList(searchParams,"",dt);
     }
 
 
-
+    /**
+     * 新建页面
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "create",method = RequestMethod.GET)
     public String create(Model model) {
         model.addAttribute("action", "create");
         return "user/userForm";
     }
 
+
+    /**
+     * 新建人员
+     * @param vo
+     * @return
+     */
+    @RequestMapping(value = "create",method = RequestMethod.POST)
+    public String create(OAUsersVo vo){
+        usersService.createUser(vo,"create");
+        return "user/userForm";
+    }
+
+
+    /**
+     * 更新页面
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "update/{id}",method = RequestMethod.GET)
-    public String create(@PathVariable("id") Long id,Model model) {
+    public String update(@PathVariable("id") Long id,Model model) {
         model.addAttribute("action", "update");
 
         OAUsersVo oaUsersVo=new OAUsersVo();
@@ -82,7 +117,12 @@ public class UsersController extends BaseController{
         return "user/userForm";
     }
 
+    @RequestMapping(value = "update",method = RequestMethod.POST)
+    public String update(OAUsersVo vo){
 
+        usersService.createUser(vo,"update");
+        return "redirect:/user/userForm";
+    }
 
 
     /**

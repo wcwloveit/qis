@@ -63,8 +63,6 @@ public class OrganizationsController extends BaseController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView create(OAOrgRequest oaOrgRequest) {
 
-
-
         if(oaOrgRequest.getSupId().contains("o")){
             Organizations organizations=new Organizations();
             organizations=organizationsService.createOrg(oaOrgRequest,organizations);
@@ -147,6 +145,8 @@ public class OrganizationsController extends BaseController {
         }
         return map;
     }
+
+
 
 
 

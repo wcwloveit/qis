@@ -242,7 +242,7 @@
 	<select id="get" parameterType="com.xinri.po.user.Users" resultMap="usersResultMap">
 		SELECT <include refid="usersColumns" /> 
 		FROM USERS t 
-		WHERE t.USER = #{user}
+		WHERE t.ID = #{id}
 	</select>
     <!-- 查询列表可以根据分页进行查询 -->
 	<select id="findList" parameterType="com.xinri.po.user.Users" resultMap="usersResultMap">
