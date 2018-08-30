@@ -12,6 +12,7 @@ import com.xinri.util.AjaxStatus;
 import com.xinri.vo.role.RoleClassesVo;
 import com.xinri.vo.users.UserGroupsVo;
 import net.sf.json.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,7 @@ public class UserGroupsController extends BaseController {
    * 首页
    * */
     @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String findLogList(){
+    public String findLogList() {
         return "userGroup/list";
     }
 
@@ -44,9 +45,9 @@ public class UserGroupsController extends BaseController {
   * */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public DataTable<UserGroupsVo> getItemList(DataTable<UserGroupsVo> dt, ServletRequest request){
+    public DataTable<UserGroupsVo> getItemList(DataTable<UserGroupsVo> dt, ServletRequest request) {
         logger.info("获取产品列表开始");
-        Map<String,Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
+        Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
         DataTable<UserGroupsVo> userGroups = userGroupsService.findListByVo(dt, searchParams); //查询方法
         logger.info("获取产品列表结束始");
         return userGroups;
@@ -54,17 +55,19 @@ public class UserGroupsController extends BaseController {
 
     /**
      * 跳转新增
+     *
      * @return
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
-    public ModelAndView create(){
+    public ModelAndView create() {
         ModelAndView mv = new ModelAndView("/userGroup/form");
-        mv.addObject("action","create");
+        mv.addObject("action", "create");
         return mv;
     }
 
     /**
      * 新增
+     *
      * @param attributes
      * @return
      */
@@ -75,8 +78,8 @@ public class UserGroupsController extends BaseController {
         ModelAndView mv = new ModelAndView("redirect:/userGroup/index"); //重定向
         try {
             userGroupsService.saveOrUpdate(userGroups);
-            attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","添加产品成功");
+            attributes.addFlashAttribute("success", true);
+            attributes.addFlashAttribute("message", "添加产品成功");
             logger.info("新增产品完成");
         } catch (Exception e) {
             logger.error("新增产品报错：", e);
@@ -87,6 +90,7 @@ public class UserGroupsController extends BaseController {
 
     /**
      * 更新状态
+     *
      * @return
      */
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
@@ -94,9 +98,10 @@ public class UserGroupsController extends BaseController {
         UserGroups userGroups = new UserGroups();
         userGroups = userGroupsService.get(id);
         model.addAttribute("action", "update");//跳转编辑的标示
-        model.addAttribute("roleClasses",userGroups);//商品信息
+        model.addAttribute("roleClasses", userGroups);//商品信息
         return "/userGroup/form"; //跳转到更新页面
     }
+
 
     /*
 * 更新
@@ -171,7 +176,7 @@ public class UserGroupsController extends BaseController {
      */
     @RequestMapping(value="query-user-notinrole")
     @ResponseBody
-    public DataTable queryNotInRoleList(DataTable<Users> dt, @RequestParam(value="roleId", required=false) String roleId, ServletRequest request){
+    public DataTable queryNotInRoleList(DataTable<Users> dt, @RequestParam(value="roleId", required=false) Long roleId, ServletRequest request){
         Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
         return userGroupsService.QueryUserNotInRidList(dt,searchParams,roleId);
     }
@@ -185,7 +190,7 @@ public class UserGroupsController extends BaseController {
      */
     @RequestMapping(value="query-user-list")
     @ResponseBody
-    public DataTable queryMessList(DataTable<Users> dt, @RequestParam(value="roleId", required=false) String roleId, ServletRequest request){
+    public DataTable queryMessList(DataTable<Users> dt, @RequestParam(value="roleId", required=false) Long roleId, ServletRequest request){
         Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
         return userGroupsService.QueryUserByRidList(dt,searchParams,roleId);
     }

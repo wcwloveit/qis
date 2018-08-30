@@ -19,15 +19,15 @@ import java.util.Map;
 
 public interface IUserGroupsService extends IBaseService<UserGroups>{
 
-    public DataTable<UserGroupsVo> findListByVo(DataTable<UserGroupsVo>dt, Map<String, Object> searchParams);
+    public DataTable<UserGroupsVo> findListByVo(DataTable<UserGroupsVo> dt, Map<String, Object> searchParams);
 
 
-    public DataTable QueryUserNotInRidList(DataTable<Users> dt, Map<String, Object> searchParams, String roleId);
+    public DataTable QueryUserNotInRidList(DataTable<Users> dt, Map<String, Object> searchParams, Long roleId);
 
     public AjaxStatus JoinRole(Long roleId, Long empId);
 
     public AjaxStatus LeaveRole(Long roleId, Long empId);
 
-    public DataTable QueryUserByRidList(DataTable<Users> dt, Map<String, Object> searchParams, String roleId);
+    public DataTable QueryUserByRidList(DataTable<Users> dt, Map<String, Object> searchParams, Long roleId);
 }
 

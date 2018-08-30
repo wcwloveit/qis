@@ -1,26 +1,25 @@
 package com.xinri.service.user.impl;
+
 import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
+import com.qis.common.service.CrudService;
+import com.xinri.dao.user.UserGroupsMapper;
 import com.xinri.dao.user.UserUserGroupsMapper;
 import com.xinri.dao.user.UsersMapper;
+import com.xinri.po.user.UserGroups;
 import com.xinri.po.user.UserUserGroups;
 import com.xinri.po.user.Users;
+import com.xinri.service.user.IUserGroupsService;
 import com.xinri.service.user.IUserUserGroupsService;
 import com.xinri.util.AjaxStatus;
-import com.xinri.vo.role.RoleClassesVo;
 import com.xinri.vo.users.UserGroupsVo;
-import org.apache.shiro.SecurityUtils;
+import com.xinri.vo.users.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.qis.common.service.CrudService;
-import com.xinri.po.user.UserGroups;
-import com.xinri.dao.user.UserGroupsMapper;
-import com.xinri.service.user.IUserGroupsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -102,37 +101,53 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
         return dt;
     }
 
+    /**
+     *用户组待添加用户列表
+     * */
     @Override
-    public DataTable QueryUserNotInRidList(DataTable<Users> dt, Map<String, Object> searchParams, String roleId) {
+    public DataTable QueryUserNotInRidList(DataTable<Users> dt, Map<String, Object> searchParams, Long roleId) {
         int pageNo=dt.pageNo()+1; //0
         int pageSize=dt.getiDisplayLength(); //10
-//        String loginName="%%", name="%%", email="%%";
-//        String  name="%%";
-//        if(searchParams!=null&&searchParams.size()!=0){
-////            if(searchParams.containsKey("LIKE_loginName")&&!Strings.isNullOrEmpty(searchParams.get("LIKE_loginName").toString().trim())){
-////                loginName="%"+searchParams.get("LIKE_loginName").toString().trim().toUpperCase()+"%";
-////            }
-//            if(searchParams.containsKey("LIKE_name")&&!Strings.isNullOrEmpty(searchParams.get("LIKE_name").toString().trim())){
-//                name="%"+searchParams.get("LIKE_name").toString().trim().toUpperCase()+"%";
-//            }
-////            if(searchParams.containsKey("LIKE_email")&&!Strings.isNullOrEmpty(searchParams.get("LIKE_email").toString().trim())){
-////                email="%"+searchParams.get("LIKE_email").toString().trim().toUpperCase()+"%";
-////            }
-//
-//            //名称
-////            if ( searchParams!= null && searchParams.size() != 0) {
-////                if (searchParams.containsKey("userGroup_name") && !Strings.isNullOrEmpty(searchParams.get("userGroup_name").toString().trim())) {
-////                    String name = searchParams.get("userGroup_name").toString().trim();
-////                    userGroupsVo.setName(String.valueOf(name));
-////                }
-////            }
-//        }
+
         List<Users> list=new ArrayList<Users>();
+       UserVo userVo=new UserVo();
 
-      //  Users users= new Users();  //实体类
+      // Users users= new Users();  //实体类
+        //名称
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("name") && !Strings.isNullOrEmpty(searchParams.get("name").toString().trim())) {
+                String name = searchParams.get("name").toString().trim();
+                userVo.setName(String.valueOf(name));
+            }
+        }
 
-        list=userDao.findAllList();
+        //登录名
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("userName") && !Strings.isNullOrEmpty(searchParams.get("userName").toString().trim())) {
+                String userName = searchParams.get("userName").toString().trim();
+                userVo.setUserName(String.valueOf(userName));
+            }
+        }
 
+        //编号
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("userNo") && !Strings.isNullOrEmpty(searchParams.get("userNo").toString().trim())) {
+                String userNo = searchParams.get("userNo").toString().trim();
+                userVo.setUserNo(String.valueOf(userNo));
+            }
+        }
+
+        //手机
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("mobilePhone") && !Strings.isNullOrEmpty(searchParams.get("mobilePhone").toString().trim())) {
+                String mobilePhone = searchParams.get("mobilePhone").toString().trim();
+                userVo.setMobilePhone(String.valueOf(mobilePhone));
+            }
+        }
+       // list=userDao.findAllList(users);
+
+        userVo.setRoleId(roleId);
+         list = userUserGroupsMapper.getNotUserByUserGroupsId(userVo);
         dt.setiTotalDisplayRecords(list.size());
         int begin=pageSize*(pageNo-1);
         int end=pageSize*pageNo;
@@ -176,14 +191,11 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
         UserUserGroups  userUserGroups = new UserUserGroups();
         userUserGroups.setUserId(userId); //添加用户id
         userUserGroups.setUserGroupId(userGroupId);//添加用户组id
-        List<UserUserGroups> userUserGroupsPo =userUserGroupsService.findAllList(userUserGroups);
-       // List<UserUserGroups> userUserGroupsPo =userUserGroupsService.findByCondition(userUserGroups);
+            List<UserUserGroups> userUserGroupsPo =userUserGroupsService.findList(userUserGroups);
             if(userUserGroupsPo.size()>0){
+            for(UserUserGroups userUserGroup:userUserGroupsPo){
                 userUserGroupsService.delete(userUserGroups);
-//            for(UserUserGroups userUserGroup:userUserGroupsPo){
-////               Users user = userDao.get(userUserGroup.getUserId());
-//                userUserGroupsService.deleteById( userUserGroup.getId());
-//            }
+            }
         }
         } catch (Exception e ){
             as = new AjaxStatus(false);
@@ -192,46 +204,53 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
         return as;
     }
 
-
+    /**
+     *查看用户组已经添加用户列表
+     * */
     @Override
-    public DataTable QueryUserByRidList(DataTable<Users> dt, Map<String, Object> searchParams, String roleId) {
+    public DataTable QueryUserByRidList(DataTable<Users> dt, Map<String, Object> searchParams, Long roleId) {
         int pageNo=dt.pageNo()+1; //0
         int pageSize=dt.getiDisplayLength(); //10
-//        String loginName="%%", name="%%", email="%%";
-//        if(searchParams!=null&&searchParams.size()!=0){
-//            if(searchParams.containsKey("LIKE_loginName")&&!Strings.isNullOrEmpty(searchParams.get("LIKE_loginName").toString().trim())){
-//                loginName="%"+searchParams.get("LIKE_loginName").toString().trim().toUpperCase()+"%";
-//            }
-//            if(searchParams.containsKey("LIKE_name")&&!Strings.isNullOrEmpty(searchParams.get("LIKE_name").toString().trim())){
-//                name="%"+searchParams.get("LIKE_name").toString().trim().toUpperCase()+"%";
-//            }
-//            if(searchParams.containsKey("LIKE_email")&&!Strings.isNullOrEmpty(searchParams.get("LIKE_email").toString().trim())){
-//                email="%"+searchParams.get("LIKE_email").toString().trim().toUpperCase()+"%";
-//            }
-//        }
-//        Users users= new Users();
-//        List<Long> list2 = new ArrayList<Long>();
-//        List<Users> list =new ArrayList<Users>();
 
-//        List<UserUserGroups> list1 = userUserGroupsService.findAllList(userUserGroups);
-//        List<Users> usersList = new ArrayList<Users>();
-//
-//        if(list1.size()>0){
-//            for(UserUserGroups userUserGroup:list1){
-//               Users user = userDao.get(userUserGroup.getUserId());
-//                usersList.add(user);
-//            }
-//        }
-//
-//        for (int j=0;j<list1.size();j++){
-//            Users li=userDao.get( list1.get(j).getUserId());
-//            list.add(users);
-//        }
         List<Users> list=new ArrayList<Users>();
-        UserUserGroups userUserGroups = new UserUserGroups();
-        userUserGroups.setUserGroupId(Long.valueOf(roleId));
-         list = userUserGroupsMapper.getUserByUserGroupsId(userUserGroups);
+//        UserUserGroups userUserGroups = new UserUserGroups();
+//        userUserGroups.setUserGroupId(Long.valueOf(roleId));
+        UserVo userVo=new UserVo();
+        userVo.setRoleId(roleId);
 
+        //名称
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("name") && !Strings.isNullOrEmpty(searchParams.get("name").toString().trim())) {
+                String name = searchParams.get("name").toString().trim();
+                userVo.setName(String.valueOf(name));
+            }
+        }
+
+        //登录名
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("userName") && !Strings.isNullOrEmpty(searchParams.get("userName").toString().trim())) {
+                String userName = searchParams.get("userName").toString().trim();
+                userVo.setUserName(String.valueOf(userName));
+            }
+        }
+
+        //编号
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("userNo") && !Strings.isNullOrEmpty(searchParams.get("userNo").toString().trim())) {
+                String userNo = searchParams.get("userNo").toString().trim();
+                userVo.setUserNo(String.valueOf(userNo));
+            }
+        }
+
+        //手机
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("mobilePhone") && !Strings.isNullOrEmpty(searchParams.get("mobilePhone").toString().trim())) {
+                String mobilePhone = searchParams.get("mobilePhone").toString().trim();
+                userVo.setMobilePhone(String.valueOf(mobilePhone));
+            }
+        }
+
+         list = userUserGroupsMapper.getUserByUserGroupsId(userVo);
         dt.setiTotalDisplayRecords(list.size());
         int begin=pageSize*(pageNo-1);
         int end=pageSize*pageNo;

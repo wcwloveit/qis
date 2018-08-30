@@ -3,6 +3,7 @@ import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.user.UserUserGroups;
 import com.xinri.po.user.Users;
+import com.xinri.vo.users.UserVo;
 
 import java.util.List;
 
@@ -14,7 +15,9 @@ import java.util.List;
  @MyBatisDao
 public interface UserUserGroupsMapper extends CrudDao<UserUserGroups>{
 
- public List<Users> getUserByUserGroupsId(UserUserGroups userUserGroups);
+ public List<Users> getUserByUserGroupsId(UserVo userVo);
+
+ public List<Users> getNotUserByUserGroupsId(UserVo userVo);
 
 }
 

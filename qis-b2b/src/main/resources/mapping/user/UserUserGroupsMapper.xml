@@ -1,218 +1,267 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinri.dao.user.UserUserGroupsMapper">
-	<resultMap id="userUserGroupsResultMap" type="com.xinri.po.user.UserUserGroups">
-		<result column="ID" property="id" jdbcType="BIGINT"/>
-		<result column="USER_ID" property="userId" jdbcType="BIGINT"/>
-	    <result column="USER_GROUP_ID" property="userGroupId" jdbcType="BIGINT"/>
-	</resultMap>
+    <resultMap id="userUserGroupsResultMap" type="com.xinri.po.user.UserUserGroups">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="USER_GROUP_ID" property="userGroupId" jdbcType="BIGINT"/>
+    </resultMap>
 
-	<resultMap id="usersResultMap" type="com.xinri.po.user.Users">
-		<id column="ID" property="id" jdbcType="BIGINT"/>
-		<result column="CURRENT_CONNECTIONS" property="currentConnections" jdbcType="BIGINT"/>
-		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="BIGINT"/>
-		<result column="TOTAL_CONNECTIONS" property="totalConnections" jdbcType="BIGINT"/>
-		<result column="ORGANIZATION_ID" property="organizationId" jdbcType="BIGINT"/>
-		<result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
-		<result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
-		<result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR"/>
-		<result column="USER_NO" property="userNo" jdbcType="VARCHAR"/>
-		<result column="NAME" property="name" jdbcType="VARCHAR"/>
-		<result column="USER_USE_TYPE" property="userUseType" jdbcType="INTEGER"/>
-		<result column="PERMISSION_OVER_FLAG" property="permissionOverFlag" jdbcType="INTEGER"/>
-		<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
-		<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
-		<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
-		<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
-		<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
-		<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
-		<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
-		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
-		<result column="MODIFIED_ON" property="modifiedOn" jdbcType="TIMESTAMP"/>
-		<result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
-		<result column="DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
-		<result column="DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
-		<result column="DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
-		<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
-		<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
-		<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
-	</resultMap>
+    <resultMap id="usersResultMap" type="com.xinri.po.user.Users">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="CURRENT_CONNECTIONS" property="currentConnections" jdbcType="BIGINT"/>
+        <result column="DEPARTMENT_ID" property="departmentId" jdbcType="BIGINT"/>
+        <result column="TOTAL_CONNECTIONS" property="totalConnections" jdbcType="BIGINT"/>
+        <result column="ORGANIZATION_ID" property="organizationId" jdbcType="BIGINT"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR"/>
+        <result column="USER_NO" property="userNo" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="USER_USE_TYPE" property="userUseType" jdbcType="INTEGER"/>
+        <result column="PERMISSION_OVER_FLAG" property="permissionOverFlag" jdbcType="INTEGER"/>
+        <result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
+        <result column="DESCR" property="descr" jdbcType="VARCHAR"/>
+        <result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+        <result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
+        <result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
+        <result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
+        <result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="MODIFIED_ON" property="modifiedOn" jdbcType="TIMESTAMP"/>
+        <result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
+        <result column="DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
+        <result column="DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
+        <result column="DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
+        <result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
+        <result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
+        <result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
+    </resultMap>
 
     <!-- 列定义 -->
-	<sql id="userUserGroupsColumns">
-	  t.ID,
-	  t.USER_ID,
-	  t.USER_GROUP_ID
-  	</sql>
+    <sql id="userUserGroupsColumns">
+      t.ID,
+      t.USER_ID,
+      t.USER_GROUP_ID
+      </sql>
 
     <!-- 查询条件SQL -->
-	<sql id="whereColumnBySelect">
-		<trim prefix="WHERE" prefixOverrides="AND | OR">
-			<if test="userId != null">
-				AND t.USER_ID = #{userId}
-			</if>
-			<if test="userGroupId != null">
-				AND t.USER_GROUP_ID = #{userGroupId}
-			</if>
-		</trim>
-	</sql>
+    <sql id="whereColumnBySelect">
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="userId != null">
+                AND t.USER_ID = #{userId}
+            </if>
+            <if test="userGroupId != null">
+                AND t.USER_GROUP_ID = #{userGroupId}
+            </if>
+        </trim>
+    </sql>
 
     <!-- 修改字段SQL -->
-	<sql id="whereColumnByUpdate">
-		<trim prefix="SET" suffixOverrides=",">
-			<if test="userId != null">
-			t.USER_ID = #{userId},
-			</if>
-			<if test="userGroupId != null">
-			t.USER_GROUP_ID = #{userGroupId},
-			</if>
-		</trim>
-	</sql>
+    <sql id="whereColumnByUpdate">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">
+            t.USER_ID = #{userId},
+            </if>
+            <if test="userGroupId != null">
+            t.USER_GROUP_ID = #{userGroupId},
+            </if>
+        </trim>
+    </sql>
 
     <!-- 根据主键ID获取数据 -->
-	<select id="get" parameterType="com.xinri.po.user.UserUserGroups" resultMap="userUserGroupsResultMap">
-		SELECT <include refid="userUserGroupsColumns" /> 
-		FROM USER_USER_GROUPS t 
-		WHERE t.USER_ID = #{userId}
-	</select>
+    <select id="get" parameterType="com.xinri.po.user.UserUserGroups" resultMap="userUserGroupsResultMap">
+        SELECT <include refid="userUserGroupsColumns" /> 
+        FROM USER_USER_GROUPS t 
+        WHERE t.USER_ID = #{userId}
+    </select>
     <!-- 查询列表可以根据分页进行查询 -->
-	<select id="findList" parameterType="com.xinri.po.user.UserUserGroups" resultMap="userUserGroupsResultMap">
-		SELECT
-		<include refid="userUserGroupsColumns" /> 
-		FROM USER_USER_GROUPS t 
-		<include refid="whereColumnBySelect" />
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}			
-			</when>
-				<otherwise>
-				ORDER BY t.USER_ID DESC
-				</otherwise>
-			
-		</choose>
-	</select>
+    <select id="findList" parameterType="com.xinri.po.user.UserUserGroups" resultMap="userUserGroupsResultMap">
+        SELECT
+        <include refid="userUserGroupsColumns" /> 
+        FROM USER_USER_GROUPS t 
+        <include refid="whereColumnBySelect" />
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}            
+            </when>
+                <otherwise>
+                ORDER BY t.USER_ID DESC
+                </otherwise>
+            
+        </choose>
+    </select>
 
     <!-- 查询所有列表 -->
-	<select id="findAllList" parameterType="com.xinri.po.user.UserUserGroups" resultMap="userUserGroupsResultMap">
-		SELECT
-		<include refid="userUserGroupsColumns" /> 
-		FROM USER_USER_GROUPS t 	
-		<include refid="whereColumnBySelect" />
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}			
-			</when>
-				<otherwise>
-				ORDER BY  t.ID DESC
-				</otherwise>
-			
-		</choose>
-		
-		
-	</select>
+    <select id="findAllList" parameterType="com.xinri.po.user.UserUserGroups" resultMap="userUserGroupsResultMap">
+        SELECT
+        <include refid="userUserGroupsColumns" />
+        FROM USER_USER_GROUPS t
+        <include refid="whereColumnBySelect" />
+        <include refid="userUserGroupsColumns" />
+        FROM USER_USER_GROUPS t
+        <include refid="whereColumnBySelect" />
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY  t.ID DESC
+            </otherwise>
+
+        </choose>
+
+
+    </select>
 
     <!-- 根据条件查询对象 -->
-	<select id="getByEntity" parameterType="com.xinri.po.user.UserUserGroups" resultMap="userUserGroupsResultMap">
-		SELECT <include refid="userUserGroupsColumns" /> 
-		FROM USER_USER_GROUPS t 
-		<include refid="whereColumnBySelect"></include>
-	</select>
-	
-    <!-- 新增并设置主键ID至参数对象 -->
-	<insert id="insert" parameterType="com.xinri.po.user.UserUserGroups">
+    <select id="getByEntity" parameterType="com.xinri.po.user.UserUserGroups" resultMap="userUserGroupsResultMap">
+        SELECT <include refid="userUserGroupsColumns" />
+        FROM USER_USER_GROUPS t
+        <include refid="whereColumnBySelect"></include>
+    </select>
 
-		INSERT INTO USER_USER_GROUPS
-			(USER_ID, USER_GROUP_ID)
-		VALUES
-			(#{userId}, #{userGroupId})
-	</insert>
+    <!-- 新增并设置主键ID至参数对象 -->
+    <insert id="insert" parameterType="com.xinri.po.user.UserUserGroups">
+
+        INSERT INTO USER_USER_GROUPS
+        (USER_ID, USER_GROUP_ID)
+        VALUES
+        (#{userId}, #{userGroupId})
+    </insert>
     <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
-	<insert id="insertSelective" parameterType="com.xinri.po.user.UserUserGroups" useGeneratedKeys="true" keyProperty="id" >
-		
-	    INSERT INTO USER_USER_GROUPS
-	    <trim prefix="(" suffix=")" suffixOverrides="," >
-			<if test="userId != null">
-				USER_ID,
-			</if>
-			<if test="userGroupId != null">
-				USER_GROUP_ID,
-			</if>
-	    </trim>
-	    <trim prefix="values (" suffix=")" suffixOverrides="," >
-		  <if test="userId != null">
-				#{userId,jdbcType=BIGINT},
-		  </if>
-		  <if test="userGroupId != null">
-				#{userGroupId,jdbcType=BIGINT},
-		  </if>
-	    </trim>
-  	</insert>
+    <insert id="insertSelective" parameterType="com.xinri.po.user.UserUserGroups" useGeneratedKeys="true" keyProperty="id" >
+
+        INSERT INTO USER_USER_GROUPS
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="userGroupId != null">
+                USER_GROUP_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="userGroupId != null">
+                #{userGroupId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
 
     <!-- 根据主键ID进行修改 -->
-  	<update id="update" parameterType="com.xinri.po.user.UserUserGroups">
-		UPDATE USER_USER_GROUPS t 
-		<include refid="whereColumnByUpdate"></include>
-		<where>
-			t.USER_ID = #{userId,jdbcType=BIGINT}
-		</where>
-	</update>
+    <update id="update" parameterType="com.xinri.po.user.UserUserGroups">
+        UPDATE USER_USER_GROUPS t
+        <include refid="whereColumnByUpdate"></include>
+        <where>
+            t.USER_ID = #{userId,jdbcType=BIGINT}
+        </where>
+    </update>
 
     <!-- 根据条件进行修改 -->
-	<update id="updateByCondition" parameterType="com.xinri.po.user.UserUserGroups">
-		UPDATE USER_USER_GROUPS t 
-		<include refid="whereColumnByUpdate"></include>
-		<where>${whereSqlParam}</where>
-	</update>
+    <update id="updateByCondition" parameterType="com.xinri.po.user.UserUserGroups">
+        UPDATE USER_USER_GROUPS t
+        <include refid="whereColumnByUpdate"></include>
+        <where>${whereSqlParam}</where>
+    </update>
 
     <!-- 根据主键ID进行逻辑删除 -->
-	<update id="delete" parameterType="com.xinri.po.user.UserUserGroups">
-		UPDATE USER_USER_GROUPS t SET 
-		t.IS_DELETED = 1
-		WHERE t.USER_ID = #{userId,jdbcType=BIGINT}
-	</update>
+    <update id="delete" parameterType="com.xinri.po.user.UserUserGroups">
+        UPDATE USER_USER_GROUPS t SET
+        t.IS_DELETED = 1
+        WHERE t.USER_ID = #{userId,jdbcType=BIGINT}
+    </update>
 
     <!-- 根据主键ID进行批量逻辑删除 -->
-	<update id="batchDelete" parameterType="java.util.List">
-		UPDATE USER_USER_GROUPS t SET 
-		t.IS_DELETED = 1
-		WHERE t.USER_ID IN
-		<foreach item="item" collection="list" index="index" open="("
-			separator="," close=")">
-			#{item}
-		</foreach>
-	</update>
+    <update id="batchDelete" parameterType="java.util.List">
+        UPDATE USER_USER_GROUPS t SET
+        t.IS_DELETED = 1
+        WHERE t.USER_ID IN
+        <foreach item="item" collection="list" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
     <!-- 根据条件进行逻辑删除 -->
-	<update id="deleteByEntity" parameterType="com.xinri.po.user.UserUserGroups">
-		UPDATE USER_USER_GROUPS t SET 
-			t.IS_DELETED = 1
-		<include refid="whereColumnBySelect"/>
-	</update>
+    <update id="deleteByEntity" parameterType="com.xinri.po.user.UserUserGroups">
+        UPDATE USER_USER_GROUPS t SET
+        t.IS_DELETED = 1
+        <include refid="whereColumnBySelect"/>
+    </update>
 
     <!-- 根据主键ID进行物理删除 -->
-	<delete id="remove" parameterType="com.xinri.po.user.UserUserGroups">
-		DELETE FROM USER_USER_GROUPS t 
-		WHERE t.USER_ID = #{userId,jdbcType=BIGINT}
-	</delete>
+    <delete id="remove" parameterType="com.xinri.po.user.UserUserGroups">
+        DELETE FROM USER_USER_GROUPS t
+        WHERE t.USER_ID = #{userId,jdbcType=BIGINT}
+    </delete>
 
     <!-- 根据主键ID进行批量物理删除 -->
-	<delete id="batchRemove" parameterType="java.util.List">
-		DELETE FROM USER_USER_GROUPS t 
-		WHERE t.USER_ID IN
-		<foreach item="item" collection="list" index="index" open="("
-			separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
+    <delete id="batchRemove" parameterType="java.util.List">
+        DELETE FROM USER_USER_GROUPS t
+        WHERE t.USER_ID IN
+        <foreach item="item" collection="list" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
     <!-- 根据条件进行物理删除 -->
-	<update id="removeByCondition" parameterType="com.xinri.po.user.UserUserGroups">
-		DELETE FROM USER_USER_GROUPS t 
-		<where>${whereSqlParam}</where>
-	</update>
+    <update id="removeByCondition" parameterType="com.xinri.po.user.UserUserGroups">
+        DELETE FROM USER_USER_GROUPS t
+        <where>${whereSqlParam}</where>
+    </update>
 
-	<!-- 根据用户组id 获取所属用户 -->
-	<select id="getUserByUserGroupsId" parameterType="com.xinri.po.user.UserUserGroups" resultMap="usersResultMap">
-		SELECT * FROM USERS t WHERE t.IS_DELETED = 0 AND t.ID IN(SELECT USER_ID FROM USER_USER_GROUPS WHERE USER_GROUP_ID =#{userGroupId,jdbcType=BIGINT} AND IS_DELETED = 0)
-	</select>
+
+    <!-- 根据用户组id 获取所属用户 -->
+    <select id="getUserByUserGroupsId" parameterType="com.xinri.vo.users.UserVo" resultMap="usersResultMap">
+        SELECT * FROM USERS t
+        <where>
+        <if test="userName != null">
+            AND  t.USER_NAME =#{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="name != null">
+            AND  t.NAME =#{name,jdbcType=VARCHAR}
+        </if>
+        <if test="userNo != null">
+            AND  t.USER_NO =#{userNo,jdbcType=VARCHAR}
+        </if>
+        <if test="mobilePhone != null">
+            AND  t.MOBILE_PHONE =#{mobilePhone,jdbcType=VARCHAR}
+        </if>
+        AND  t.IS_DELETED = 0
+        AND  t.USER_USE_TYPE = 0
+        <if test="roleId != null">
+            AND t.ID IN(SELECT USER_ID FROM USER_USER_GROUPS WHERE USER_GROUP_ID =#{roleId,jdbcType=BIGINT} AND IS_DELETED = 0)
+        </if>
+    </where>
+    </select>
+
+    <!-- 根据用户组id 获取不属于用户组的用户 -->
+    <select id="getNotUserByUserGroupsId" parameterType="com.xinri.vo.users.UserVo" resultMap="usersResultMap">
+        SELECT * FROM USERS t
+        <where>
+            <if test="userName != null">
+                AND  t.USER_NAME =#{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null">
+                AND  t.NAME =#{name,jdbcType=VARCHAR}
+            </if>
+            <if test="userNo != null">
+                AND  t.USER_NO =#{userNo,jdbcType=VARCHAR}
+            </if>
+            <if test="mobilePhone != null">
+                AND  t.MOBILE_PHONE =#{mobilePhone,jdbcType=VARCHAR}
+            </if>
+            AND  t.IS_DELETED = 0
+            AND  t.USER_USE_TYPE = 0
+            <if test="roleId != null">
+                AND t.ID NOT IN(SELECT USER_ID FROM USER_USER_GROUPS WHERE USER_GROUP_ID =#{roleId,jdbcType=BIGINT} AND IS_DELETED = 0)
+            </if>
+        </where>
+    </select>
+
+
 </mapper>
