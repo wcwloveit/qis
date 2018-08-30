@@ -58,7 +58,7 @@
 
             <div class="portlet-body">
 
-                <form id="roleForm" action="${rc.contextPath}/role/${action?if_exists}"
+                <form id="roleForm" action="${rc.contextPath}/role/role/${action?if_exists}"
                       method="POST" class="form-horizontal">
                     <input id="id" name="id" value="${role.id?if_exists}" style="display: none">
                     <input type="hidden" name="ids"/>
@@ -101,7 +101,7 @@
                             <div class="col-md-offset-3 col-md-9">
                                 <button type="button" class="btn green" id="roleBtnSave">保存</button>
                                 <button type="button" class="btn default"
-                                        onclick="javascript:window.location.href='${rc.contextPath}/role/index';">
+                                        onclick="javascript:window.location.href='${rc.contextPath}/role/role/index';">
                                     取消
                                 </button>
                             </div>
@@ -154,9 +154,9 @@
                     'dataType': 'json',
                     'type': "post",
                     <#if role.id??>
-                        'url': "${rc.contextPath}/module/listForRole/${role.id?if_exists}",
+                        'url': "${rc.contextPath}/module/module/listForRole/${role.id?if_exists}",
                     <#else>
-                        'url': "${rc.contextPath}/module/list",
+                        'url': "${rc.contextPath}/module/module/list",
                     </#if>
 
                 }

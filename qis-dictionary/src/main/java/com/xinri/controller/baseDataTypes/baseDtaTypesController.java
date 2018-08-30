@@ -21,7 +21,7 @@ import java.util.Map;
  * 创建时间:20180813
  */
 @Controller
-@RequestMapping(value = "/baseDataTypes")
+@RequestMapping(value = "dictionary/baseDataTypes")
 public class baseDtaTypesController extends BaseController {
 
     @Autowired
@@ -74,7 +74,7 @@ public class baseDtaTypesController extends BaseController {
     public ModelAndView create(BaseDataTypes baseDataTypes,
                                RedirectAttributes attributes) {
         logger.info("新增类型开始");
-        ModelAndView mv = new ModelAndView("redirect:/baseDataTypes/index");
+        ModelAndView mv = new ModelAndView("redirect:/dictionary/baseDataTypes/index");
         try {
             baseDataTypes.setIsDeleted(0);
             baseDataTypes.setIsEffective(0);
@@ -117,7 +117,7 @@ public class baseDtaTypesController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(BaseDataTypes baseDataTypes, RedirectAttributes attributes) {
         logger.info("更新类型开始");
-        ModelAndView mv = new ModelAndView("redirect:/baseDataTypes/index");
+        ModelAndView mv = new ModelAndView("redirect:/dictionary/baseDataTypes/index");
         try {
             baseDataTypes.setIsNewRecord(false);
             baseDatasTypesService.saveOrUpdate(baseDataTypes);
@@ -140,7 +140,7 @@ public class baseDtaTypesController extends BaseController {
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
-        logger.info("删除数据"+id);
+        logger.info("删除数据" + id);
         return baseDatasTypesService.deleteOne(id);
     }
 

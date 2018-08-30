@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "modulePermissions")
+@RequestMapping(value = "module/modulePermissions")
 public class ModulePermissionsController {
 
     @Autowired
@@ -51,31 +51,27 @@ public class ModulePermissionsController {
         Map map = new HashMap();
         ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
         moduleInfoPermission.setModuleInfoId(id);
+        moduleInfoPermission.setIsEffective(1);
         map.put("module", moduleInfoesService.get(id));
         map.put("myPers", moduleInfoPermissionsService.findList(moduleInfoPermission));
         return map;
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView create(Long id,String[] pers) {
-
+    public ModelAndView create(Long id, String[] pers) {
         ModuleInfoPermissions moduleInfoPermissions = new ModuleInfoPermissions();
         moduleInfoPermissions.setModuleInfoId(id);
-        moduleInfoPermissionsService.removeByEntity(moduleInfoPermissions);
-
+        moduleInfoPermissions.setIsEffective(0);
+        moduleInfoPermissionsService.relate(moduleInfoPermissions);
         if (pers != null) {
             for (String per : pers) {
-                moduleInfoPermissions.setIsNewRecord(true);
-                moduleInfoPermissions.setId(null);
+                moduleInfoPermissions.setModuleInfoId(id);
                 moduleInfoPermissions.setPermissionId(Long.valueOf(per));
-                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermissions);
+                moduleInfoPermissions.setIsEffective(1);
+                moduleInfoPermissionsService.relate(moduleInfoPermissions);
             }
         }
-
-        ModelAndView mv = new ModelAndView("redirect:/modulePermissions/index/");
+        ModelAndView mv = new ModelAndView("redirect:/module/modulePermissions/index/");
         return mv;
     }
-
-
-
 }

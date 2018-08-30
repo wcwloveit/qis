@@ -414,6 +414,8 @@
 		WHERE t.ID = #{id,jdbcType=BIGINT}
 	</delete>
 
+
+
     <!-- 根据主键ID进行批量物理删除 -->
 	<delete id="batchRemove" parameterType="java.util.List">
 		DELETE FROM MODULE_INFO_PERMISSIONS t 
@@ -439,7 +441,47 @@
 		</trim>
 	</delete>
 
-	<select id="getPermissionIds" parameterType="java.lang.Long" resultType="java.lang.Long">
-		  select permission_id FROM module_info_permissions where module_info_id = #{id}
+	<select id="getId"  resultType="java.lang.Long">
+		  select id
+		  FROM module_info_permissions
+		  where module_info_id = #{moduleId}
+		  AND PERMISSION_ID = #{permissionId}
+		  and is_effective = 1
 	</select>
+
+	<select id="getIds" resultType="java.lang.Long">
+		  select id
+		  FROM module_info_permissions
+		  where module_info_id = #{moduleId}
+		  AND PERMISSION_ID IN
+		<foreach item="per" collection="list" index="index" open="("
+				 separator="," close=")">
+			#{per}
+		</foreach>
+
+		  and is_effective = 1
+	</select>
+
+	<select id="getIdsByModuleId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		  select id FROM module_info_permissions where module_info_id = #{moduleId}
+	</select>
+
+	<select id="getPermissionIds" parameterType="java.lang.Long" resultType="java.lang.Long">
+		  select permission_id FROM module_info_permissions where module_info_id = #{id} and is_effective = 1
+	</select>
+
+	<update id="relate" parameterType="com.xinri.po.moduleInfo.ModuleInfoPermissions">
+		UPDATE MODULE_INFO_PERMISSIONS t
+		SET IS_EFFECTIVE = #{isEffective}
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="moduleInfoId != null">
+				AND t.MODULE_INFO_ID = #{moduleInfoId}
+			</if>
+			<if test="permissionId != null">
+				AND t.PERMISSION_ID = #{permissionId}
+			</if>
+		</trim>
+	</update>
+
+
 </mapper>

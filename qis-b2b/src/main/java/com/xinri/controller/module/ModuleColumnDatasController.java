@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "moduleColumnDatas")
+@RequestMapping(value = "module/moduleColumnDatas")
 public class ModuleColumnDatasController {
 
     @Autowired
@@ -55,7 +55,7 @@ public class ModuleColumnDatasController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView save(Long id,String[] cols) {
+    public ModelAndView save(Long id, String[] cols) {
         ModuleInfoColumnDatas moduleInfoColumnData = new ModuleInfoColumnDatas();
         moduleInfoColumnData.setModuleInfoId(id);
         ModuleInfoColumnDatasService.removeByEntity(moduleInfoColumnData);
@@ -67,7 +67,7 @@ public class ModuleColumnDatasController {
                 ModuleInfoColumnDatasService.saveOrUpdate(moduleInfoColumnData);
             }
         }
-        ModelAndView mv = new ModelAndView("redirect:/moduleColumnDatas/index/");
+        ModelAndView mv = new ModelAndView("redirect:/module/moduleColumnDatas/index/");
         return mv;
     }
 }

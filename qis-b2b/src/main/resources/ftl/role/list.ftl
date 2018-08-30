@@ -39,7 +39,7 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <a class="btn green btn-parent" href="${rc.contextPath}/role/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/role/role/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
@@ -250,7 +250,7 @@
                 ],
                 "iDisplayLength": 10,
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/role/list",
+                "sAjaxSource": "${rc.contextPath}/role/role/list",
                 "aaSorting": [
                     [ 0, "desc" ]
                 ],
@@ -289,9 +289,9 @@
                             }
                         }},
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                            var a = '<a href="${rc.contextPath}/role/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                            var a = '<a href="${rc.contextPath}/role/role/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
-                            var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
+                            var b = '<a href="${rc.contextPath}/role/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
                                     '<i class="fa fa-map"></i>模块管理</a>';
                             var c='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="seegroup(\''+row.id+'\')" title ="查看组织"><i class="fa fa-search"></i>查看组织</a>';
                             var d='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="togroup(\''+row.id+'\')" title ="分配组织"><i class="fa fa-search"></i>分配组织</a>';
@@ -319,7 +319,7 @@
             },
             dataTable:{
                 "bServerSide":true,
-                "sAjaxSource":"${rc.contextPath}/role/query-group-list",
+                "sAjaxSource":"${rc.contextPath}/role/role/query-group-list",
                 "aoColumnDefs":[
                     { "bSortable":false,"aTargets":[ 0,1,2,3] }
                 ],//设置不排序得列
@@ -345,7 +345,7 @@
             },
             dataTable:{
                 "bServerSide":true,
-                "sAjaxSource":"${rc.contextPath}/role/query-group-notinrole",
+                "sAjaxSource":"${rc.contextPath}/role/role/query-group-notinrole",
                 "aoColumnDefs":[
                     { "bSortable":false,"aTargets":[ 0,1,2,3] }
                 ],//设置不排序得列
@@ -383,7 +383,7 @@
                         className: "green",
                         callback: function() {
                             $.ajax({
-                                url:'${rc.contextPath}/role/join',
+                                url:'${rc.contextPath}/role/role/join',
                                 type:'POST',
                                 traditional:true,
                                 data:{"roleId":$("#roleId").val(),"groupId":id},
@@ -413,7 +413,7 @@
                         className: "green",
                         callback: function() {
                             $.ajax({
-                                url:'${rc.contextPath}/role/leave',
+                                url:'${rc.contextPath}/role/role/leave',
                                 type:'POST',
                                 traditional:true,
                                 data:{"roleId":$("#roleId").val(),"groupId":id},
@@ -503,7 +503,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/role/deleteOne-' + id,
+                                url: '${rc.contextPath}/role/role/deleteOne-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -549,7 +549,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/role/delete-all',
+                                url:'${rc.contextPath}/role/role/delete-all',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",

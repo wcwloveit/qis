@@ -60,7 +60,7 @@
                             <div class="portlet">
                                 <div class="portlet-body">
                                     <div class="form-group permissions">
-                                        <form class="form-horizontal" action="${rc.contextPath}/role/permissionsSave" method="POST"
+                                        <form class="form-horizontal" action="${rc.contextPath}/role/role/permissionsSave" method="POST"
                                               id="permissionsForm">
                                             <input id="roleId" name="roleId" value="${role.id?if_exists}" style="display: none">
                                             <input type="text"  id="moduleId" name="moduleId"  value="0" style="display: none">
@@ -121,7 +121,7 @@
                 ],
                 "iDisplayLength": 10,
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/role/moduleList/${role.id?if_exists}",
+                "sAjaxSource": "${rc.contextPath}/role/role/moduleList/${role.id?if_exists}",
                 "aaSorting": [
                     [ 0, "desc" ]
                 ],
@@ -177,7 +177,7 @@
         function assign(moduleId){
             $('input[name=moduleId]').val(moduleId);
             $.ajax({
-                url: '${rc.contextPath}/module/getPermissions?moduleId=' + moduleId+'&roleId=${role.id?if_exists}',
+                url: '${rc.contextPath}/module/module/getPermissions?moduleId=' + moduleId+'&roleId=${role.id?if_exists}',
                 type: 'GET',
                 async:false,
                 success: function (msg) {

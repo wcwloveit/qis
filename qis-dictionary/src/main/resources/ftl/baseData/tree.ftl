@@ -26,7 +26,7 @@
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="${rc.contextPath}/baseDataTypes/index">数据字典列表</a>
+                <a href="${rc.contextPath}/dictionary/baseDataTypes/index">数据字典列表</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <form class="form-horizontal" action="${rc.contextPath}/baseData/save" method="POST"
+                        <form class="form-horizontal" action="${rc.contextPath}/dictionary/baseData/save" method="POST"
                               id="dicForm">
                             <input type="hidden" name="id"/>
                             <input type="hidden" name="pid" value="0"/>
@@ -258,7 +258,7 @@
                 "data": {
                     'dataType': 'json',
                     'type': "post",
-                    'url': "${rc.contextPath}/baseData/list/${id?if_exists}",
+                    'url': "${rc.contextPath}/dictionary/baseData/list/${id?if_exists}",
                 },
             },
             "types": {
@@ -272,7 +272,7 @@
             text = selectd.node.text;
             if (dic_id) {
                 $.ajax({
-                    url: '${rc.contextPath}/baseData/read-category/' + dic_id,
+                    url: '${rc.contextPath}/dictionary/baseData/read-category/' + dic_id,
                     type: 'GET',
                     beforeSend: function () {
                         $(".input-icon > i").removeClass("fa-check fa-warning").attr("data-original-title", "");
@@ -335,7 +335,7 @@
                     remote: {
                         type: "GET",
                         contentType: "application/json;charset=UTF-8",
-                        url: "${rc.contextPath}/baseData/checkExist",//请求地址
+                        url: "${rc.contextPath}/dictionary/baseData/checkExist",//请求地址
                         //传递的参数,不写默认是当前校验的值
                         data: {
                             //多参数传递,每个值需要用function返回,
@@ -429,7 +429,7 @@
             $('select[name=baseDataTypeId]').val("");
             $('select[name=parentBaseDataId]').val("");
             $.ajax({
-                url: '${rc.contextPath}/baseData/typeList',
+                url: '${rc.contextPath}/dictionary/baseData/typeList',
                 type: 'POST',
                 success: function (data) {
                     var value = "";
@@ -455,7 +455,7 @@
         $('.btn-children').click(function () {
             form.resetForm();
             $.ajax({
-                url: '${rc.contextPath}/baseData/read-category/'+dic_id,
+                url: '${rc.contextPath}/dictionary/baseData/read-category/'+dic_id,
                 type: 'GET',
                 success: function (msg) {
                     var data=msg.baseData;
@@ -517,7 +517,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/baseData/delete/' + dic_id,
+                                url: '${rc.contextPath}/dictionary/baseData/delete/' + dic_id,
                                 type: 'DELETE',
                                 success: function (data) {
                                     Metronic.stopPageLoading();

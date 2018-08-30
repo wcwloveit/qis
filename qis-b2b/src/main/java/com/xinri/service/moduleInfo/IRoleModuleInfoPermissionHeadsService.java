@@ -16,5 +16,7 @@ public interface IRoleModuleInfoPermissionHeadsService extends IBaseService<Role
 
     List<Long> getPerIds(Long moduleId, Long roleId);
 
+    void celar(Long moduleId,Long roleId);
+
 }
 

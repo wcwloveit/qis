@@ -2,6 +2,7 @@ package com.xinri.dao.moduleInfo;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ import java.util.List;
 public interface RoleModuleInfoPermissionHeadsMapper extends CrudDao<RoleModuleInfoPermissionHeads>{
     List<Long> getIds(Long id);
 
-    List<Long> getPerIds(Long moduleId,Long roleId);
+    List<Long> getPerIds(@Param("moduleId")Long moduleId,@Param("roleId")Long roleId);
+
+    void celar(@Param("moduleId") Long moduleId,@Param("roleId") Long roleId);
 
 
 }

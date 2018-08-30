@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <form class="form-horizontal" action="${rc.contextPath}/module/save" method="POST"
+                        <form class="form-horizontal" action="${rc.contextPath}/module/module/save" method="POST"
                               id="moduleForm">
                             <input type="hidden" name="id"/>
                             <input type="hidden" name="pid" value="0"/>
@@ -385,7 +385,7 @@
                 "data": {
                     'dataType': 'json',
                     'type': "post",
-                    'url': "${rc.contextPath}/module/list",
+                    'url': "${rc.contextPath}/module/module/list",
                 },
             },
             "types": {
@@ -398,7 +398,7 @@
             module_id = selectd.node.id;
             if (module_id) {
                 $.ajax({
-                    url: '${rc.contextPath}/module/get-infos/' + module_id,
+                    url: '${rc.contextPath}/module/module/get-infos/' + module_id,
                     type: 'GET',
                     beforeSend: function () {
                         $(".input-icon > i").removeClass("fa-check fa-warning").attr("data-original-title", "");
@@ -453,7 +453,7 @@
                     remote: {
                         type: "GET",
                         contentType: "application/json;charset=UTF-8",
-                        url: "${rc.contextPath}/module/checkExist",//请求地址
+                        url: "${rc.contextPath}/module/module/checkExist",//请求地址
                         //传递的参数,不写默认是当前校验的值
                         data: {
                             //多参数传递,每个值需要用function返回,
@@ -483,7 +483,7 @@
                     remote: {
                         type: "GET",
                         contentType: "application/json;charset=UTF-8",
-                        url: "${rc.contextPath}/module/checkCode",//请求地址
+                        url: "${rc.contextPath}/module/module/checkCode",//请求地址
                         //传递的参数,不写默认是当前校验的值
                         data: {
                             //多参数传递,每个值需要用function返回,
@@ -560,7 +560,7 @@
             form.resetForm();
             $('input[name=id]').val("");
             $.ajax({
-                url: '${rc.contextPath}/module/get-infos/'+module_id,
+                url: '${rc.contextPath}/module/module/get-infos/'+module_id,
                 type: 'GET',
                 success: function (msg) {
                     var data=msg.module;
@@ -613,7 +613,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/module/delete/' + module_id,
+                                url: '${rc.contextPath}/module/module/delete/' + module_id,
                                 type: 'DELETE',
                                 success: function (data) {
                                     Metronic.stopPageLoading();

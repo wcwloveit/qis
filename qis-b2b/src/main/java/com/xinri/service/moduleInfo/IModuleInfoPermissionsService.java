@@ -2,6 +2,7 @@ package com.xinri.service.moduleInfo;
 
 import com.qis.common.service.IBaseService;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,5 +16,12 @@ public interface IModuleInfoPermissionsService extends IBaseService<ModuleInfoPe
 
     List<Long> getPermissionIds(Long id);
 
+    void relate(ModuleInfoPermissions moduleInfoPermission);
+
+    Long getId(Long moduleId, Long permissionId);
+
+    Long[] getIdsByModuleId(Long moduleId);
+
+    Long[] getIds(Long moduleId, List<Long> ids);
 }
 

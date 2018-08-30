@@ -24,5 +24,24 @@ public class ModuleInfoPermissionsServiceImpl extends CrudService<ModuleInfoPerm
         return dao.getPermissionIds(id);
     }
 
+    @Override
+    public void relate(ModuleInfoPermissions moduleInfoPermission) {
+        dao.relate(moduleInfoPermission);
+    }
+
+    @Override
+    public Long getId(Long moduleId, Long permissionId) {
+        return dao.getId(moduleId, permissionId);
+    }
+
+    @Override
+    public Long[] getIdsByModuleId(Long moduleId) {
+        return dao.getIdsByModuleId(moduleId);
+    }
+
+    @Override
+    public Long[] getIds(Long moduleId, List<Long> ids) {
+        return dao.getIds(ids, moduleId);
+    }
 
 }

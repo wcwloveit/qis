@@ -7,15 +7,16 @@ import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.qis.util.Utils;
 import com.xinri.po.moduleInfo.ModuleInfoes;
-import com.xinri.po.role.Roles;
-import com.xinri.po.moduleInfo.RoleModuleInfos;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
+import com.xinri.po.moduleInfo.RoleModuleInfos;
+import com.xinri.po.role.Roles;
 import com.xinri.po.user.UserGroups;
+import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
 import com.xinri.service.moduleInfo.IModuleInfoesService;
+import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
+import com.xinri.service.moduleInfo.IRoleModuleInfosService;
 import com.xinri.service.role.IRoleUserGroupsService;
 import com.xinri.service.role.IRolesService;
-import com.xinri.service.moduleInfo.IRoleModuleInfosService;
-import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
 import com.xinri.util.AjaxStatus;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
-@RequestMapping(value="/role")
+@RequestMapping(value = "/role/role")
 public class RoleController extends BaseController {
 
 
@@ -50,11 +48,14 @@ public class RoleController extends BaseController {
     @Autowired
     private IRoleUserGroupsService roleUserGroupsService;
 
+    @Autowired
+    private IModuleInfoPermissionsService moduleInfoPermissionsService;
+
     /*
      * 首页
      * */
     @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String findRoleList(){
+    public String findRoleList() {
         return "role/list";
     }
 
@@ -63,15 +64,15 @@ public class RoleController extends BaseController {
      * 首页
      * */
     @RequestMapping(value = "module/{id}", method = RequestMethod.GET)
-    public ModelAndView findModuleList(@PathVariable(value = "id")Long id){
-        List<Long> moduleIds=roleModuleInfosService.getModuleIds(id);
-        if (CollectionUtils.isNotEmpty(moduleIds)){
-            ModelAndView mv=new ModelAndView("role/moduleList");
-            mv.addObject("role",rolesService.get(id));
+    public ModelAndView findModuleList(@PathVariable(value = "id") Long id) {
+        List<Long> moduleIds = roleModuleInfosService.getModuleIds(id);
+        if (CollectionUtils.isNotEmpty(moduleIds)) {
+            ModelAndView mv = new ModelAndView("role/moduleList");
+            mv.addObject("role", rolesService.get(id));
             return mv;
-        }else{
-            ModelAndView mv=new ModelAndView("role/list");
-            mv.addObject("message","当前角色下没有模块");
+        } else {
+            ModelAndView mv = new ModelAndView("role/list");
+            mv.addObject("message", "当前角色下没有模块");
             return mv;
         }
 
@@ -80,9 +81,9 @@ public class RoleController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "moduleList/{id}", method = RequestMethod.POST)
-    public DataTable<ModuleInfoes> getModuleList(DataTable<ModuleInfoes> dt,@PathVariable(value = "id") Long id){
-        List<Long> ids=roleModuleInfosService.getModuleIds(id);
-        return moduleInfoesService.getModulesForRole(dt,ids);
+    public DataTable<ModuleInfoes> getModuleList(DataTable<ModuleInfoes> dt, @PathVariable(value = "id") Long id) {
+        List<Long> ids = roleModuleInfosService.getModuleIds(id);
+        return moduleInfoesService.getModulesForRole(dt, ids);
     }
 
     /*
@@ -90,9 +91,9 @@ public class RoleController extends BaseController {
      * */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public DataTable<Roles> getItemList(DataTable<Roles> dt, ServletRequest request){
+    public DataTable<Roles> getItemList(DataTable<Roles> dt, ServletRequest request) {
         logger.info("获取角色列表开始");
-        Map<String,Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
+        Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
         DataTable<Roles> baseDatas = rolesService.findListByVo(dt, searchParams); //查询方法
         logger.info("获取角色列表结束");
         return baseDatas;
@@ -100,51 +101,53 @@ public class RoleController extends BaseController {
 
     /**
      * 跳转新增
+     *
      * @return
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
-    public ModelAndView create(){
+    public ModelAndView create() {
         ModelAndView mv = new ModelAndView("/role/form");
         List<Roles> roleList = new ArrayList<Roles>();
         Roles roles = new Roles();
         roles.setIsDeleted(0);
-        roleList= rolesService.findAllList(roles);
-        mv.addObject("roleList",roleList);
-        mv.addObject("action","create");
+        roleList = rolesService.findAllList(roles);
+        mv.addObject("roleList", roleList);
+        mv.addObject("action", "create");
         return mv;
     }
 
 
     /**
      * 新建
+     *
      * @param attributes
      * @return
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView create(Roles role,String ids,
+    public ModelAndView create(Roles role, String ids,
                                RedirectAttributes attributes) {
         logger.info("新增角色开始");
-        List<Long> list=Lists.newArrayList();
-        if(!Strings.isNullOrEmpty(ids)){
-            for(String str : ids.split(",")){
+        List<Long> list = Lists.newArrayList();
+        if (!Strings.isNullOrEmpty(ids)) {
+            for (String str : ids.split(",")) {
                 list.add(Long.valueOf(str));
             }
-            list=Utils.removeDuplicate(list);
+            list = Utils.removeDuplicate(list);
         }
 
-        ModelAndView mv = new ModelAndView("redirect:/role/index");
+        ModelAndView mv = new ModelAndView("redirect:/role/role/index");
         try {
             role.setIsDeleted(0);
             role.setIsEffective(0);
             rolesService.saveOrUpdate(role);
-            for(Long id:list){
-                RoleModuleInfos roleModuleInfo=new RoleModuleInfos();
+            for (Long id : list) {
+                RoleModuleInfos roleModuleInfo = new RoleModuleInfos();
                 roleModuleInfo.setRoleId(role.getId());
                 roleModuleInfo.setModuleInfoId(id);
                 roleModuleInfosService.saveOrUpdate(roleModuleInfo);
             }
-            attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","添加角色成功");
+            attributes.addFlashAttribute("success", true);
+            attributes.addFlashAttribute("message", "添加角色成功");
             logger.info("新增角色完成");
         } catch (Exception e) {
             logger.error("新增角色报错：", e);
@@ -156,6 +159,7 @@ public class RoleController extends BaseController {
 
     /**
      * 更新状态
+     *
      * @param id
      * @return
      */
@@ -163,43 +167,44 @@ public class RoleController extends BaseController {
     public ModelAndView update(@PathVariable("id") Long id) {
         ModelAndView mv = new ModelAndView("/role/form");
         Roles role = rolesService.get(id);
-        mv.addObject("role",role);
+        mv.addObject("role", role);
         mv.addObject("action", "update");//跳转编辑的标示
         return mv;
     }
 
     /**
      * 更新
+     *
      * @param zcActivity
      * @param attributes
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView update(Roles role,String ids, RedirectAttributes attributes) {
+    public ModelAndView update(Roles role, String ids, RedirectAttributes attributes) {
         logger.info("更新角色开始");
-        ModelAndView mv = new ModelAndView("redirect:/role/index");
-        List<Long> list=Lists.newArrayList();
-        if(!Strings.isNullOrEmpty(ids)){
-            for(String str : ids.split(",")){
+        ModelAndView mv = new ModelAndView("redirect:/role/role/index");
+        List<Long> list = Lists.newArrayList();
+        if (!Strings.isNullOrEmpty(ids)) {
+            for (String str : ids.split(",")) {
                 list.add(Long.valueOf(str));
             }
-            list=Utils.removeDuplicate(list);
+            list = Utils.removeDuplicate(list);
         }
-        RoleModuleInfos roleModuleInfo=new RoleModuleInfos();
+        RoleModuleInfos roleModuleInfo = new RoleModuleInfos();
         roleModuleInfo.setRoleId(role.getId());
         roleModuleInfosService.removeByEntity(roleModuleInfo);
 
         try {
             role.setIsNewRecord(false);
             rolesService.saveOrUpdate(role);
-            for(Long id:list){
-                roleModuleInfo=new RoleModuleInfos();
+            for (Long id : list) {
+                roleModuleInfo = new RoleModuleInfos();
                 roleModuleInfo.setRoleId(role.getId());
                 roleModuleInfo.setModuleInfoId(id);
                 roleModuleInfosService.saveOrUpdate(roleModuleInfo);
             }
-            attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","更新角色成功");
+            attributes.addFlashAttribute("success", true);
+            attributes.addFlashAttribute("message", "更新角色成功");
             logger.info("更新角色完成");
         } catch (Exception e) {
             logger.error("更新角色报错：", e);
@@ -210,13 +215,14 @@ public class RoleController extends BaseController {
 
     /**
      * 根据Id逻辑删除
+     *
      * @param id
      * @return
      */
-    @RequestMapping(value = "deleteOne-{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
-        return  rolesService.deleteOne(id);
+        return rolesService.deleteOne(id);
     }
 
     /**
@@ -224,41 +230,43 @@ public class RoleController extends BaseController {
      *
      * @return 返回跳转链接
      */
-    @RequestMapping(value="delete-all",method=RequestMethod.POST) @ResponseBody
-    public Map<String,Boolean> deleteAll(@RequestParam("ids") List<Long> ids){
-        Map<String,Boolean> map=new HashMap<String,Boolean>();
-        try{
-            for (Long id:ids){
+    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        try {
+            for (Long id : ids) {
                 rolesService.deleteOne(id);
             }
-            map.put("stat",true);
-        }catch(Exception e){
-            map.put("stat",false);
-            logger.info("删除角色错误信息："+e);
+            map.put("stat", true);
+        } catch (Exception e) {
+            map.put("stat", false);
+            logger.info("删除角色错误信息：" + e);
         }
         return map;
     }
 
-    @RequestMapping(value = "permissionsSave",method = RequestMethod.POST)
-    public String permissionsSave(Long roleId,Long moduleId,String[] ids,RedirectAttributes redirectAttributes){
-        RoleModuleInfoPermissionHeads roleModuleInfoPermissionHead=new RoleModuleInfoPermissionHeads();
-        roleModuleInfoPermissionHead.setModuleId(moduleId);
-        roleModuleInfoPermissionHead.setRoleId(roleId);
-        roleModuleInfoPermissionHeadsService.removeByEntity(roleModuleInfoPermissionHead);
+    @RequestMapping(value = "permissionsSave", method = RequestMethod.POST)
+    public String permissionsSave(Long roleId, Long moduleId, Long[] ids, RedirectAttributes redirectAttributes) {
         try {
-            for (String id :ids){
+            roleModuleInfoPermissionHeadsService.celar(moduleId, roleId);
+            List<Long> perIds = Arrays.asList(ids);
+            Long[] moduPerIds = moduleInfoPermissionsService.getIds(moduleId, perIds);
+            RoleModuleInfoPermissionHeads roleModuleInfoPermissionHead = new RoleModuleInfoPermissionHeads();
+            roleModuleInfoPermissionHead.setRoleId(roleId);
+            for (Long moduPerId : moduPerIds) {
                 roleModuleInfoPermissionHead.setId(null);
                 roleModuleInfoPermissionHead.setIsNewRecord(true);
-                roleModuleInfoPermissionHead.setPermissionId(Long.valueOf(id));
+                roleModuleInfoPermissionHead.setModuleInfoPermissionId(moduPerId);
                 roleModuleInfoPermissionHeadsService.saveOrUpdate(roleModuleInfoPermissionHead);
             }
             logger.info("roleModuleInfoPermissionHead成功");
-            redirectAttributes.addFlashAttribute("message","保存成功");
-        }catch (Exception e){
-            logger.error("roleModuleInfoPermissionHead成功",e);
-            redirectAttributes.addFlashAttribute("message","保存失败");
+            redirectAttributes.addFlashAttribute("message", "保存成功");
+        } catch (Exception e) {
+            logger.error("roleModuleInfoPermissionHead成功", e);
+            redirectAttributes.addFlashAttribute("message", "保存失败");
         }
-        return "redirect:/role/module/"+roleId;
+        return "redirect:/role/role/module/" + roleId;
     }
 
     /**
@@ -267,19 +275,20 @@ public class RoleController extends BaseController {
      * @param dt
      * @param roleId
      * @param request
-     *
      * @return
      */
-    @RequestMapping(value="query-group-list") @ResponseBody
-    public DataTable queryMessList(DataTable<UserGroups> dt,@RequestParam(value="roleId", required=false) String roleId,ServletRequest request){
-        Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
-        return roleUserGroupsService.QueryUserByRoleIdList(dt,searchParams,roleId);
+    @RequestMapping(value = "query-group-list")
+    @ResponseBody
+    public DataTable queryMessList(DataTable<UserGroups> dt, @RequestParam(value = "roleId", required = false) String roleId, ServletRequest request) {
+        Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+        return roleUserGroupsService.QueryUserByRoleIdList(dt, searchParams, roleId);
     }
 
-    @RequestMapping(value="query-group-notinrole") @ResponseBody
-    public DataTable queryNotInRoleList(DataTable<UserGroups> dt, @RequestParam(value="roleId", required=false) String roleId, ServletRequest request){
-        Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
-        return roleUserGroupsService.QueryGroupNotInRoleIdList(dt,searchParams,roleId);
+    @RequestMapping(value = "query-group-notinrole")
+    @ResponseBody
+    public DataTable queryNotInRoleList(DataTable<UserGroups> dt, @RequestParam(value = "roleId", required = false) String roleId, ServletRequest request) {
+        Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+        return roleUserGroupsService.QueryGroupNotInRoleIdList(dt, searchParams, roleId);
     }
 
     /**
@@ -287,26 +296,25 @@ public class RoleController extends BaseController {
      *
      * @param roleId
      * @param empId
-     *
      * @return
      */
-    @RequestMapping(value="join", method=RequestMethod.POST) @ResponseBody
-    public AjaxStatus join(@RequestParam("roleId") Long roleId, @RequestParam("groupId") Long groupId){
-        return roleUserGroupsService.JoinRole(roleId,groupId);
+    @RequestMapping(value = "join", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxStatus join(@RequestParam("roleId") Long roleId, @RequestParam("groupId") Long groupId) {
+        return roleUserGroupsService.JoinRole(roleId, groupId);
     }
+
     /**
      * 员工离开角色
      *
      * @param roleId
      * @param empId
-     *
      * @return
      */
-    @RequestMapping(value="leave", method=RequestMethod.POST) @ResponseBody
-    public AjaxStatus leave(@RequestParam("roleId") Long roleId,@RequestParam("groupId") Long groupId){
-        return roleUserGroupsService.LeaveRole(roleId,groupId);
+    @RequestMapping(value = "leave", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxStatus leave(@RequestParam("roleId") Long roleId, @RequestParam("groupId") Long groupId) {
+        return roleUserGroupsService.LeaveRole(roleId, groupId);
     }
-
-
 
 }

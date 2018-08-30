@@ -58,7 +58,7 @@
 
             <div class="portlet-body">
 
-                <form id="myForm" action="${rc.contextPath}/baseDataTypes/${action?if_exists}"
+                <form id="myForm" action="${rc.contextPath}/dictionary/baseDataTypes/${action?if_exists}"
                       method="POST" class="form-horizontal">
                     <input id="id" name="id" value="${baseDataTypes.id?if_exists}" style="display: none">
                     <div class="form-body">
@@ -102,7 +102,7 @@
                             <div class="col-md-offset-3 col-md-9">
                                 <button type="submit" class="btn green">提交</button>
                                 <button type="button" class="btn default"
-                                        onclick="javascript:window.location.href='${rc.contextPath}/baseDataTypes/index';">
+                                        onclick="javascript:window.location.href='${rc.contextPath}/dictionary/baseDataTypes/index';">
                                     取消
                                 </button>
                             </div>
@@ -152,7 +152,7 @@
                         "data": {
                     'dataType': 'json',
                             'type': "post",
-                            'url': "${rc.contextPath}/baseData/list/${baseDataTypes.id?if_exists}",
+                            'url': "${rc.contextPath}/dictionary/baseData/list/${baseDataTypes.id?if_exists}",
                 },
             },
             "types": {

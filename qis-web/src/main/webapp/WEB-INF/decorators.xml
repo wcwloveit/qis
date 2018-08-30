@@ -15,17 +15,10 @@
         <pattern>/role/*</pattern>
         <pattern>/module/*</pattern>
         <pattern>/dictionary/*</pattern>
-
-        <pattern>/baseData/*</pattern>
-        <pattern>/baseDataTypes/*</pattern>
         <pattern>/permissions/*</pattern>
         <pattern>/roleClass/*</pattern>
         <pattern>/userGroup/*</pattern>
-
-        <pattern>/modulePermissions/*</pattern>
-        <pattern>/moduleColumnDatas/*</pattern>
         <pattern>/column/*</pattern>
-        <pattern>/user/*</pattern>
-        <pattern>/sysUser/*</pattern>
+
     </decorator>
 </decorators>

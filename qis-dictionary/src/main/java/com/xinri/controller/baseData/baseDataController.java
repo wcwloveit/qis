@@ -27,7 +27,7 @@ import java.util.Map;
  * 创建时间:20180813
  */
 @Controller
-@RequestMapping(value = "/baseData")
+@RequestMapping(value = "/dictionary/baseData")
 public class baseDataController extends BaseController {
 
     @Autowired
@@ -108,7 +108,7 @@ public class baseDataController extends BaseController {
             baseData.setParentBaseDataId(0L);
         }
         baseDatasService.saveOrUpdate(baseData);
-        ModelAndView mv = new ModelAndView("redirect:/baseData/index/" + baseData.getBaseDataTypeId());
+        ModelAndView mv = new ModelAndView("redirect:/dictionary/baseData/index/" + baseData.getBaseDataTypeId());
         logger.info("create结束");
         return mv;
     }
@@ -122,7 +122,7 @@ public class baseDataController extends BaseController {
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public AjaxStatus delete(@PathVariable("id") Long id) {
-        logger.info("delete数据"+id);
+        logger.info("delete数据" + id);
         return baseDatasService.DeleteDic(id);
     }
 

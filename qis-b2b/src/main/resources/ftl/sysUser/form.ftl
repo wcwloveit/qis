@@ -59,7 +59,7 @@
 
             <div class="portlet-body">
 
-                <form id="myForm" action="${rc.contextPath}/sysUser/${action?if_exists}"
+                <form id="myForm" action="${rc.contextPath}/user/sysUser/${action?if_exists}"
                       method="POST" class="form-horizontal">
                     <input id="id" name="id" value="${sysUser.id?if_exists}" style="display: none">
                     <div class="form-body">
@@ -67,19 +67,19 @@
                         <div class="form-group">
                             <label class="control-label col-md-3" for="inputWarning">账号<span class="required">*</span></label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="account" id="account" value="${sysUser.account?if_exists}"/>
+                                <input type="text" class="form-control" placeholder="最好填写手机号"  name="account" id="account" value="${sysUser.account?if_exists}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="inputWarning">密码<span class="required">*</span></label>
+                            <label class="control-label col-md-3" for="inputWarning">密码</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="password" id="password" value="${sysUser.password?if_exists}"/>
+                                <input type="text" class="form-control" placeholder="如果不填默认为123456" name="password" id="password" value="${sysUser.password?if_exists}"/>
                             </div>
                         </div>
 
                         <h3 class="form-section">个人信息</h3>
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="inputWarning">名字</label>
+                            <label class="control-label col-md-3" for="inputWarning">名字<span class="required">*</span></label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" name="name" id="name" value="${sysUser.name?if_exists}"/>
                             </div>
@@ -157,7 +157,7 @@
                             <div class="col-md-offset-3 col-md-9">
                                 <button type="submit" class="btn green">提交</button>
                                 <button type="button" class="btn default"
-                                        onclick="javascript:window.location.href='${rc.contextPath}/sysUser/index';">
+                                        onclick="javascript:window.location.href='${rc.contextPath}/user/sysUser/index';">
                                     取消
                                 </button>
                             </div>
@@ -212,7 +212,7 @@
                 "data": {
                     'dataType': 'json',
                     'type': "post",
-                    'url': "${rc.contextPath}/sysUser/list/${sysUser.id?if_exists}",
+                    'url': "${rc.contextPath}/user/sysUser/list/${sysUser.id?if_exists}",
                 },
             },
             "types": {
@@ -225,7 +225,6 @@
         jQuery(function ($) {
 
             var form = $('#myForm'), error = $('.alert-danger', form);
-
             form.validate({
                 errorElement: 'span',
                 errorClass: 'help-block help-block-error',
@@ -234,17 +233,38 @@
                     name:{
                         required: true
                     },
-                    code:{
-                        required: true
+                    account:{
+                        required: true,
+                        remote: {
+                            type: "GET",
+                            contentType: "application/json;charset=UTF-8",
+                            url: "${rc.contextPath}/user/sysUser/check",//请求地址
+                            //传递的参数,不写默认是当前校验的值
+                            data: {
+                            //多参数传递,每个值需要用function返回,
+                                "account": function () {
+                                    return $(" input[ name='account' ] ").val();
+                                },
+                                "id": function () {
+                                    var id = $("input[name=id]").val();
+                                    if (!id)
+                                        id = 0;
+                                    return id;
+                                }
+                        }
                     }
+                }
+
                 },
                 messages: {
                     name:{
-                        required: "不能为空"
+                        required:"名字不能为空",
                     },
-                    code:{
-                        required: "不能为空"
+                    account:{
+                        required:"账号不能为空",
+                        remote:"账号已存在，请重新输入"
                     }
+
                 },
                 invalidHandler: function (event, validator) {
                     error.show();
@@ -260,7 +280,8 @@
                     label.closest('.form-group').removeClass('has-error');
                 },
                 submitHandler: function (form) {
-
+                    var password=$("input[name =password]").val();
+                    $("input[name =password]").val(password?password:'123456');
                     form.submit();
                 }
             })

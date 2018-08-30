@@ -1,6 +1,7 @@
 package com.xinri.controller.module;
 
 import com.qis.common.web.BaseController;
+import com.xinri.po.moduleInfo.ModuleInfoPermissions;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
 import com.xinri.service.moduleInfo.*;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.management.ManagementPermission;
 import java.util.*;
 
 /**
@@ -25,7 +27,7 @@ import java.util.*;
  */
 
 @Controller
-@RequestMapping(value = "module")
+@RequestMapping(value = "module/module")
 public class ModuleController extends BaseController {
 
     @Autowired
@@ -42,7 +44,6 @@ public class ModuleController extends BaseController {
 
     @Autowired
     private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
-
 
 
     /*
@@ -116,20 +117,34 @@ public class ModuleController extends BaseController {
     /**
      * 新建或修改
      *
-     * @param模块信息和是否有效
      * @return
+     * @param模块信息和是否有效
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView create(ModuleInfoes moduleinfo) {
+    public ModelAndView create(ModuleInfoes moduleInfo) {
         logger.info("create开始");
-        if (moduleinfo.getId() != null) {
-            moduleinfo.setIsNewRecord(false);
+        ModelAndView mv = new ModelAndView("redirect:/module/module/index/");
+        if (moduleInfo.getId() != null) {
+            moduleInfo.setIsNewRecord(false);
         }
-        if (moduleinfo.getParentModuleId() == null) {
-            moduleinfo.setParentModuleId(0L);
+        if (moduleInfo.getParentModuleId() == null) {
+            moduleInfo.setParentModuleId(0L);
+        } else if (moduleInfo.getId() == null) {
+            moduleInfoesService.saveOrUpdate(moduleInfo);
+            ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
+            List<Permissions> permissions = permissionsService.findAllList();
+            for (Permissions permission : permissions) {
+                moduleInfoPermission.setId(null);
+                moduleInfoPermission.setIsNewRecord(true);
+                Long moduleInfoId = moduleInfo.getId();
+                Long permissionId = permission.getId();
+                moduleInfoPermission.setModuleInfoId(moduleInfoId);
+                moduleInfoPermission.setPermissionId(permissionId);
+                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
+            }
+            return mv;
         }
-        moduleInfoesService.saveOrUpdate(moduleinfo);
-        ModelAndView mv = new ModelAndView("redirect:/module/index/");
+        moduleInfoesService.saveOrUpdate(moduleInfo);
         logger.info("create结束");
         return mv;
     }
@@ -137,13 +152,13 @@ public class ModuleController extends BaseController {
     /**
      * 物理删除
      *
-     * @param要删除的模块的id
      * @return 状态信息
+     * @param要删除的模块的id
      */
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public AjaxStatus delete(@PathVariable("id") Long id) {
-        logger.info("delete"+id);
+        logger.info("delete" + id);
 
         return moduleInfoesService.deleteModule(id);
     }
@@ -151,8 +166,8 @@ public class ModuleController extends BaseController {
     /**
      * 检查同级下是否存在同名(dicValue)的模块
      *
-     * @paramdicValue(值)，dicPid(父级编号)，status(是修改还是新增)，id
      * @return
+     * @paramdicValue(值)，dicPid(父级编号)，status(是修改还是新增)，id
      */
     @RequestMapping(value = "/checkExist", method = RequestMethod.GET)
     @ResponseBody
@@ -209,4 +224,23 @@ public class ModuleController extends BaseController {
         logger.info("getPermissions结束");
         return info;
     }
+
+    //初始化模块权限关联表
+//    @RequestMapping(value = "/init",method = RequestMethod.GET)
+//    public void init (){
+//        List<Permissions> permissions=permissionsService.findAllList();
+//        ModuleInfoPermissions moduleInfoPermission=new ModuleInfoPermissions();
+//        ModuleInfoes moduleinfo=new ModuleInfoes();
+//        moduleinfo.setIsMenu(0);
+//        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
+//        for (Permissions permission : permissions) {
+//            moduleInfoPermission.setPermissionId(permission.getId());
+//            for (ModuleInfoes moduleInfo : moduleInfoes) {
+//                moduleInfoPermission.setId(null);
+//                moduleInfoPermission.setIsNewRecord(true);
+//                moduleInfoPermission.setModuleInfoId(moduleInfo.getId());
+//                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
+//            }
+//        }
+//    }
 }

@@ -25,7 +25,7 @@ import java.util.Map;
  * 创建时间:20180813
  */
 @Controller
-@RequestMapping(value = "permissions")
+@RequestMapping(value = "permissions/permissions")
 public class permissionsController extends BaseController {
 
     @Autowired
@@ -89,22 +89,26 @@ public class permissionsController extends BaseController {
     public ModelAndView create(Permissions permissions,
                                RedirectAttributes attributes) {
         logger.info("新增权限开始");
-        ModelAndView mv = new ModelAndView("redirect:/permissions/index");
-        ModuleInfoPermissions moduleInfoPermission=new ModuleInfoPermissions();
-        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findAllList();
+        ModelAndView mv = new ModelAndView("redirect:/permissions/permissions/index");
+        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
+        ModuleInfoes moduleinfo = new ModuleInfoes();
+        moduleinfo.setIsMenu(0);
+        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
         try {
             permissions.setIsDeleted(0);
             permissions.setIsEffective(0);
             permissionsService.saveOrUpdate(permissions);
+
             for (ModuleInfoes moduleInfo : moduleInfoes) {
                 moduleInfoPermission.setId(null);
                 moduleInfoPermission.setIsNewRecord(true);
-                Long moduleInfoId=moduleInfo.getId();
-                Long permissionId=permissions.getId();
+                Long moduleInfoId = moduleInfo.getId();
+                Long permissionId = permissions.getId();
                 moduleInfoPermission.setModuleInfoId(moduleInfoId);
                 moduleInfoPermission.setPermissionId(permissionId);
                 moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
             }
+
             attributes.addFlashAttribute("success", true);
             attributes.addFlashAttribute("message", "添加权限成功");
             logger.info("新增权限完成");
@@ -143,7 +147,7 @@ public class permissionsController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(Permissions permissions, RedirectAttributes attributes) {
         logger.info("更新权限开始");
-        ModelAndView mv = new ModelAndView("redirect:/permissions/index");
+        ModelAndView mv = new ModelAndView("redirect:/permissions/permissions/index");
         try {
             permissions.setIsNewRecord(false);
             permissionsService.saveOrUpdate(permissions);
@@ -166,7 +170,7 @@ public class permissionsController extends BaseController {
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
-        logger.info("删除权限"+id);
+        logger.info("删除权限" + id);
         return permissionsService.deleteOne(id);
     }
 

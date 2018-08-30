@@ -38,7 +38,7 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <a class="btn green btn-parent" href="${rc.contextPath}/sysUser/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/user/sysUser/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
@@ -155,7 +155,7 @@
                 ],
                 "iDisplayLength": 10,
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/sysUser/list",
+                "sAjaxSource": "${rc.contextPath}/user/sysUser/list",
                 "aaSorting": [
                     [ 0, "desc" ]
                 ],
@@ -200,7 +200,7 @@
                             return data;
                         }},
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                            var a = '<a href="${rc.contextPath}/sysUser/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                            var a = '<a href="${rc.contextPath}/user/sysUser/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
                             var b = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
@@ -288,7 +288,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/sysUser/deleteOne-' + id,
+                                url: '${rc.contextPath}/user/sysUser/deleteOne-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -334,7 +334,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/sysUser/delete-all',
+                                url:'${rc.contextPath}/user/sysUser/delete-all',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",

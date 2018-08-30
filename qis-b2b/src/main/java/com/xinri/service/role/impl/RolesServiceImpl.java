@@ -58,15 +58,9 @@ public class RolesServiceImpl extends CrudService<RolesMapper,Roles>  implements
                     roles.setEndCreatedOn(endCreatedOn);
                 }
             }
-//
-//            if ( searchParams!= null && searchParams.size() != 0) {
-//                if (searchParams.containsKey("BaseData_effectiveDateEnd") && !Strings.isNullOrEmpty(searchParams.get("BaseData_effectiveDateEnd").toString().trim())) {
-//                    String effectiveDateEnd = searchParams.get("BaseData_effectiveDateEnd").toString().trim();
-//                    roles.setEffectiveDateStart(Date.valueOf(effectiveDateEnd));
-//                }
-//            }
 
             roles.setPage(page);  //获取分页对象
+            roles.setIsDeleted(0);
             configList=dao.findList(roles); //获取分页数据
             page.setData(configList);  //***
             dt.setiTotalDisplayRecords(page.getTotalSize());

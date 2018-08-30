@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <form class="form-horizontal" action="${rc.contextPath}/moduleColumnDatas/save" method="POST"
+                        <form class="form-horizontal" action="${rc.contextPath}/module/moduleColumnDatas/save" method="POST"
                               id="moduleForm">
                             <input type="hidden" name="id"/>
                             <div class="form-body">
@@ -142,7 +142,7 @@
                 "data": {
                     'dataType': 'json',
                     'type': "post",
-                    'url': "${rc.contextPath}/module/list",
+                    'url': "${rc.contextPath}/module/module/list",
                 },
             },
             "types": {
@@ -155,7 +155,7 @@
             module_id = selectd.node.id;
             if (module_id) {
                 $.ajax({
-                    url: '${rc.contextPath}/moduleColumnDatas/getCols/' + module_id,
+                    url: '${rc.contextPath}/module/moduleColumnDatas/getCols/' + module_id,
                     type: 'GET',
                     success: function (msg) {
                         var cols=msg.myCols;

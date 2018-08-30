@@ -25,4 +25,9 @@ public class RoleModuleInfoPermissionHeadsServiceImpl extends CrudService<RoleMo
     public List<Long> getPerIds(Long moduleId, Long roleId) {
         return dao.getPerIds(moduleId, roleId);
     }
+
+    @Override
+    public void celar(Long moduleId, Long roleId) {
+        dao.celar(moduleId, roleId);
+    }
 }
