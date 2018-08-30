@@ -40,8 +40,23 @@ public class ModuleInfoPermissionsServiceImpl extends CrudService<ModuleInfoPerm
     }
 
     @Override
+    public Long[] getIdsByPermissionId(Long permissionId) {
+        return dao.getIdsByPermissionId(permissionId);
+    }
+
+    @Override
     public Long[] getIds(Long moduleId, List<Long> ids) {
         return dao.getIds(ids, moduleId);
+    }
+
+    @Override
+    public void deleteByPermissionId(Long permissionId) {
+        dao.deleteByPermissionId(permissionId);
+    }
+
+    @Override
+    public void deleteByModuleId(Long moduleId) {
+        dao.deleteByModuleId(moduleId);
     }
 
 }

@@ -6,8 +6,10 @@ import com.xinri.po.permissions.Permissions;
 import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
 import com.xinri.service.moduleInfo.IModuleInfoesService;
 import com.xinri.service.moduleInfo.IPermissionsToModuleService;
+import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
 import com.xinri.service.moduleInfo.impl.ModuleInfoesServiceImpl;
 import com.xinri.service.permissions.IPermissionsService;
+import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +35,9 @@ public class ModulePermissionsController {
 
     @Autowired
     private IModuleInfoPermissionsService moduleInfoPermissionsService;
+
+    @Autowired
+    private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
 
     /*
      * 首页
@@ -63,6 +69,10 @@ public class ModulePermissionsController {
         moduleInfoPermissions.setModuleInfoId(id);
         moduleInfoPermissions.setIsEffective(0);
         moduleInfoPermissionsService.relate(moduleInfoPermissions);
+
+        Long[] ids = (Long[]) ConvertUtils.convert(pers,Long.class);
+        roleModuleInfoPermissionHeadsService.deleteByDiff(Arrays.asList(ids),id);
+
         if (pers != null) {
             for (String per : pers) {
                 moduleInfoPermissions.setModuleInfoId(id);

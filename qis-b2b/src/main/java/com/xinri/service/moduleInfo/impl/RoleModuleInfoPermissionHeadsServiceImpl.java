@@ -30,4 +30,14 @@ public class RoleModuleInfoPermissionHeadsServiceImpl extends CrudService<RoleMo
     public void celar(Long moduleId, Long roleId) {
         dao.celar(moduleId, roleId);
     }
+
+    @Override
+    public void deleteByRelateId(List<Long> ids) {
+        dao.deleteByRelateId(ids);
+    }
+
+    @Override
+    public void deleteByDiff(List<Long> ids,Long moduleId){
+        dao.deleteByDiff(ids,moduleId);
+    }
 }

@@ -466,6 +466,10 @@
 		  select id FROM module_info_permissions where module_info_id = #{moduleId}
 	</select>
 
+	<select id="getIdsByPermissionId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		  select id FROM module_info_permissions where permission_id = #{permissionId}
+	</select>
+
 	<select id="getPermissionIds" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select permission_id FROM module_info_permissions where module_info_id = #{id} and is_effective = 1
 	</select>
@@ -481,6 +485,22 @@
 				AND t.PERMISSION_ID = #{permissionId}
 			</if>
 		</trim>
+	</update>
+
+	<update id="deleteByPermissionId" parameterType="java.lang.Long">
+		UPDATE MODULE_INFO_PERMISSIONS t
+		SET IS_EFFECTIVE = 0
+		<where>
+			t.PERMISSION_ID = #{permissionId,jdbcType=BIGINT}
+		</where>
+	</update>
+
+	<update id="deleteByModuleId" parameterType="java.lang.Long">
+		UPDATE MODULE_INFO_PERMISSIONS t
+		SET IS_EFFECTIVE = 0
+		<where>
+			t.MODULE_INFO_ID = #{moduleId,jdbcType=BIGINT}
+		</where>
 	</update>
 
 

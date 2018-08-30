@@ -513,4 +513,32 @@
         and role_id=#{roleId}
 	</delete>
 
+    <delete id="deleteByRelateId">
+        delete from role_module_info_permission_heads
+        where module_info_permission_id
+        in
+        <foreach item="item" collection="list" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+	</delete>
+
+    <delete id="deleteByDiff">
+        delete
+        from role_module_info_permission_heads
+        where module_info_permission_id in(
+            select id
+            from module_info_permissions
+            where module_info_id = #{moduleId}
+            and permission_id
+            not in
+                <foreach item="item" collection="list" index="index" open="("
+                            separator="," close=")">
+                    #{item}
+                </foreach>
+        )
+
+	</delete>
+
+
 </mapper>

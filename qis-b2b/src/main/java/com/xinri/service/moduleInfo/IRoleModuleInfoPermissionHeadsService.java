@@ -18,5 +18,9 @@ public interface IRoleModuleInfoPermissionHeadsService extends IBaseService<Role
 
     void celar(Long moduleId,Long roleId);
 
+    void deleteByRelateId(List<Long> ids);
+
+    void deleteByDiff(List<Long> ids,Long moduleId);
+
 }
 

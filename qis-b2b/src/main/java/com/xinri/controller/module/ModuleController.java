@@ -45,6 +45,8 @@ public class ModuleController extends BaseController {
     @Autowired
     private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
 
+    @Autowired
+    private IRoleModuleInfoPermissionHeadsService moduleInfoPermissionHeadsService;
 
     /*
      * 首页
@@ -159,6 +161,15 @@ public class ModuleController extends BaseController {
     @ResponseBody
     public AjaxStatus delete(@PathVariable("id") Long id) {
         logger.info("delete" + id);
+
+        Long[] ids = moduleInfoPermissionsService.getIdsByPermissionId(id);
+        moduleInfoPermissionHeadsService.deleteByRelateId(Arrays.asList(ids));
+
+        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
+        moduleInfoPermission.setModuleInfoId(id);
+        moduleInfoPermission.setIsEffective(0);
+        moduleInfoPermission.setIsNewRecord(false);
+        moduleInfoPermissionsService.deleteByModuleId(id);
 
         return moduleInfoesService.deleteModule(id);
     }

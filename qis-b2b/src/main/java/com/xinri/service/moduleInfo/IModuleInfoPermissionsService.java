@@ -22,6 +22,12 @@ public interface IModuleInfoPermissionsService extends IBaseService<ModuleInfoPe
 
     Long[] getIdsByModuleId(Long moduleId);
 
+    Long[] getIdsByPermissionId(Long permissionId);
+
     Long[] getIds(Long moduleId, List<Long> ids);
+
+    void deleteByPermissionId(Long permissionId);
+
+    void deleteByModuleId(Long moduleId);
 }
 

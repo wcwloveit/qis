@@ -18,6 +18,9 @@ public interface RoleModuleInfoPermissionHeadsMapper extends CrudDao<RoleModuleI
 
     void celar(@Param("moduleId") Long moduleId,@Param("roleId") Long roleId);
 
+    void deleteByRelateId(@Param("list") List<Long> ids);
+
+    void deleteByDiff(@Param("list") List<Long> ids,@Param("moduleId")Long moduleId);
 
 }
 

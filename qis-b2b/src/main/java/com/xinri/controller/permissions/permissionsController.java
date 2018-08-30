@@ -8,6 +8,7 @@ import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
 import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
 import com.xinri.service.moduleInfo.IModuleInfoesService;
+import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
 import com.xinri.service.permissions.IPermissionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,9 @@ public class permissionsController extends BaseController {
 
     @Autowired
     private IModuleInfoPermissionsService moduleInfoPermissionsService;
+
+    @Autowired
+    private IRoleModuleInfoPermissionHeadsService moduleInfoPermissionHeadsService;
 
     /*
      * 首页
@@ -171,6 +176,16 @@ public class permissionsController extends BaseController {
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除权限" + id);
+
+        Long[] ids = moduleInfoPermissionsService.getIdsByPermissionId(id);
+        moduleInfoPermissionHeadsService.deleteByRelateId(Arrays.asList(ids));
+
+        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
+        moduleInfoPermission.setPermissionId(id);
+        moduleInfoPermission.setIsEffective(0);
+        moduleInfoPermission.setIsNewRecord(false);
+        moduleInfoPermissionsService.deleteByPermissionId(id);
+
         return permissionsService.deleteOne(id);
     }
 

@@ -19,8 +19,12 @@ public interface ModuleInfoPermissionsMapper extends CrudDao<ModuleInfoPermissio
 
     Long[] getIdsByModuleId(@Param("moduleId") Long moduleId);
 
+    Long[] getIdsByPermissionId(@Param("permissionId") Long permissionId);
+
     Long[] getIds(@Param("list")List<Long> ids,@Param("moduleId") Long moduleId);
 
+    void deleteByPermissionId(Long permissionId);
 
+    void deleteByModuleId(Long moduleId);
 }
 
