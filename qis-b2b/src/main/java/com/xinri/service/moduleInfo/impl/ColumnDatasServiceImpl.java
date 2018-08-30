@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
 import com.xinri.po.moduleInfo.ColumnDatas;
 import com.xinri.dao.moduleInfo.ColumnDatasMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,4 +83,24 @@ public class ColumnDatasServiceImpl extends CrudService<ColumnDatasMapper,Column
         }
         return dt;
     }
+
+    /**
+     * 逻辑删除
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Boolean deleteOne(Long id) {
+        boolean statu = false;
+        try {
+            dao.delete(id);
+            statu = true;
+        } catch (Exception e) {
+            logger.error("删除出错了" + e.getMessage());
+        }
+        return statu;
+    }
+
 }

@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div id="user_list_div2" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div id="user_list_per" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog" style="width:800px;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -73,6 +73,43 @@
                                                       </div>
                                                   </div>
                                               </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="user_list_col" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">数据列</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="tableDatas">
+                        <div class="col-md-12">
+                            <div class="portlet">
+                                <div class="portlet-body">
+                                    <div class="form-group columnDatas">
+                                        <form class="form-horizontal" action="${rc.contextPath}/role/role/columnDatasSave" method="POST"
+                                              id="columnDatasForm">
+                                            <input id="roleId" name="roleId" value="${role.id?if_exists}" style="display: none">
+                                            <input type="text"  id="moduleId" name="moduleId"  value="0" style="display: none">
+                                            <div id="columnDatas" class="col-md-10">
+                                            </div>
+                                            <div class="form-actions">
+                                                <div class="row">
+                                                    <div class="col-md-offset-3 col-md-9">
+                                                        <button type="submit" class="btn green">提交</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -161,7 +198,9 @@
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
                             var a = '<a href="javascript:void(0);" onclick="assign('+row.id+')"  class="btn btn-xs blue"  title="权限管理" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>权限管理</a>';
-                            return a;
+                            var b = '<a href="javascript:void(0);" onclick="assignCol('+row.id+')"  class="btn btn-xs blue"  title="权限管理" >' +
+                                    '<i class="glyphicon glyphicon-pencil"></i>数据列管理</a>';
+                            return a+b;
                         }}
                 ]
             }
@@ -196,7 +235,32 @@
 
                 }
             });
-            $('#user_list_div2').modal('show');
+            $('#user_list_per').modal('show');
+        }
+
+        function assignCol(moduleId){
+            $('input[name=moduleId]').val(moduleId);
+            $.ajax({
+                url: '${rc.contextPath}/module/module/getColumnDatas?moduleId=' + moduleId+'&roleId=${role.id?if_exists}',
+                type: 'GET',
+                async:false,
+                success: function (msg) {
+                    var columnDatas=msg.columnDatas;
+                    var colIds=msg.colIds;
+                    var value="";
+                    for (var i = 0; i < columnDatas.length; i++) {
+                        var obj = columnDatas[i];
+                        value = value + "<input type='checkbox' value='"+obj.id+"'} id='colIds' name='colIds'>"+obj.name+" ";
+                    }
+                    document.getElementById("columnDatas").innerHTML = value;
+                    for (var i = 0; i < colIds.length; i++) {
+                        $("input[name=colIds][value='" +colIds[i]+"']").parents('span').toggleClass("checked");
+                        $("input[name=colIds][value='" +colIds[i]+"']").prop("checked", true);
+                    }
+
+                }
+            });
+            $('#user_list_col').modal('show');
         }
 
 

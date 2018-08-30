@@ -158,6 +158,7 @@
                     url: '${rc.contextPath}/module/moduleColumnDatas/getCols/' + module_id,
                     type: 'GET',
                     success: function (msg) {
+                        console.log(msg);
                         var cols=msg.myCols;
                         var module=msg.module;
                         $("input[name=id]").val(module.id);

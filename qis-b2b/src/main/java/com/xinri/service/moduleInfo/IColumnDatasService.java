@@ -17,5 +17,6 @@ public interface IColumnDatasService extends IBaseService<ColumnDatas>{
     public DataTable<ColumnDataVo> findListByVo
             (DataTable<ColumnDataVo>dt, Map<String, Object> searchParams);
 
+    public Boolean deleteOne(Long id);
 }
 

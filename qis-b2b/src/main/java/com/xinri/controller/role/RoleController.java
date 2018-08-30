@@ -7,14 +7,12 @@ import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.qis.util.Utils;
 import com.xinri.po.moduleInfo.ModuleInfoes;
+import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfos;
 import com.xinri.po.role.Roles;
 import com.xinri.po.user.UserGroups;
-import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
-import com.xinri.service.moduleInfo.IModuleInfoesService;
-import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
-import com.xinri.service.moduleInfo.IRoleModuleInfosService;
+import com.xinri.service.moduleInfo.*;
 import com.xinri.service.role.IRoleUserGroupsService;
 import com.xinri.service.role.IRolesService;
 import com.xinri.util.AjaxStatus;
@@ -50,6 +48,17 @@ public class RoleController extends BaseController {
 
     @Autowired
     private IModuleInfoPermissionsService moduleInfoPermissionsService;
+
+    @Autowired
+    private IModuleInfoColumnDatasService moduleInfoColumnDatasService;
+
+    @Autowired
+    private IColumnDatasService columnDatasService;
+
+    @Autowired
+    private IRoleModuleInfoColumnDataHeadsService roleModuleInfoColumnDataHeadsService;
+
+
 
     /*
      * 首页
@@ -250,7 +259,10 @@ public class RoleController extends BaseController {
     public String permissionsSave(Long roleId, Long moduleId, Long[] ids, RedirectAttributes redirectAttributes) {
         try {
             roleModuleInfoPermissionHeadsService.celar(moduleId, roleId);
-            List<Long> perIds = Arrays.asList(ids);
+            List<Long> perIds=new ArrayList<>();
+            if(ids!=null&&ids.length>0){
+                 perIds = Arrays.asList(ids);
+            }
             Long[] moduPerIds = moduleInfoPermissionsService.getIds(moduleId, perIds);
             RoleModuleInfoPermissionHeads roleModuleInfoPermissionHead = new RoleModuleInfoPermissionHeads();
             roleModuleInfoPermissionHead.setRoleId(roleId);
@@ -264,6 +276,32 @@ public class RoleController extends BaseController {
             redirectAttributes.addFlashAttribute("message", "保存成功");
         } catch (Exception e) {
             logger.error("roleModuleInfoPermissionHead成功", e);
+            redirectAttributes.addFlashAttribute("message", "保存失败");
+        }
+        return "redirect:/role/role/module/" + roleId;
+    }
+
+    @RequestMapping(value = "columnDatasSave", method = RequestMethod.POST)
+    public String columnDatasSave(Long roleId, Long moduleId, Long[] colIds, RedirectAttributes redirectAttributes) {
+        try {
+            roleModuleInfoColumnDataHeadsService.celar(moduleId, roleId);
+            List<Long> cIds =new ArrayList<>();
+            if(colIds!=null&&colIds.length>0){
+                cIds= Arrays.asList(colIds);
+            }
+            Long[] moduPerIds = moduleInfoColumnDatasService.getIds(moduleId, cIds);
+            RoleModuleInfoColumnDataHeads roleModuleInfoColumnDataHead = new RoleModuleInfoColumnDataHeads();
+            roleModuleInfoColumnDataHead.setRoleId(roleId);
+            for (Long moduPerId : moduPerIds) {
+                roleModuleInfoColumnDataHead.setId(null);
+                roleModuleInfoColumnDataHead.setIsNewRecord(true);
+                roleModuleInfoColumnDataHead.setModuleInfoColumnDataId(moduPerId);
+                roleModuleInfoColumnDataHeadsService.saveOrUpdate(roleModuleInfoColumnDataHead);
+            }
+            logger.info("roleModuleInfoColumnDataHead成功");
+            redirectAttributes.addFlashAttribute("message", "保存成功");
+        } catch (Exception e) {
+            logger.error("roleModuleInfoColumnDataHead成功", e);
             redirectAttributes.addFlashAttribute("message", "保存失败");
         }
         return "redirect:/role/role/module/" + roleId;

@@ -1,6 +1,8 @@
 package com.xinri.controller.module;
 
 import com.qis.common.web.BaseController;
+import com.xinri.po.moduleInfo.ColumnDatas;
+import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
@@ -46,7 +48,15 @@ public class ModuleController extends BaseController {
     private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
 
     @Autowired
-    private IRoleModuleInfoPermissionHeadsService moduleInfoPermissionHeadsService;
+    private IModuleInfoColumnDatasService moduleInfoColumnDatasService;
+
+    @Autowired
+    private IColumnDatasService columnDatasService;
+
+    @Autowired
+    private IRoleModuleInfoColumnDataHeadsService roleModuleInfoColumnDataHeadsService;
+
+
 
     /*
      * 首页
@@ -142,7 +152,20 @@ public class ModuleController extends BaseController {
                 Long permissionId = permission.getId();
                 moduleInfoPermission.setModuleInfoId(moduleInfoId);
                 moduleInfoPermission.setPermissionId(permissionId);
+                moduleInfoPermission.setIsEffective(0);
                 moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
+            }
+            ModuleInfoColumnDatas moduleInfoColumnData = new ModuleInfoColumnDatas();
+            List<ColumnDatas> columnDatas = columnDatasService.findAllList();
+            for (ColumnDatas columnData : columnDatas) {
+                moduleInfoColumnData.setId(null);
+                moduleInfoColumnData.setIsNewRecord(true);
+                Long moduleInfoId = moduleInfo.getId();
+                Long permissionId = columnData.getId();
+                moduleInfoColumnData.setModuleInfoId(moduleInfoId);
+                moduleInfoColumnData.setColumnDataId(permissionId);
+                moduleInfoColumnData.setIsEffective(0);
+                moduleInfoColumnDatasService.saveOrUpdate(moduleInfoColumnData);
             }
             return mv;
         }
@@ -162,14 +185,28 @@ public class ModuleController extends BaseController {
     public AjaxStatus delete(@PathVariable("id") Long id) {
         logger.info("delete" + id);
 
-        Long[] ids = moduleInfoPermissionsService.getIdsByPermissionId(id);
-        moduleInfoPermissionHeadsService.deleteByRelateId(Arrays.asList(ids));
+
+        Long[] perIds = moduleInfoPermissionsService.getIdsByModuleId(id);
+        if(perIds!=null&&perIds.length>0){
+            roleModuleInfoPermissionHeadsService.deleteByRelateId(Arrays.asList(perIds));
+        }
+
+        Long[] colIds = moduleInfoColumnDatasService.getIdsByModuleId(id);
+        if(colIds!=null&&colIds.length>0){
+            roleModuleInfoColumnDataHeadsService.deleteByRelateId(Arrays.asList(colIds));
+        }
 
         ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
         moduleInfoPermission.setModuleInfoId(id);
         moduleInfoPermission.setIsEffective(0);
         moduleInfoPermission.setIsNewRecord(false);
         moduleInfoPermissionsService.deleteByModuleId(id);
+
+        ModuleInfoColumnDatas moduleInfoColumnData = new ModuleInfoColumnDatas();
+        moduleInfoColumnData.setModuleInfoId(id);
+        moduleInfoColumnData.setIsEffective(0);
+        moduleInfoColumnData.setIsNewRecord(false);
+        moduleInfoColumnDatasService.deleteByModuleId(id);
 
         return moduleInfoesService.deleteModule(id);
     }
@@ -236,6 +273,25 @@ public class ModuleController extends BaseController {
         return info;
     }
 
+    @RequestMapping(value = "/getColumnDatas", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getColumnDatas(Long moduleId, Long roleId) {
+        logger.info("getColumnDatas开始");
+        Map<String, Object> info = new HashMap<String, Object>();
+        List<Long> ids = moduleInfoColumnDatasService.getColumnDataIds(moduleId);
+        List<ColumnDatas> columnDatas = new ArrayList<>();
+        ColumnDatas columnData = new ColumnDatas();
+        for (Long pid : ids) {
+            columnData = columnDatasService.get(pid);
+            columnDatas.add(columnData);
+        }
+        info.put("columnDatas", columnDatas);
+        List<Long> colIds = roleModuleInfoColumnDataHeadsService.getColIds(moduleId, roleId);
+        info.put("colIds", colIds);
+        logger.info("getColumnDatas结束");
+        return info;
+    }
+
     //初始化模块权限关联表
 //    @RequestMapping(value = "/init",method = RequestMethod.GET)
 //    public void init (){
@@ -251,6 +307,25 @@ public class ModuleController extends BaseController {
 //                moduleInfoPermission.setIsNewRecord(true);
 //                moduleInfoPermission.setModuleInfoId(moduleInfo.getId());
 //                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
+//            }
+//        }
+//    }
+    //初始化模块数据列关联表
+//    @RequestMapping(value = "/init",method = RequestMethod.GET)
+//    public void init (){
+//        List<ColumnDatas> columnDatas=columnDatasService.findAllList();
+//        ModuleInfoColumnDatas moduleInfoColumnData=new ModuleInfoColumnDatas();
+//        ModuleInfoes moduleinfo=new ModuleInfoes();
+//        moduleinfo.setIsMenu(0);
+//        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
+//        for (ColumnDatas columnData : columnDatas) {
+//            moduleInfoColumnData.setColumnDataId(columnData.getId());
+//            for (ModuleInfoes moduleInfo : moduleInfoes) {
+//                moduleInfoColumnData.setId(null);
+//                moduleInfoColumnData.setIsNewRecord(true);
+//                moduleInfoColumnData.setIsEffective(0);
+//                moduleInfoColumnData.setModuleInfoId(moduleInfo.getId());
+//                moduleInfoColumnDatasService.saveOrUpdate(moduleInfoColumnData);
 //            }
 //        }
 //    }

@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinri.dao.moduleInfo.RoleModuleInfoColumnDataHeadsMapper">
 	<resultMap id="roleModuleInfoColumnDataHeadsResultMap" type="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
-		   <id column="ID" property="id" jdbcType="BIGINT"/>
-	      	<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
-	      	<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
-	      	<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
-	      	<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
-	      	<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
-	      	<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
-	      	<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
-	      	<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
-	      	<result column="MODIFIED_ON" property="modifiedOn" jdbcType="TIMESTAMP"/>
-	      	<result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
-	      	<result column="DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
-	      	<result column="DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
-	      	<result column="DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
-	      	<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
-	      	<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
-	      	<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
-	      	<result column="MODULE_INFO_COLUMN_DATA_ID" property="moduleInfoColumnDataId" jdbcType="BIGINT"/>
-	      	<result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
+		<id column="ID" property="id" jdbcType="BIGINT"/>
+		<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
+		<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
+		<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+		<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
+		<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
+		<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+		<result column="MODIFIED_ON" property="modifiedOn" jdbcType="TIMESTAMP"/>
+		<result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
+		<result column="MODULE_INFO_COLUMN_DATA_ID" property="moduleInfoColumnDataId" jdbcType="BIGINT"/>
+		<result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
 	</resultMap>
 
-    <!-- 列定义 -->
+	<!-- 列定义 -->
 	<sql id="roleModuleInfoColumnDataHeadsColumns">
 	  t.ID,
 	  t.IS_DELETED,
@@ -46,7 +46,7 @@
 	  t.ROLE_ID
   	</sql>
 
-    <!-- 查询条件SQL -->
+	<!-- 查询条件SQL -->
 	<sql id="whereColumnBySelect">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="id != null">
@@ -121,119 +121,119 @@
 		</trim>
 	</sql>
 
-    <!-- 修改字段SQL -->
+	<!-- 修改字段SQL -->
 	<sql id="whereColumnByUpdate">
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="id != null">
-			t.ID = #{id},
+				t.ID = #{id},
 			</if>
 			<if test="isDeleted != null">
-			t.IS_DELETED = #{isDeleted},
+				t.IS_DELETED = #{isDeleted},
 			</if>
 			<if test="descr != null">
-			t.DESCR = #{descr},
+				t.DESCR = #{descr},
 			</if>
 			<if test="guidId != null">
-			t.GUID_ID = #{guidId},
+				t.GUID_ID = #{guidId},
 			</if>
 			<if test="isEffective != null">
-			t.IS_EFFECTIVE = #{isEffective},
+				t.IS_EFFECTIVE = #{isEffective},
 			</if>
 			<if test="effectiveDateStart != null">
-			t.EFFECTIVE_DATE_START = #{effectiveDateStart},
+				t.EFFECTIVE_DATE_START = #{effectiveDateStart},
 			</if>
 			<if test="effectiveDateEnd != null">
-			t.EFFECTIVE_DATE_END = #{effectiveDateEnd},
+				t.EFFECTIVE_DATE_END = #{effectiveDateEnd},
 			</if>
 			<if test="createdOn != null">
-			t.CREATED_ON = #{createdOn},
+				t.CREATED_ON = #{createdOn},
 			</if>
 			<if test="createdBy != null">
-			t.CREATED_BY = #{createdBy},
+				t.CREATED_BY = #{createdBy},
 			</if>
 			<if test="modifiedOn != null">
-			t.MODIFIED_ON = #{modifiedOn},
+				t.MODIFIED_ON = #{modifiedOn},
 			</if>
 			<if test="modifiedBy != null">
-			t.MODIFIED_BY = #{modifiedBy},
+				t.MODIFIED_BY = #{modifiedBy},
 			</if>
 			<if test="descFlexField1 != null">
-			t.DESC_FLEX_FIELD1 = #{descFlexField1},
+				t.DESC_FLEX_FIELD1 = #{descFlexField1},
 			</if>
 			<if test="descFlexField2 != null">
-			t.DESC_FLEX_FIELD2 = #{descFlexField2},
+				t.DESC_FLEX_FIELD2 = #{descFlexField2},
 			</if>
 			<if test="descFlexField3 != null">
-			t.DESC_FLEX_FIELD3 = #{descFlexField3},
+				t.DESC_FLEX_FIELD3 = #{descFlexField3},
 			</if>
 			<if test="descFlexField4 != null">
-			t.DESC_FLEX_FIELD4 = #{descFlexField4},
+				t.DESC_FLEX_FIELD4 = #{descFlexField4},
 			</if>
 			<if test="descFlexField5 != null">
-			t.DESC_FLEX_FIELD5 = #{descFlexField5},
+				t.DESC_FLEX_FIELD5 = #{descFlexField5},
 			</if>
 			<if test="descFlexField6 != null">
-			t.DESC_FLEX_FIELD6 = #{descFlexField6},
+				t.DESC_FLEX_FIELD6 = #{descFlexField6},
 			</if>
 			<if test="moduleInfoColumnDataId != null">
-			t.MODULE_INFO_COLUMN_DATA_ID = #{moduleInfoColumnDataId},
+				t.MODULE_INFO_COLUMN_DATA_ID = #{moduleInfoColumnDataId},
 			</if>
 			<if test="roleId != null">
-			t.ROLE_ID = #{roleId},
+				t.ROLE_ID = #{roleId},
 			</if>
 		</trim>
 	</sql>
 
-    <!-- 根据主键ID获取数据 -->
+	<!-- 根据主键ID获取数据 -->
 	<select id="get" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads" resultMap="roleModuleInfoColumnDataHeadsResultMap">
-		SELECT <include refid="roleModuleInfoColumnDataHeadsColumns" /> 
-		FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 
+		SELECT <include refid="roleModuleInfoColumnDataHeadsColumns" />
+		FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t
 		WHERE t.ID = #{id}
 	</select>
-    <!-- 查询列表可以根据分页进行查询 -->
+	<!-- 查询列表可以根据分页进行查询 -->
 	<select id="findList" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads" resultMap="roleModuleInfoColumnDataHeadsResultMap">
 		SELECT
-		<include refid="roleModuleInfoColumnDataHeadsColumns" /> 
-		FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 
+		<include refid="roleModuleInfoColumnDataHeadsColumns" />
+		FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t
 		<include refid="whereColumnBySelect" />
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}			
+				ORDER BY ${page.orderBy}
 			</when>
-				<otherwise>
+			<otherwise>
 				ORDER BY t.ID DESC
-				</otherwise>
-			
+			</otherwise>
+
 		</choose>
 	</select>
 
-    <!-- 查询所有列表 -->
+	<!-- 查询所有列表 -->
 	<select id="findAllList" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads" resultMap="roleModuleInfoColumnDataHeadsResultMap">
 		SELECT
-		<include refid="roleModuleInfoColumnDataHeadsColumns" /> 
-		FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 	
+		<include refid="roleModuleInfoColumnDataHeadsColumns" />
+		FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t
 		<include refid="whereColumnBySelect" />
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}			
+				ORDER BY ${page.orderBy}
 			</when>
-				<otherwise>
+			<otherwise>
 				ORDER BY  t.ID DESC
-				</otherwise>
-			
+			</otherwise>
+
 		</choose>
-		
-		
+
+
 	</select>
 
-    <!-- 根据条件查询对象 -->
+	<!-- 根据条件查询对象 -->
 	<select id="getByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads" resultMap="roleModuleInfoColumnDataHeadsResultMap">
-		SELECT <include refid="roleModuleInfoColumnDataHeadsColumns" /> 
-		FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 
+		SELECT <include refid="roleModuleInfoColumnDataHeadsColumns" />
+		FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t
 		<include refid="whereColumnBySelect"></include>
 	</select>
-	
-    <!-- 新增并设置主键ID至参数对象 -->
+
+	<!-- 新增并设置主键ID至参数对象 -->
 	<insert id="insert" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
 
 		INSERT INTO ROLE_MODULE_INFO_COLUMN_DATA_HEADS
@@ -241,11 +241,11 @@
 		VALUES
 			(#{id}, #{isDeleted}, #{descr}, #{guidId}, #{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{createdOn}, #{createdBy}, #{modifiedOn}, #{modifiedBy}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6}, #{moduleInfoColumnDataId}, #{roleId})
 	</insert>
-    <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
+	<!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
 	<insert id="insertSelective" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads" useGeneratedKeys="true" keyProperty="id" >
-		
-	    INSERT INTO ROLE_MODULE_INFO_COLUMN_DATA_HEADS
-	    <trim prefix="(" suffix=")" suffixOverrides="," >
+
+		INSERT INTO ROLE_MODULE_INFO_COLUMN_DATA_HEADS
+		<trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="id != null">
 				ID,
 			</if>
@@ -303,130 +303,193 @@
 			<if test="roleId != null">
 				ROLE_ID,
 			</if>
-	    </trim>
-	    <trim prefix="values (" suffix=")" suffixOverrides="," >
-		  <if test="id != null">
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null">
 				#{id,jdbcType=BIGINT},
-		  </if>
-		  <if test="isDeleted != null">
+			</if>
+			<if test="isDeleted != null">
 				#{isDeleted,jdbcType=INTEGER},
-		  </if>
-		  <if test="descr != null">
+			</if>
+			<if test="descr != null">
 				#{descr,jdbcType=VARCHAR},
-		  </if>
-		  <if test="guidId != null">
+			</if>
+			<if test="guidId != null">
 				#{guidId,jdbcType=VARCHAR},
-		  </if>
-		  <if test="isEffective != null">
+			</if>
+			<if test="isEffective != null">
 				#{isEffective,jdbcType=INTEGER},
-		  </if>
-		  <if test="effectiveDateStart != null">
+			</if>
+			<if test="effectiveDateStart != null">
 				#{effectiveDateStart,jdbcType=TIMESTAMP},
-		  </if>
-		  <if test="effectiveDateEnd != null">
+			</if>
+			<if test="effectiveDateEnd != null">
 				#{effectiveDateEnd,jdbcType=TIMESTAMP},
-		  </if>
-		  <if test="createdOn != null">
+			</if>
+			<if test="createdOn != null">
 				#{createdOn,jdbcType=TIMESTAMP},
-		  </if>
-		  <if test="createdBy != null">
+			</if>
+			<if test="createdBy != null">
 				#{createdBy,jdbcType=VARCHAR},
-		  </if>
-		  <if test="modifiedOn != null">
+			</if>
+			<if test="modifiedOn != null">
 				#{modifiedOn,jdbcType=TIMESTAMP},
-		  </if>
-		  <if test="modifiedBy != null">
+			</if>
+			<if test="modifiedBy != null">
 				#{modifiedBy,jdbcType=VARCHAR},
-		  </if>
-		  <if test="descFlexField1 != null">
+			</if>
+			<if test="descFlexField1 != null">
 				#{descFlexField1,jdbcType=VARCHAR},
-		  </if>
-		  <if test="descFlexField2 != null">
+			</if>
+			<if test="descFlexField2 != null">
 				#{descFlexField2,jdbcType=VARCHAR},
-		  </if>
-		  <if test="descFlexField3 != null">
+			</if>
+			<if test="descFlexField3 != null">
 				#{descFlexField3,jdbcType=VARCHAR},
-		  </if>
-		  <if test="descFlexField4 != null">
+			</if>
+			<if test="descFlexField4 != null">
 				#{descFlexField4,jdbcType=VARCHAR},
-		  </if>
-		  <if test="descFlexField5 != null">
+			</if>
+			<if test="descFlexField5 != null">
 				#{descFlexField5,jdbcType=VARCHAR},
-		  </if>
-		  <if test="descFlexField6 != null">
+			</if>
+			<if test="descFlexField6 != null">
 				#{descFlexField6,jdbcType=VARCHAR},
-		  </if>
-		  <if test="moduleInfoColumnDataId != null">
+			</if>
+			<if test="moduleInfoColumnDataId != null">
 				#{moduleInfoColumnDataId,jdbcType=BIGINT},
-		  </if>
-		  <if test="roleId != null">
+			</if>
+			<if test="roleId != null">
 				#{roleId,jdbcType=BIGINT},
-		  </if>
-	    </trim>
-  	</insert>
+			</if>
+		</trim>
+	</insert>
 
-    <!-- 根据主键ID进行修改 -->
-  	<update id="update" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
-		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 
+	<!-- 根据主键ID进行修改 -->
+	<update id="update" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
+		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t
 		<include refid="whereColumnByUpdate"></include>
 		<where>
 			t.ID = #{id,jdbcType=BIGINT}
 		</where>
 	</update>
 
-    <!-- 根据条件进行修改 -->
+	<!-- 根据条件进行修改 -->
 	<update id="updateByCondition" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
-		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 
+		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t
 		<include refid="whereColumnByUpdate"></include>
 		<where>${whereSqlParam}</where>
 	</update>
 
-    <!-- 根据主键ID进行逻辑删除 -->
+	<!-- 根据主键ID进行逻辑删除 -->
 	<update id="delete" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
 		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t SET 
 		t.IS_DELETED = 1
 		WHERE t.ID = #{id,jdbcType=BIGINT}
 	</update>
 
-    <!-- 根据主键ID进行批量逻辑删除 -->
+	<!-- 根据主键ID进行批量逻辑删除 -->
 	<update id="batchDelete" parameterType="java.util.List">
-		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t SET 
+		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t SET
 		t.IS_DELETED = 1
 		WHERE t.ID IN
 		<foreach item="item" collection="list" index="index" open="("
-			separator="," close=")">
+				 separator="," close=")">
 			#{item}
 		</foreach>
 	</update>
 
-    <!-- 根据条件进行逻辑删除 -->
+	<!-- 根据条件进行逻辑删除 -->
 	<update id="deleteByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
-		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t SET 
-			t.IS_DELETED = 1
+		UPDATE ROLE_MODULE_INFO_COLUMN_DATA_HEADS t SET
+		t.IS_DELETED = 1
 		<include refid="whereColumnBySelect"/>
 	</update>
 
-    <!-- 根据主键ID进行物理删除 -->
+	<!-- 根据主键ID进行物理删除 -->
 	<delete id="remove" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
 		DELETE FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 
 		WHERE t.ID = #{id,jdbcType=BIGINT}
 	</delete>
 
-    <!-- 根据主键ID进行批量物理删除 -->
+	<!-- 根据主键ID进行批量物理删除 -->
 	<delete id="batchRemove" parameterType="java.util.List">
-		DELETE FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 
+		DELETE FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t
 		WHERE t.ID IN
 		<foreach item="item" collection="list" index="index" open="("
-			separator="," close=")">
+				 separator="," close=")">
 			#{item}
 		</foreach>
 	</delete>
 
-    <!-- 根据条件进行物理删除 -->
+	<!-- 根据条件进行物理删除 -->
 	<update id="removeByCondition" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
-		DELETE FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t 
+		DELETE FROM ROLE_MODULE_INFO_COLUMN_DATA_HEADS t
 		<where>${whereSqlParam}</where>
 	</update>
-	
+
+	<select id="getIds" parameterType="java.lang.Long" resultType="java.lang.Long">
+		  select module_info_column_data_id FROM role_module_info_column_data_heads where role_id = #{id}
+	</select>
+
+
+	<select id="getColIds" resultType="java.lang.Long">
+		  select b.column_data_id
+		  FROM role_module_info_column_data_heads a left join module_info_column_datas b
+			on a.module_info_column_data_id=b.id
+		  where b.module_info_id = #{moduleId} and a.role_id = #{roleId}
+	</select>
+
+	<delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
+		delete FROM role_module_info_column_data_heads
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="moduleId != null">
+				AND MODULE_ID = #{moduleId}
+			</if>
+			<if test="roleId != null">
+				AND role_id = #{roleId}
+			</if>
+		</trim>
+	</delete>
+
+	<delete id="celar">
+        delete from role_module_info_column_data_heads
+        where module_info_column_data_id
+        in
+        (
+          select b.id
+          from module_info_column_datas b
+          where b.module_info_id=#{moduleId}
+        )
+        and role_id=#{roleId}
+	</delete>
+
+	<delete id="deleteByRelateId">
+		delete from role_module_info_column_data_heads
+		where module_info_column_data_id
+		in
+		<foreach item="item" collection="list" index="index" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<delete id="deleteByDiff">
+		delete
+		from role_module_info_column_data_heads
+		where module_info_column_data_id in(
+		select id
+		from module_info_column_datas
+		where module_info_id = #{moduleId}
+		and column_data_id
+		not in
+		<foreach item="item" collection="list" index="index" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		)
+
+	</delete>
+
 
 </mapper>

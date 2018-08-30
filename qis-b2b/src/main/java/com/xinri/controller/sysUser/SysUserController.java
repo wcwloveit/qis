@@ -198,6 +198,9 @@ public class SysUserController extends BaseController {
             return mv;
         }
 
+        byte[] hashPassword = Digests.sha1(sysUser.getPassword().getBytes(), Encodes.decodeHex(sysUser.getSalt()), HASH_INTERATIONS);
+        sysUser.setPassword(Encodes.encodeHex(hashPassword));
+
         try {
             sysUser.setIsNewRecord(false);
             sysUserService.saveOrUpdate(sysUser);

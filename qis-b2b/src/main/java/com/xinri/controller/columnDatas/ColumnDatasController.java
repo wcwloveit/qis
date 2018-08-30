@@ -1,15 +1,18 @@
-package com.xinri.controller.permissions;
+package com.xinri.controller.ColumnDatas;
 
 import com.app.api.DataTable;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
-import com.xinri.po.moduleInfo.ModuleInfoPermissions;
+import com.xinri.po.moduleInfo.ColumnDatas;
+import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoes;
-import com.xinri.po.permissions.Permissions;
-import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
+
+import com.xinri.service.moduleInfo.IColumnDatasService;
+import com.xinri.service.moduleInfo.IModuleInfoColumnDatasService;
 import com.xinri.service.moduleInfo.IModuleInfoesService;
-import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
-import com.xinri.service.permissions.IPermissionsService;
+import com.xinri.service.moduleInfo.IRoleModuleInfoColumnDataHeadsService;
+
+import com.xinri.vo.columnData.ColumnDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,27 +30,27 @@ import java.util.Map;
  * 创建时间:20180813
  */
 @Controller
-@RequestMapping(value = "permissions/permissions")
-public class permissionsController extends BaseController {
+@RequestMapping(value = "permissions/columnDatas")
+public class ColumnDatasController extends BaseController {
 
     @Autowired
-    private IPermissionsService permissionsService;
+    private IColumnDatasService ColumnDatasService;
 
     @Autowired
     private IModuleInfoesService moduleInfoesService;
 
     @Autowired
-    private IModuleInfoPermissionsService moduleInfoPermissionsService;
+    private IModuleInfoColumnDatasService moduleInfoColumnDatasService;
 
     @Autowired
-    private IRoleModuleInfoPermissionHeadsService moduleInfoPermissionHeadsService;
+    private IRoleModuleInfoColumnDataHeadsService moduleInfoColumnDataHeadsService;
 
     /*
      * 首页
      * */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
-        return "permissions/list";
+        return "columnDatas/list";
     }
 
     /*
@@ -55,19 +58,19 @@ public class permissionsController extends BaseController {
      * */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public DataTable<Permissions> getItemList(DataTable<Permissions> dt, ServletRequest request) {
+    public DataTable<ColumnDataVo> getItemList(DataTable<ColumnDataVo> dt, ServletRequest request) {
         logger.info("获取权限列表开始");
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
-        DataTable<Permissions> baseDatas = permissionsService.findList(dt, searchParams); //查询方法
+        DataTable<ColumnDataVo> baseDatas = ColumnDatasService.findListByVo(dt, searchParams); //查询方法
         logger.info("获取权限列表结束");
         return baseDatas;
     }
 
     @ResponseBody
-    @RequestMapping(value = "permissions", method = RequestMethod.GET)
-    public List<Permissions> getPermissions() {
+    @RequestMapping(value = "ColumnDatas", method = RequestMethod.GET)
+    public List<ColumnDatas> getColumnDatas() {
         logger.info("获取所有权限");
-        return permissionsService.findAllList();
+        return ColumnDatasService.findAllList();
     }
 
     /**
@@ -78,7 +81,7 @@ public class permissionsController extends BaseController {
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         logger.info("创建权限开始");
-        ModelAndView mv = new ModelAndView("/permissions/form");
+        ModelAndView mv = new ModelAndView("/columnDatas/form");
         mv.addObject("action", "create");
         logger.info("创建权限结束");
         return mv;
@@ -91,28 +94,28 @@ public class permissionsController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView create(Permissions permissions,
+    public ModelAndView create(ColumnDatas columnDatas,
                                RedirectAttributes attributes) {
         logger.info("新增权限开始");
-        ModelAndView mv = new ModelAndView("redirect:/permissions/permissions/index");
-        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
+        ModelAndView mv = new ModelAndView("redirect:/permissions/columnDatas/index");
+        ModuleInfoColumnDatas moduleInfoColumnData = new ModuleInfoColumnDatas();
         ModuleInfoes moduleinfo = new ModuleInfoes();
         moduleinfo.setIsMenu(0);
         List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
         try {
-            permissions.setIsDeleted(0);
-            permissions.setIsEffective(0);
-            permissionsService.saveOrUpdate(permissions);
+            columnDatas.setIsDeleted(0);
+            columnDatas.setIsEffective(0);
+            ColumnDatasService.saveOrUpdate(columnDatas);
 
             for (ModuleInfoes moduleInfo : moduleInfoes) {
-                moduleInfoPermission.setIsEffective(0);
-                moduleInfoPermission.setId(null);
-                moduleInfoPermission.setIsNewRecord(true);
+                moduleInfoColumnData.setId(null);
+                moduleInfoColumnData.setIsNewRecord(true);
+                moduleInfoColumnData.setIsEffective(0);
                 Long moduleInfoId = moduleInfo.getId();
-                Long permissionId = permissions.getId();
-                moduleInfoPermission.setModuleInfoId(moduleInfoId);
-                moduleInfoPermission.setPermissionId(permissionId);
-                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
+                Long columnDataId = columnDatas.getId();
+                moduleInfoColumnData.setModuleInfoId(moduleInfoId);
+                moduleInfoColumnData.setColumnDataId(columnDataId);
+                moduleInfoColumnDatasService.saveOrUpdate(moduleInfoColumnData);
             }
 
             attributes.addFlashAttribute("success", true);
@@ -135,9 +138,9 @@ public class permissionsController extends BaseController {
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         logger.info("跳转更新权限页面开始");
-        ModelAndView mv = new ModelAndView("/permissions/form");
-        Permissions permissions = permissionsService.get(id);
-        mv.addObject("permissions", permissions);
+        ModelAndView mv = new ModelAndView("/columnDatas/form");
+        ColumnDatas ColumnDatas = ColumnDatasService.get(id);
+        mv.addObject("ColumnDatas", ColumnDatas);
         mv.addObject("action", "update");//跳转编辑的标示
         logger.info("跳转更新权限页面结束");
         return mv;
@@ -151,12 +154,12 @@ public class permissionsController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView update(Permissions permissions, RedirectAttributes attributes) {
+    public ModelAndView update(ColumnDatas ColumnDatas, RedirectAttributes attributes) {
         logger.info("更新权限开始");
-        ModelAndView mv = new ModelAndView("redirect:/permissions/permissions/index");
+        ModelAndView mv = new ModelAndView("redirect:/permissions/columnDatas/index");
         try {
-            permissions.setIsNewRecord(false);
-            permissionsService.saveOrUpdate(permissions);
+            ColumnDatas.setIsNewRecord(false);
+            ColumnDatasService.saveOrUpdate(ColumnDatas);
             attributes.addFlashAttribute("success", true);
             attributes.addFlashAttribute("message", "更新权限成功");
             logger.info("更新权限完成");
@@ -178,17 +181,17 @@ public class permissionsController extends BaseController {
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除权限" + id);
 
-        Long[] ids = moduleInfoPermissionsService.getIdsByPermissionId(id);
+        Long[] ids = moduleInfoColumnDatasService.getIdsByColumnDataId(id);
         if(ids!=null&&ids.length>0){
-        moduleInfoPermissionHeadsService.deleteByRelateId(Arrays.asList(ids));
+        moduleInfoColumnDataHeadsService.deleteByRelateId(Arrays.asList(ids));
         }
-        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
-        moduleInfoPermission.setPermissionId(id);
-        moduleInfoPermission.setIsEffective(0);
-        moduleInfoPermission.setIsNewRecord(false);
-        moduleInfoPermissionsService.deleteByPermissionId(id);
+        ModuleInfoColumnDatas moduleInfoColumnData = new ModuleInfoColumnDatas();
+        moduleInfoColumnData.setColumnDataId(id);
+        moduleInfoColumnData.setIsEffective(0);
+        moduleInfoColumnData.setIsNewRecord(false);
+        moduleInfoColumnDatasService.deleteByColumnDataId(id);
 
-        return permissionsService.deleteOne(id);
+        return ColumnDatasService.deleteOne(id);
     }
 
     /**
@@ -203,7 +206,7 @@ public class permissionsController extends BaseController {
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         try {
             for (Long id : ids) {
-                permissionsService.deleteOne(id);
+                ColumnDatasService.deleteOne(id);
             }
             map.put("stat", true);
         } catch (Exception e) {

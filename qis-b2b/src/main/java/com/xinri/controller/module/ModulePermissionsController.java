@@ -71,8 +71,9 @@ public class ModulePermissionsController {
         moduleInfoPermissionsService.relate(moduleInfoPermissions);
 
         Long[] ids = (Long[]) ConvertUtils.convert(pers,Long.class);
+        if(ids!=null&&ids.length>0){
         roleModuleInfoPermissionHeadsService.deleteByDiff(Arrays.asList(ids),id);
-
+        }
         if (pers != null) {
             for (String per : pers) {
                 moduleInfoPermissions.setModuleInfoId(id);

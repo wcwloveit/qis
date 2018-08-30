@@ -65,4 +65,51 @@ public class ModuleInfoColumnDatasServiceImpl extends CrudService<ModuleInfoColu
         }
         return dt;
     }
+
+    @Override
+    public int insert(ModuleInfoColumnDatas moduleInfoColumnDatas) {
+        return dao.insertSelective(moduleInfoColumnDatas);
+    }
+
+    @Override
+    public List<Long> getColumnDataIds(Long id) {
+        return dao.getColumnDataIds(id);
+    }
+
+    @Override
+    public void relate(ModuleInfoColumnDatas moduleInfoColumnData) {
+        dao.relate(moduleInfoColumnData);
+    }
+
+    @Override
+    public Long getId(Long moduleId, Long ColumnDataId) {
+        return dao.getId(moduleId, ColumnDataId);
+    }
+
+    @Override
+    public Long[] getIdsByModuleId(Long moduleId) {
+        return dao.getIdsByModuleId(moduleId);
+    }
+
+    @Override
+    public Long[] getIdsByColumnDataId(Long ColumnDataId) {
+        return dao.getIdsByColumnDataId(ColumnDataId);
+    }
+
+    @Override
+    public Long[] getIds(Long moduleId, List<Long> ids) {
+        return dao.getIds(ids, moduleId);
+    }
+
+    @Override
+    public void deleteByColumnDataId(Long ColumnDataId) {
+        dao.deleteByColumnDataId(ColumnDataId);
+    }
+
+    @Override
+    public void deleteByModuleId(Long moduleId) {
+        dao.deleteByModuleId(moduleId);
+    }
+
+
 }
