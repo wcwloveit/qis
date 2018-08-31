@@ -5,8 +5,6 @@ import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
 import com.xinri.dao.baseDataTypes.BaseDataTypesMapper;
 import com.xinri.po.baseDataTypes.BaseDataTypes;
-
-import com.xinri.po.dictionary.Dictionary;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
 import org.springframework.beans.factory.annotation.Autowired;

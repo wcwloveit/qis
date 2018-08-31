@@ -7,8 +7,6 @@ import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.DataEntity;
 import com.qis.common.persistence.Page;
 import com.qis.common.util.StringUtils;
-//import com.qis.xsimple.ShiroUser;
-//import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

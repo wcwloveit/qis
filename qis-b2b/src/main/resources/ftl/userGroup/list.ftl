@@ -2,43 +2,11 @@
 <head>
     <title>用户组</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
-<#--<link href="${rc.contextPath}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />-->
+    <link href="${rc.contextPath}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
 <#--<link href="${rc.contextPath}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />-->
     <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
     <style>
-        *{
-            padding: 0;
-            margin: 0;
-        }
-        li{
-            list-style: none;
-            float:left;
-        }
-        #tabCon2{
-            clear: both;
-        }
-        #tabCon2_1{
-            display: none;
-        }
-        #tabCon1{
-            clear: both;
-        }
-        #tabCon1_1{
-            display: none;
-        }
-        .button {
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-        .button2 {background-color: #008CBA;}
+
     </style>
 </head>
 <body>
@@ -122,16 +90,6 @@
                                    id="search_userGroup_descr" placeholder="描述"/>
                         </label>
 
-                        <#--<label style="float:left;margin-right:5px;">-->
-                            <#--<b class="form-control input-inline" style="border: 0px; text-align: left;">生效开始时间</b>-->
-                            <#--<input type="text" class="input-sm form-filter" name="search_BaseData_effectiveDateStart"-->
-                                   <#--id="search_BaseData_effectiveDateStart" placeholder="生效开始时间"/>-->
-                        <#--</label>-->
-
-                        <#--<label style="float:left;margin-right:5px;">-->
-                            <#--<b class="form-control input-inline" style="border: 0px; text-align: left;">生效结束时间</b>-->
-                            <#--<input type="text" class="input-sm form-filter" name="search_BaseData_effectiveDateEnd"-->
-                                   <#--id="search_BaseData_effectiveDateEnd" placeholder="生效结束时间"/>-->
                         <#--</label>-->
                         <label style="float:left;margin-right:5px;">
                             <div class="form-control input-inline"
@@ -155,87 +113,6 @@
                     </label>
 
 
-                <#--<label style="float:left;margin-right:5px;">-->
-                <#--<b class="form-control input-inline" style="border: 0px; text-align: left;">车型规格</b>-->
-                <#--<input type="text" class="input-sm form-filter" name="search_ZC_modelSpecification"-->
-                <#--id="search_ZC_modelSpecification" placeholder="车型规格"/>-->
-                <#--</label>-->
-                    <!--
-
-
-                                            <label style="float:left;margin-right:5px;">
-                                                <b class="form-control input-inline" style="border: 0px; text-align: left;">颜色编号</b>
-                                                <input type="text" class="input-sm form-filter" name="search_ZC_colorCode"
-                                                       id="search_ZC_colorCode" placeholder="颜色编号"/>
-                                            </label>
-
-                                            <label style="float:left;margin-right:5px;">
-                                                <b class="form-control input-inline" style="border: 0px; text-align: left;">颜色名称</b>
-                                                <input type="text" class="input-sm form-filter" name="search_ZC_colorName"
-                                                       id="search_ZC_colorName" placeholder="颜色名称"/>
-                                            </label>
-                    -->
-
-                <#--<label style="float:left;margin-right:5px;">-->
-                <#--<div class="form-control input-inline"-->
-                <#--style="float: left;padding-top: 5px;border: 0px; text-align: left;"-->
-                <#--">创建时间</div>-->
-                <#--<div class="input-group date date-picker" data-date-format="yyyy-mm-dd"-->
-                <#--style="width: 123px;float: left;">-->
-                <#--<input id="search_ZC_startCreatedOn" name="search_ZC_startCreatedOn" style=" width: 90px; padding: 2px; "-->
-                <#--type="text" class="form-filter input-sm" placeholder="开始日期" readonly>-->
-                <#--<span class="input-group-btn"><button class="btn btn-sm default" type="button"><i-->
-                <#--class="fa fa-calendar"></i></button></span>-->
-                <#--</div>-->
-                <#--<div style="float:left;">~</div>-->
-                <#--<div class="input-group date date-picker" data-date-format="yyyy-mm-dd"-->
-                <#--style="width: 123px;float: left;">-->
-                <#--<input id="search_ZC_endCreatedOn" name="search_ZC_endCreatedOn" style=" width:90px; padding: 2px;"-->
-                <#--type="text" class="form-filter input-sm" placeholder="结束日期" readonly>-->
-                <#--<span class="input-group-btn"><button class="btn btn-sm default" type="button"><i-->
-                <#--class="fa fa-calendar"></i></button></span>-->
-                <#--</div>-->
-                <#--</label>-->
-
-                <#--<label style="float:left;margin-right:5px;">-->
-                <#--<div class="form-control input-inline"-->
-                <#--style="float: left;padding-top: 5px;border: 0px; text-align: left;"-->
-                <#--">更新时间</div>-->
-                <#--<div class="input-group date date-picker" data-date-format="yyyy-mm-dd"-->
-                <#--style="width: 123px;float: left;">-->
-                <#--<input id="search_ZC_startUpdatedOn" name="search_ZC_startUpdatedOn" style=" width: 90px; padding: 2px; "-->
-                <#--type="text" class="form-filter input-sm" placeholder="开始日期" readonly>-->
-                <#--<span class="input-group-btn"><button class="btn btn-sm default" type="button"><i-->
-                <#--class="fa fa-calendar"></i></button></span>-->
-                <#--</div>-->
-                <#--<div style="float:left;">~</div>-->
-                <#--<div class="input-group date date-picker" data-date-format="yyyy-mm-dd"-->
-                <#--style="width: 123px;float: left;">-->
-                <#--<input id="search_ZC_endUpdatedOn" name="search_ZC_endUpdatedOn" style=" width:90px; padding: 2px;"-->
-                <#--type="text" class="form-filter input-sm" placeholder="结束日期" readonly>-->
-                <#--<span class="input-group-btn"><button class="btn btn-sm default" type="button"><i-->
-                <#--class="fa fa-calendar"></i></button></span>-->
-                <#--</div>-->
-                <#--</label>-->
-
-
-                <#--<label style="float:left;margin-right:5px;">-->
-                <#--<div class="form-control input-inline"-->
-                <#--style="float: left;padding-top: 5px;border: 0px; text-align: left;"-->
-                <#--">初始价格</div>-->
-                <#--<div class="input-group" style="width: 90px;float: left;">-->
-                <#--<input id="search_ZC_startPrice" name="search_ZC_startPrice" style=" width: 90px; padding: 2px; "-->
-                <#--type="text" class="form-filter input-sm" placeholder="From">-->
-                <#--</div>-->
-                <#--<div style="float:left;">~</div>-->
-                <#--<div class="input-group" style="width: 90px;float: left;">-->
-                <#--<input id="search_ZC_endPrice" name="search_ZC_endPrice" style=" width: 90px; padding: 2px; "-->
-                <#--type="text" class="form-filter input-sm" placeholder="To">-->
-                <#--</div>-->
-
-                <#--</label>-->
-
-
                     <label style="float:left;">
                         <span> &nbsp;&nbsp;</span>
                         <button class="btn btn-sm yellow margin-bottom filter-submit" value="搜索" onclick="search(this,grid)"><i
@@ -256,100 +133,84 @@
         <div id="user_list_div" class="modal fade" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog" style="width:800px;">
                 <div class="modal-content">
-
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <#--<h4 class="modal-title">员工列表</h4>-->
-                </div>
+                    <div class="btn-group">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                <#--TAB切换-->
-                    <div id="tanContainer2">
-                        <div id="tab2">
+                            <a class="btn green changeTab2-0" href="javascript:void(0)">
+                                <i class="icon-user"></i>
+                                <span class="hidden-480"   onclick="changeTab2(this,0);">人员列表</span>
+                            </a>
 
-                            <ul>
-                                <li onclick="changeTab2(0)"><button class="button">人员列表</button></li>
-                                <li onclick="changeTab2(1)"><button class="button button2">部门列表</button></li>
-                            </ul>
+                            <a href="javascript:void(0)" class="btn changeTab2-1">
+                                <i class="glyphicon glyphicon-compressed"></i>
+                                <span class="hidden-480"  onclick="changeTab2(this,1);">部门列表</span>
+                            </a>
 
                         </div>
-                        <div id="tabCon2">
-                            <div id="tabCon2_0">
-                            <#--对应人员列表的页面-->
-                                <div class="modal-body">
-                                    <div class="row" id="tableDatas">
-                                        <div class="col-md-12">
-                                            <div class="portlet">
-                                                <div class="portlet-body">
-                                                    <table class="table table-striped table-bordered table-hover" id="user_list_table">
-                                                        <thead>
-                                                        <tr role="row" class="heading">
-                                                            <th width="15%">登录名</th>
-                                                            <th width="15%">姓名</th>
-                                                            <th width="15%">编号</th>
-                                                            <th width="15%">手机</th>
-                                                            <th width="15%">操作</th>
-                                                        </tr>
-                                                        <tr role="row" class="filter">
+                    </div>
+                </div>
 
-                                                            <!-- 登录名 -->
-                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_userName"></td>
-                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
-                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_userNo"></td>
-                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_mobilePhone"></td>
-                                                            <td>
-                                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
-                                                                </button>
-                                                                <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
-                                                            </td>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="portlet-body user_list_table2-0">
+                                    <!-- 人员列表-->
+                                    <table class="table table-striped table-bordered table-hover" id="user_list_table">
+                                        <thead>
+                                        <tr role="row" class="heading">
+                                            <th width="15%">登录名</th>
+                                            <th width="15%">姓名</th>
+                                            <th width="15%">编号</th>
+                                            <th width="15%">手机</th>
+                                            <th width="15%">操作</th>
+                                        </tr>
+                                        <tr role="row" class="filter">
+
+                                            <!-- 登录名 -->
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_userName"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_userNo"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_mobilePhone"></td>
+                                            <td>
+                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                </button>
+                                                <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
+                                <div class="portlet-body user_list_table2-1 display-hide">
+                                    <!-- 部门列表-->
+                                    <table class="table table-striped table-bordered table-hover" id="user_list_table4">
+                                        <thead>
+                                        <tr role="row" class="heading">
+                                            <th width="15%">部门名称</th>
+                                            <th width="15%">编号</th>
+                                            <th width="15%">描述</th>
+                                            <th width="15%">操作</th>
+                                        </tr>
+                                        <tr role="row" class="filter">
 
-                            <div id="tabCon2_1">
-                            <#--对应部门列表的页面-->
-                                <div class="modal-body">
-                                    <div class="row" id="tableDatas">
-                                        <div class="col-md-12">
-                                            <div class="portlet">
-                                                <div class="portlet-body">
-                                                    <table class="table table-striped table-bordered table-hover" id="user_list_table4">
-                                                        <thead>
-                                                        <tr role="row" class="heading">
-                                                            <th width="15%">部门名称</th>
-                                                            <th width="15%">编号</th>
-                                                            <th width="15%">描述</th>
-                                                            <th width="15%">操作</th>
-                                                        </tr>
-                                                        <tr role="row" class="filter">
-
-                                                            <!-- 登录名 -->
-                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
-                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_code"></td>
-                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_descr"></td>
-                                                            <td>
-                                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
-                                                                </button>
-                                                                <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
-                                                            </td>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            <!-- 登录名 -->
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_code"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_descr"></td>
+                                            <td>
+                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                </button>
+                                                <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -358,102 +219,95 @@
             </div>
         </div>
 
+
     <#--分配-->
-        <div id="user_list_div2" class="modal fade" tabindex="-1" aria-hidden="true"> <#---->
+        <div id="user_list_div2" class="modal fade" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog" style="width:800px;">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <#--<h4 class="modal-title">员工列表</h4>-->
-             <#--TAB切换-->
-                 <div id="tanContainer1">
-                     <div id="tab1">
-                         <ul>
-                             <li onclick="changeTab1(0)"><button class="button">人员列表</button></li>
-                             <li onclick="changeTab1(1)"><button class="button button2">部门列表</button></li>
-                         </ul>
-                     </div>
-                     <div id="tabCon1">
-                       <div id="tabCon1_0">
-                       <#--对应人员列表的页面-->
-                           <div class="modal-body" >
-                               <div class="row">
-                                   <div class="col-md-12">
-                                       <div class="portlet">
-                                           <div class="portlet-body">
-                                               <table class="table table-striped table-bordered table-hover" id="user_list_table2">
-                                                   <thead>
-                                                   <tr role="row" class="heading">
-                                                       <th width="15%">登录名</th>
-                                                       <th width="15%">姓名</th>
-                                                       <th width="15%">编号</th>
-                                                       <th width="15%">手机</th>
-                                                       <th width="15%">操作</th>
-                                                   </tr>
-                                                   <tr role="row" class="filter">
-                                                       <!-- 登录名 -->
-                                                       <td><input type="text" class="form-control form-filter input-sm" name="search_userName"></td>
-                                                       <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
-                                                       <td><input type="text" class="form-control form-filter input-sm" name="search_userNo"></td>
-                                                       <td><input type="text" class="form-control form-filter input-sm" name="search_mobilePhone"></td>
-                                                       <td>
-                                                           <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
-                                                           </button>
-                                                           <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
-                                                       </td>
-                                                   </tr>
-                                                   </thead>
-                                                   <tbody>
-                                                   </tbody>
-                                               </table>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
+                        <div class="btn-group">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                         <div id="tabCon1_1">
-                         <#--对应部门列表的页面-->
-                             <div class="modal-body" >
-                                 <div class="row">
-                                     <div class="col-md-12">
-                                         <div class="portlet">
-                                             <div class="portlet-body">
-                                                 <table class="table table-striped table-bordered table-hover" id="user_list_table3">
-                                                     <thead>
-                                                     <tr role="row" class="heading">
-                                                         <th width="15%">部门名称</th>
-                                                         <th width="15%">编号</th>
-                                                         <th width="15%">描述</th>
-                                                         <th width="15%">操作</th>
-                                                     </tr>
-                                                     <tr role="row" class="filter">
-                                                         <!-- 登录名 -->
-                                                         <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
-                                                         <td><input type="text" class="form-control form-filter input-sm" name="search_code"></td>
-                                                         <td><input type="text" class="form-control form-filter input-sm" name="search_descr"></td>
-                                                         <td>
-                                                             <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
-                                                             </button>
-                                                             <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
-                                                         </td>
-                                                     </tr>
-                                                     </thead>
-                                                     <tbody>
-                                                     </tbody>
-                                                 </table>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
+                                <a class="btn green changeTab1-0" href="javascript:void(0)">
+                                    <i class="icon-user"></i>
+                                    <span class="hidden-480"   onclick="changeTab1(this,0);">人员列表</span>
+                                </a>
 
-                </div>
+                                <a href="javascript:void(0)" class="btn changeTab1-1">
+                                    <i class="glyphicon glyphicon-compressed"></i>
+                                    <span class="hidden-480"  onclick="changeTab1(this,1);">部门列表</span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <#--<div class="portlet box">-->
+                                    <div class="portlet-body user_list_table1-0">
+                                        <!-- 人员-->
+                                        <table class="table table-striped table-bordered table-hover" id="user_list_table2">
+                                            <thead>
+                                            <tr role="row" class="heading">
+                                                <th width="15%">登录名</th>
+                                                <th width="15%">姓名</th>
+                                                <th width="15%">编号</th>
+                                                <th width="15%">手机</th>
+                                                <th width="15%">操作</th>
+                                            </tr>
+                                            <tr role="row" class="filter">
+                                                <!-- 登录名 -->
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_userName"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_userNo"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_mobilePhone"></td>
+                                                <td>
+                                                    <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                    </button>
+                                                    <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="portlet-body user_list_table1-1 display-hide">
+                                        <!-- 部门-->
+                                        <table class="table table-striped table-bordered table-hover" id="user_list_table3">
+                                            <thead>
+                                            <tr role="row" class="heading">
+                                                <th width="15%">部门名称</th>
+                                                <th width="15%">编号</th>
+                                                <th width="15%">描述</th>
+                                                <th width="15%">操作</th>
+                                            </tr>
+                                            <tr role="row" class="filter">
+                                                <!-- 登录名 -->
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_code"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="search_descr"></td>
+                                                <td>
+                                                    <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                    </button>
+                                                    <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                <#--</div>-->
+                            </div>
+                        </div>
+
+                    </div>
+
             </div>
         </div>
 
@@ -564,6 +418,8 @@
             userGrid4.setAjaxParam("roleId",id);
             userGrid4.getDataTable().fnDraw();
             $('#user_list_div').modal('show');
+
+
         }
 
         var userGrid=new Datatable();
@@ -728,21 +584,45 @@
             }
         });
 
-//        /**
-//         * 切换
-//         * */
-      function changeTab2(tabCon2_num){
-        for(i=0;i<=1;i++) {
-            document.getElementById("tabCon2_"+i).style.display="none"; //将所有的层都隐藏
-        }
-        document.getElementById("tabCon2_"+tabCon2_num).style.display="block";//显示当前层
-        }
+       /**
+        * 查看TAB切换
+        * */
+       function changeTab2(obj,type){
+           if(type==0){//人员
+               $(".changeTab2-1").removeClass("green");
+               $(".changeTab2-0").addClass("green");
 
-        function changeTab1(tabCon1_num){
-            for(i=0;i<=1;i++) {
-                document.getElementById("tabCon1_"+i).style.display="none"; //将所有的层都隐藏
-            }
-            document.getElementById("tabCon1_"+tabCon1_num).style.display="block";//显示当前层
+               $(".user_list_table2-0").removeClass("display-hide");
+               $(".user_list_table2-1").addClass("display-hide");
+
+           }else if(type==1){//部门列表
+               $(".changeTab2-0").removeClass("green");
+               $(".changeTab2-1").addClass("green");
+
+               $(".user_list_table2-1").removeClass("display-hide");
+               $(".user_list_table2-0").addClass("display-hide");
+           }
+       }
+
+
+        /**
+         * 添加TAB切换
+         * */
+        function changeTab1(obj,type){
+          if(type==0){//人员
+              $(".changeTab1-1").removeClass("green");
+              $(".changeTab1-0").addClass("green");
+
+              $(".user_list_table1-0").removeClass("display-hide");
+              $(".user_list_table1-1").addClass("display-hide");
+
+          }else if(type==1){//组织列表
+              $(".changeTab1-0").removeClass("green");
+              $(".changeTab1-1").addClass("green");
+
+              $(".user_list_table1-1").removeClass("display-hide");
+              $(".user_list_table1-0").addClass("display-hide");
+          }
         }
 
 
