@@ -112,14 +112,15 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 					if(user.type==2)entity.setCreatedBy(user.getId());
 				}
 			}
-			entity.preInsert();
+			entity.setCreatedOn(new Date());
+			entity.setIsDeleted(0);
 			return dao.insertSelective(entity);
 		} else {
 			if(user!=null) {
 				if(user.type==1)entity.setModifiedBy(-user.getId());
 				if(user.type==2)entity.setModifiedBy(user.getId());
 			}
-			entity.preUpdate();
+			entity.setModifiedOn(new Date());
 			return dao.update(entity);
 		}
 	}
