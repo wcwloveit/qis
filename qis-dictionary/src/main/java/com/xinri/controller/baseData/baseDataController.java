@@ -114,9 +114,9 @@ public class baseDataController extends BaseController {
     }
 
     /**
-     * 物理删除
+     * 物理删除 要删除的数据的id
      *
-     * @param 要删除的数据的id
+     * @param
      * @return 状态信息
      */
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)

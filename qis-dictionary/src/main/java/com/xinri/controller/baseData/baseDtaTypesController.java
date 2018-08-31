@@ -1,4 +1,4 @@
-package com.xinri.controller.baseDataTypes;
+package com.xinri.controller.baseData;
 
 import com.app.api.DataTable;
 import com.qis.common.web.BaseController;
@@ -21,7 +21,7 @@ import java.util.Map;
  * 创建时间:20180813
  */
 @Controller
-@RequestMapping(value = "dictionary/baseDataTypes")
+@RequestMapping(value = "dictionary")
 public class baseDtaTypesController extends BaseController {
 
     @Autowired
@@ -74,7 +74,7 @@ public class baseDtaTypesController extends BaseController {
     public ModelAndView create(BaseDataTypes baseDataTypes,
                                RedirectAttributes attributes) {
         logger.info("新增类型开始");
-        ModelAndView mv = new ModelAndView("redirect:/dictionary/baseDataTypes/index");
+        ModelAndView mv = new ModelAndView("redirect:/dictionary/index");
         try {
             baseDataTypes.setIsDeleted(0);
             baseDataTypes.setIsEffective(0);
@@ -110,14 +110,14 @@ public class baseDtaTypesController extends BaseController {
     /**
      * 更新
      *
-     * @param zcActivity
+     * @param baseDataTypes
      * @param attributes
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(BaseDataTypes baseDataTypes, RedirectAttributes attributes) {
         logger.info("更新类型开始");
-        ModelAndView mv = new ModelAndView("redirect:/dictionary/baseDataTypes/index");
+        ModelAndView mv = new ModelAndView("redirect:/dictionary/index");
         try {
             baseDataTypes.setIsNewRecord(false);
             baseDatasTypesService.saveOrUpdate(baseDataTypes);

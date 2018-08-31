@@ -2,12 +2,14 @@
  */
 package com.qis.common.service;
 
+import com.qis.ShiroUser;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.DataEntity;
 import com.qis.common.persistence.Page;
 import com.qis.common.util.StringUtils;
 //import com.qis.xsimple.ShiroUser;
 //import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,7 +75,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	/**
 	 * 查询列表数据，不带查询条件，不带分页
 	 * 
-	 * @param entity
+	 * @param
 	 * @return
 	 */
 	public List<T> findAllList() {
@@ -101,21 +103,22 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 */
 	@Transactional(readOnly = false)
 	public int saveOrUpdate(T entity) {
-	//	ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();// 取得当前用户信息
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();// 取得当前用户信息
 		if (entity.getIsNewRecord()) {
-//			if(entity.getCreatedBy()==null||0==entity.getCreatedBy()){
-//				//entity.setCreatedBy(UserUtils.getUser().getStaffId());
-//			//	if(user!=null){
-//				//	entity.setCreatedBy(user.getId());
-//			//	}
-//			}
-			entity.setCreatedOn(new Date());
+			if(entity.getCreatedBy()==null||0==entity.getCreatedBy()){
+//				entity.setCreatedBy(UserUtils.getUser().getStaffId());
+				if(user!=null){
+					if(user.type==1)entity.setCreatedBy(-user.getId());
+					if(user.type==2)entity.setCreatedBy(user.getId());
+				}
+			}
 			entity.preInsert();
 			return dao.insertSelective(entity);
 		} else {
-			//if(user!=null) {
-			//	entity.setUpdatedBy(user.getId());
-			//}
+			if(user!=null) {
+				if(user.type==1)entity.setModifiedBy(-user.getId());
+				if(user.type==2)entity.setModifiedBy(user.getId());
+			}
 			entity.preUpdate();
 			return dao.update(entity);
 		}
@@ -123,9 +126,10 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 
 	@Transactional(readOnly = false)
 	public int updateByCondition(T entity) {
-		//ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		if (StringUtils.isNotEmpty(entity.getWhereSqlParam())){
-			//entity.setUpdatedBy(user.getId());
+			if(user.type==1)entity.setModifiedBy(-user.getId());
+			if(user.type==2)entity.setModifiedBy(user.getId());
 			entity.preUpdate();
 			return dao.updateByCondition(entity);
 		}

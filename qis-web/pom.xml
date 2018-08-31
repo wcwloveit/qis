@@ -114,6 +114,7 @@
         <groupId>org.apache.shiro</groupId>
         <artifactId>shiro-ehcache</artifactId>
     </dependency>
+
     <!-- SECURITY end -->
 
     <!-- JSON begin -->
@@ -126,38 +127,6 @@
         <artifactId>jackson-module-jaxb-annotations</artifactId>
     </dependency>
     <!-- JSON end -->
-
-
-    <!--&lt;!&ndash; hibernate &ndash;&gt;-->
-    <!--<dependency>-->
-        <!--<groupId>org.hibernate</groupId>-->
-        <!--<artifactId>hibernate-entitymanager</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-        <!--<groupId>org.hibernate</groupId>-->
-        <!--<artifactId>hibernate-ehcache</artifactId>-->
-    <!--</dependency>-->
-    <!--&lt;!&ndash; JSR303 BeanValidator &ndash;&gt;-->
-    <!--<dependency>-->
-        <!--<groupId>org.hibernate</groupId>-->
-        <!--<artifactId>hibernate-validator</artifactId>-->
-    <!--</dependency>-->
-
-
-    <!-- SOAP begin -->
-    <!--<dependency>-->
-        <!--<groupId>org.apache.cxf</groupId>-->
-        <!--<artifactId>cxf-rt-frontend-jaxrs</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-        <!--<groupId>org.apache.cxf</groupId>-->
-        <!--<artifactId>cxf-rt-frontend-jaxws</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-        <!--<groupId>org.apache.cxf</groupId>-->
-        <!--<artifactId>cxf-rt-transports-http</artifactId>-->
-    <!--</dependency>-->
-    <!-- SOAP end -->
 
 
     <!-- LOGGING begin -->

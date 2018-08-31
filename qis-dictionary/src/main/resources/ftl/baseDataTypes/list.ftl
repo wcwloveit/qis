@@ -38,7 +38,7 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <a class="btn green btn-parent" href="${rc.contextPath}/dictionary/baseDataTypes/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/dictionary/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
@@ -159,7 +159,7 @@
                 ],
                 "iDisplayLength": 10,
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/dictionary/baseDataTypes/list",
+                "sAjaxSource": "${rc.contextPath}/dictionary/list",
                 "aaSorting": [
                     [ 0, "desc" ]
                 ],
@@ -205,7 +205,7 @@
                             }
                         }},
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                            var a = '<a href="${rc.contextPath}/dictionary/baseDataTypes/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                            var a = '<a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
                             var b = '<a href="${rc.contextPath}/dictionary/baseData/index/' + row.id + '" class="btn btn-xs green"  title="编辑" >' +
                                     '<i class="fa fa-balance-scale"></i>树</a>';
@@ -294,7 +294,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/dictionary/baseDataTypes/deleteOne-' + id,
+                                url: '${rc.contextPath}/dictionary/deleteOne-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -340,7 +340,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/dictionary/baseDataTypes/delete-all',
+                                url:'${rc.contextPath}/dictionary/delete-all',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",

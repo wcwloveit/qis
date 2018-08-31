@@ -51,9 +51,6 @@ public class ShiroDbRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
           String username = String.valueOf(((UsernamePasswordToken) token).getUsername());
           String password = String.valueOf(((UsernamePasswordToken) token).getPassword());
-//          SimpleAuthenticationInfo auth;
-//          AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(new ShiroUser(1L,username,username), "123456", this.getName());
-//        return authcInfo;
           SysUser users = new SysUser();
           users.setAccount(username);
           users.setIsDeleted(0);
@@ -61,10 +58,12 @@ public class ShiroDbRealm extends AuthorizingRealm {
           if(sysUser!= null){
               byte[] salt = Encodes.decodeHex(sysUser.getSalt());
               SimpleAuthenticationInfo auth;
-              auth = new SimpleAuthenticationInfo(new ShiroUser(sysUser.getId(),sysUser.getAccount(),sysUser.getName()),
+              auth = new SimpleAuthenticationInfo(new ShiroUser(sysUser.getId(),sysUser.getAccount(),sysUser.getName(),1),
                       sysUser.getPassword(), ByteSource.Util.bytes(salt), getName());
               return auth;
           }else{
+
+
               throw new UnknownAccountException();
           }
 

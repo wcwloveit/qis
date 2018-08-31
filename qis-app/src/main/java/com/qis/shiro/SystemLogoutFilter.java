@@ -23,9 +23,9 @@ public class SystemLogoutFilter extends LogoutFilter {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		Subject subject = getSubject(request, response);
 		String ip = SecurityUtils.getSubject().getSession().getHost();
-		//String ip = "";
+	//	String ip = "";
 		try {
-		//	ip = Utils.getIpAddr((HttpServletRequest) request);
+//			ip = Utils.getIpAddr((HttpServletRequest) request);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,4 +1,4 @@
-package com.app;
+package com.qis;
 
 import com.google.common.base.Objects;
 
@@ -14,10 +14,12 @@ public class ShiroUser implements Serializable{
     public Long id;
     public String loginName;
     public String name;
-    public ShiroUser(Long id,String loginName,String name){
+    public Integer type;//1.系统管理员 2.员工
+    public ShiroUser(Long id, String loginName, String name, Integer type){
         this.id=id;
         this.loginName=loginName;
         this.name=name;
+        this.type=type;
     }
     public Long getId(){
         return id;
@@ -27,6 +29,9 @@ public class ShiroUser implements Serializable{
     }
     public String getLoginName(){
         return loginName;
+    }
+    public Integer getType(){
+        return type;
     }
     /**
      * 本函数输出将作为默认的<shiro:principal/>输出.

@@ -63,23 +63,19 @@
                     <input id="id" name="id" value="${role.id?if_exists}" style="display: none">
                     <input type="hidden" name="ids"/>
                     <div class="form-body">
-                        <h3 class="form-section">角色名称</h3>
+                        <h3 class="form-section">角色相关</h3>
                         <div class="form-group">
                             <label class="control-label col-md-3" for="inputWarning">角色名称<span class="required">*</span></label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" name="name" id="name" value="${role.name?if_exists}"/>
                             </div>
                         </div>
-
-                        <h3 class="form-section">角色类型</h3>
                         <div class="form-group">
                             <label class="control-label col-md-3" for="inputWarning">角色类型<span class="required">*</span></label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" name="roleClassId" id="roleClassId" value="${role.roleClassId?if_exists}"/>
                             </div>
                         </div>
-
-                        <h3 class="form-section">角色描述</h3>
                         <div class="form-group">
                             <label class="control-label col-md-3" for="inputWarning">角色描述<span class="required">*</span></label>
                             <div class="col-md-4">

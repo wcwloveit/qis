@@ -5,7 +5,7 @@
 
     <!-- 会话Cookie模板 -->
     <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-        <constructor-arg value="qis" />
+        <constructor-arg value="xsimple" />
         <property name="httpOnly" value="true" />
         <!-- 30 天 -->
         <property name="maxAge" value="2592000" />
@@ -21,7 +21,6 @@
         <property name="realm" ref="shiroDbRealm" />
         <property name="rememberMeManager" ref="rememberMeManager" />
         <property name="cacheManager" ref="shiroEhcacheManager" />
-         <!--<property name="sessionManager" ref="sessionManager" />-->
     </bean>
 
     <!-- 項目自定义的Realm -->
@@ -34,10 +33,12 @@
         <property name="securityManager" ref="securityManager" />
         <property name="loginUrl" value="/login" />
         <property name="successUrl" value="/" />
+
         <property name="filterChainDefinitions">
             <value>
+                /favicon.ico = anon
                 /assets/** = anon
-                /login = anon
+                /login = authc
                 /logout = logout
                 /** = user
             </value>
@@ -59,20 +60,4 @@
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager" />
     </bean>
-
-
-
-    <!--&lt;!&ndash; 会话管理器 &ndash;&gt;-->
-    <!--<bean id="sessionManager"-->
-          <!--class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">-->
-        <!--&lt;!&ndash; session的失效时长，单位毫秒 &ndash;&gt;-->
-        <!--<property name="sessionIdCookie" ref="rememberMeCookie"/>-->
-        <!--<property name="globalSessionTimeout" value="600000" />-->
-        <!--&lt;!&ndash; 删除失效的session &ndash;&gt;-->
-        <!--<property name="deleteInvalidSessions" value="true" />-->
-        <!--&lt;!&ndash; 检测扫描信息时间间隔,单位为毫秒&ndash;&gt;-->
-        <!--<property name="sessionValidationInterval" value="60000"/>-->
-        <!--&lt;!&ndash; 是否开启扫描 &ndash;&gt;-->
-        <!--<property name="sessionValidationSchedulerEnabled" value="false"/>-->
-    <!--</bean>-->
 </beans>

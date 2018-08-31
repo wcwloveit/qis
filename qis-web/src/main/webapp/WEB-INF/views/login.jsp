@@ -52,9 +52,26 @@
     <!-- BEGIN LOGIN FORM -->
     <form class="login-form" action="${ctx}/login" method="post">
         <h3 class="form-title font-green">登录</h3>
-        <div class="alert alert-danger display-hide">
-            <button class="close" data-close="alert"></button>
-            <span> 请输入账号和密码. </span>
+        <div class="">
+            <%
+                String error=(String)request.getAttribute(org.apache.shiro.web.filter.authc.FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
+                if(error!=null){
+            %>
+            <div class="alert alert-danger">
+                <button class="close" data-close="alert"></button>
+                <span><%
+                    if(error.contains("DisabledAccountException")){
+                        out.print("用户已被屏蔽,请登录其他用户.");
+                    }else if(error.contains("UnknownAccountException")){
+                        out.print("用户不存在,请检查后重试!");
+                    }else if(error.contains("IncorrectCredentialsException")){
+                        out.print("密码错误,请检查密码!");
+                    }else{
+                        out.print("登录失败，请重试.");
+                    }
+                %></span>
+            </div>
+            <%}%>
         </div>
         <div class="form-group">
             <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->

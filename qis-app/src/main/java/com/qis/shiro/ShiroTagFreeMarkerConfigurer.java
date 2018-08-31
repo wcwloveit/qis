@@ -7,7 +7,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import java.io.IOException;
 
 /**
- * @author caichune@kingnode.com (cici)
+ * @author
  */
 public class ShiroTagFreeMarkerConfigurer extends FreeMarkerConfigurer{
     @Override
