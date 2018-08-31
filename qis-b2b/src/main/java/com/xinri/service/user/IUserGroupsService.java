@@ -1,6 +1,7 @@
 package com.xinri.service.user;
 import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
+import com.xinri.po.departments.Departments;
 import com.xinri.po.user.UserGroups;
 import com.xinri.po.user.UserUserGroups;
 import com.xinri.po.user.Users;
@@ -29,5 +30,13 @@ public interface IUserGroupsService extends IBaseService<UserGroups>{
     public AjaxStatus LeaveRole(Long roleId, Long empId);
 
     public DataTable QueryUserByRidList(DataTable<Users> dt, Map<String, Object> searchParams, Long roleId);
+
+    public DataTable QueryUserNotInRidList2(DataTable<Departments> dt, Map<String, Object> searchParams, Long roleId);
+
+    public AjaxStatus JoinRole2(Long roleId, Long empId);
+
+    public DataTable QueryUserByRidList2(DataTable<Departments> dt, Map<String, Object> searchParams, Long roleId);
+
+    public AjaxStatus LeaveRole2(Long roleId, Long empId);
 }
 

@@ -4,15 +4,20 @@ import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
 import com.qis.common.service.CrudService;
+import com.xinri.dao.user.UserGroupDepartmentsMapper;
 import com.xinri.dao.user.UserGroupsMapper;
 import com.xinri.dao.user.UserUserGroupsMapper;
 import com.xinri.dao.user.UsersMapper;
+import com.xinri.po.departments.Departments;
+import com.xinri.po.user.UserGroupDepartments;
 import com.xinri.po.user.UserGroups;
 import com.xinri.po.user.UserUserGroups;
 import com.xinri.po.user.Users;
+import com.xinri.service.user.IUserGroupDepartmentsService;
 import com.xinri.service.user.IUserGroupsService;
 import com.xinri.service.user.IUserUserGroupsService;
 import com.xinri.util.AjaxStatus;
+import com.xinri.vo.departments.DepartmentsVo;
 import com.xinri.vo.users.UserGroupsVo;
 import com.xinri.vo.users.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +43,18 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
     @Autowired
     private UserUserGroupsMapper userUserGroupsMapper;
 
+    //用户与用户组
     @Autowired
     private IUserUserGroupsService userUserGroupsService;
+
+    //用户组和部门
+    @Autowired
+    private IUserGroupDepartmentsService userGroupDepartmentsService;
+
+    //用户组与部门
+    @Autowired
+    private UserGroupDepartmentsMapper userGroupDepartmentsMapper;
+
 
     @Override
     public DataTable<UserGroupsVo> findListByVo(DataTable<UserGroupsVo> dt, Map<String, Object> searchParams) {
@@ -112,7 +127,6 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
         List<Users> list=new ArrayList<Users>();
        UserVo userVo=new UserVo();
 
-      // Users users= new Users();  //实体类
         //名称
         if ( searchParams!= null && searchParams.size() != 0) {
             if (searchParams.containsKey("name") && !Strings.isNullOrEmpty(searchParams.get("name").toString().trim())) {
@@ -263,6 +277,163 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
         }
         dt.setAaData(list);
         return dt;
-
     }
+
+    /**
+     * 用户组待添加部门列表
+     */
+    @Override
+    public DataTable QueryUserNotInRidList2(DataTable<Departments> dt, Map<String, Object> searchParams, Long roleId) {
+        int pageNo=dt.pageNo()+1; //0
+        int pageSize=dt.getiDisplayLength(); //10
+
+        List<Departments> list=new ArrayList<Departments>();
+        DepartmentsVo departmentsVo=new DepartmentsVo();
+
+        //部门名称
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("name") && !Strings.isNullOrEmpty(searchParams.get("name").toString().trim())) {
+                String name = searchParams.get("name").toString().trim();
+                departmentsVo.setName(String.valueOf(name));
+            }
+        }
+
+        //编号
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("code") && !Strings.isNullOrEmpty(searchParams.get("code").toString().trim())) {
+                String code = searchParams.get("code").toString().trim();
+                departmentsVo.setCode(String.valueOf(code));
+            }
+        }
+
+        //描述
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("descr") && !Strings.isNullOrEmpty(searchParams.get("descr").toString().trim())) {
+                String descr = searchParams.get("descr").toString().trim();
+                departmentsVo.setDescr(String.valueOf(descr));
+            }
+        }
+        departmentsVo.setRoleId(roleId);
+        list= userGroupDepartmentsMapper.getNotDepartmentByUserGroupsId(departmentsVo);
+        dt.setiTotalDisplayRecords(list.size());
+        int begin=pageSize*(pageNo-1);
+        int end=pageSize*pageNo;
+        if(begin>list.size()){
+            list=new ArrayList<>();
+        }else if(end>list.size()){
+            list=list.subList(begin,list.size());
+        }else{
+            list=list.subList(begin,end);
+        }
+        dt.setAaData(list);
+        return dt;
+    }
+
+    /**
+     * 部门添加用户组
+     * */
+    @Override
+    @Transactional(readOnly=false)
+    public AjaxStatus JoinRole2(Long roleId, Long empId) {
+        AjaxStatus as = new AjaxStatus(true);
+        try {
+            UserGroupDepartments userGroupDepartments=new UserGroupDepartments();
+            userGroupDepartments.setDepartmentId(empId); //添加部门id
+            userGroupDepartments.setUserGroupId(roleId);//添加用户组id
+            //调用 人员与用户组
+            userGroupDepartmentsService.saveOrUpdate(userGroupDepartments);
+        } catch (Exception e ){
+            as = new AjaxStatus(false);
+            logger.error("添加部门报错：", e);
+        }
+        return as;
+    }
+
+    /**
+     *查看用户组已经添加部门列表
+     * */
+    @Override
+    public DataTable QueryUserByRidList2(DataTable<Departments> dt, Map<String, Object> searchParams, Long roleId) {
+        int pageNo=dt.pageNo()+1; //0
+        int pageSize=dt.getiDisplayLength(); //10
+
+        List<Departments> list=new ArrayList<Departments>();
+
+        DepartmentsVo departmentsVo=new DepartmentsVo();
+        departmentsVo.setRoleId(roleId);
+
+        //部门名称
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("name") && !Strings.isNullOrEmpty(searchParams.get("name").toString().trim())) {
+                String name = searchParams.get("name").toString().trim();
+                departmentsVo.setName(String.valueOf(name));
+            }
+        }
+
+        //编号
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("code") && !Strings.isNullOrEmpty(searchParams.get("code").toString().trim())) {
+                String code = searchParams.get("code").toString().trim();
+                departmentsVo.setCode(String.valueOf(code));
+            }
+        }
+
+        //描述
+        if ( searchParams!= null && searchParams.size() != 0) {
+            if (searchParams.containsKey("descr") && !Strings.isNullOrEmpty(searchParams.get("descr").toString().trim())) {
+                String descr = searchParams.get("descr").toString().trim();
+                departmentsVo.setDescr(String.valueOf(descr));
+            }
+        }
+        list= userGroupDepartmentsMapper.getDepartmentByUserGroupsId(departmentsVo);
+        dt.setiTotalDisplayRecords(list.size());
+        int begin=pageSize*(pageNo-1);
+        int end=pageSize*pageNo;
+        if(begin>list.size()){
+            list=new ArrayList<>();
+        }else if(end>list.size()){
+            list=list.subList(begin,list.size());
+        }else{
+            list=list.subList(begin,end);
+        }
+        dt.setAaData(list);
+        return dt;
+    }
+
+    //退出
+    @Override
+    @Transactional(readOnly=false)
+    public AjaxStatus LeaveRole2(Long roleId, Long empId) {
+        AjaxStatus as=new AjaxStatus(true);
+        try {
+            //根据用户组id获取部门
+//            UserUserGroups  userUserGroups = new UserUserGroups();
+//            userUserGroups.setUserId(userId); //添加用户id
+//            userUserGroups.setUserGroupId(userGroupId);//添加用户组id
+
+            UserGroupDepartments userGroupDepartments= new UserGroupDepartments();
+            userGroupDepartments.setUserGroupId(roleId);
+            userGroupDepartments.setDepartmentId(empId);
+            List<UserGroupDepartments> UserGroupDepartmentsPo= userGroupDepartmentsService.findAllList(userGroupDepartments);
+            if(UserGroupDepartmentsPo.size()>0){
+                for(UserGroupDepartments userGroupDepartment:UserGroupDepartmentsPo){
+                //    userUserGroupsService.delete(userUserGroups);
+                    userGroupDepartmentsService.delete(userGroupDepartment);
+                }
+            }
+
+            //    List<UserUserGroups> userUserGroupsPo =userUserGroupsService.findList(userUserGroups);
+//            if(userUserGroupsPo.size()>0){
+//                for(UserUserGroups userUserGroup:userUserGroupsPo){
+//                    userUserGroupsService.delete(userUserGroups);
+//                }
+//            }
+        } catch (Exception e ){
+            as = new AjaxStatus(false);
+            logger.error("退出人员报错：", e);
+        }
+        return as;
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.xinri.controller.user;
 import com.app.api.DataTable;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
+import com.xinri.po.departments.Departments;
 import com.xinri.po.role.RoleClasses;
 import com.xinri.po.user.UserGroups;
 import com.xinri.po.user.UserUserGroups;
@@ -168,7 +169,7 @@ public class UserGroupsController extends BaseController {
     }
 
     /**
-     * 分配人员列表
+     * 用户组分配人员列表
      * @param dt
      * @param roleId
      * @param request
@@ -221,4 +222,58 @@ public class UserGroupsController extends BaseController {
         return userGroupsService.LeaveRole(roleId,empId);
     }
 
+
+    /**
+     * 用户组分配部门列表
+     * @param dt
+     * @param roleId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="query-departments-notinrole")
+    @ResponseBody
+    public DataTable queryNotInRoleList2(DataTable<Departments> dt, @RequestParam(value="roleId", required=false) Long roleId, ServletRequest request){
+        Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
+        return userGroupsService.QueryUserNotInRidList2(dt,searchParams,roleId);
+    }
+
+    /**
+     * 部门加入角色组
+     *
+     * @param roleId
+     * @param empId
+     *
+     * @return
+     */
+    @RequestMapping(value="join2", method=RequestMethod.POST) @ResponseBody
+    public AjaxStatus join2(@RequestParam("roleId") Long roleId, @RequestParam("empId") Long empId){
+        return userGroupsService.JoinRole2(roleId,empId);
+    }
+
+    /**
+     * 离开人员列表
+     * @param dt
+     * @param roleId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="query-departments-list")
+    @ResponseBody
+    public DataTable queryMessList2(DataTable<Departments> dt, @RequestParam(value="roleId", required=false) Long roleId, ServletRequest request){
+        Map<String,Object> searchParams=Servlets.getParametersStartingWith(request,"search_");
+        return userGroupsService.QueryUserByRidList2(dt,searchParams,roleId);
+    }
+
+    /**
+     * 部门离开人员组
+     *
+     * @param roleId
+     * @param empId
+     *
+     * @return
+     */
+    @RequestMapping(value="leave2", method=RequestMethod.POST) @ResponseBody
+    public AjaxStatus leave2(@RequestParam("roleId") Long roleId,@RequestParam("empId") Long empId){
+        return userGroupsService.LeaveRole2(roleId,empId);
+    }
 }

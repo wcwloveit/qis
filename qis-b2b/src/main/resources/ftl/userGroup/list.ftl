@@ -315,7 +315,41 @@
 
                             <div id="tabCon2_1">
                             <#--对应部门列表的页面-->
-                                部门
+                                <div class="modal-body">
+                                    <div class="row" id="tableDatas">
+                                        <div class="col-md-12">
+                                            <div class="portlet">
+                                                <div class="portlet-body">
+                                                    <table class="table table-striped table-bordered table-hover" id="user_list_table4">
+                                                        <thead>
+                                                        <tr role="row" class="heading">
+                                                            <th width="15%">部门名称</th>
+                                                            <th width="15%">编号</th>
+                                                            <th width="15%">描述</th>
+                                                            <th width="15%">操作</th>
+                                                        </tr>
+                                                        <tr role="row" class="filter">
+
+                                                            <!-- 登录名 -->
+                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
+                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_code"></td>
+                                                            <td><input type="text" class="form-control form-filter input-sm" name="search_descr"></td>
+                                                            <td>
+                                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                                </button>
+                                                                <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                            </td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -325,7 +359,7 @@
         </div>
 
     <#--分配-->
-        <div id="user_list_div2" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div id="user_list_div2" class="modal fade" tabindex="-1" aria-hidden="true"> <#---->
             <div class="modal-dialog" style="width:800px;">
                 <div class="modal-content">
 
@@ -343,7 +377,7 @@
                      <div id="tabCon1">
                        <div id="tabCon1_0">
                        <#--对应人员列表的页面-->
-                           <div class="modal-body">
+                           <div class="modal-body" >
                                <div class="row">
                                    <div class="col-md-12">
                                        <div class="portlet">
@@ -382,7 +416,39 @@
 
                          <div id="tabCon1_1">
                          <#--对应部门列表的页面-->
-                             部门
+                             <div class="modal-body" >
+                                 <div class="row">
+                                     <div class="col-md-12">
+                                         <div class="portlet">
+                                             <div class="portlet-body">
+                                                 <table class="table table-striped table-bordered table-hover" id="user_list_table3">
+                                                     <thead>
+                                                     <tr role="row" class="heading">
+                                                         <th width="15%">部门名称</th>
+                                                         <th width="15%">编号</th>
+                                                         <th width="15%">描述</th>
+                                                         <th width="15%">操作</th>
+                                                     </tr>
+                                                     <tr role="row" class="filter">
+                                                         <!-- 登录名 -->
+                                                         <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
+                                                         <td><input type="text" class="form-control form-filter input-sm" name="search_code"></td>
+                                                         <td><input type="text" class="form-control form-filter input-sm" name="search_descr"></td>
+                                                         <td>
+                                                             <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                             </button>
+                                                             <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                         </td>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     </tbody>
+                                                 </table>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
                          </div>
                      </div>
                  </div>
@@ -489,11 +555,14 @@
             }
         });
 
-        //查看用户函数
+        //点击查看
         function seeUser(id){
             userGrid.setAjaxParam("roleId",id);
             $("#roleId").val(id);
             userGrid.getDataTable().fnDraw();
+
+            userGrid4.setAjaxParam("roleId",id);
+            userGrid4.getDataTable().fnDraw();
             $('#user_list_div').modal('show');
         }
 
@@ -529,14 +598,19 @@
 
 
 
-        //分配用户信息
+        //点击分配
         function toUser(id){
             userGrid2.setAjaxParam("roleId",id);
             $("#roleId").val(id);
             userGrid2.getDataTable().fnDraw();
-            $('#user_list_div2').modal('show');
-        }
 
+            userGrid3.setAjaxParam("roleId",id);
+            userGrid3.getDataTable().fnDraw();
+
+            $('#user_list_div2').modal('show');
+
+        }
+        //用户组分配用户信息
         var userGrid2=new Datatable();
         var $userList_data_table2=$("#user_list_table2");
         userGrid2.init({
@@ -600,7 +674,7 @@
 
         function leave(id){
             bootbox.dialog({
-                message: "确认此员工离开此角色",
+                message: "确认此员工离开此用户组",
                 buttons: {
                     success: {
                         label: "确定",
@@ -669,6 +743,135 @@
                 document.getElementById("tabCon1_"+i).style.display="none"; //将所有的层都隐藏
             }
             document.getElementById("tabCon1_"+tabCon1_num).style.display="block";//显示当前层
+        }
+
+
+        //用户组分配部门信息
+        var userGrid3=new Datatable();
+        var $userList_data_table3=$("#user_list_table3");
+        userGrid3.init({
+            src:$userList_data_table3,
+            onSuccess:function(userGrid3){
+                console.log(userGrid3);
+            },
+            onError:function(userGrid3){
+            },
+            dataTable:{
+                "bServerSide":true,
+                "sAjaxSource":"${rc.contextPath}/userGroup/query-departments-notinrole",
+                "aoColumnDefs":[
+                    { "bSortable":false,"aTargets":[ 0,1,2,3] }
+                ],//设置不排序得列
+                "aoColumns":[
+//                    { "sTitle":"登录名","mData":"userName"},
+                    { "sTitle":"部门名称","mData":"name"},
+                    { "sTitle":"编号","mData":"code"},
+                    { "sTitle":"描述","mData":"descr"},
+//                    { "sTitle":"邮箱","mData":"email","mRender":function(data){
+//                        return "<a href='mailto:"+data+"'>"+data+"</a>";
+//                    }},
+                    { "sTitle":"操作","mData":"","sDefaultContent":"","mRender":function(data,type,row){
+                        return'<a class="delete btn green btn-xs black" href="javascript:join2('+row.id+');"><i class="fa fa-level-up"></i>加入</a>';
+                    }}
+                ]
+            }
+        });
+
+        function join2(id){
+            bootbox.dialog({
+                message: "确认此部门加入此用户组",
+                buttons: {
+                    success: {
+                        label: "确定",
+                        className: "green",
+                        callback: function() {
+                            $.ajax({
+                                url:'${rc.contextPath}/userGroup/join2',
+                                type:'POST',
+                                traditional:true,
+                                data:{"roleId":$("#roleId").val(),"empId":id},
+                                success:function(){
+                                    userGrid3.getDataTable().fnDraw();
+                                    //成功以后刷新页面
+                                }
+                            });
+                        }
+                    },
+                    main: {
+                        label: "取消",
+                        className: "gray",
+                        callback: function() {
+                            $(this).hide();
+                        }
+                    }
+                }
+            });
+        }
+/**
+ *部门退出用户组
+ *
+ * */
+        var userGrid4=new Datatable();
+        var $userList_data_table4=$("#user_list_table4");
+        userGrid4.init({
+            src:$userList_data_table4,
+            onSuccess:function(userGrid4){
+                console.log(userGrid4);
+            },
+            onError:function(userGrid4){
+            },
+            dataTable:{
+                "bServerSide":true,
+                "sAjaxSource":"${rc.contextPath}/userGroup/query-departments-list",
+                "aoColumnDefs":[
+                    { "bSortable":false,"aTargets":[ 0,1,2,3] }
+                ],//设置不排序得列
+                "aoColumns":[
+//                    { "sTitle":"登录名","mData":"userName"},
+                    { "sTitle":"部门名称","mData":"name"},
+                    { "sTitle":"编号","mData":"code"},
+                    { "sTitle":"描述","mData":"descr"},
+//                    { "sTitle":"邮箱","mData":"email","mRender":function(data){
+//                        return "<a href='mailto:"+data+"'>"+data+"</a>";
+//                    }},
+                    { "sTitle":"操作","mData":"","sDefaultContent":"","mRender":function(data,type,row){
+                        return'<a class="delete btn green btn-xs black" href="javascript:leave2('+row.id+');"><i class="fa fa-level-down"></i>离开</a>';
+                    }}
+                ]
+            }
+        });
+
+        /**
+         * 部门离开用户组
+         * */
+        function leave2(id){
+            bootbox.dialog({
+                message: "确认此部门离开此用户组",
+                buttons: {
+                    success: {
+                        label: "确定",
+                        className: "green",
+                        callback: function() {
+                            $.ajax({
+                                url:'${rc.contextPath}/userGroup/leave2',
+                                type:'POST',
+                                traditional:true,
+                                data:{"roleId":$("#roleId").val(),"empId":id},
+                                success:function(){
+                                    userGrid4.getDataTable().fnDraw();
+                                }
+                            });
+                        }
+                    },
+                    main: {
+                        label: "取消",
+                        className: "gray",
+                        callback: function() {
+                            $(this).hide();
+                        }
+                    }
+                }
+            });
         }
 
     </script>

@@ -6,6 +6,34 @@
 	      	<result column="DEPARTMENT_ID" property="departmentId" jdbcType="BIGINT"/>
 	</resultMap>
 
+	<resultMap id="departmentsResultMap" type="com.xinri.po.departments.Departments">
+		<id column="ID" property="id" jdbcType="BIGINT"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="CODE" property="code" jdbcType="VARCHAR"/>
+		<result column="PARENT_DEPARTMENT_ID" property="parentDepartmentId" jdbcType="BIGINT"/>
+		<result column="ORGANIZATION_ID" property="organizationId" jdbcType="BIGINT"/>
+		<result column="OA_NO" property="oaNo" jdbcType="VARCHAR"/>
+		<result column="OA_ID" property="oaId" jdbcType="VARCHAR"/>
+		<result column="OA_CANCELED" property="oaCanceled" jdbcType="VARCHAR"/>
+		<result column="DEPTH_LEVEL" property="depthLevel" jdbcType="INTEGER"/>
+		<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
+		<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
+		<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+		<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
+		<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
+		<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+		<result column="MODIFIED_ON" property="modifiedOn" jdbcType="TIMESTAMP"/>
+		<result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
+	</resultMap>
+
     <!-- 列定义 -->
 	<sql id="userGroupDepartmentsColumns">
 	  t.USER_GROUP_ID,
@@ -177,6 +205,47 @@
 		DELETE FROM USER_GROUP_DEPARTMENTS t 
 		<where>${whereSqlParam}</where>
 	</update>
-	
+
+	<!-- 根据用户组id 获取所属部门 -->
+	<select id="getDepartmentByUserGroupsId" parameterType="com.xinri.po.departments.Departments" resultMap="departmentsResultMap">
+		SELECT * FROM DEPARTMENTS t
+		<where>
+			<if test="name != null">
+				AND  t.NAME =#{name,jdbcType=VARCHAR}
+			</if>
+			<if test="code != null">
+				AND  t.CODE =#{code,jdbcType=VARCHAR}
+			</if>
+			<if test="descr != null">
+				AND  t.DESCR =#{descr,jdbcType=VARCHAR}
+			</if>
+			AND  t.IS_DELETED = 0
+-- 			AND  t.IS_EFFECTIVE = 1
+			<if test="roleId != null">
+				AND t.ID IN(SELECT DEPARTMENT_ID FROM USER_GROUP_DEPARTMENTS WHERE USER_GROUP_ID =#{roleId,jdbcType=BIGINT} AND IS_DELETED = 0)
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据用户组id 获取不属于用户组的部门-->
+	<select id="getNotDepartmentByUserGroupsId" parameterType="com.xinri.po.departments.Departments" resultMap="departmentsResultMap">
+		SELECT * FROM DEPARTMENTS t
+		<where>
+			<if test="name != null">
+				AND  t.NAME =#{name,jdbcType=VARCHAR}
+			</if>
+			<if test="code != null">
+				AND  t.CODE =#{code,jdbcType=VARCHAR}
+			</if>
+			<if test="descr != null">
+				AND  t.DESCR =#{descr,jdbcType=VARCHAR}
+			</if>
+			AND  t.IS_DELETED = 0
+-- 			AND  t.IS_EFFECTIVE = 1
+			<if test="roleId != null">
+				AND t.ID NOT IN(SELECT DEPARTMENT_ID FROM USER_GROUP_DEPARTMENTS WHERE USER_GROUP_ID =#{roleId,jdbcType=BIGINT} AND IS_DELETED = 0)
+			</if>
+		</where>
+	</select>
 
 </mapper>

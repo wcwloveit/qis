@@ -539,6 +539,7 @@
 		DELETE FROM DEPARTMENTS t 
 		<where>${whereSqlParam}</where>
 	</update>
-	
+
+
 
 </mapper>
