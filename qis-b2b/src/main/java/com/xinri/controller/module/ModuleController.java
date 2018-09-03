@@ -29,7 +29,7 @@ import java.util.*;
  */
 
 @Controller
-@RequestMapping(value = "module/module")
+@RequestMapping(value = "module")
 public class ModuleController extends BaseController {
 
     @Autowired
@@ -135,7 +135,7 @@ public class ModuleController extends BaseController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView create(ModuleInfoes moduleInfo) {
         logger.info("create开始");
-        ModelAndView mv = new ModelAndView("redirect:/module/module/index/");
+        ModelAndView mv = new ModelAndView("redirect:/module/index/");
         if (moduleInfo.getId() != null) {
             moduleInfo.setIsNewRecord(false);
         }

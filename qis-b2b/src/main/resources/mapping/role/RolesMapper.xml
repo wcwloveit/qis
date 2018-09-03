@@ -427,6 +427,27 @@
 		DELETE FROM ROLES t 
 		<where>${whereSqlParam}</where>
 	</update>
+
+    <resultMap id="rolesVoResultMap" type="com.xinri.vo.role.RolesVo">
+        <result column="ROLE_CLASSES_NAME" property="roleClassesName" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+	<select id="findListByVo" parameterType="com.xinri.vo.role.RolesVo" resultMap="rolesVoResultMap">
+		SELECT
+		<include refid="rolesColumns" />,d.NAME ROLE_CLASSES_NAME
+		FROM ROLES t
+		LEFT JOIN ROLE_CLASSES d ON t.role_class_id=d.ID
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY t.ID DESC
+			</otherwise>
+		</choose>
+	</select>
 	
 
 </mapper>

@@ -142,7 +142,7 @@
                 "data": {
                     'dataType': 'json',
                     'type': "post",
-                    'url': "${rc.contextPath}/module/module/list",
+                    'url': "${rc.contextPath}/module/list",
                 },
             },
             "types": {

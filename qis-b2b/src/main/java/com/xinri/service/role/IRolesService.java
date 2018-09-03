@@ -5,6 +5,7 @@ import com.qis.common.service.IBaseService;
 import com.xinri.dao.role.RolesMapper;
 import com.xinri.po.role.Roles;
 import com.xinri.service.role.impl.RolesServiceImpl;
+import com.xinri.vo.role.RolesVo;
 
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 
 public interface IRolesService extends IBaseService<Roles> {
-    DataTable<Roles> findListByVo(DataTable<Roles> dt, Map<String, Object> searchParams);
+    DataTable<RolesVo> findListByVo(DataTable<RolesVo> dt, Map<String, Object> searchParams);
 
     public Boolean deleteOne(Long id);
 

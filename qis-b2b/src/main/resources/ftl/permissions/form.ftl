@@ -58,7 +58,7 @@
 
             <div class="portlet-body">
 
-                <form id="myForm" action="${rc.contextPath}/permissions/permissions/${action?if_exists}"
+                <form id="myForm" action="${rc.contextPath}/permissions/${action?if_exists}"
                       method="POST" class="form-horizontal">
                     <input id="id" name="id" value="${permissions.id?if_exists}" style="display: none">
                     <div class="form-body">
@@ -142,7 +142,7 @@
                 "data": {
                     'dataType': 'json',
                     'type': "post",
-                    'url': "${rc.contextPath}/permissions/permissions/list/${permissions.id?if_exists}",
+                    'url': "${rc.contextPath}/permissions/list/${permissions.id?if_exists}",
                 },
             },
             "types": {

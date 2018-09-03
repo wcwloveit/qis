@@ -5,6 +5,7 @@ import com.qis.common.persistence.Page;
 import com.xinri.dao.role.RolesMapper;
 import com.xinri.po.role.Roles;
 import com.xinri.service.role.IRolesService;
+import com.xinri.vo.role.RolesVo;
 import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +25,12 @@ import java.util.Map;
 public class RolesServiceImpl extends CrudService<RolesMapper,Roles>  implements IRolesService {
 
     @Override
-    public DataTable<Roles> findListByVo(DataTable<Roles> dt, Map<String, Object> searchParams) {
+    public DataTable<RolesVo> findListByVo(DataTable<RolesVo> dt, Map<String, Object> searchParams) {
 
         try {
             Page page = new Page(dt.pageNo()+1, dt.getiDisplayLength());
-            Roles roles= new Roles();  //实体类
-            List<Roles> configList = new ArrayList<Roles>(); //new list
+            RolesVo roles= new RolesVo();  //实体类
+            List<RolesVo> configList = new ArrayList<RolesVo>(); //new list
 
             if ( searchParams!= null && searchParams.size() != 0) {
                 //角色名称
@@ -61,7 +62,7 @@ public class RolesServiceImpl extends CrudService<RolesMapper,Roles>  implements
 
             roles.setPage(page);  //获取分页对象
             roles.setIsDeleted(0);
-            configList=dao.findList(roles); //获取分页数据
+            configList=dao.findListByVo(roles); //获取分页数据
             page.setData(configList);  //***
             dt.setiTotalDisplayRecords(page.getTotalSize());
             dt.setAaData(page.getData());

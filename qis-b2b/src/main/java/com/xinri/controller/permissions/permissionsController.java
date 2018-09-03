@@ -27,7 +27,7 @@ import java.util.Map;
  * 创建时间:20180813
  */
 @Controller
-@RequestMapping(value = "permissions/permissions")
+@RequestMapping(value = "permissions")
 public class permissionsController extends BaseController {
 
     @Autowired
@@ -94,7 +94,7 @@ public class permissionsController extends BaseController {
     public ModelAndView create(Permissions permissions,
                                RedirectAttributes attributes) {
         logger.info("新增权限开始");
-        ModelAndView mv = new ModelAndView("redirect:/permissions/permissions/index");
+        ModelAndView mv = new ModelAndView("redirect:/permissions/index");
         ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
         ModuleInfoes moduleinfo = new ModuleInfoes();
         moduleinfo.setIsMenu(0);
@@ -153,7 +153,7 @@ public class permissionsController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(Permissions permissions, RedirectAttributes attributes) {
         logger.info("更新权限开始");
-        ModelAndView mv = new ModelAndView("redirect:/permissions/permissions/index");
+        ModelAndView mv = new ModelAndView("redirect:/permissions/index");
         try {
             permissions.setIsNewRecord(false);
             permissionsService.saveOrUpdate(permissions);

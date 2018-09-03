@@ -38,7 +38,7 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <a class="btn green btn-parent" href="${rc.contextPath}/permissions/permissions/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/permissions/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
@@ -159,7 +159,7 @@
                 ],
                 "iDisplayLength": 10,
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/permissions/permissions/list",
+                "sAjaxSource": "${rc.contextPath}/permissions/list",
                 "aaSorting": [
                     [ 0, "desc" ]
                 ],
@@ -198,7 +198,7 @@
                             }
                         }},
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                            var a = '<a href="${rc.contextPath}/permissions/permissions/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                            var a = '<a href="${rc.contextPath}/permissions/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
                             var b = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
@@ -286,7 +286,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/permissions/permissions/deleteOne-' + id,
+                                url: '${rc.contextPath}/permissions/deleteOne-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -332,7 +332,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/permissions/permissions/delete-all',
+                                url:'${rc.contextPath}/permissions/delete-all',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",

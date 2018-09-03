@@ -58,7 +58,7 @@
 
             <div class="portlet-body">
 
-                <form id="roleForm" action="${rc.contextPath}/role/role/${action?if_exists}"
+                <form id="roleForm" action="${rc.contextPath}/role/${action?if_exists}"
                       method="POST" class="form-horizontal">
                     <input id="id" name="id" value="${role.id?if_exists}" style="display: none">
                     <input type="hidden" name="ids"/>
@@ -73,7 +73,12 @@
                         <div class="form-group">
                             <label class="control-label col-md-3" for="inputWarning">角色类型<span class="required">*</span></label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="roleClassId" id="roleClassId" value="${role.roleClassId?if_exists}"/>
+                                <select class="form-control" name="roleClassId" id="roleClassId">
+                                    <option value="">请选择一个角色</option>
+                                    <#list roleClasses as roleClass>
+                                    <option value="${roleClass.id}" <#if roleClass.id==role.roleClassId>selected="selected"</#if>>${roleClass.name}</option>
+                                    </#list>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -97,7 +102,7 @@
                             <div class="col-md-offset-3 col-md-9">
                                 <button type="button" class="btn green" id="roleBtnSave">保存</button>
                                 <button type="button" class="btn default"
-                                        onclick="javascript:window.location.href='${rc.contextPath}/role/role/index';">
+                                        onclick="javascript:window.location.href='${rc.contextPath}/role/index';">
                                     取消
                                 </button>
                             </div>
@@ -150,9 +155,9 @@
                     'dataType': 'json',
                     'type': "post",
                     <#if role.id??>
-                        'url': "${rc.contextPath}/module/module/listForRole/${role.id?if_exists}",
+                        'url': "${rc.contextPath}/module/listForRole/${role.id?if_exists}",
                     <#else>
-                        'url': "${rc.contextPath}/module/module/list",
+                        'url': "${rc.contextPath}/module/list",
                     </#if>
 
                 }

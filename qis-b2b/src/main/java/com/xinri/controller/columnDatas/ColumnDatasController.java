@@ -103,7 +103,6 @@ public class ColumnDatasController extends BaseController {
         moduleinfo.setIsMenu(0);
         List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
         try {
-            columnDatas.setIsDeleted(0);
             columnDatas.setIsEffective(0);
             ColumnDatasService.saveOrUpdate(columnDatas);
 

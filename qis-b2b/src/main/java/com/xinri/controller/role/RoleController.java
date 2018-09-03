@@ -10,12 +10,15 @@ import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfos;
+import com.xinri.po.role.RoleClasses;
 import com.xinri.po.role.Roles;
 import com.xinri.po.user.UserGroups;
 import com.xinri.service.moduleInfo.*;
+import com.xinri.service.role.IRoleClassesService;
 import com.xinri.service.role.IRoleUserGroupsService;
 import com.xinri.service.role.IRolesService;
 import com.xinri.util.AjaxStatus;
+import com.xinri.vo.role.RolesVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +30,7 @@ import javax.servlet.ServletRequest;
 import java.util.*;
 
 @Controller
-@RequestMapping(value = "/role/role")
+@RequestMapping(value = "/role")
 public class RoleController extends BaseController {
 
 
@@ -58,6 +61,8 @@ public class RoleController extends BaseController {
     @Autowired
     private IRoleModuleInfoColumnDataHeadsService roleModuleInfoColumnDataHeadsService;
 
+    @Autowired
+    private IRoleClassesService roleClassesService;
 
 
     /*
@@ -100,10 +105,10 @@ public class RoleController extends BaseController {
      * */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public DataTable<Roles> getItemList(DataTable<Roles> dt, ServletRequest request) {
+    public DataTable<RolesVo> getItemList(DataTable<RolesVo> dt, ServletRequest request) {
         logger.info("获取角色列表开始");
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
-        DataTable<Roles> baseDatas = rolesService.findListByVo(dt, searchParams); //查询方法
+        DataTable<RolesVo> baseDatas = rolesService.findListByVo(dt, searchParams); //查询方法
         logger.info("获取角色列表结束");
         return baseDatas;
     }
@@ -116,11 +121,11 @@ public class RoleController extends BaseController {
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         ModelAndView mv = new ModelAndView("/role/form");
-        List<Roles> roleList = new ArrayList<Roles>();
-        Roles roles = new Roles();
-        roles.setIsDeleted(0);
-        roleList = rolesService.findAllList(roles);
-        mv.addObject("roleList", roleList);
+        List<RoleClasses> roleClasses = new ArrayList<RoleClasses>();
+        RoleClasses roleClass = new RoleClasses();
+        roleClass.setIsDeleted(0);
+        roleClasses = roleClassesService.findList(roleClass);
+        mv.addObject("roleClasses",roleClasses);
         mv.addObject("action", "create");
         return mv;
     }
@@ -144,7 +149,7 @@ public class RoleController extends BaseController {
             list = Utils.removeDuplicate(list);
         }
 
-        ModelAndView mv = new ModelAndView("redirect:/role/role/index");
+        ModelAndView mv = new ModelAndView("redirect:/role/index");
         try {
             role.setIsDeleted(0);
             role.setIsEffective(0);
@@ -176,6 +181,11 @@ public class RoleController extends BaseController {
     public ModelAndView update(@PathVariable("id") Long id) {
         ModelAndView mv = new ModelAndView("/role/form");
         Roles role = rolesService.get(id);
+        List<RoleClasses> roleClasses = new ArrayList<RoleClasses>();
+        RoleClasses roleClass = new RoleClasses();
+        roleClass.setIsDeleted(0);
+        roleClasses = roleClassesService.findList(roleClass);
+        mv.addObject("roleClasses",roleClasses);
         mv.addObject("role", role);
         mv.addObject("action", "update");//跳转编辑的标示
         return mv;
@@ -191,7 +201,7 @@ public class RoleController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(Roles role, String ids, RedirectAttributes attributes) {
         logger.info("更新角色开始");
-        ModelAndView mv = new ModelAndView("redirect:/role/role/index");
+        ModelAndView mv = new ModelAndView("redirect:/role/index");
         List<Long> list = Lists.newArrayList();
         if (!Strings.isNullOrEmpty(ids)) {
             for (String str : ids.split(",")) {
@@ -278,7 +288,7 @@ public class RoleController extends BaseController {
             logger.error("roleModuleInfoPermissionHead成功", e);
             redirectAttributes.addFlashAttribute("message", "保存失败");
         }
-        return "redirect:/role/role/module/" + roleId;
+        return "redirect:/role/module/" + roleId;
     }
 
     @RequestMapping(value = "columnDatasSave", method = RequestMethod.POST)
@@ -304,7 +314,7 @@ public class RoleController extends BaseController {
             logger.error("roleModuleInfoColumnDataHead成功", e);
             redirectAttributes.addFlashAttribute("message", "保存失败");
         }
-        return "redirect:/role/role/module/" + roleId;
+        return "redirect:/role/module/" + roleId;
     }
 
     /**
