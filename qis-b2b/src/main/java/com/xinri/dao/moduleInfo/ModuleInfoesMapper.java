@@ -3,6 +3,8 @@ package com.xinri.dao.moduleInfo;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.moduleInfo.ModuleInfoes;
+import com.xinri.vo.redis.Redis;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
 @MyBatisDao
 public interface ModuleInfoesMapper extends CrudDao<ModuleInfoes> {
     List<ModuleInfoes> getModulesForRole(List<Long> ids);
+
+    Redis getModulesByUserId(@Param("id") Long id);
 
 }
 

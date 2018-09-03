@@ -7,6 +7,7 @@ import com.qis.ShiroUser;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.qis.util.Utils;
+import com.xinri.po.departments.Departments;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
@@ -15,11 +16,14 @@ import com.xinri.po.role.RoleClasses;
 import com.xinri.po.role.Roles;
 import com.xinri.po.user.SysUser;
 import com.xinri.po.user.UserGroups;
+import com.xinri.po.user.Users;
+import com.xinri.service.departments.IDepartmentsService;
 import com.xinri.service.moduleInfo.*;
 import com.xinri.service.role.IRoleClassesService;
 import com.xinri.service.role.IRoleUserGroupsService;
 import com.xinri.service.role.IRolesService;
 import com.xinri.service.user.ISysUserService;
+import com.xinri.service.user.IUsersService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.redis.Redis;
 import com.xinri.vo.role.RolesVo;
@@ -71,6 +75,11 @@ public class RoleController extends BaseController {
     @Autowired
     private ISysUserService sysUserService;
 
+    @Autowired
+    private IUsersService usersService;
+
+    @Autowired
+    private IDepartmentsService departmentsService;
 
     /*
      * 首页
@@ -132,7 +141,7 @@ public class RoleController extends BaseController {
         RoleClasses roleClass = new RoleClasses();
         roleClass.setIsDeleted(0);
         roleClasses = roleClassesService.findList(roleClass);
-        mv.addObject("roleClasses",roleClasses);
+        mv.addObject("roleClasses", roleClasses);
         mv.addObject("action", "create");
         return mv;
     }
@@ -192,7 +201,7 @@ public class RoleController extends BaseController {
         RoleClasses roleClass = new RoleClasses();
         roleClass.setIsDeleted(0);
         roleClasses = roleClassesService.findList(roleClass);
-        mv.addObject("roleClasses",roleClasses);
+        mv.addObject("roleClasses", roleClasses);
         mv.addObject("role", role);
         mv.addObject("action", "update");//跳转编辑的标示
         return mv;
@@ -276,9 +285,9 @@ public class RoleController extends BaseController {
     public String permissionsSave(Long roleId, Long moduleId, Long[] ids, RedirectAttributes redirectAttributes) {
         try {
             roleModuleInfoPermissionHeadsService.celar(moduleId, roleId);
-            List<Long> perIds=new ArrayList<>();
-            if(ids!=null&&ids.length>0){
-                 perIds = Arrays.asList(ids);
+            List<Long> perIds = new ArrayList<>();
+            if (ids != null && ids.length > 0) {
+                perIds = Arrays.asList(ids);
             }
             Long[] moduPerIds = moduleInfoPermissionsService.getIds(moduleId, perIds);
             RoleModuleInfoPermissionHeads roleModuleInfoPermissionHead = new RoleModuleInfoPermissionHeads();
@@ -302,9 +311,9 @@ public class RoleController extends BaseController {
     public String columnDatasSave(Long roleId, Long moduleId, Long[] colIds, RedirectAttributes redirectAttributes) {
         try {
             roleModuleInfoColumnDataHeadsService.celar(moduleId, roleId);
-            List<Long> cIds =new ArrayList<>();
-            if(colIds!=null&&colIds.length>0){
-                cIds= Arrays.asList(colIds);
+            List<Long> cIds = new ArrayList<>();
+            if (colIds != null && colIds.length > 0) {
+                cIds = Arrays.asList(colIds);
             }
             Long[] moduPerIds = moduleInfoColumnDatasService.getIds(moduleId, cIds);
             RoleModuleInfoColumnDataHeads roleModuleInfoColumnDataHead = new RoleModuleInfoColumnDataHeads();
@@ -372,25 +381,28 @@ public class RoleController extends BaseController {
         return roleUserGroupsService.LeaveRole(roleId, groupId);
     }
 
-    public Redis getInfo(ShiroUser user){
-        Redis info=new Redis();
-        if (user.type==1){
-            SysUser sysUser=sysUserService.get(user.id);
-            Roles role=rolesService.get(Long.valueOf(sysUser.getRoleid()));
-            RoleModuleInfos before=new RoleModuleInfos();
+    public Redis getInfo(ShiroUser user) {
+        Redis info = new Redis();
+        if (user.type == 1) {
+            SysUser sysUser = sysUserService.get(user.id);
+            Roles role = rolesService.get(Long.valueOf(sysUser.getRoleid()));
+            RoleModuleInfos before = new RoleModuleInfos();
             before.setRoleId(role.getId());
-            List<RoleModuleInfos> roleModuleInfos= roleModuleInfosService.findList(before);
-            List<ModuleInfoes> moduleInfoes=new ArrayList<>();
+            List<RoleModuleInfos> roleModuleInfos = roleModuleInfosService.findList(before);
+            List<ModuleInfoes> moduleInfoes = new ArrayList<>();
             for (RoleModuleInfos roleModuleInfo : roleModuleInfos) {
-                ModuleInfoes moduleInfo=moduleInfoesService.get(roleModuleInfo.getModuleInfoId());
+                ModuleInfoes moduleInfo = moduleInfoesService.get(roleModuleInfo.getModuleInfoId());
                 moduleInfoes.add(moduleInfo);
             }
-            List<Roles> roles=new ArrayList<>();
+            List<Roles> roles = new ArrayList<>();
             roles.add(role);
             info.setModuleInfoesList(moduleInfoes);
             info.setRoles(roles);
-        }else if(user.type==2){
-            info.setModuleInfoesList(moduleInfoesService.findAllList());
+        } else if (user.type == 2) {
+//            info.setModuleInfoesList(moduleInfoesService.findAllList());
+            Long id=58689L;
+            Redis redis= moduleInfoesService.getModulesByUserId(id);
+            return redis;
         }
         return info;
     }

@@ -8,6 +8,7 @@ import com.xinri.po.role.Roles;
 import com.xinri.util.AjaxStatus;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
+import com.xinri.vo.redis.Redis;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
@@ -104,5 +105,10 @@ public class ModuleInfoesServiceImpl extends CrudService<ModuleInfoesMapper, Mod
     @Override
     public List<ModuleInfoes> findListBySysUserId(ModuleInfoes moduleInfoes, Long id) {
         return dao.findList(moduleInfoes);
+    }
+
+    @Override
+    public Redis getModulesByUserId(Long id) {
+        return dao.getModulesByUserId(id);
     }
 }
