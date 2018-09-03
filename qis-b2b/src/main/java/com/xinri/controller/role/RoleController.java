@@ -172,6 +172,8 @@ public class RoleController extends BaseController {
             rolesService.saveOrUpdate(role);
             for (Long id : list) {
                 RoleModuleInfos roleModuleInfo = new RoleModuleInfos();
+                roleModuleInfo.setId(null);
+                roleModuleInfo.setIsNewRecord(true);
                 roleModuleInfo.setRoleId(role.getId());
                 roleModuleInfo.setModuleInfoId(id);
                 roleModuleInfosService.saveOrUpdate(roleModuleInfo);
@@ -234,6 +236,8 @@ public class RoleController extends BaseController {
             rolesService.saveOrUpdate(role);
             for (Long id : list) {
                 roleModuleInfo = new RoleModuleInfos();
+                roleModuleInfo.setId(null);
+                roleModuleInfo.setIsNewRecord(true);
                 roleModuleInfo.setRoleId(role.getId());
                 roleModuleInfo.setModuleInfoId(id);
                 roleModuleInfosService.saveOrUpdate(roleModuleInfo);

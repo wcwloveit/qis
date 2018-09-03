@@ -436,6 +436,9 @@
 			<if test="moduleInfoId != null">
 				AND MODULE_INFO_ID = #{moduleInfoId}
 			</if>
+			<if test="roleId != null">
+				AND ROLE_ID = #{roleId}
+			</if>
 		</trim>
 	</delete>
 
