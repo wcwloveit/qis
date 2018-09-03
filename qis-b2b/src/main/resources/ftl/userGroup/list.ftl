@@ -36,7 +36,7 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green btn-parent" href="${rc.contextPath}/userGroup/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/user/userGroup/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
@@ -351,7 +351,7 @@
                 ],
                 "iDisplayLength": 10,//页面显示数据数量
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/userGroup/list",
+                "sAjaxSource": "${rc.contextPath}/user/userGroup/list",
                 "aaSorting": [
                     [0, "desc"]
                 ],
@@ -383,7 +383,7 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/userGroup/update/' + row.id
+                        var a = '<a href="${rc.contextPath}/user/userGroup/update/' + row.id
                                 + '" class="btn btn-xs blue"  title="编辑" >' +
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
@@ -433,7 +433,7 @@
             },
             dataTable:{
                 "bServerSide":true,
-                "sAjaxSource":"${rc.contextPath}/userGroup/query-user-list",
+                "sAjaxSource":"${rc.contextPath}/user/userGroup/query-user-list",
                 "aoColumnDefs":[
                     { "bSortable":false,"aTargets":[ 0,1,2,3] }
                 ],//设置不排序得列
@@ -478,7 +478,7 @@
             },
             dataTable:{
                 "bServerSide":true,
-                "sAjaxSource":"${rc.contextPath}/userGroup/query-user-notinrole",
+                "sAjaxSource":"${rc.contextPath}/user/userGroup/query-user-notinrole",
                 "aoColumnDefs":[
                     { "bSortable":false,"aTargets":[ 0,1,2,3] }
                 ],//设置不排序得列
@@ -506,7 +506,7 @@
                         className: "green",
                         callback: function() {
                             $.ajax({
-                                url:'${rc.contextPath}/userGroup/join',
+                                url:'${rc.contextPath}/user/userGroup/join',
                                 type:'POST',
                                 traditional:true,
                                 data:{"roleId":$("#roleId").val(),"empId":id},
@@ -537,7 +537,7 @@
                         className: "green",
                         callback: function() {
                             $.ajax({
-                                url:'${rc.contextPath}/userGroup/leave',
+                                url:'${rc.contextPath}/user/userGroup/leave',
                                 type:'POST',
                                 traditional:true,
                                 data:{"roleId":$("#roleId").val(),"empId":id},
@@ -638,7 +638,7 @@
             },
             dataTable:{
                 "bServerSide":true,
-                "sAjaxSource":"${rc.contextPath}/userGroup/query-departments-notinrole",
+                "sAjaxSource":"${rc.contextPath}/user/userGroup/query-departments-notinrole",
                 "aoColumnDefs":[
                     { "bSortable":false,"aTargets":[ 0,1,2,3] }
                 ],//设置不排序得列
@@ -666,7 +666,7 @@
                         className: "green",
                         callback: function() {
                             $.ajax({
-                                url:'${rc.contextPath}/userGroup/join2',
+                                url:'${rc.contextPath}/user/userGroup/join2',
                                 type:'POST',
                                 traditional:true,
                                 data:{"roleId":$("#roleId").val(),"empId":id},
@@ -702,7 +702,7 @@
             },
             dataTable:{
                 "bServerSide":true,
-                "sAjaxSource":"${rc.contextPath}/userGroup/query-departments-list",
+                "sAjaxSource":"${rc.contextPath}/user/userGroup/query-departments-list",
                 "aoColumnDefs":[
                     { "bSortable":false,"aTargets":[ 0,1,2,3] }
                 ],//设置不排序得列
@@ -733,7 +733,7 @@
                         className: "green",
                         callback: function() {
                             $.ajax({
-                                url:'${rc.contextPath}/userGroup/leave2',
+                                url:'${rc.contextPath}/user/userGroup/leave2',
                                 type:'POST',
                                 traditional:true,
                                 data:{"roleId":$("#roleId").val(),"empId":id},
@@ -816,7 +816,7 @@
          */
         function doDelete(id){
             $.ajax({
-                url:'${rc.contextPath}/userGroup/check/'+id,
+                url:'${rc.contextPath}/user/userGroup/check/'+id,
                 success:function(stat){
                     if(stat){
                         bootbox.dialog({
@@ -828,7 +828,7 @@
                                     callback: function() {
                                         Metronic.startPageLoading();
                                         $.ajax({
-                                            url:'${rc.contextPath}/userGroup/delete/'+id,
+                                            url:'${rc.contextPath}/user/userGroup/delete/'+id,
                                             type:'POST',
                                             dataType:"json",
                                             traditional:true,

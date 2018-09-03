@@ -49,7 +49,7 @@
             </div>
             <div class="portlet-body form">
             <#--寻找是哪个Controller-->
-                <form id="myForm" action="${rc.contextPath}/roleClass/${action}" class="form-horizontal" method="POST">
+                <form id="myForm" action="${rc.contextPath}/role/roleClass/${action}" class="form-horizontal" method="POST">
                     <div class="form-body">
                     <#--<h3 class="form-section">基本信息</h3>-->
                         <input type="hidden" class="form-control"  name="id" value="${roleClasses.id?if_exists}" >

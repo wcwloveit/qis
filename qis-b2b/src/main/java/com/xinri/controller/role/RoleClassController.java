@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-    @RequestMapping(value="/roleClass")
+    @RequestMapping(value="/role/roleClass")
 public class RoleClassController extends BaseController {
     @Autowired
     private IRoleClassesService roleClassesService;
@@ -66,7 +66,7 @@ public class RoleClassController extends BaseController {
     public ModelAndView save(RoleClasses roleClasses,
                              RedirectAttributes attributes) {
         logger.info("新增产品开始");
-        ModelAndView mv = new ModelAndView("redirect:/roleClass/index"); //重定向
+        ModelAndView mv = new ModelAndView("redirect:/role/roleClass/index"); //重定向
         try {
             roleClassesService.saveOrUpdate(roleClasses);
             attributes.addFlashAttribute("success",true);
@@ -98,7 +98,7 @@ public class RoleClassController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(RoleClasses roleClasses, RedirectAttributes attributes) {
         logger.info("更新产品开始");
-        ModelAndView mv = new ModelAndView("redirect:/roleClass/index");
+        ModelAndView mv = new ModelAndView("redirect:/role/roleClass/index");
         try {
             roleClasses.setIsNewRecord(false);
             roleClassesService.saveOrUpdate(roleClasses);

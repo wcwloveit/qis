@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value="/userGroup")
+@RequestMapping(value="/user/userGroup")
 public class UserGroupsController extends BaseController {
 
     @Autowired
@@ -76,7 +76,7 @@ public class UserGroupsController extends BaseController {
     public ModelAndView save(UserGroups userGroups,
                              RedirectAttributes attributes) {
         logger.info("新增产品开始");
-        ModelAndView mv = new ModelAndView("redirect:/userGroup/index"); //重定向
+        ModelAndView mv = new ModelAndView("redirect:/user/userGroup/index"); //重定向
         try {
             userGroupsService.saveOrUpdate(userGroups);
             attributes.addFlashAttribute("success", true);
@@ -110,7 +110,7 @@ public class UserGroupsController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(UserGroups userGroups, RedirectAttributes attributes) {
         logger.info("更新产品开始");
-        ModelAndView mv = new ModelAndView("redirect:/userGroup/index");
+        ModelAndView mv = new ModelAndView("redirect:/user/userGroup/index");
         try {
             userGroups.setIsNewRecord(false);
             userGroupsService.saveOrUpdate(userGroups);

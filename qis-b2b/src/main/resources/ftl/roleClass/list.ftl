@@ -33,7 +33,7 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green btn-parent" href="${rc.contextPath}/roleClass/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent" href="${rc.contextPath}/role/roleClass/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
@@ -254,7 +254,7 @@
                 ],
                 "iDisplayLength": 10,//页面显示数据数量
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/roleClass/list",
+                "sAjaxSource": "${rc.contextPath}/role/roleClass/list",
                 "aaSorting": [
                     [0, "desc"]
                 ],
@@ -290,7 +290,7 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/roleClass/update/' + row.id
+                        var a = '<a href="${rc.contextPath}/role/roleClass/update/' + row.id
                                 + '" class="btn btn-xs blue"  title="编辑" >' +
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
@@ -405,7 +405,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/roleClass/delete-' + id,
+                                url: '${rc.contextPath}/role/roleClass/delete-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -508,7 +508,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/roleClass/deleteAll',
+                                url:'${rc.contextPath}/role/roleClass/deleteAll',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",
