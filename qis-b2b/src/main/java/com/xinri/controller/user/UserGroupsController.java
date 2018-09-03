@@ -124,49 +124,69 @@ public class UserGroupsController extends BaseController {
         return mv;
     }
 
-    /**
-     * 逻辑删除
-     * @param id
-     * @return
-     */
-    @RequestMapping(value = {"delete-{id}"}, method = {RequestMethod.POST})
-    @ResponseBody
-    public JSONObject LogicDel(@PathVariable Long id){
-        JSONObject json = new JSONObject();
-        try{
-            //逻辑删除商品信息
-            UserGroups userGroups = new UserGroups();
-            userGroups.setId(id); //自己的是 编号
-            userGroups.setIsDeleted(1);//把id为XX的哪一个实体类数据的IsDeleted 改为1
-            userGroupsService.saveOrUpdate(userGroups);//跟新实体类
-            json.put("code","200");
-            json.put("msg","删除成功");
-        }catch(Exception e){
-            e.printStackTrace();
-            json.put("code","8001");
-            json.put("msg","操作失败，请联系管理员！");
-        }
-        return json;
-    }
+//    /**
+//     * 逻辑删除
+//     * @param id
+//     * @return
+//     */
+//    @RequestMapping(value = {"delete-{id}"}, method = {RequestMethod.POST})
+//    @ResponseBody
+//    public JSONObject LogicDel(@PathVariable Long id){
+//        JSONObject json = new JSONObject();
+//        try{
+//            //逻辑删除商品信息
+//            UserGroups userGroups = new UserGroups();
+//            userGroups.setId(id); //自己的是 编号
+//            userGroups.setIsDeleted(1);//把id为XX的哪一个实体类数据的IsDeleted 改为1
+//            userGroupsService.saveOrUpdate(userGroups);//跟新实体类
+//            json.put("code","200");
+//            json.put("msg","删除成功");
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            json.put("code","8001");
+//            json.put("msg","操作失败，请联系管理员！");
+//        }
+//        return json;
+//    }
+
+
+//    /**
+//     * 批量删除
+//     * @return 返回跳转链接
+//     */
+//    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
+//        Map<String, Boolean> map = new HashMap();
+//        try {
+//            userGroupsService.batchDelete(ids);//batchDelete逻辑删除
+//            map.put("stat", true);
+//        } catch (Exception e) {
+//            map.put("stat", false);
+//            logger.error("删除错误信息：{}", e);
+//        }
+//        return map;
+//    }
 
 
     /**
-     * 批量删除
-     * @return 返回跳转链接
+     * 判断用户组是否关联项
      */
-    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
-        Map<String, Boolean> map = new HashMap();
-        try {
-            userGroupsService.batchDelete(ids);//batchDelete逻辑删除
-            map.put("stat", true);
-        } catch (Exception e) {
-            map.put("stat", false);
-            logger.error("删除错误信息：{}", e);
-        }
-        return map;
+     @RequestMapping(value="check/{id}") @ResponseBody
+    public boolean check(@PathVariable("id") Long id){
+        boolean isDel=userGroupsService.CheckUserInRole(id);
+        return isDel;
     }
+
+    /**
+     * 删除角色组
+     * */
+    @RequestMapping(value="delete/{id}") @ResponseBody
+    public AjaxStatus delete(@PathVariable("id") Long id){
+        userGroupsService.DeleteKnRole(id);
+        return new AjaxStatus(true,"删除角色成功");
+    }
+
 
     /**
      * 用户组分配人员列表

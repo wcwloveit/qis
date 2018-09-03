@@ -388,7 +388,7 @@
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
                         //  逻辑删除
-                        var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
+                        var c = '<a href="javascript:void(0);" onclick="doDelete(\'' + row.id
                                 + '\')" class="btn btn-xs red"  title="删除" >' +
                                 '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
@@ -753,6 +753,129 @@
                 }
             });
         }
+
+        /**
+         * 逻辑删除
+         * @param id
+         */
+        <#--function deleteOne(id) {-->
+            <#--bootbox.dialog({-->
+                <#--message: "您是否确认删除?",-->
+                <#--buttons: {-->
+                    <#--main: {-->
+                        <#--label: "确定",-->
+                        <#--className: "green",-->
+                        <#--callback: function () {-->
+                            <#--Metronic.startPageLoading();-->
+                            <#--$.ajax({-->
+                                <#--url: '${rc.contextPath}/userGroup/delete-' + id,-->
+                                <#--type: 'POST',-->
+                                <#--traditional: true,-->
+                                <#--success: function (data) {-->
+                                    <#--console.log(data);-->
+                                    <#--Metronic.stopPageLoading();-->
+                                    <#--if(data.code == '200'){-->
+                                        <#--$('#tip').show();-->
+                                        <#--$('#tip').html('<div class="alert alert-success"><button data-dismiss="alert" class="close">×</button>'+data.msg+'</div>');-->
+                                        <#--window.setTimeout(function(){-->
+                                            <#--$('#tip').hide();-->
+                                        <#--}, 3000);-->
+                                    <#--}else{-->
+                                        <#--$('#tip').show();-->
+                                        <#--$('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>'+data.msg+'</div>');-->
+                                        <#--window.setTimeout(function(){-->
+                                            <#--$('#tip').hide();-->
+                                        <#--}, 3000);-->
+                                    <#--}-->
+                                    <#--grid.getDataTable().fnDraw();-->
+                                <#--},-->
+                                <#--error:function(error){-->
+                                    <#--$('#tip').show();-->
+                                    <#--$('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>删除失败</div>');-->
+                                    <#--window.setTimeout(function(){-->
+                                        <#--$('#tip').hide();-->
+                                    <#--}, 3000);-->
+                                <#--}-->
+                            <#--});-->
+                        <#--}-->
+                    <#--},-->
+                    <#--cancel: {-->
+                        <#--label: "取消",-->
+                        <#--className: "gray",-->
+                        <#--callback: function () {-->
+                            <#--$(this).hide();-->
+                        <#--}-->
+                    <#--}-->
+                <#--}-->
+            <#--});-->
+        <#--}-->
+
+        /**
+         * 判断是否有关联并删除
+         * @param id
+         */
+        function doDelete(id){
+            $.ajax({
+                url:'${rc.contextPath}/userGroup/check/'+id,
+                success:function(stat){
+                    if(stat){
+                        bootbox.dialog({
+                            message: "确认要删除该角色吗？",
+                            buttons: {
+                                success: {
+                                    label: "确定",
+                                    className: "green",
+                                    callback: function() {
+                                        Metronic.startPageLoading();
+                                        $.ajax({
+                                            url:'${rc.contextPath}/userGroup/delete/'+id,
+                                            type:'POST',
+                                            dataType:"json",
+                                            traditional:true,
+                                            success:function(data){
+                                                Metronic.stopPageLoading();
+                                                if(data.success){
+                                                    grid.getDataTable().fnDraw();
+                                                }
+                                            }
+                                        });
+                                    }
+                                },
+                                main: {
+                                    label: "取消",
+                                    className: "gray",
+                                    callback: function() {
+                                        $(this).hide();
+                                    }
+                                }
+                            }
+                        });
+                    }else{
+                        bootbox.dialog({
+                            message: "确认要删除该角色吗？",
+                            buttons: {
+                                success: {
+                                    label: "确定",
+                                    className: "green",
+                                    callback: function() {
+                                        alertBox("请先删除该用户组关联的人员、部门信息");
+                                    }
+                                },
+                                main: {
+                                    label: "取消",
+                                    className: "gray",
+                                    callback: function() {
+                                        $(this).hide();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+
 
     </script>
 </content>

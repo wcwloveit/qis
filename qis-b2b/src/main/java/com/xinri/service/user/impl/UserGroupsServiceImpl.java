@@ -41,6 +41,9 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
     private UsersMapper userDao;
 
     @Autowired
+    private  UserGroupsMapper  userGroupsMapper;
+
+    @Autowired
     private UserUserGroupsMapper userUserGroupsMapper;
 
     //用户与用户组
@@ -407,32 +410,52 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
         AjaxStatus as=new AjaxStatus(true);
         try {
             //根据用户组id获取部门
-//            UserUserGroups  userUserGroups = new UserUserGroups();
-//            userUserGroups.setUserId(userId); //添加用户id
-//            userUserGroups.setUserGroupId(userGroupId);//添加用户组id
-
             UserGroupDepartments userGroupDepartments= new UserGroupDepartments();
             userGroupDepartments.setUserGroupId(roleId);
             userGroupDepartments.setDepartmentId(empId);
             List<UserGroupDepartments> UserGroupDepartmentsPo= userGroupDepartmentsService.findAllList(userGroupDepartments);
             if(UserGroupDepartmentsPo.size()>0){
                 for(UserGroupDepartments userGroupDepartment:UserGroupDepartmentsPo){
-                //    userUserGroupsService.delete(userUserGroups);
                     userGroupDepartmentsService.delete(userGroupDepartment);
                 }
             }
-
-            //    List<UserUserGroups> userUserGroupsPo =userUserGroupsService.findList(userUserGroups);
-//            if(userUserGroupsPo.size()>0){
-//                for(UserUserGroups userUserGroup:userUserGroupsPo){
-//                    userUserGroupsService.delete(userUserGroups);
-//                }
-//            }
         } catch (Exception e ){
             as = new AjaxStatus(false);
             logger.error("退出人员报错：", e);
         }
         return as;
+    }
+
+    /**
+     *
+     * 判断用户组是否关联项
+     */
+    @Override
+    public boolean CheckUserInRole(Long id) {
+
+        //根据用户组id获取部门
+        UserGroupDepartments userGroupDepartments= new UserGroupDepartments();
+        userGroupDepartments.setUserGroupId(id);
+        List<UserGroupDepartments> UserGroupDepartmentsPo= userGroupDepartmentsService.findAllList(userGroupDepartments);
+
+        //根据用户id获取用户数据
+        UserUserGroups  userUserGroups = new UserUserGroups();
+        userUserGroups.setUserGroupId(id);
+        List<UserUserGroups> userUserGroupsPo =userUserGroupsService.findList(userUserGroups);
+
+        return UserGroupDepartmentsPo.size()==0 && userUserGroupsPo.size()==0?true:false;
+
+    }
+
+    /**
+     * 删除用户
+     * */
+    @Override
+    public void DeleteKnRole(Long id) {
+         List<UserGroups> a =userGroupsMapper.findAllList();
+        userGroupsMapper.delete(id);
+        if(a.size()>0){
+        }
     }
 
 

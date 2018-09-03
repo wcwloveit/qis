@@ -38,5 +38,9 @@ public interface IUserGroupsService extends IBaseService<UserGroups>{
     public DataTable QueryUserByRidList2(DataTable<Departments> dt, Map<String, Object> searchParams, Long roleId);
 
     public AjaxStatus LeaveRole2(Long roleId, Long empId);
+
+    public boolean CheckUserInRole(Long id);
+
+    public void DeleteKnRole(Long id);
 }
 
