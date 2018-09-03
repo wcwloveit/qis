@@ -1,7 +1,17 @@
     <%@ page import="com.xinri.po.moduleInfo.ModuleInfoes" %>
         <%@ page import="java.util.Collections" %>
         <%@ page import="com.xinri.service.moduleInfo.impl.ModuleInfoesServiceImpl" %>
-        <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+            <%@ page import="com.qis.ShiroUser" %>
+            <%@ page import="org.apache.shiro.SecurityUtils" %>
+            <%@ page import="com.xinri.controller.module.ModuleController" %>
+            <%@ page import="java.util.ArrayList" %>
+            <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+            <%@ page import="org.springframework.context.ApplicationContext" %>
+            <%@ page import="org.springframework.web.servlet.FrameworkServlet" %>
+            <%@ page import="com.xinri.controller.role.RoleController" %>
+            <%@ page import="com.xinri.vo.redis.Redis" %>
+            <%@ page import="java.util.List" %>
+            <%@ page contentType="text/html;charset=UTF-8" language="java" %>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
         <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
@@ -142,10 +152,17 @@
         <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <%
                 String url=request.getServletPath();
-                org.springframework.context.ApplicationContext ctx = org.springframework.web.context.ContextLoader.getCurrentWebApplicationContext();
+                org.springframework.context.ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext(),
+"org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcherServlet");
+//                org.springframework.context.ApplicationContext ctx = org.springframework.web.context.ContextLoader.getCurrentWebApplicationContext();
+
                 ModuleInfoes moduleInfoes=new ModuleInfoes();
                 moduleInfoes.setIsDeleted(0);
-                java.util.List<ModuleInfoes> resources=((ModuleInfoesServiceImpl)ctx.getBean("moduleInfoesService")).findList(moduleInfoes);
+                ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();// 取得当前用户信息
+                RoleController roleController=(RoleController)ctx.getBean("roleController");
+                Redis info=roleController.getInfo(user);
+               java.util.List<ModuleInfoes> resources=info.getModuleInfoesList();
+//                    java.util.List<ModuleInfoes> resources=((ModuleController)ctx.getBean("ModuleController")).findListBySysUserId(moduleInfoes,user.id);
 
                 for (ModuleInfoes resource : resources) {
                     if (resource.getIsMenu()==1){

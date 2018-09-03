@@ -3,6 +3,7 @@ package com.xinri.controller.role;
 import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.qis.ShiroUser;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.qis.util.Utils;
@@ -12,12 +13,15 @@ import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfos;
 import com.xinri.po.role.RoleClasses;
 import com.xinri.po.role.Roles;
+import com.xinri.po.user.SysUser;
 import com.xinri.po.user.UserGroups;
 import com.xinri.service.moduleInfo.*;
 import com.xinri.service.role.IRoleClassesService;
 import com.xinri.service.role.IRoleUserGroupsService;
 import com.xinri.service.role.IRolesService;
+import com.xinri.service.user.ISysUserService;
 import com.xinri.util.AjaxStatus;
+import com.xinri.vo.redis.Redis;
 import com.xinri.vo.role.RolesVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.ServletRequest;
 import java.util.*;
 
-@Controller
+@Controller("roleController")
 @RequestMapping(value = "/role")
 public class RoleController extends BaseController {
 
@@ -63,6 +67,9 @@ public class RoleController extends BaseController {
 
     @Autowired
     private IRoleClassesService roleClassesService;
+
+    @Autowired
+    private ISysUserService sysUserService;
 
 
     /*
@@ -363,6 +370,29 @@ public class RoleController extends BaseController {
     @ResponseBody
     public AjaxStatus leave(@RequestParam("roleId") Long roleId, @RequestParam("groupId") Long groupId) {
         return roleUserGroupsService.LeaveRole(roleId, groupId);
+    }
+
+    public Redis getInfo(ShiroUser user){
+        Redis info=new Redis();
+        if (user.type==1){
+            SysUser sysUser=sysUserService.get(user.id);
+            Roles role=rolesService.get(Long.valueOf(sysUser.getRoleid()));
+            RoleModuleInfos before=new RoleModuleInfos();
+            before.setRoleId(role.getId());
+            List<RoleModuleInfos> roleModuleInfos= roleModuleInfosService.findList(before);
+            List<ModuleInfoes> moduleInfoes=new ArrayList<>();
+            for (RoleModuleInfos roleModuleInfo : roleModuleInfos) {
+                ModuleInfoes moduleInfo=moduleInfoesService.get(roleModuleInfo.getModuleInfoId());
+                moduleInfoes.add(moduleInfo);
+            }
+            List<Roles> roles=new ArrayList<>();
+            roles.add(role);
+            info.setModuleInfoesList(moduleInfoes);
+            info.setRoles(roles);
+        }else if(user.type==2){
+            info.setModuleInfoesList(moduleInfoesService.findAllList());
+        }
+        return info;
     }
 
 }

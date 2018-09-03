@@ -100,4 +100,9 @@ public class ModuleInfoesServiceImpl extends CrudService<ModuleInfoesMapper, Mod
             return null;
         }
     }
+
+    @Override
+    public List<ModuleInfoes> findListBySysUserId(ModuleInfoes moduleInfoes, Long id) {
+        return dao.findList(moduleInfoes);
+    }
 }

@@ -19,5 +19,7 @@ public interface IModuleInfoesService extends IBaseService<ModuleInfoes> {
     AjaxStatus deleteModule(Long id);
 
     DataTable<ModuleInfoes> getModulesForRole(DataTable<ModuleInfoes> dt, List<Long> ids);
+
+    List<ModuleInfoes> findListBySysUserId(ModuleInfoes moduleInfoes,Long id);
 }
 

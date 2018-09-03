@@ -28,7 +28,7 @@ import java.util.*;
  * 创建时间:20180813
  */
 
-@Controller
+@Controller("moduleController")
 @RequestMapping(value = "module")
 public class ModuleController extends BaseController {
 
@@ -290,6 +290,10 @@ public class ModuleController extends BaseController {
         info.put("colIds", colIds);
         logger.info("getColumnDatas结束");
         return info;
+    }
+
+    public List<ModuleInfoes> findList(ModuleInfoes moduleInfo,Long id){
+        return moduleInfoesService.findList(moduleInfo);
     }
 
     //初始化模块权限关联表
