@@ -4,9 +4,13 @@ package com.qis.shiro;
 
 import com.kingnode.diva.utils.Encodes;
 import com.qis.ShiroUser;
+import com.xinri.po.permissions.Permissions;
 import com.xinri.po.user.SysUser;
 import com.xinri.service.ResourceService;
 import com.xinri.service.user.ISysUserService;
+import com.xinri.vo.redis.Module;
+import com.xinri.vo.redis.Redis;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,6 +18,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +120,16 @@ public class ShiroDbRealm extends AuthorizingRealm {
         // 单独定一个集合对象
         List<String> permissions = new ArrayList<String>();
         permissions.add("authc");
+        Redis info=resourceService.getInfo(shiroUser);
+        List<Module> resources=info.getModuleInfoesList();
+        for (Module resource : resources) {
+            if (CollectionUtils.isNotEmpty(resource.getPermissionList())){
+                List<Permissions> permissionsList=resource.getPermissionList();
+                for (Permissions permissions1 : permissionsList) {
+                    permissions.add(permissions1.getCode());
+                }
+            }
+        }
         // 查到权限数据，返回授权信息(要包括 上边的permissions)
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         // 将上边查询到授权信息填充到simpleAuthorizationInfo对象中

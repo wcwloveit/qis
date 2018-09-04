@@ -86,4 +86,9 @@ public class PermissionsServiceImpl extends CrudService<PermissionsMapper, Permi
         return statu;
     }
 
+    @Override
+    public List<Permissions> getPermissionsByModuleIdandRoleId(List<Long> list, Long moduleId) {
+        return dao.getPermissionsByModuleIdandRoleId(list,moduleId);
+    }
+
 }

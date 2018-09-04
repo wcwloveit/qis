@@ -111,4 +111,9 @@ public class ModuleInfoesServiceImpl extends CrudService<ModuleInfoesMapper, Mod
     public Redis getModulesByUserId(Long id) {
         return dao.getModulesByUserId(id);
     }
+
+    @Override
+    public Redis getModulesBySysUserId(Long id) {
+        return dao.getModulesBySysUserId(id);
+    }
 }

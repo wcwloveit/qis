@@ -11,6 +11,8 @@
             <%@ page import="com.xinri.controller.role.RoleController" %>
             <%@ page import="com.xinri.vo.redis.Redis" %>
             <%@ page import="java.util.List" %>
+            <%@ page import="com.xinri.service.ResourceService" %>
+            <%@ page import="com.xinri.vo.redis.Module" %>
             <%@ page contentType="text/html;charset=UTF-8" language="java" %>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
@@ -152,19 +154,19 @@
         <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <%
                 String url=request.getServletPath();
-                org.springframework.context.ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext(),
-"org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcherServlet");
-//                org.springframework.context.ApplicationContext ctx = org.springframework.web.context.ContextLoader.getCurrentWebApplicationContext();
+//                org.springframework.context.ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext(),
+//"org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcherServlet");
+                org.springframework.context.ApplicationContext ctx = org.springframework.web.context.ContextLoader.getCurrentWebApplicationContext();
 
                 ModuleInfoes moduleInfoes=new ModuleInfoes();
                 moduleInfoes.setIsDeleted(0);
                 ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();// 取得当前用户信息
-                RoleController roleController=(RoleController)ctx.getBean("roleController");
-                Redis info=roleController.getInfo(user);
-               java.util.List<ModuleInfoes> resources=info.getModuleInfoesList();
+                ResourceService resourceService=(ResourceService)ctx.getBean("resourceService");
+                Redis info=resourceService.getInfo(user);
+               java.util.List<Module> resources=info.getModuleInfoesList();
 //                    java.util.List<ModuleInfoes> resources=((ModuleController)ctx.getBean("ModuleController")).findListBySysUserId(moduleInfoes,user.id);
 
-                for (ModuleInfoes resource : resources) {
+                for (Module resource : resources) {
                     if (resource.getIsMenu()==1){
                         %>
                         <li class="heading">

@@ -33,6 +33,36 @@
 	      	<result column="ICON" property="icon" jdbcType="VARCHAR"/>
 	</resultMap>
 
+	<resultMap id="moduleResultMap" type="com.xinri.vo.redis.Module">
+		<id column="ID" property="id" jdbcType="BIGINT"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="CODE" property="code" jdbcType="VARCHAR"/>
+		<result column="LINK_URL" property="linkUrl" jdbcType="VARCHAR"/>
+		<result column="IS_MENU" property="isMenu" jdbcType="INTEGER"/>
+		<result column="IS_OPEN" property="isOpen" jdbcType="INTEGER"/>
+		<result column="DEPTH" property="depth" jdbcType="INTEGER"/>
+		<result column="PARENT_MODULE_ID" property="parentModuleId" jdbcType="BIGINT"/>
+		<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
+		<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
+		<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+		<result column="MENU_TYPE" property="menuType" jdbcType="INTEGER"/>
+		<result column="SORT" property="sort" jdbcType="INTEGER"/>
+		<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
+		<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
+		<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+		<result column="MODIFIED_ON" property="modifiedOn" jdbcType="TIMESTAMP"/>
+		<result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
+		<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
+		<result column="ICON" property="icon" jdbcType="VARCHAR"/>
+	</resultMap>
+
     <!-- 列定义 -->
 	<sql id="moduleInfoesColumns">
 	  t.ID,
@@ -551,35 +581,57 @@
 		<result column="USER_NAME" property="loginName" jdbcType="VARCHAR"/>
 		<result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
 		<result column="SALT" property="salt" jdbcType="VARCHAR"/>
-		<collection property="moduleInfoesList" ofType="com.xinri.po.moduleInfo.ModuleInfoes" column="id" javaType="java.util.ArrayList" resultMap="moduleInfoesResultMap">
+		<collection property="moduleInfoesList" ofType="com.xinri.vo.redis.Module" column="id" javaType="java.util.ArrayList" resultMap="moduleResultMap">
 		</collection>
         <collection property="roles" ofType="com.xinri.po.role.Roles" column="id" javaType="java.util.ArrayList" resultMap="rolesResultMap">
         </collection>
 	</resultMap>
 
     <sql id="rolesColumns">
-        g.ID ROLE_ID,
-		g.NAME ROLE_NAME,
-		g.ROLE_CLASS_ID ROLE_ROLE_CLASS_ID,
-		g.IS_DELETED ROLE_IS_DELETED,
-		g.DESCR ROLE_DESCR,
-		g.GUID_ID ROLE_GUID_ID,
-		g.IS_EFFECTIVE ROLE_IS_EFFECTIVE,
-		g.EFFECTIVE_DATE_START ROLE_EFFECTIVE_DATE_START,
-		g.EFFECTIVE_DATE_END ROLE_EFFECTIVE_DATE_END,
-		g.CREATED_ON ROLE_CREATED_ON,
-		g.CREATED_BY ROLE_CREATED_BY,
-		g.MODIFIED_ON ROLE_MODIFIED_ON,
-		g.MODIFIED_BY ROLE_MODIFIED_BY,
-		g.DESC_FLEX_FIELD1 ROLE_DESC_FLEX_FIELD1,
-		g.DESC_FLEX_FIELD2 ROLE_DESC_FLEX_FIELD2,
-		g.DESC_FLEX_FIELD3 ROLE_DESC_FLEX_FIELD3,
-		g.DESC_FLEX_FIELD4 ROLE_DESC_FLEX_FIELD4,
-		g.DESC_FLEX_FIELD5 ROLE_DESC_FLEX_FIELD5,
-		g.DESC_FLEX_FIELD6 ROLE_DESC_FLEX_FIELD6
+        r.ID ROLE_ID,
+		r.NAME ROLE_NAME,
+		r.ROLE_CLASS_ID ROLE_ROLE_CLASS_ID,
+		r.IS_DELETED ROLE_IS_DELETED,
+		r.DESCR ROLE_DESCR,
+		r.GUID_ID ROLE_GUID_ID,
+		r.IS_EFFECTIVE ROLE_IS_EFFECTIVE,
+		r.EFFECTIVE_DATE_START ROLE_EFFECTIVE_DATE_START,
+		r.EFFECTIVE_DATE_END ROLE_EFFECTIVE_DATE_END,
+		r.CREATED_ON ROLE_CREATED_ON,
+		r.CREATED_BY ROLE_CREATED_BY,
+		r.MODIFIED_ON ROLE_MODIFIED_ON,
+		r.MODIFIED_BY ROLE_MODIFIED_BY,
+		r.DESC_FLEX_FIELD1 ROLE_DESC_FLEX_FIELD1,
+		r.DESC_FLEX_FIELD2 ROLE_DESC_FLEX_FIELD2,
+		r.DESC_FLEX_FIELD3 ROLE_DESC_FLEX_FIELD3,
+		r.DESC_FLEX_FIELD4 ROLE_DESC_FLEX_FIELD4,
+		r.DESC_FLEX_FIELD5 ROLE_DESC_FLEX_FIELD5,
+		r.DESC_FLEX_FIELD6 ROLE_DESC_FLEX_FIELD6
     </sql>
 
-    <resultMap id="rolesResultMap" type="com.xinri.po.role.Roles">
+	<sql id="permissionsColumns">
+        r.ID PER_ID,
+	  	r.NAME PER_NAME,
+	  	r.CODE PER_CODE,
+	  	r.IS_DELETED PER_IS_DELETED,
+	  	r.DESCR PER_DESCR,
+	  	r.GUID_ID PER_GUID_ID,
+	  	r.IS_EFFECTIVE PER_IS_EFFECTIVE,
+	  	r.EFFECTIVE_DATE_START PER_EFFECTIVE_DATE_START,
+	  	r.EFFECTIVE_DATE_END PER_EFFECTIVE_DATE_END,
+	  	r.CREATED_ON PER_CREATED_ON,
+	  	r.CREATED_BY PER_CREATED_BY,
+	  	r.MODIFIED_ON PER_MODIFIED_ON,
+	  	r.MODIFIED_BY PER_MODIFIED_BY,
+	  	r.DESC_FLEX_FIELD1 PER_DESC_FLEX_FIELD1,
+	  	r.DESC_FLEX_FIELD2 PER_DESC_FLEX_FIELD2,
+	  	r.DESC_FLEX_FIELD3 PER_DESC_FLEX_FIELD3,
+	  	r.DESC_FLEX_FIELD4 PER_DESC_FLEX_FIELD4,
+	  	r.DESC_FLEX_FIELD5 PER_DESC_FLEX_FIELD5,
+	  	r.DESC_FLEX_FIELD6 PER_DESC_FLEX_FIELD6
+    </sql>
+
+	<resultMap id="rolesResultMap" type="com.xinri.po.role.Roles">
         <id column="ROLE_ID" property="id" jdbcType="BIGINT"/>
         <result column="ROLE_NAME" property="name" jdbcType="VARCHAR"/>
         <result column="ROLE_ROLE_CLASS_ID" property="roleClassId" jdbcType="BIGINT"/>
@@ -601,22 +653,66 @@
         <result column="ROLE_DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
     </resultMap>
 
+	<resultMap id="permissionsResultMap" type="com.xinri.po.permissions.Permissions">
+		<id column="PER_ID" property="id" jdbcType="BIGINT"/>
+		<result column="PER_NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="PER_CODE" property="code" jdbcType="VARCHAR"/>
+		<result column="PER_IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
+		<result column="PER_DESCR" property="descr" jdbcType="VARCHAR"/>
+		<result column="PER_GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+		<result column="PER_IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
+		<result column="PER_EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
+		<result column="PER_EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
+		<result column="PER_CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
+		<result column="PER_CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+		<result column="PER_MODIFIED_ON" property="modifiedOn" jdbcType="TIMESTAMP"/>
+		<result column="PER_MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
+		<result column="PER_DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
+		<result column="PER_DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
+		<result column="PER_DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
+		<result column="PER_DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
+		<result column="PER_DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
+		<result column="PER_DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
+	</resultMap>
+
 	<select id="getModulesByUserId" parameterType="java.lang.Long" resultMap="redisResultMap">
 		SELECT
         distinct
         <include refid="moduleInfoesColumns" />,
         <include refid="rolesColumns" />,
-		a.USER_NAME,a.PASSWORD,a.SALT
-		from users a
-		left join departments b on a.department_id=b.id
-		left join user_group_departments c on b.id = c.department_id
-		left join user_user_groups d on a.id = d.user_id
-		left join user_groups e on e.id=d.user_group_id or e.id=c.user_group_id
-		left join role_user_groups f on e.id=f.user_group_id
-		left join roles g on f.role_id=g.id
-		left join role_module_infos h on g.id=h.role_id
-		left join module_infoes t on h.module_info_id=t.id
-		where a.id=#{id}
+		u.USER_NAME,u.PASSWORD,u.SALT
+		from users u
+		inner join user_user_groups uug on u.id = uug.user_id
+		inner join departments d on u.department_id=d.id
+		left join user_group_departments ugd on d.id = ugd.department_id
+		inner join user_groups ug on ug.id=uug.user_group_id or ug.id=ugd.user_group_id
+		inner join role_user_groups rug on ug.id=rug.user_group_id
+		inner join roles r on rug.role_id=r.id
+		inner join role_module_infos rmi on r.id=rmi.role_id
+		inner join module_infoes t on rmi.module_info_id=t.id
+		where u.id=#{id}
+		and u.is_deleted=0	and uug.is_deleted=0
+		and d.is_deleted=0	and ugd.is_deleted=0
+		and ug.is_deleted=0	and rug.is_deleted=0
+		and r.is_deleted=0	and rmi.is_deleted=0
+		and t.is_deleted=0
+
+	</select>
+
+	<select id="getModulesBySysUserId" parameterType="java.lang.Long" resultMap="redisResultMap">
+		SELECT
+		distinct
+		<include refid="moduleInfoesColumns" />,
+		<include refid="rolesColumns" />,
+		u.NAME,u.PASSWORD,u.SALT
+		from sys_user u
+		inner join roles r on u.roleid=r.id
+		inner join role_module_infos rmi on r.id=rmi.role_id
+		inner join module_infoes t on rmi.module_info_id=t.id
+		where u.id = #{id}
+		and u.is_deleted=0
+		and r.is_deleted=0
+		and rmi.is_deleted=0
 		and t.is_deleted=0
 	</select>
 

@@ -385,30 +385,6 @@ public class RoleController extends BaseController {
         return roleUserGroupsService.LeaveRole(roleId, groupId);
     }
 
-    public Redis getInfo(ShiroUser user) {
-        Redis info = new Redis();
-        if (user.type == 2) {
-            SysUser sysUser = sysUserService.get(user.id);
-            Roles role = rolesService.get(Long.valueOf(sysUser.getRoleid()));
-            RoleModuleInfos before = new RoleModuleInfos();
-            before.setRoleId(role.getId());
-            List<RoleModuleInfos> roleModuleInfos = roleModuleInfosService.findList(before);
-            List<ModuleInfoes> moduleInfoes = new ArrayList<>();
-            for (RoleModuleInfos roleModuleInfo : roleModuleInfos) {
-                ModuleInfoes moduleInfo = moduleInfoesService.get(roleModuleInfo.getModuleInfoId());
-                moduleInfoes.add(moduleInfo);
-            }
-            List<Roles> roles = new ArrayList<>();
-            roles.add(role);
-            info.setModuleInfoesList(moduleInfoes);
-            info.setRoles(roles);
-        } else if (user.type == 1) {
-//            info.setModuleInfoesList(moduleInfoesService.findAllList());
-            Long id=58689L;
-            Redis redis= moduleInfoesService.getModulesByUserId(id);
-            return redis;
-        }
-        return info;
-    }
+
 
 }

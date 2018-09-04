@@ -4,18 +4,32 @@ package com.xinri.service;
 //import com.xinri.po.user.SysUser;
 import com.kingnode.diva.security.utils.Digests;
 import com.kingnode.diva.utils.Encodes;
+import com.qis.ShiroUser;
+import com.xinri.po.moduleInfo.ModuleInfoes;
+import com.xinri.po.moduleInfo.RoleModuleInfos;
+import com.xinri.po.permissions.Permissions;
+import com.xinri.po.role.Roles;
+import com.xinri.po.user.SysUser;
+import com.xinri.service.moduleInfo.IModuleInfoesService;
+import com.xinri.service.permissions.IPermissionsService;
+import com.xinri.vo.redis.Module;
+import com.xinri.vo.redis.Redis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 夏善勇
  */
+@Service("resourceService")
 @Component @Transactional(readOnly=true) public class ResourceService {
     public static final String HASH_ALGORITHM="SHA-1";
     public static final int HASH_INTERATIONS=1024;
@@ -30,6 +44,12 @@ import javax.servlet.http.HttpServletRequest;
 
 
     private CacheManager cacheManager;
+
+    @Autowired
+    private IModuleInfoesService moduleInfoesService;
+
+    @Autowired
+    private IPermissionsService permissionsService;
 
 
     /**
@@ -95,6 +115,30 @@ import javax.servlet.http.HttpServletRequest;
         String b =Encodes.encodeHex(hashPassword);
         System.out.println(a);
         System.out.println(b);
+    }
+
+    public Redis getInfo(ShiroUser user) {
+        Redis info = new Redis();
+        if (user.type == 1) {
+            info= moduleInfoesService.getModulesBySysUserId(user.id);
+        } else if (user.type == 2) {
+//            user.id=58689L;
+            info = moduleInfoesService.getModulesByUserId(user.id);
+        }
+        List<Roles> roles=info.getRoles();
+        List<Long> roleIds=new ArrayList<>();
+        for (Roles role : roles) {
+            roleIds.add(role.getId());
+        }
+        List<Module> resources=info.getModuleInfoesList();
+        for (Module resource : resources) {
+            List<Permissions> permissions=permissionsService.getPermissionsByModuleIdandRoleId(roleIds,resource.getId());
+            for (Permissions permission : permissions) {
+                permission.setCode(resource.getCode()+"-"+permission.getCode());
+            }
+            resource.setPermissionList(permissions);
+        }
+        return info;
     }
 
 }

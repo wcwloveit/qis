@@ -1,3 +1,6 @@
+<@shiro.hasPermission name="aaa">
+
+</@shiro.hasPermission>
 <html>
 <head>
     <title>活动管理</title>
@@ -38,20 +41,28 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <a class="btn green btn-parent" href="${rc.contextPath}/dictionary/create"> <#--跳转新增的URL-->
-                                <i class="fa fa-plus"></i>
-                                <span class="hidden-480">新增</span>
-                            </a>
+                            <@shiro.hasPermission name="dictionary-dictionary-create">
+                                <a class="btn green btn-parent" href="${rc.contextPath}/dictionary/create"> <#--跳转新增的URL-->
+                                    <i class="fa fa-plus"></i>
+                                    <span class="hidden-480">新增</span>
+                                </a>
+                            </@shiro.hasPermission>
 
-                            <a href="javascript:void(0)" class="btn red">
-                                <i class="fa fa-trash-o"></i>
-                                <span class="hidden-480"  onclick="deleteList();">批量删除</span>
-                            </a>
+                            <@shiro.hasPermission name="dictionary-dictionary-deleteAll">
+                                <a href="javascript:void(0)" class="btn red">
+                                    <i class="fa fa-trash-o"></i>
+                                    <span class="hidden-480"  onclick="deleteList();">批量删除</span>
+                                </a>
+                            </@shiro.hasPermission>
 
-                            <a class="btn green" href="javascript:exportData();">
-                                <i class="fa fa-download"></i>
-                                <span class="hidden-480">导出</span>
-                            </a>
+
+                            <@shiro.hasPermission name="dictionary-dictionary-export">
+                                <a class="btn green" href="javascript:exportData();">
+                                    <i class="fa fa-download"></i>
+                                    <span class="hidden-480">导出</span>
+                                </a>
+                            </@shiro.hasPermission>
+
                         </div>
                     </div>
                 </div>
@@ -148,6 +159,8 @@
          * */
         var grid = new Datatable();
         var $attendees_data_table = $("#attendees_data_table");
+
+        <@shiro.hasPermission name="dictionary-dictionary-list">
         grid.init({
             src: $attendees_data_table,
             onError: function (grid) {
@@ -205,8 +218,10 @@
                             }
                         }},
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                            var a = '<a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                        var a = <@shiro.hasPermission name="dictionary-dictionary-edit">
+                                 '<a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
+                            </@shiro.hasPermission>
                             var b = '<a href="${rc.contextPath}/dictionary/baseData/index/' + row.id + '" class="btn btn-xs green"  title="编辑" >' +
                                     '<i class="fa fa-balance-scale"></i>树</a>';
                             var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
@@ -221,6 +236,8 @@
                 ]
             }
         });
+
+        </@shiro.hasPermission>
 
 
 

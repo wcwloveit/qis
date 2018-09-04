@@ -429,6 +429,20 @@
 		DELETE FROM PERMISSIONS t 
 		<where>${whereSqlParam}</where>
 	</update>
+
+	<select id="getPermissionsByModuleIdandRoleId" parameterType="java.util.List" resultMap="permissionsResultMap">
+		  select
+		  <include refid="permissionsColumns"></include>
+		  from role_module_info_permission_heads rmip
+		  left join module_info_permissions mip on rmip.module_info_permission_id=mip.id
+		  left  join permissions t on mip.permission_id=t.id
+		  WHERE rmip.role_id in
+			<foreach item="item" collection="list" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		  and mip.module_info_id=#{moduleId}
+	  	  and rmip.is_deleted=0 and mip.is_effective=1 and t.is_deleted=0
+	</select>
 	
 
 </mapper>

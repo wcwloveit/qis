@@ -25,6 +25,8 @@ public interface IModuleInfoesService extends IBaseService<ModuleInfoes> {
 
     Redis getModulesByUserId(Long id);
 
+    Redis getModulesBySysUserId(Long id);
+
 
 }
 

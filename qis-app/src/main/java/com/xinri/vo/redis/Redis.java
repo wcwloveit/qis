@@ -15,7 +15,7 @@ public class Redis {
 
     private String salt;
 
-    List<ModuleInfoes> moduleInfoesList;
+    List<Module> moduleInfoesList;
 
     List<Roles> roles;
 
@@ -35,14 +35,6 @@ public class Redis {
         this.password = password;
     }
 
-    public List<ModuleInfoes> getModuleInfoesList() {
-        return moduleInfoesList;
-    }
-
-    public void setModuleInfoesList(List<ModuleInfoes> moduleInfoesList) {
-        this.moduleInfoesList = moduleInfoesList;
-    }
-
     public List<Roles> getRoles() {
         return roles;
     }
@@ -57,5 +49,13 @@ public class Redis {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public List<Module> getModuleInfoesList() {
+        return moduleInfoesList;
+    }
+
+    public void setModuleInfoesList(List<Module> moduleInfoesList) {
+        this.moduleInfoesList = moduleInfoesList;
     }
 }

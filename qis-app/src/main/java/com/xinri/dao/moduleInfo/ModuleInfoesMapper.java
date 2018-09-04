@@ -18,5 +18,7 @@ public interface ModuleInfoesMapper extends CrudDao<ModuleInfoes> {
 
     Redis getModulesByUserId(@Param("id") Long id);
 
+    Redis getModulesBySysUserId(@Param("id") Long id);
+
 }
 
