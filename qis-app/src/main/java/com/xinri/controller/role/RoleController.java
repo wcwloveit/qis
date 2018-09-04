@@ -387,7 +387,7 @@ public class RoleController extends BaseController {
 
     public Redis getInfo(ShiroUser user) {
         Redis info = new Redis();
-        if (user.type == 1) {
+        if (user.type == 2) {
             SysUser sysUser = sysUserService.get(user.id);
             Roles role = rolesService.get(Long.valueOf(sysUser.getRoleid()));
             RoleModuleInfos before = new RoleModuleInfos();
@@ -402,7 +402,7 @@ public class RoleController extends BaseController {
             roles.add(role);
             info.setModuleInfoesList(moduleInfoes);
             info.setRoles(roles);
-        } else if (user.type == 2) {
+        } else if (user.type == 1) {
 //            info.setModuleInfoesList(moduleInfoesService.findAllList());
             Long id=58689L;
             Redis redis= moduleInfoesService.getModulesByUserId(id);
