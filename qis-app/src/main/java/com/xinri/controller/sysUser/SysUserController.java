@@ -1,4 +1,4 @@
-package com.xinri.controller.SysUser;
+package com.xinri.controller.sysUser;
 
 import com.app.api.DataTable;
 
@@ -127,7 +127,6 @@ public class SysUserController extends BaseController {
         byte[] hashPassword = Digests.sha1(sysUser.getPassword().getBytes(), Encodes.decodeHex(sysUser.getSalt()), HASH_INTERATIONS);
         sysUser.setPassword(Encodes.encodeHex(hashPassword));
         try {
-            sysUser.setIsDeleted(0);
             sysUserService.saveOrUpdate(sysUser);
             attributes.addFlashAttribute("success", true);
             attributes.addFlashAttribute("message", "添加系统用户成功");
@@ -180,7 +179,7 @@ public class SysUserController extends BaseController {
     /**
      * 更新
      *
-     * @param zcActivity
+     * @param sysUser
      * @param attributes
      * @return
      */
@@ -190,15 +189,20 @@ public class SysUserController extends BaseController {
         ModelAndView mv = new ModelAndView("redirect:/user/sysUser/index");
 
         SysUser user = new SysUser();
-        user.setAccount(sysUser.getAccount());
-        List<SysUser> sysUserList = sysUserService.findList(user);
-
-        if (CollectionUtils.isNotEmpty(sysUserList)) {
+        user = sysUserService.get(sysUser.getId());
+        if (user==null) {
             attributes.addFlashAttribute("message", "非法操作，请重新填写信息");
             return mv;
         }
+//        user.setAccount(sysUser.getAccount());
+//        List<SysUser> sysUserList = sysUserService.findList(user);
+//
+//        if (CollectionUtils.isNotEmpty(sysUserList)) {
+//            attributes.addFlashAttribute("message", "非法操作，请重新填写信息");
+//            return mv;
+//        }
 
-        byte[] hashPassword = Digests.sha1(sysUser.getPassword().getBytes(), Encodes.decodeHex(sysUser.getSalt()), HASH_INTERATIONS);
+        byte[] hashPassword = Digests.sha1(sysUser.getPassword().getBytes(), Encodes.decodeHex(user.getSalt()), HASH_INTERATIONS);
         sysUser.setPassword(Encodes.encodeHex(hashPassword));
 
         try {
