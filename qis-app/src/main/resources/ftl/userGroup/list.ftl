@@ -41,15 +41,15 @@
                                 <span class="hidden-480">新增</span>
                             </a>
 
-                            <#--<a href="javascript:void(0)" class="btn red">-->
-                                <#--<i class="fa fa-trash-o"></i>-->
-                                <#--<span class="hidden-480"  onclick="deleteList();">批量删除</span>-->
-                            <#--</a>-->
+                        <#--<a href="javascript:void(0)" class="btn red">-->
+                        <#--<i class="fa fa-trash-o"></i>-->
+                        <#--<span class="hidden-480"  onclick="deleteList();">批量删除</span>-->
+                        <#--</a>-->
 
-                            <#--<a class="btn green" href="javascript:exportData();">-->
-                                <#--<i class="fa fa-download"></i>-->
-                                <#--<span class="hidden-480">导出</span>-->
-                            <#--</a>-->
+                        <#--<a class="btn green" href="javascript:exportData();">-->
+                        <#--<i class="fa fa-download"></i>-->
+                        <#--<span class="hidden-480">导出</span>-->
+                        <#--</a>-->
 
                         </div>
                     </div>
@@ -64,8 +64,8 @@
             </#if>
                 <div id="tip"></div>
 
-                <#--隐藏的空格，用于存选中用户组数据-->
-               <input type="hidden"  id="roleId">
+            <#--隐藏的空格，用于存选中用户组数据-->
+                <input type="hidden"  id="roleId">
 
                 <div class="table-container">
                     <div class="table-actions-wrapper">
@@ -90,7 +90,7 @@
                                    id="search_userGroup_descr" placeholder="描述"/>
                         </label>
 
-                        <#--</label>-->
+                    <#--</label>-->
                         <label style="float:left;margin-right:5px;">
                             <div class="form-control input-inline"
                                  style="float: left;padding-top: 5px;border: 0px; text-align: left;"
@@ -133,24 +133,24 @@
         <div id="user_list_div" class="modal fade" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog" style="width:800px;">
                 <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <div class="btn-group">
-                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <div class="btn-group">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green changeTab2-0" href="javascript:void(0)">
-                                <i class="icon-user"></i>
-                                <span class="hidden-480"   onclick="changeTab2(this,0);">人员列表</span>
-                            </a>
+                                <a class="btn green changeTab2-0" href="javascript:void(0)">
+                                    <i class="icon-user"></i>
+                                    <span class="hidden-480"   onclick="changeTab2(this,0);">人员列表</span>
+                                </a>
 
-                            <a href="javascript:void(0)" class="btn changeTab2-1">
-                                <i class="glyphicon glyphicon-compressed"></i>
-                                <span class="hidden-480"  onclick="changeTab2(this,1);">部门列表</span>
-                            </a>
+                                <a href="javascript:void(0)" class="btn changeTab2-1">
+                                    <i class="glyphicon glyphicon-compressed"></i>
+                                    <span class="hidden-480"  onclick="changeTab2(this,1);">部门列表</span>
+                                </a>
 
+                            </div>
                         </div>
                     </div>
-                </div>
 
                     <div class="modal-body">
                         <div class="row">
@@ -245,74 +245,74 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <#--<div class="portlet box">-->
-                                    <div class="portlet-body user_list_table1-0">
-                                        <!-- 人员-->
-                                        <table class="table table-striped table-bordered table-hover" id="user_list_table2">
-                                            <thead>
-                                            <tr role="row" class="heading">
-                                                <th width="15%">登录名</th>
-                                                <th width="15%">姓名</th>
-                                                <th width="15%">编号</th>
-                                                <th width="15%">手机</th>
-                                                <th width="15%">操作</th>
-                                            </tr>
-                                            <tr role="row" class="filter">
-                                                <!-- 登录名 -->
-                                                <td><input type="text" class="form-control form-filter input-sm" name="search_userName"></td>
-                                                <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
-                                                <td><input type="text" class="form-control form-filter input-sm" name="search_userNo"></td>
-                                                <td><input type="text" class="form-control form-filter input-sm" name="search_mobilePhone"></td>
-                                                <td>
-                                                    <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
-                                                    </button>
-                                                    <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
-                                                </td>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                            <#--<div class="portlet box">-->
+                                <div class="portlet-body user_list_table1-0">
+                                    <!-- 人员-->
+                                    <table class="table table-striped table-bordered table-hover" id="user_list_table2">
+                                        <thead>
+                                        <tr role="row" class="heading">
+                                            <th width="15%">登录名</th>
+                                            <th width="15%">姓名</th>
+                                            <th width="15%">编号</th>
+                                            <th width="15%">手机</th>
+                                            <th width="15%">操作</th>
+                                        </tr>
+                                        <tr role="row" class="filter">
+                                            <!-- 登录名 -->
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_userName"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_userNo"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_mobilePhone"></td>
+                                            <td>
+                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                </button>
+                                                <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
 
-                                    </div>
-                                    <div class="portlet-body user_list_table1-1 display-hide">
-                                        <!-- 部门-->
-                                        <table class="table table-striped table-bordered table-hover" id="user_list_table3">
-                                            <thead>
-                                            <tr role="row" class="heading">
-                                                <th width="15%">部门名称</th>
-                                                <th width="15%">编号</th>
-                                                <th width="15%">描述</th>
-                                                <th width="15%">操作</th>
-                                            </tr>
-                                            <tr role="row" class="filter">
-                                                <!-- 登录名 -->
-                                                <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
-                                                <td><input type="text" class="form-control form-filter input-sm" name="search_code"></td>
-                                                <td><input type="text" class="form-control form-filter input-sm" name="search_descr"></td>
-                                                <td>
-                                                    <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
-                                                    </button>
-                                                    <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
-                                                </td>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                </div>
+                                <div class="portlet-body user_list_table1-1 display-hide">
+                                    <!-- 部门-->
+                                    <table class="table table-striped table-bordered table-hover" id="user_list_table3">
+                                        <thead>
+                                        <tr role="row" class="heading">
+                                            <th width="15%">部门名称</th>
+                                            <th width="15%">编号</th>
+                                            <th width="15%">描述</th>
+                                            <th width="15%">操作</th>
+                                        </tr>
+                                        <tr role="row" class="filter">
+                                            <!-- 登录名 -->
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_name"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_code"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="search_descr"></td>
+                                            <td>
+                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                </button>
+                                                <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
 
-                                    </div>
-                                <#--</div>-->
+                                </div>
+                            <#--</div>-->
                             </div>
                         </div>
 
                     </div>
 
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 </div>
 
 </body>
@@ -483,7 +483,7 @@
                     { "bSortable":false,"aTargets":[ 0,1,2,3] }
                 ],//设置不排序得列
                 "aoColumns":[
-                   { "sTitle":"登录名","mData":"userName"},
+                    { "sTitle":"登录名","mData":"userName"},
                     { "sTitle":"姓名","mData":"name"},
                     { "sTitle":"编号","mData":"userNo"},
                     { "sTitle":"手机","mData":"mobilePhone"},
@@ -584,45 +584,45 @@
             }
         });
 
-       /**
-        * 查看TAB切换
-        * */
-       function changeTab2(obj,type){
-           if(type==0){//人员
-               $(".changeTab2-1").removeClass("green");
-               $(".changeTab2-0").addClass("green");
+        /**
+         * 查看TAB切换
+         * */
+        function changeTab2(obj,type){
+            if(type==0){//人员
+                $(".changeTab2-1").removeClass("green");
+                $(".changeTab2-0").addClass("green");
 
-               $(".user_list_table2-0").removeClass("display-hide");
-               $(".user_list_table2-1").addClass("display-hide");
+                $(".user_list_table2-0").removeClass("display-hide");
+                $(".user_list_table2-1").addClass("display-hide");
 
-           }else if(type==1){//部门列表
-               $(".changeTab2-0").removeClass("green");
-               $(".changeTab2-1").addClass("green");
+            }else if(type==1){//部门列表
+                $(".changeTab2-0").removeClass("green");
+                $(".changeTab2-1").addClass("green");
 
-               $(".user_list_table2-1").removeClass("display-hide");
-               $(".user_list_table2-0").addClass("display-hide");
-           }
-       }
+                $(".user_list_table2-1").removeClass("display-hide");
+                $(".user_list_table2-0").addClass("display-hide");
+            }
+        }
 
 
         /**
          * 添加TAB切换
          * */
         function changeTab1(obj,type){
-          if(type==0){//人员
-              $(".changeTab1-1").removeClass("green");
-              $(".changeTab1-0").addClass("green");
+            if(type==0){//人员
+                $(".changeTab1-1").removeClass("green");
+                $(".changeTab1-0").addClass("green");
 
-              $(".user_list_table1-0").removeClass("display-hide");
-              $(".user_list_table1-1").addClass("display-hide");
+                $(".user_list_table1-0").removeClass("display-hide");
+                $(".user_list_table1-1").addClass("display-hide");
 
-          }else if(type==1){//组织列表
-              $(".changeTab1-0").removeClass("green");
-              $(".changeTab1-1").addClass("green");
+            }else if(type==1){//组织列表
+                $(".changeTab1-0").removeClass("green");
+                $(".changeTab1-1").addClass("green");
 
-              $(".user_list_table1-1").removeClass("display-hide");
-              $(".user_list_table1-0").addClass("display-hide");
-          }
+                $(".user_list_table1-1").removeClass("display-hide");
+                $(".user_list_table1-0").addClass("display-hide");
+            }
         }
 
 
@@ -687,10 +687,10 @@
                 }
             });
         }
-/**
- *部门退出用户组
- *
- * */
+        /**
+         *部门退出用户组
+         *
+         * */
         var userGrid4=new Datatable();
         var $userList_data_table4=$("#user_list_table4");
         userGrid4.init({
@@ -759,55 +759,55 @@
          * @param id
          */
         <#--function deleteOne(id) {-->
-            <#--bootbox.dialog({-->
-                <#--message: "您是否确认删除?",-->
-                <#--buttons: {-->
-                    <#--main: {-->
-                        <#--label: "确定",-->
-                        <#--className: "green",-->
-                        <#--callback: function () {-->
-                            <#--Metronic.startPageLoading();-->
-                            <#--$.ajax({-->
-                                <#--url: '${rc.contextPath}/userGroup/delete-' + id,-->
-                                <#--type: 'POST',-->
-                                <#--traditional: true,-->
-                                <#--success: function (data) {-->
-                                    <#--console.log(data);-->
-                                    <#--Metronic.stopPageLoading();-->
-                                    <#--if(data.code == '200'){-->
-                                        <#--$('#tip').show();-->
-                                        <#--$('#tip').html('<div class="alert alert-success"><button data-dismiss="alert" class="close">×</button>'+data.msg+'</div>');-->
-                                        <#--window.setTimeout(function(){-->
-                                            <#--$('#tip').hide();-->
-                                        <#--}, 3000);-->
-                                    <#--}else{-->
-                                        <#--$('#tip').show();-->
-                                        <#--$('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>'+data.msg+'</div>');-->
-                                        <#--window.setTimeout(function(){-->
-                                            <#--$('#tip').hide();-->
-                                        <#--}, 3000);-->
-                                    <#--}-->
-                                    <#--grid.getDataTable().fnDraw();-->
-                                <#--},-->
-                                <#--error:function(error){-->
-                                    <#--$('#tip').show();-->
-                                    <#--$('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>删除失败</div>');-->
-                                    <#--window.setTimeout(function(){-->
-                                        <#--$('#tip').hide();-->
-                                    <#--}, 3000);-->
-                                <#--}-->
-                            <#--});-->
-                        <#--}-->
-                    <#--},-->
-                    <#--cancel: {-->
-                        <#--label: "取消",-->
-                        <#--className: "gray",-->
-                        <#--callback: function () {-->
-                            <#--$(this).hide();-->
-                        <#--}-->
-                    <#--}-->
-                <#--}-->
-            <#--});-->
+        <#--bootbox.dialog({-->
+        <#--message: "您是否确认删除?",-->
+        <#--buttons: {-->
+        <#--main: {-->
+        <#--label: "确定",-->
+        <#--className: "green",-->
+        <#--callback: function () {-->
+        <#--Metronic.startPageLoading();-->
+        <#--$.ajax({-->
+        <#--url: '${rc.contextPath}/userGroup/delete-' + id,-->
+        <#--type: 'POST',-->
+        <#--traditional: true,-->
+        <#--success: function (data) {-->
+        <#--console.log(data);-->
+        <#--Metronic.stopPageLoading();-->
+        <#--if(data.code == '200'){-->
+        <#--$('#tip').show();-->
+        <#--$('#tip').html('<div class="alert alert-success"><button data-dismiss="alert" class="close">×</button>'+data.msg+'</div>');-->
+        <#--window.setTimeout(function(){-->
+        <#--$('#tip').hide();-->
+        <#--}, 3000);-->
+        <#--}else{-->
+        <#--$('#tip').show();-->
+        <#--$('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>'+data.msg+'</div>');-->
+        <#--window.setTimeout(function(){-->
+        <#--$('#tip').hide();-->
+        <#--}, 3000);-->
+        <#--}-->
+        <#--grid.getDataTable().fnDraw();-->
+        <#--},-->
+        <#--error:function(error){-->
+        <#--$('#tip').show();-->
+        <#--$('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>删除失败</div>');-->
+        <#--window.setTimeout(function(){-->
+        <#--$('#tip').hide();-->
+        <#--}, 3000);-->
+        <#--}-->
+        <#--});-->
+        <#--}-->
+        <#--},-->
+        <#--cancel: {-->
+        <#--label: "取消",-->
+        <#--className: "gray",-->
+        <#--callback: function () {-->
+        <#--$(this).hide();-->
+        <#--}-->
+        <#--}-->
+        <#--}-->
+        <#--});-->
         <#--}-->
 
         /**
@@ -873,9 +873,20 @@
                     }
                 }
             });
-
         }
 
+        /**
+         * 重置查询信息
+         * @param btn
+         * @param excludes
+         */
+        function resetSearch(btn) {
+            $("#data_table_search input[type='text']").val("");
+            $("select.form-filter").each(function () {
+                $(this).find("option").attr("selected", false);
+            });
+            search(btn, grid);
+        }
 
     </script>
 </content>

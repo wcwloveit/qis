@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>活动管理</title>
+    <title>角色管理</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
     <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
 </head>
@@ -22,13 +22,13 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-           <#if message>
-               <div class="note note-danger">
-                   <p>
-                       ${(message)!}
-                   </p>
-               </div>
-           </#if>
+    <#if message>
+        <div class="note note-danger">
+            <p>
+            ${(message)!}
+            </p>
+        </div>
+    </#if>
         <div class="portlet light portlet-fit portlet-datatable bordered">
             <input type="hidden"  id="roleId">
             <div class="portlet-title">
@@ -260,50 +260,50 @@
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
                     { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
-                            return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
-                        }},
+                        return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
+                    }},
                     { "sTitle": "角色名称", "mData": "name", "mRender": function (data, type, row) {
-                            return data;
-                        }},
+                        return data;
+                    }},
                     { "sTitle": "角色类型", "mData": "roleClassesName", "mRender": function (data, type, row) {
-                            return data;
-                        }},
+                        return data;
+                    }},
                     { "sTitle": "描述", "mData": "descr", "mRender": function (data, type, row) {
-                            return data;
-                        }},
+                        return data;
+                    }},
                     { "sTitle": "唯一标识符", "mData": "guidId", "mRender": function (data, type, row) {
-                            return data;
-                        }},
+                        return data;
+                    }},
                     { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
-                            if (data != null && "" != data) {
-                                return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
-                            } else {
-                                return "";
-                            }
-                        }},
+                        if (data != null && "" != data) {
+                            return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
+                        } else {
+                            return "";
+                        }
+                    }},
                     { "sTitle": "修改时间",  "mData": "modifiedOn", "mRender": function (data, type, row) {
-                            if (data != null && "" != data) {
-                                return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
-                            } else {
-                                return "";
-                            }
-                        }},
+                        if (data != null && "" != data) {
+                            return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
+                        } else {
+                            return "";
+                        }
+                    }},
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                            var a = '<a href="${rc.contextPath}/role/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
-                                    '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
-                            var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
-                                    '<i class="fa fa-map"></i>模块管理</a>';
-                            var c='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="seegroup(\''+row.id+'\')" title ="查看组织"><i class="fa fa-search"></i>查看组织</a>';
-                            var d='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="togroup(\''+row.id+'\')" title ="分配组织"><i class="fa fa-search"></i>分配组织</a>';
-                            var e = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
-                                    '<i class="glyphicon glyphicon-trash"></i>删除</a>';
+                        var a = '<a href="${rc.contextPath}/role/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
+                        var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
+                                '<i class="fa fa-map"></i>模块管理</a>';
+                        var c='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="seegroup(\''+row.id+'\')" title ="查看组织"><i class="fa fa-search"></i>查看组织</a>';
+                        var d='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="togroup(\''+row.id+'\')" title ="分配组织"><i class="fa fa-search"></i>分配组织</a>';
+                        var e = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
+                                '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
-                            if(row.isDeleted==1){
-                                return "已删除";
-                            }else{
-                                return a+b+c+d+e;
-                            }
-                        }}
+                        if(row.isDeleted==1){
+                            return "已删除";
+                        }else{
+                            return a+b+c+d+e;
+                        }
+                    }}
                 ]
             }
         });
@@ -328,8 +328,8 @@
                     { "sTitle":"组织编号","mData":"code"},
                     { "sTitle":"组织描述","mData":"descr"},
                     { "sTitle":"操作","mData":"id","sDefaultContent":"","mRender":function(data,type,row){
-                            return'<a class="delete btn green btn-xs black" href="javascript:leave('+data+');"><i class="fa fa-level-down"></i>离开</a>';
-                        }}
+                        return'<a class="delete btn green btn-xs black" href="javascript:leave('+data+');"><i class="fa fa-level-down"></i>离开</a>';
+                    }}
                 ]
             }
         });
@@ -354,8 +354,8 @@
                     { "sTitle":"组织编号","mData":"code"},
                     { "sTitle":"组织描述","mData":"descr"},
                     { "sTitle":"操作","mData":"id","sDefaultContent":"","mRender":function(data,type,row){
-                            return'<a class="delete btn green btn-xs black" href="javascript:join('+data+');"><i class="fa fa-level-up"></i>加入</a>';
-                        }}
+                        return'<a class="delete btn green btn-xs black" href="javascript:join('+data+');"><i class="fa fa-level-up"></i>加入</a>';
+                    }}
                 ]
             }
         });

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-    @RequestMapping(value="/role/roleClass")
+@RequestMapping(value="/role/roleClass")
 public class RoleClassController extends BaseController {
     @Autowired
     private IRoleClassesService roleClassesService;
