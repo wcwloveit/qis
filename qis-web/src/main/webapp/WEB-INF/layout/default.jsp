@@ -146,7 +146,7 @@
         if(name!=""){
         $("#searchList li").remove();
         for(var i=0;i<modules.length;i++){
-        if((modules[i].name).indexOf(name)!=-1&&(modules[i].isMenu)==0){
+        if(((modules[i].name).indexOf(name)!=-1)||((modules[i].code).indexOf(name)!=-1)&&((modules[i].isMenu)==0)){
         //循环添加li节点
         $("#searchList").append("<li><a  tabindex='-1' href='${rc.contextPath}"+modules[i]                                           .linkUrl+"'>"+modules[i].name+"</a></li>");
         $("#searchList").show();
