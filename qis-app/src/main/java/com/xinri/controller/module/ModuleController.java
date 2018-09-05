@@ -1,19 +1,24 @@
 package com.xinri.controller.module;
 
+import com.qis.ShiroUser;
 import com.qis.common.web.BaseController;
 import com.xinri.po.moduleInfo.ColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
+import com.xinri.service.ResourceService;
 import com.xinri.service.moduleInfo.*;
 import com.xinri.service.permissions.IPermissionsService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
 import com.xinri.vo.jstree.State;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
+import com.xinri.vo.redis.Module;
+import com.xinri.vo.redis.Redis;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,6 +62,9 @@ public class ModuleController extends BaseController {
 
     @Autowired
     private IRoleModuleInfoColumnDataHeadsService roleModuleInfoColumnDataHeadsService;
+
+    @Autowired
+    private ResourceService resourceService;
 
 
 
@@ -299,6 +307,15 @@ public class ModuleController extends BaseController {
 
     public List<ModuleInfoes> findList(ModuleInfoes moduleInfo,Long id){
         return moduleInfoesService.findList(moduleInfo);
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Module> search(){
+        ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+        Redis redis=resourceService.getInfo(user);
+        List<Module> modules=redis.getModuleInfoesList();
+        return modules;
     }
 
     //初始化模块权限关联表
