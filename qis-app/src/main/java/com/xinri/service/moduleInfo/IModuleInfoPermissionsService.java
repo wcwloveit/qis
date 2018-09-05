@@ -2,6 +2,7 @@ package com.xinri.service.moduleInfo;
 
 import com.qis.common.service.IBaseService;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,22 +13,24 @@ import java.util.List;
  */
 
 public interface IModuleInfoPermissionsService extends IBaseService<ModuleInfoPermissions> {
-    int insert(ModuleInfoPermissions moduleInfoPermissions);
+    public int insert(ModuleInfoPermissions moduleInfoPermissions);
 
-    List<Long> getPermissionIds(Long id);
+    public List<Long> getPermissionIds(Long id);
 
-    void relate(ModuleInfoPermissions moduleInfoPermission);
+    public void relate(ModuleInfoPermissions moduleInfoPermission);
 
-    Long getId(Long moduleId, Long permissionId);
+    public Long getId(Long moduleId, Long permissionId);
 
-    Long[] getIdsByModuleId(Long moduleId);
+    public Long[] getIdsByModuleId(Long moduleId);
 
-    Long[] getIdsByPermissionId(Long permissionId);
+    public Long[] getIdsByPermissionId(Long permissionId);
 
-    Long[] getIds(Long moduleId, List<Long> ids);
+    public Long[] getIds(Long moduleId, List<Long> ids);
 
-    void deleteByPermissionId(Long permissionId);
+    public void deleteByPermissionId(Long permissionId);
 
-    void deleteByModuleId(Long moduleId);
+    public void deleteByModuleId(Long moduleId);
+
+    public List<RoleModuleInFoPerVo> getRoleModuleInFoPerVo(RoleModuleInFoPerVo vo);
 }
 

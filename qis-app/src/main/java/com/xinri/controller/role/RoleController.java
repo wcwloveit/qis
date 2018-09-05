@@ -25,6 +25,7 @@ import com.xinri.service.role.IRolesService;
 import com.xinri.service.user.ISysUserService;
 import com.xinri.service.user.IUsersService;
 import com.xinri.util.AjaxStatus;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import com.xinri.vo.redis.Redis;
 import com.xinri.vo.role.RolesVo;
 import org.apache.commons.collections.CollectionUtils;
@@ -383,6 +384,32 @@ public class RoleController extends BaseController {
     @ResponseBody
     public AjaxStatus leave(@RequestParam("roleId") Long roleId, @RequestParam("groupId") Long groupId) {
         return roleUserGroupsService.LeaveRole(roleId, groupId);
+    }
+
+    /**
+     * 根据角色id和模块id获取角色模块权限
+     * @param moduleId
+     * @param roleId
+     * @return
+     * 创建者 夏善勇 20180904
+     */
+    @RequestMapping(value = "/getModulePermissions-{moduleId}-{roleId}", method = RequestMethod.GET)
+    public ModelAndView getPermissions(@PathVariable("moduleId") Long moduleId,
+                                       @PathVariable("roleId") Long roleId ) {
+        ModelAndView mv = new ModelAndView("/module/roleModuleList");
+        logger.info("getRoleModulePermissions开始");
+        List<RoleModuleInFoPerVo> voList  = new  ArrayList<RoleModuleInFoPerVo>();
+        RoleModuleInFoPerVo vo = new RoleModuleInFoPerVo();
+        vo.setModuleId(moduleId);
+        vo.setRoleId(roleId);
+        voList = moduleInfoPermissionsService.getRoleModuleInFoPerVo(vo);
+        mv.addObject("moList",voList);
+        mv.addObject("moduleId",moduleId);
+        mv.addObject("roleId",roleId);
+        mv.addObject("message",voList);
+        mv.addObject("success",false);
+        logger.info("getRoleModulePermissions结束");
+        return  mv;
     }
 
 

@@ -2,6 +2,7 @@ package com.xinri.dao.moduleInfo;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -26,5 +27,7 @@ public interface ModuleInfoPermissionsMapper extends CrudDao<ModuleInfoPermissio
     void deleteByPermissionId(Long permissionId);
 
     void deleteByModuleId(Long moduleId);
+
+    List<RoleModuleInFoPerVo> getRoleModuleInFoPerVo(RoleModuleInFoPerVo vo);
 }
 

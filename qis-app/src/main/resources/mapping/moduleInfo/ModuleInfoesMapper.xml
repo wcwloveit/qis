@@ -696,6 +696,9 @@
 		and ug.is_deleted=0	and rug.is_deleted=0
 		and r.is_deleted=0	and rmi.is_deleted=0
 		and t.is_deleted=0
+		AND t.is_effective=1
+		AND rmi.is_effective=1
+		order BY t.sort asc
 
 	</select>
 
@@ -714,6 +717,10 @@
 		and r.is_deleted=0
 		and rmi.is_deleted=0
 		and t.is_deleted=0
+		AND t.is_effective=1
+		AND rmi.is_effective=1
+		order BY t.sort asc
+
 	</select>
 
 </mapper>

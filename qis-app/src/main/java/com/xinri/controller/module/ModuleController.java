@@ -11,10 +11,12 @@ import com.xinri.service.permissions.IPermissionsService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.jstree.JsTree;
 import com.xinri.vo.jstree.State;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -272,6 +274,9 @@ public class ModuleController extends BaseController {
         logger.info("getPermissions结束");
         return info;
     }
+
+
+
 
     @RequestMapping(value = "/getColumnDatas", method = RequestMethod.GET)
     @ResponseBody

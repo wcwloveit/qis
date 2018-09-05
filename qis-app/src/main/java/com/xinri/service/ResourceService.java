@@ -55,8 +55,6 @@ import java.util.List;
     /**
      * 更新密码
      * 创建人 夏善勇 2018-8-28
-     * @param password
-     * @param id
      * @return
      */
 //    public Boolean changePassword(String password,Long id){
@@ -117,24 +115,29 @@ import java.util.List;
         System.out.println(b);
     }
 
+    /**
+     * 根据系统用户获取导航栏列表和权限
+     * @param user
+     * @return
+     */
     public Redis getInfo(ShiroUser user) {
         Redis info = new Redis();
         if (user.type == 1) {
             info= moduleInfoesService.getModulesBySysUserId(user.id);
         } else if (user.type == 2) {
-//            user.id=58689L;
             info = moduleInfoesService.getModulesByUserId(user.id);
         }
-        List<Roles> roles=info.getRoles();
-        List<Long> roleIds=new ArrayList<>();
+        if(info==null)return info;
+        List<Roles> roles = info.getRoles();
+        List<Long> roleIds = new ArrayList<>();
         for (Roles role : roles) {
             roleIds.add(role.getId());
         }
-        List<Module> resources=info.getModuleInfoesList();
+        List<Module> resources = info.getModuleInfoesList();
         for (Module resource : resources) {
-            List<Permissions> permissions=permissionsService.getPermissionsByModuleIdandRoleId(roleIds,resource.getId());
+            List<Permissions> permissions = permissionsService.getPermissionsByModuleIdandRoleId(roleIds,resource.getId());
             for (Permissions permission : permissions) {
-                permission.setCode(resource.getCode()+"-"+permission.getCode());
+                permission.setCode(resource.getCode() + "-" + permission.getCode());
             }
             resource.setPermissionList(permissions);
         }

@@ -1,5 +1,6 @@
 package com.xinri.service.moduleInfo.impl;
 
+import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
@@ -57,6 +58,11 @@ public class ModuleInfoPermissionsServiceImpl extends CrudService<ModuleInfoPerm
     @Override
     public void deleteByModuleId(Long moduleId) {
         dao.deleteByModuleId(moduleId);
+    }
+
+    @Override
+    public List<RoleModuleInFoPerVo> getRoleModuleInFoPerVo(RoleModuleInFoPerVo vo) {
+        return dao.getRoleModuleInFoPerVo(vo);
     }
 
 }

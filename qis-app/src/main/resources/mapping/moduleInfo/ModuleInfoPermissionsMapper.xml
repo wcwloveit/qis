@@ -502,6 +502,15 @@
 			t.MODULE_INFO_ID = #{moduleId,jdbcType=BIGINT}
 		</where>
 	</update>
-
+	<!-- 根据模块id和角色id获取 角色模块权限 -->
+	<select id="getRoleModuleInFoPerVo" parameterType="com.xinri.vo.moduleInfo.RoleModuleInFoPerVo" resultType="com.xinri.vo.moduleInfo.RoleModuleInFoPerVo">
+		SELECT m.id,m.is_effective,m.permission_id,m.module_info_id,t.name,t.code,r.is_effective,r.role_id
+		FROM module_info_permissions m
+		LEFT JOIN permissions t on t.id = m.permission_id AND t.is_deleted=0
+		LEFT JOIN role_module_info_permission_heads r on r.module_info_permission_id =m.id AND r.is_deleted=0
+		<if test="roleId != null">AND r.role_id= #{roleId,jdbcType=BIGINT}</if>
+		WHERE  m.is_effective=1 AND m.is_deleted=0
+		<if test="moduleId != null">AND m.module_info_id=#{moduleId,jdbcType=BIGINT} </if>
+	</select>
 
 </mapper>
