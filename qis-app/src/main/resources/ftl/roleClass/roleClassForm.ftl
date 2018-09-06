@@ -24,7 +24,7 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="javascript:void(0);">数据</a>
+                <a href="javascript:void(0);">角色</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
@@ -36,14 +36,29 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet box green-haze">
+    <#if message>
+        <div class="note note-danger">
+            <p>
+            ${(message)!}
+            </p>
+        </div>
+    </#if>
+    <#--<div class="portlet box  green-haze"> 表单头改为无色 -->
+        <div class="portlet light portlet-fit portlet-datatable bordered">
             <div class="portlet-title">
+
                 <div class="caption">
-                <#--判断action 等于create是新增   等于update是编辑修改-->
-                    <i class="fa fa-gift"></i>产品<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if>
+                    <i class="icon-settings font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">角色类型<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if></span>
                 </div>
+
+                <#--<div class="caption">-->
+                <#--&lt;#&ndash;判断action 等于create是新增   等于update是编辑修改&ndash;&gt;-->
+                    <#--<i class="fa fa-gift"></i>角色类型<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if>-->
+                <#--</div>-->
+
                 <div class="actions">
-                    <a href="javascript:history.back(-1)" class="btn grey">返回</a>
+                    <a href="javascript:history.back(-1)" class="btn grey btn-outline btn-circle">返回</a>
                 </div>
 
             </div>
@@ -95,8 +110,8 @@
                     </div>
                     <div class="form-actions fluid">
                         <div class="col-md-offset-3 col-md-9">
-                            <button type="submit" class="btn green">提交</button>
-                            <button type="reset" class="btn red">重置</button>
+                            <button type="submit" class="btn green btn-outline btn-circle">提交</button>
+                            <button type="reset" class="btn red btn-outline btn-circle">重置</button>
                         </div>
                     </div>
                 </form>

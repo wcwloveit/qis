@@ -26,19 +26,31 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet box green-haze">
-            <div class="portlet-title">
-                <div class="caption"><i class="fa fa-cogs"></i>角色类型列表</div>
+    <#if message>
+        <div class="note note-danger">
+            <p>
+            ${(message)!}
+            </p>
+        </div>
+    </#if>
+        <#--<div class="portlet box  green-haze"> 表单头改为无色 -->
+            <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title ">
+
+                <div class="caption">
+                    <i class="icon-settings font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">角色类型列表</span>
+                </div>
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green btn-parent" href="${rc.contextPath}/role/roleClass/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-outline btn-circle" href="${rc.contextPath}/role/roleClass/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
 
-                            <a href="javascript:void(0)" class="btn red">
+                            <a href="javascript:void(0)" class="btn red btn-outline btn-circle">
                                 <i class="fa fa-trash-o"></i>
                                 <span class="hidden-480"  onclick="deleteList();">批量删除</span>
                             </a>
@@ -200,10 +212,10 @@
 
                         <label style="float:left;">
                             <span> &nbsp;&nbsp;</span>
-                            <button class="btn btn-sm yellow margin-bottom filter-submit" value="搜索" onclick="search(this,grid)"><i
+                            <button class="btn btn-sm yellow btn-outline btn-circle" value="搜索" onclick="search(this,grid)"><i
                                     class="fa fa-search"></i> 搜索
                             </button>
-                            <button class="btn btn-sm red filter-cancel" onclick="resetSearch(this)"><i class="fa fa-times"></i> 重置
+                            <button class="btn btn-sm red  btn-outline btn-circle " onclick="resetSearch(this)"><i class="fa fa-times"></i> 重置
                             </button>
                         </label>
                     </div>
@@ -291,7 +303,7 @@
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
                         var a = '<a href="${rc.contextPath}/role/roleClass/update/' + row.id
-                                + '" class="btn btn-xs blue"  title="编辑" >' +
+                                + '" class="btn btn-xs blue  btn-outline btn-circle"  title="编辑" >' +
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
                         <#--var b = '<a href="${rc.contextPath}/zc/itemPic/index-2-' + row.id-->
@@ -300,7 +312,7 @@
 
                         //  逻辑删除
                         var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
-                                + '\')" class="btn btn-xs red"  title="删除" >' +
+                                + '\')" class="btn btn-xs red  btn-outline btn-circle"  title="删除" >' +
                                 '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
                     <#--var d = '<a href="${rc.contextPath}/zc/itemMode/index-' + row.id-->
@@ -401,7 +413,7 @@
                 buttons: {
                     main: {
                         label: "确定",
-                        className: "green",
+                        className: "green btn-outline btn-circle",
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
@@ -438,7 +450,7 @@
                     },
                     cancel: {
                         label: "取消",
-                        className: "gray",
+                        className: "gray btn-outline btn-circle",
                         callback: function () {
                             $(this).hide();
                         }
