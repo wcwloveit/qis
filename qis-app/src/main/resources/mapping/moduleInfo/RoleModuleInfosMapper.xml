@@ -429,7 +429,7 @@
 		DELETE FROM ROLE_MODULE_INFOS t
 		<where>${whereSqlParam}</where>
 	</update>
-
+	<!--物理删除-->
 	<delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfos">
 		delete FROM ROLE_MODULE_INFOS
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -442,6 +442,7 @@
 		</trim>
 	</delete>
 
+	<!--根据角色id获取模块列表-->
 	<select id="getModuleIds" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select module_info_id FROM role_module_infos where role_id = #{id}
 	</select>

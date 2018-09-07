@@ -52,17 +52,23 @@ public class SysUserController extends BaseController {
     @Autowired
     private IDepartmentsService departmentsService;
 
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         return "sysUser/list";
     }
 
-    /*
+    /**
      * 分页列表
-     * */
+     * @param dt
+     * @param request
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<SysUserVo> getItemList(DataTable<SysUserVo> dt, ServletRequest request) {
@@ -73,6 +79,11 @@ public class SysUserController extends BaseController {
         return baseDatas;
     }
 
+    /**
+     * 获取所有系统用户
+     * @return
+     *  创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "SysUser", method = RequestMethod.GET)
     public List<SysUser> getSysUser() {
@@ -81,9 +92,9 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 跳转新增
-     *
+     * 跳转新增页面
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
@@ -103,10 +114,11 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 新建
-     *
+     * 新增
+     * @param sysUser
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(SysUser sysUser,
@@ -140,10 +152,10 @@ public class SysUserController extends BaseController {
 
 
     /**
-     * 更新状态
-     *
+     * 跳转更新页面
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
@@ -177,11 +189,11 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 更新
-     *
+     *更新
      * @param sysUser
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(SysUser sysUser, RedirectAttributes attributes) {
@@ -219,10 +231,10 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 根据Id逻辑删除
-     *
+     * 根据id逻辑删除
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
@@ -232,9 +244,10 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 全选删除系统用户信息
-     *
-     * @return 返回跳转链接
+     * 批量删除
+     * @param ids
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "delete-all", method = RequestMethod.POST)
     @ResponseBody
@@ -253,6 +266,13 @@ public class SysUserController extends BaseController {
         return map;
     }
 
+    /**
+     * 检查账号是否同名
+     * @param account
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "check", method = RequestMethod.GET)
     @ResponseBody
     public Boolean check(@RequestParam("account") String account, @RequestParam("id") Long id) {

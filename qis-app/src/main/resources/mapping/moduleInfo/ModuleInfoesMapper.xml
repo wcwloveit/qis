@@ -564,6 +564,7 @@
 		<where>${whereSqlParam}</where>
 	</update>
 
+	<!--根据id列表获取模块列表-->
 	<select id="getModulesForRole" parameterType="java.util.List" resultMap="moduleInfoesResultMap">
 		SELECT
 		<include refid="moduleInfoesColumns" />
@@ -675,6 +676,7 @@
 		<result column="PER_DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
 	</resultMap>
 
+	<!--根据用户id获取角色及模块信息-->
 	<select id="getModulesByUserId" parameterType="java.lang.Long" resultMap="redisResultMap">
 		SELECT
         distinct
@@ -702,6 +704,7 @@
 
 	</select>
 
+	<!--根据系统用户id获取角色及模块信息-->
 	<select id="getModulesBySysUserId" parameterType="java.lang.Long" resultMap="redisResultMap">
 		SELECT
 		distinct

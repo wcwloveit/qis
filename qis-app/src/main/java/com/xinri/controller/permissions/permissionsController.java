@@ -42,17 +42,23 @@ public class permissionsController extends BaseController {
     @Autowired
     private IRoleModuleInfoPermissionHeadsService moduleInfoPermissionHeadsService;
 
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         return "permissions/list";
     }
 
-    /*
+    /**
      * 分页列表
-     * */
+     * @param dt
+     * @param request
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<Permissions> getItemList(DataTable<Permissions> dt, ServletRequest request) {
@@ -63,6 +69,11 @@ public class permissionsController extends BaseController {
         return baseDatas;
     }
 
+    /**
+     * 获取所有权限
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "permissions", method = RequestMethod.GET)
     public List<Permissions> getPermissions() {
@@ -71,9 +82,9 @@ public class permissionsController extends BaseController {
     }
 
     /**
-     * 跳转新增
-     *
+     * 跳转到新增页面
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
@@ -85,10 +96,11 @@ public class permissionsController extends BaseController {
     }
 
     /**
-     * 新建
-     *
+     * 新增
+     * @param permissions
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(Permissions permissions,
@@ -127,10 +139,10 @@ public class permissionsController extends BaseController {
 
 
     /**
-     * 更新状态
-     *
+     * 跳转更新页面
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
@@ -145,10 +157,10 @@ public class permissionsController extends BaseController {
 
     /**
      * 更新
-     *
-     * @param zcActivity
+     * @param permissions
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(Permissions permissions, RedirectAttributes attributes) {
@@ -168,10 +180,10 @@ public class permissionsController extends BaseController {
     }
 
     /**
-     * 根据Id逻辑删除
-     *
+     * 根据id逻辑删除 权限 及物理删除与权限关联的 模块-权限及角色-模块-权限 信息
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
@@ -192,9 +204,10 @@ public class permissionsController extends BaseController {
     }
 
     /**
-     * 全选删除权限信息
-     *
-     * @return 返回跳转链接
+     * 批量删除
+     * @param ids
+     * @return
+     *创建人 汪震 20180907
      */
     @RequestMapping(value = "delete-all", method = RequestMethod.POST)
     @ResponseBody

@@ -430,6 +430,7 @@
 		<where>${whereSqlParam}</where>
 	</update>
 
+	<!--根据模块id和角色id获取拥有的权限-->
 	<select id="getPermissionsByModuleIdandRoleId" parameterType="java.util.List" resultMap="permissionsResultMap">
 		  select
 		  <include refid="permissionsColumns"></include>

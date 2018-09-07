@@ -45,58 +45,71 @@ public class ColumnDatasController extends BaseController {
     @Autowired
     private IRoleModuleInfoColumnDataHeadsService moduleInfoColumnDataHeadsService;
 
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         return "columnDatas/list";
     }
 
-    /*
+    /**
      * 分页列表
-     * */
+     * @param dt
+     * @param request
+     * @return
+     * 创建人汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<ColumnDataVo> getItemList(DataTable<ColumnDataVo> dt, ServletRequest request) {
-        logger.info("获取权限列表开始");
+        logger.info("获取数据列列表开始");
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
         DataTable<ColumnDataVo> baseDatas = ColumnDatasService.findListByVo(dt, searchParams); //查询方法
-        logger.info("获取权限列表结束");
+        logger.info("获取数据列列表结束");
         return baseDatas;
     }
 
+
+    /**
+     * 获取所有数据列
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "ColumnDatas", method = RequestMethod.GET)
     public List<ColumnDatas> getColumnDatas() {
-        logger.info("获取所有权限");
+        logger.info("获取所有数据列");
         return ColumnDatasService.findAllList();
     }
 
     /**
-     * 跳转新增
-     *
+     * 跳转新增数据列页面
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
-        logger.info("创建权限开始");
+        logger.info("创建数据列开始");
         ModelAndView mv = new ModelAndView("/columnDatas/form");
         mv.addObject("action", "create");
-        logger.info("创建权限结束");
+        logger.info("创建数据列结束");
         return mv;
     }
 
     /**
-     * 新建
-     *
+     * 新建数据列
+     * @param columnDatas
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(ColumnDatas columnDatas,
                                RedirectAttributes attributes) {
-        logger.info("新增权限开始");
+        logger.info("新增数据列开始");
         ModelAndView mv = new ModelAndView("redirect:/permissions/columnDatas/index");
         ModuleInfoColumnDatas moduleInfoColumnData = new ModuleInfoColumnDatas();
         ModuleInfoes moduleinfo = new ModuleInfoes();
@@ -118,71 +131,70 @@ public class ColumnDatasController extends BaseController {
             }
 
             attributes.addFlashAttribute("success", true);
-            attributes.addFlashAttribute("message", "添加权限成功");
-            logger.info("新增权限完成");
+            attributes.addFlashAttribute("message", "添加数据列成功");
+            logger.info("新增数据列完成");
         } catch (Exception e) {
-            logger.error("新增权限报错：", e);
-            attributes.addFlashAttribute("message", "添加权限报错");
+            logger.error("新增数据列报错：", e);
+            attributes.addFlashAttribute("message", "添加数据列报错");
         }
         return mv;
     }
 
 
     /**
-     * 更新状态
-     *
+     * 获取更新数据列页面
      * @param id
      * @return
      */
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
-        logger.info("跳转更新权限页面开始");
+        logger.info("跳转更新数据列页面开始");
         ModelAndView mv = new ModelAndView("/columnDatas/form");
         ColumnDatas ColumnDatas = ColumnDatasService.get(id);
         mv.addObject("ColumnDatas", ColumnDatas);
         mv.addObject("action", "update");//跳转编辑的标示
-        logger.info("跳转更新权限页面结束");
+        logger.info("跳转更新数据列页面结束");
         return mv;
     }
 
     /**
-     * 更新
-     *
-     * @param zcActivity
+     * 更新数据列
+     * @param ColumnDatas
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(ColumnDatas ColumnDatas, RedirectAttributes attributes) {
-        logger.info("更新权限开始");
+        logger.info("更新数据列开始");
         ModelAndView mv = new ModelAndView("redirect:/permissions/columnDatas/index");
         try {
             ColumnDatas.setIsNewRecord(false);
             ColumnDatasService.saveOrUpdate(ColumnDatas);
             attributes.addFlashAttribute("success", true);
-            attributes.addFlashAttribute("message", "更新权限成功");
-            logger.info("更新权限完成");
+            attributes.addFlashAttribute("message", "更新数据列成功");
+            logger.info("更新数据列完成");
         } catch (Exception e) {
-            logger.error("更新权限报错：", e);
-            attributes.addFlashAttribute("message", "更新权限报错");
+            logger.error("更新数据列报错：", e);
+            attributes.addFlashAttribute("message", "更新数据列报错");
         }
         return mv;
     }
 
     /**
-     * 根据Id逻辑删除
-     *
+     * 根据id逻辑删除数据列 及物理删除与数据列关联的 模块-数据列及角色-模块-数据列 信息
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
-        logger.info("删除权限" + id);
+        logger.info("删除数据列" + id);
 
         Long[] ids = moduleInfoColumnDatasService.getIdsByColumnDataId(id);
         if(ids!=null&&ids.length>0){
-        moduleInfoColumnDataHeadsService.deleteByRelateId(Arrays.asList(ids));
+            moduleInfoColumnDataHeadsService.deleteByRelateId(Arrays.asList(ids));
         }
         ModuleInfoColumnDatas moduleInfoColumnData = new ModuleInfoColumnDatas();
         moduleInfoColumnData.setColumnDataId(id);
@@ -194,14 +206,15 @@ public class ColumnDatasController extends BaseController {
     }
 
     /**
-     * 全选删除权限信息
-     *
-     * @return 返回跳转链接
+     * 删除多行数据列
+     * @param ids
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "delete-all", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
-        logger.info("删除所有权限开始");
+        logger.info("删除所有数据列开始");
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         try {
             for (Long id : ids) {
@@ -210,7 +223,7 @@ public class ColumnDatasController extends BaseController {
             map.put("stat", true);
         } catch (Exception e) {
             map.put("stat", false);
-            logger.error("删除权限错误信息：" + e);
+            logger.error("删除数据列错误信息：" + e);
         }
         return map;
     }

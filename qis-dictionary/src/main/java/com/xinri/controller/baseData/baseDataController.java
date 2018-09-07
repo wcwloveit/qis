@@ -35,9 +35,11 @@ public class baseDataController extends BaseController {
     @Autowired
     private IBaseDataTypesService baseDatasTypesService;
 
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index/{id}", method = RequestMethod.GET)
     public ModelAndView findLogList(@PathVariable("id") Long id) {
         logger.info("findLogList开始");
@@ -48,6 +50,13 @@ public class baseDataController extends BaseController {
         return mv;
     }
 
+
+    /**
+     * 返回字典树
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "list/{id}", method = RequestMethod.POST)
     public List<JsTree> list(@PathVariable("id") Long id) {
@@ -57,8 +66,9 @@ public class baseDataController extends BaseController {
 
     /**
      * 返回jsTree点选项的字典数据的详细信息和类型为类的数据
-     *
-     * @param id 资源ID
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "read-category/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -74,9 +84,10 @@ public class baseDataController extends BaseController {
     }
 
     /**
-     * 返回类型为类的数据
-     *
-     * @return List<Dictionary>
+     * 获取父字典
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "categoryList", method = RequestMethod.POST)
     @ResponseBody
@@ -85,6 +96,11 @@ public class baseDataController extends BaseController {
         return baseDatasService.findParents(id);
     }
 
+    /**
+     * 返回类型字典
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "typeList", method = RequestMethod.POST)
     @ResponseBody
     public List<BaseDataTypes> getTypeList() {
@@ -93,10 +109,10 @@ public class baseDataController extends BaseController {
     }
 
     /**
-     * 新建或修改
-     *
-     * @param 数据信息和是否有效
+     * 保存
+     * @param baseData
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView create(BaseDatas baseData) {
@@ -114,10 +130,10 @@ public class baseDataController extends BaseController {
     }
 
     /**
-     * 物理删除 要删除的数据的id
-     *
-     * @param
-     * @return 状态信息
+     * 物理删除
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
@@ -128,10 +144,14 @@ public class baseDataController extends BaseController {
 
 
     /**
-     * 检查同级下是否存在同名(dicValue)的数据
-     *
-     * @param dicValue(值)，dicPid(父级编号)，status(是修改还是新增)，id
+     * 检查同级有无同名字典
+     * @param name
+     * @param pid
+     * @param status
+     * @param id
+     * @param bid
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/checkExist", method = RequestMethod.GET)
     @ResponseBody

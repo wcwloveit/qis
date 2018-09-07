@@ -25,6 +25,13 @@
                 <div class="actions">
                     <div class="btn-group">
                         <a class="btn green btn-outline btn-circle" href="javascript:void(0);"
+                           onclick="javascript:history.back(-1);" data-toggle="dropdown">
+                            <i class="fa fa-mail-reply"></i>
+                            <span class="hidden-xs"> 返回 </span>
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn green btn-outline btn-circle" href="javascript:void(0);"
                            onclick="saveModule()" data-toggle="dropdown">
                             <i class="fa fa-save"></i>
                             <span class="hidden-xs"> 保存设置 </span>

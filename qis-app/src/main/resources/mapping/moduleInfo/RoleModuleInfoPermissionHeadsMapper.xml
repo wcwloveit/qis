@@ -476,19 +476,19 @@
             <!--</if>-->
         <!--</trim>-->
     <!--</delete>-->
-
+    <!--根据角色id获取关联表id列表-->
     <select id="getIds" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select module_info_permission_id FROM role_module_info_permission_heads where role_id = #{id}
 	</select>
 
-
+    <!--根据模块id和角色id获取权限id列表-->
     <select id="getPerIds" resultType="java.lang.Long">
 		  select b.permission_id
 		  FROM role_module_info_permission_heads a left join module_info_permissions b
 			on a.module_info_permission_id=b.id
 		  where b.module_info_id = #{moduleId} and a.role_id = #{roleId}
 	</select>
-
+    <!--物理删除-->
     <delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads">
         delete FROM role_module_info_permission_heads
         <trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -500,7 +500,7 @@
             </if>
         </trim>
     </delete>
-
+    <!--根据模块id和角色id删除-->
     <delete id="celar">
         delete from role_module_info_permission_heads
         where module_info_permission_id
@@ -512,7 +512,7 @@
         )
         and role_id=#{roleId}
 	</delete>
-
+    <!--根据关联表id删除-->
     <delete id="deleteByRelateId">
         delete from role_module_info_permission_heads
         where module_info_permission_id
@@ -522,7 +522,7 @@
             #{item}
         </foreach>
 	</delete>
-
+    <!--删除未选中的权限id所对应的行-->
     <delete id="deleteByDiff">
         delete
         from role_module_info_permission_heads

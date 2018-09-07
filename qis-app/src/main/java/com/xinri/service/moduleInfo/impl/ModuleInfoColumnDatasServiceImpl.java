@@ -3,6 +3,7 @@ import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
+import com.xinri.vo.moduleInfo.RoleModuleInfoColVo;
 import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
 import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
@@ -68,7 +69,7 @@ public class ModuleInfoColumnDatasServiceImpl extends CrudService<ModuleInfoColu
     }
 
     @Override
-    public List<RoleModuleInFoPerVo> getRoleModuleInFoColumnVo(RoleModuleInFoPerVo vo) {
+    public List<RoleModuleInfoColVo> getRoleModuleInFoColumnVo(RoleModuleInfoColVo vo) {
         return dao.getRoleModuleInFoColumnVo(vo);
     }
 

@@ -433,6 +433,7 @@
 
     </resultMap>
 
+	<!--列表-->
 	<select id="findListByVo" parameterType="com.xinri.vo.role.RolesVo" resultMap="rolesVoResultMap">
 		SELECT
 		<include refid="rolesColumns" />,d.NAME ROLE_CLASSES_NAME

@@ -418,7 +418,7 @@
 		<result column="DEPT_NAME" property="dept" jdbcType="VARCHAR"/>
 		<result column="ROLE_NAME" property="role" jdbcType="VARCHAR"/>
 	</resultMap>
-
+	<!--列表-->
 	<select id="findListByVo" parameterType="com.xinri.vo.users.SysUserVo" resultMap="sysUserResultVoMap">
 		SELECT
 		<include refid="sysUserColumns" />,d.NAME DEPT_NAME,r.NAME ROLE_NAME

@@ -27,18 +27,24 @@ public class baseDtaTypesController extends BaseController {
     @Autowired
     private IBaseDataTypesService baseDatasTypesService;
 
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         logger.info("findTypesList");
         return "baseDataTypes/list";
     }
 
-    /*
+    /**
      * 分页列表
-     * */
+     * @param dt
+     * @param request
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<BaseDataTypes> getItemList(DataTable<BaseDataTypes> dt, ServletRequest request) {
@@ -50,9 +56,9 @@ public class baseDtaTypesController extends BaseController {
     }
 
     /**
-     * 跳转新增
-     *
+     * 跳转新增页面
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
@@ -65,10 +71,11 @@ public class baseDtaTypesController extends BaseController {
 
 
     /**
-     * 新建
-     *
+     * 新增
+     * @param baseDataTypes
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(BaseDataTypes baseDataTypes,
@@ -91,10 +98,10 @@ public class baseDtaTypesController extends BaseController {
 
 
     /**
-     * 更新状态
-     *
+     * 跳转更新页面
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
@@ -108,11 +115,11 @@ public class baseDtaTypesController extends BaseController {
     }
 
     /**
-     * 更新
-     *
+     *更新
      * @param baseDataTypes
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(BaseDataTypes baseDataTypes, RedirectAttributes attributes) {
@@ -132,10 +139,10 @@ public class baseDtaTypesController extends BaseController {
     }
 
     /**
-     * 根据Id逻辑删除
-     *
+     * 根据id逻辑删除
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
@@ -145,9 +152,10 @@ public class baseDtaTypesController extends BaseController {
     }
 
     /**
-     * 全选删除角色信息
-     *
-     * @return 返回跳转链接
+     * 批量删除
+     * @param ids
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "delete-all", method = RequestMethod.POST)
     @ResponseBody

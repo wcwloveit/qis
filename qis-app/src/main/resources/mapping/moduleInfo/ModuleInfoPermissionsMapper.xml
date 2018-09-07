@@ -432,6 +432,7 @@
 		<where>${whereSqlParam}</where>
 	</update>
 
+	<!-- 根据条件进行物理删除 -->
 	<delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.ModuleInfoPermissions">
 		delete FROM MODULE_INFO_PERMISSIONS
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -441,6 +442,7 @@
 		</trim>
 	</delete>
 
+	<!--根据模块id和权限id获取关联表id-->
 	<select id="getId"  resultType="java.lang.Long">
 		  select id
 		  FROM module_info_permissions
@@ -449,6 +451,7 @@
 		  and is_effective = 1
 	</select>
 
+	<!--根据模块id和权限id列表获取关联表id列表-->
 	<select id="getIds" resultType="java.lang.Long">
 		  select id
 		  FROM module_info_permissions
@@ -462,18 +465,22 @@
 		  and is_effective = 1
 	</select>
 
+	<!--根据模块id获取关联表id数组-->
 	<select id="getIdsByModuleId" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select id FROM module_info_permissions where module_info_id = #{moduleId}
 	</select>
 
+	<!--根据权限id获取关联表id数组-->
 	<select id="getIdsByPermissionId" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select id FROM module_info_permissions where permission_id = #{permissionId}
 	</select>
 
+	<!--根据模块id获取有效的权限id数组-->
 	<select id="getPermissionIds" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select permission_id FROM module_info_permissions where module_info_id = #{id} and is_effective = 1
 	</select>
 
+	<!--建立模块-权限关联-->
 	<update id="relate" parameterType="com.xinri.po.moduleInfo.ModuleInfoPermissions">
 		UPDATE MODULE_INFO_PERMISSIONS t
 		SET IS_EFFECTIVE = #{isEffective}
@@ -486,7 +493,7 @@
 			</if>
 		</trim>
 	</update>
-
+	<!--根据权限id删除对应关联-->
 	<update id="deleteByPermissionId" parameterType="java.lang.Long">
 		UPDATE MODULE_INFO_PERMISSIONS t
 		SET IS_EFFECTIVE = 0
@@ -494,7 +501,7 @@
 			t.PERMISSION_ID = #{permissionId,jdbcType=BIGINT}
 		</where>
 	</update>
-
+	<!--根据模块id删除对应关联-->
 	<update id="deleteByModuleId" parameterType="java.lang.Long">
 		UPDATE MODULE_INFO_PERMISSIONS t
 		SET IS_EFFECTIVE = 0

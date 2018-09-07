@@ -21,6 +21,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 模块 数据列
+ * 创建人 汪震 20180907
+ */
 @Controller
 @RequestMapping(value = "module/moduleColumnDatas")
 public class ModuleColumnDatasController {
@@ -37,9 +41,11 @@ public class ModuleColumnDatasController {
     @Autowired
     private IRoleModuleInfoColumnDataHeadsService roleModuleInfoColumnDataHeadsService;
 
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView findModuleList() {
         ModelAndView mv = new ModelAndView("/module/col");
@@ -49,6 +55,12 @@ public class ModuleColumnDatasController {
         return mv;
     }
 
+    /**
+     * 根据模块id获取当前模块已分配的所有数据列
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "getCols/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Map getCols(@PathVariable Long id) {
@@ -61,6 +73,13 @@ public class ModuleColumnDatasController {
         return map;
     }
 
+    /**
+     * 保存
+     * @param id
+     * @param cols
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView create(Long id, String[] cols) {
         ModuleInfoColumnDatas moduleInfoColumnDatas = new ModuleInfoColumnDatas();

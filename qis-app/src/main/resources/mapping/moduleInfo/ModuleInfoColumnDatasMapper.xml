@@ -427,7 +427,7 @@
 		DELETE FROM MODULE_INFO_COLUMN_DATAS t
 		<where>${whereSqlParam}</where>
 	</update>
-
+	<!-- 根据条件进行物理删除 -->
 	<delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.ModuleInfoColumnDatas">
 		delete FROM MODULE_INFO_COLUMN_DATAS
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -436,7 +436,7 @@
 			</if>
 		</trim>
 	</delete>
-
+	<!--根据模块id和数据列id获取关联表id-->
 	<select id="getId"  resultType="java.lang.Long">
 		  select id
 		  FROM MODULE_INFO_COLUMN_DATAS
@@ -444,7 +444,7 @@
 		  AND COLUMN_DATA_ID = #{columnDataId}
 		  and is_effective = 1
 	</select>
-
+	<!--根据模块id和数据列id列表获取关联表id列表-->
 	<select id="getIds" resultType="java.lang.Long">
 		select id
 		FROM MODULE_INFO_COLUMN_DATAS
@@ -456,19 +456,20 @@
 		</foreach>
 		and is_effective = 1
 	</select>
-
+	<!--根据模块id获取关联表id数组-->
 	<select id="getIdsByModuleId" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select id FROM MODULE_INFO_COLUMN_DATAS where module_info_id = #{moduleId}
 	</select>
 
+	<!--根据数据列id获取关联表id数组-->
 	<select id="getIdsByColumnDataId" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select id FROM MODULE_INFO_COLUMN_DATAS where COLUMN_DATA_ID = #{columnDataId}
 	</select>
-
+	<!--根据模块id获取有效的数据列id数组-->
 	<select id="getColumnDataIds" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select COLUMN_DATA_ID FROM MODULE_INFO_COLUMN_DATAS where module_info_id = #{id} and is_effective = 1
 	</select>
-
+	<!--建立模块-数据列关联-->
 	<update id="relate" parameterType="com.xinri.po.moduleInfo.ModuleInfoColumnDatas">
 		UPDATE MODULE_INFO_COLUMN_DATAS t
 		SET IS_EFFECTIVE = #{isEffective}
@@ -481,7 +482,7 @@
 			</if>
 		</trim>
 	</update>
-
+	<!--根据数据列id删除对应关联-->
 	<update id="deleteByColumnDataId" parameterType="java.lang.Long">
 		UPDATE MODULE_INFO_COLUMN_DATAS t
 		SET IS_EFFECTIVE = 0
@@ -489,7 +490,7 @@
 			t.COLUMN_DATA_ID = #{ColumnDataId,jdbcType=BIGINT}
 		</where>
 	</update>
-
+	<!--根据模块id删除对应关联-->
 	<update id="deleteByModuleId" parameterType="java.lang.Long">
 		UPDATE MODULE_INFO_COLUMN_DATAS t
 		SET IS_EFFECTIVE = 0
@@ -500,10 +501,10 @@
 
 
 	<!-- 根据模块id和角色id获取 角色模块数据列 -->
-	<select id="getRoleModuleInFoColumnVo" parameterType="com.xinri.vo.moduleInfo.RoleModuleInFoPerVo" resultType="com.xinri.vo.moduleInfo.RoleModuleInFoPerVo">
-		SELECT m.id modulePermissionId,m.is_effective mpIsEffective,m.column_data_id permissionId,
+	<select id="getRoleModuleInFoColumnVo" parameterType="com.xinri.vo.moduleInfo.RoleModuleInfoColVo" resultType="com.xinri.vo.moduleInfo.RoleModuleInfoColVo">
+		SELECT m.id moduleColumnId,m.is_effective mpIsEffective,m.column_data_id colunmnId,
 		m.module_info_id moduleId,t.name name,t.code code,r.is_effective rIsEffective,r.role_id roleId,
-		r.id rmphId
+		r.id rmchId
 		FROM module_info_column_datas m
 		LEFT JOIN column_datas t on t.id = m.column_data_id AND t.is_deleted=0
 		LEFT JOIN role_module_info_column_data_heads r on r.module_info_column_data_id =m.id AND r.is_deleted=0

@@ -1,7 +1,6 @@
 package com.qis.shiro;
 
 
-
 import com.kingnode.diva.utils.Encodes;
 import com.qis.ShiroUser;
 import com.xinri.po.permissions.Permissions;
@@ -33,13 +32,13 @@ public class ShiroDbRealm extends AuthorizingRealm {
     protected ResourceService resourceService;
     @Autowired
     private ISysUserService sysUserService;
-//    private KnLogDao logDao;
+    //    private KnLogDao logDao;
 //    @Autowired
 //    private KnEmployeeDao employeeDao;
 //    @Autowired
 //    private SystemService systemService;
     @Autowired
-    private  HttpServletRequest request;
+    private HttpServletRequest request;
 
     //    @Autowired
 //    private SystemService systemService;
@@ -54,29 +53,26 @@ public class ShiroDbRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-          String username = String.valueOf(((UsernamePasswordToken) token).getUsername());
-          String password = String.valueOf(((UsernamePasswordToken) token).getPassword());
-          SysUser users = new SysUser();
-          users.setAccount(username);
-          users.setIsDeleted(0);
-          SysUser sysUser = sysUserService.get(users);
-          if(sysUser!= null){
-              byte[] salt = Encodes.decodeHex(sysUser.getSalt());
-              SimpleAuthenticationInfo auth;
-              auth = new SimpleAuthenticationInfo(new ShiroUser(sysUser.getId(),sysUser.getAccount(),sysUser.getName(),1),
-                      sysUser.getPassword(), ByteSource.Util.bytes(salt), getName());
-              return auth;
-          }else{
+        String username = String.valueOf(((UsernamePasswordToken) token).getUsername());
+        String password = String.valueOf(((UsernamePasswordToken) token).getPassword());
+        SysUser users = new SysUser();
+        users.setAccount(username);
+        users.setIsDeleted(0);
+        SysUser sysUser = sysUserService.get(users);
+        if (sysUser != null) {
+            byte[] salt = Encodes.decodeHex(sysUser.getSalt());
+            SimpleAuthenticationInfo auth;
+            auth = new SimpleAuthenticationInfo(new ShiroUser(sysUser.getId(), sysUser.getAccount(), sysUser.getName(), 1),
+                    sysUser.getPassword(), ByteSource.Util.bytes(salt), getName());
+            return auth;
+        } else {
 
 
-              throw new UnknownAccountException();
-          }
+            throw new UnknownAccountException();
+        }
 
 
-
-
-
-     //   KnUser user = resourceService.FindUserByLoginName(((UsernamePasswordToken) token).getUsername());
+        //   KnUser user = resourceService.FindUserByLoginName(((UsernamePasswordToken) token).getUsername());
 //        if (user != null) {
 //            if (ActiveType.DISABLE.equals(user.getStatus())) {
 //                throw new DisabledAccountException();
@@ -120,11 +116,11 @@ public class ShiroDbRealm extends AuthorizingRealm {
         // 单独定一个集合对象
         List<String> permissions = new ArrayList<String>();
         permissions.add("authc");
-        Redis info=resourceService.getInfo(shiroUser);
-        List<Module> resources=info.getModuleInfoesList();
+        Redis info = resourceService.getInfo(shiroUser);
+        List<Module> resources = info.getModuleInfoesList();
         for (Module resource : resources) {
-            if (CollectionUtils.isNotEmpty(resource.getPermissionList())){
-                List<Permissions> permissionsList=resource.getPermissionList();
+            if (CollectionUtils.isNotEmpty(resource.getPermissionList())) {
+                List<Permissions> permissionsList = resource.getPermissionList();
                 for (Permissions permissions1 : permissionsList) {
                     permissions.add(permissions1.getCode());
                 }
@@ -159,7 +155,6 @@ public class ShiroDbRealm extends AuthorizingRealm {
     public void setResourceService(ResourceService resourceService) {
         this.resourceService = resourceService;
     }
-
 
 
 //    /**

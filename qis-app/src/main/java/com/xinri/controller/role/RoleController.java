@@ -4,21 +4,17 @@ import com.app.api.DataTable;
 import com.app.util.StatusMsgUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.qis.ShiroUser;
 import com.qis.common.mapper.JsonMapper;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.qis.util.Utils;
-import com.xinri.po.departments.Departments;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfos;
 import com.xinri.po.role.RoleClasses;
 import com.xinri.po.role.Roles;
-import com.xinri.po.user.SysUser;
 import com.xinri.po.user.UserGroups;
-import com.xinri.po.user.Users;
 import com.xinri.service.departments.IDepartmentsService;
 import com.xinri.service.moduleInfo.*;
 import com.xinri.service.role.IRoleClassesService;
@@ -27,9 +23,10 @@ import com.xinri.service.role.IRolesService;
 import com.xinri.service.user.ISysUserService;
 import com.xinri.service.user.IUsersService;
 import com.xinri.util.AjaxStatus;
+import com.xinri.vo.moduleInfo.RoleModuleInfoCVo;
+import com.xinri.vo.moduleInfo.RoleModuleInfoColVo;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import com.xinri.vo.moduleInfo.RoleModuleInfoPCVo;
-import com.xinri.vo.redis.Redis;
 import com.xinri.vo.role.RolesVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +40,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
+/**
+ * 角色
+ * 创建人 汪震 20180907
+ */
 @Controller("roleController")
 @RequestMapping(value = "/role")
 public class RoleController extends BaseController {
@@ -87,18 +88,23 @@ public class RoleController extends BaseController {
     @Autowired
     private IDepartmentsService departmentsService;
 
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findRoleList() {
         return "role/list";
     }
 
 
-    /*
-     * 首页
-     * */
+    /**
+     * 角色下的模块管理页
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "module/{id}", method = RequestMethod.GET)
     public ModelAndView findModuleList(@PathVariable(value = "id") Long id) {
         List<Long> moduleIds = roleModuleInfosService.getModuleIds(id);
@@ -115,6 +121,13 @@ public class RoleController extends BaseController {
 
     }
 
+    /**
+     * 返回角色下的模块列表
+     * @param dt
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "moduleList/{id}", method = RequestMethod.POST)
     public DataTable<ModuleInfoes> getModuleList(DataTable<ModuleInfoes> dt, @PathVariable(value = "id") Long id) {
@@ -122,9 +135,13 @@ public class RoleController extends BaseController {
         return moduleInfoesService.getModulesForRole(dt, ids);
     }
 
-    /*
+    /**
      * 分页列表
-     * */
+     * @param dt
+     * @param request
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RolesVo> getItemList(DataTable<RolesVo> dt, ServletRequest request) {
@@ -136,9 +153,9 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 跳转新增
-     *
+     * 跳转新增页面
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
@@ -154,10 +171,12 @@ public class RoleController extends BaseController {
 
 
     /**
-     * 新建
-     *
+     * 新增角色
+     * @param role
+     * @param ids
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(Roles role, String ids,
@@ -196,10 +215,10 @@ public class RoleController extends BaseController {
 
 
     /**
-     * 更新状态
-     *
+     * 跳转更新页面
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
@@ -217,10 +236,11 @@ public class RoleController extends BaseController {
 
     /**
      * 更新
-     *
+     * @param role
      * @param ids
      * @param attributes
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(Roles role, String ids, RedirectAttributes attributes) {
@@ -259,10 +279,10 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 根据Id逻辑删除
-     *
+     * 根据id逻辑删除
      * @param id
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
@@ -271,9 +291,10 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 全选删除角色信息
-     *
-     * @return 返回跳转链接
+     * 批量删除
+     * @param ids
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "delete-all", method = RequestMethod.POST)
     @ResponseBody
@@ -291,65 +312,13 @@ public class RoleController extends BaseController {
         return map;
     }
 
-    @RequestMapping(value = "permissionsSave", method = RequestMethod.POST)
-    public String permissionsSave(Long roleId, Long moduleId, Long[] ids, RedirectAttributes redirectAttributes) {
-        try {
-            roleModuleInfoPermissionHeadsService.celar(moduleId, roleId);
-            List<Long> perIds = new ArrayList<>();
-            if (ids != null && ids.length > 0) {
-                perIds = Arrays.asList(ids);
-            }
-            Long[] moduPerIds = moduleInfoPermissionsService.getIds(moduleId, perIds);
-            RoleModuleInfoPermissionHeads roleModuleInfoPermissionHead = new RoleModuleInfoPermissionHeads();
-            roleModuleInfoPermissionHead.setRoleId(roleId);
-            for (Long moduPerId : moduPerIds) {
-                roleModuleInfoPermissionHead.setId(null);
-                roleModuleInfoPermissionHead.setIsNewRecord(true);
-                roleModuleInfoPermissionHead.setModuleInfoPermissionId(moduPerId);
-                roleModuleInfoPermissionHeadsService.saveOrUpdate(roleModuleInfoPermissionHead);
-            }
-            logger.info("roleModuleInfoPermissionHead成功");
-            redirectAttributes.addFlashAttribute("message", "保存成功");
-        } catch (Exception e) {
-            logger.error("roleModuleInfoPermissionHead成功", e);
-            redirectAttributes.addFlashAttribute("message", "保存失败");
-        }
-        return "redirect:/role/module/" + roleId;
-    }
-
-    @RequestMapping(value = "columnDatasSave", method = RequestMethod.POST)
-    public String columnDatasSave(Long roleId, Long moduleId, Long[] colIds, RedirectAttributes redirectAttributes) {
-        try {
-            roleModuleInfoColumnDataHeadsService.celar(moduleId, roleId);
-            List<Long> cIds = new ArrayList<>();
-            if (colIds != null && colIds.length > 0) {
-                cIds = Arrays.asList(colIds);
-            }
-            Long[] moduPerIds = moduleInfoColumnDatasService.getIds(moduleId, cIds);
-            RoleModuleInfoColumnDataHeads roleModuleInfoColumnDataHead = new RoleModuleInfoColumnDataHeads();
-            roleModuleInfoColumnDataHead.setRoleId(roleId);
-            for (Long moduPerId : moduPerIds) {
-                roleModuleInfoColumnDataHead.setId(null);
-                roleModuleInfoColumnDataHead.setIsNewRecord(true);
-                roleModuleInfoColumnDataHead.setModuleInfoColumnDataId(moduPerId);
-                roleModuleInfoColumnDataHeadsService.saveOrUpdate(roleModuleInfoColumnDataHead);
-            }
-            logger.info("roleModuleInfoColumnDataHead成功");
-            redirectAttributes.addFlashAttribute("message", "保存成功");
-        } catch (Exception e) {
-            logger.error("roleModuleInfoColumnDataHead成功", e);
-            redirectAttributes.addFlashAttribute("message", "保存失败");
-        }
-        return "redirect:/role/module/" + roleId;
-    }
-
     /**
-     * 查询某个角色下的组织
-     *
+     * 查询某个角色下的组织列表
      * @param dt
      * @param roleId
      * @param request
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "query-group-list")
     @ResponseBody
@@ -358,6 +327,14 @@ public class RoleController extends BaseController {
         return roleUserGroupsService.QueryUserByRoleIdList(dt, searchParams, roleId);
     }
 
+    /**
+     * 查询某个角色下不存在的组织列表
+     * @param dt
+     * @param roleId
+     * @param request
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "query-group-notinrole")
     @ResponseBody
     public DataTable queryNotInRoleList(DataTable<UserGroups> dt, @RequestParam(value = "roleId", required = false) String roleId, ServletRequest request) {
@@ -371,6 +348,7 @@ public class RoleController extends BaseController {
      * @param roleId
      * @param groupId
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "join", method = RequestMethod.POST)
     @ResponseBody
@@ -384,6 +362,7 @@ public class RoleController extends BaseController {
      * @param roleId
      * @param groupId
      * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "leave", method = RequestMethod.POST)
     @ResponseBody
@@ -433,15 +412,15 @@ public class RoleController extends BaseController {
      * @param moduleId
      * @param roleId
      * @return
-     * 创建者 夏善勇 20180906
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/getModuleColumnData-{moduleId}-{roleId}", method = RequestMethod.GET)
     public ModelAndView getModuleColumnData(@PathVariable("moduleId") Long moduleId,
                                        @PathVariable("roleId") Long roleId ) {
-        ModelAndView mv = new ModelAndView("/moduleColumnData/roleModuleList");
+        ModelAndView mv = new ModelAndView("/columnDatas/roleModuleList");
         logger.info("getModuleColumnData开始");
-        List<RoleModuleInFoPerVo> voList  = new  ArrayList<RoleModuleInFoPerVo>();
-        RoleModuleInFoPerVo vo = new RoleModuleInFoPerVo();
+        List<RoleModuleInfoColVo> voList  = new  ArrayList<RoleModuleInfoColVo>();
+        RoleModuleInfoColVo vo = new RoleModuleInfoColVo();
         vo.setModuleId(moduleId);
         vo.setRoleId(roleId);
         voList = moduleInfoColumnDatasService.getRoleModuleInFoColumnVo(vo);
@@ -454,7 +433,7 @@ public class RoleController extends BaseController {
         ModuleInfoes info =  moduleInfoesService.get(moduleId);
         Roles role = rolesService.get(roleId);
 
-        mv.addObject("moList",voList);
+        mv.addObject("coList",voList);
         mv.addObject("info",info);
         mv.addObject("role",role);
 //        mv.addObject("message","moList");
@@ -470,6 +449,7 @@ public class RoleController extends BaseController {
      * @param response
      * @return
      * 创建者 夏善勇 20180906
+     * 修改者 汪震 20180907
      */
     @RequestMapping(value="/modulePermissionsSave",method= RequestMethod.POST)
     public String list(@RequestBody String body, HttpServletRequest request, HttpServletResponse response) {
@@ -485,12 +465,13 @@ public class RoleController extends BaseController {
                         heads.setIsNewRecord(false);
                         heads.setId(perVo.getRmphId());
                         heads.setIsEffective(perVo.getrIsEffective());
+                        roleModuleInfoPermissionHeadsService.saveOrUpdate(heads);
                     }else if(perVo.getrIsEffective()==1){//新建
                         heads.setIsEffective(1);
                         heads.setRoleId(vo.getRoleId());
                         heads.setModuleInfoPermissionId(perVo.getModulePermissionId());
+                        roleModuleInfoPermissionHeadsService.saveOrUpdate(heads);
                     }
-                    roleModuleInfoPermissionHeadsService.saveOrUpdate(heads);
                 }
             }
         } catch (Exception e) {
@@ -501,5 +482,106 @@ public class RoleController extends BaseController {
         logger.info("保存角色模块权限完成");
         return responseJsonData(code, msg, null,response);
     }
+
+    /**
+     *保存角色模块数据列
+     * @param RoleModuleInfoCVo
+     * @param request
+     * @param response
+     * @return
+     * 创建者 汪震 20180907
+     */
+    @RequestMapping(value="/moduleColumnsSave",method= RequestMethod.POST)
+    @ResponseBody
+    public AjaxStatus list(@RequestBody RoleModuleInfoCVo vo, HttpServletRequest request, HttpServletResponse response) {
+        logger.info("保存角色模块开始");
+        String code = StatusMsgUtils.SUCCEEDEDCODE_200;
+        String msg = StatusMsgUtils.ResponseCode.getName(code);
+        try {
+            if(vo.getmList()!=null){
+                for(RoleModuleInfoColVo colVo: vo.getmList()){
+                    RoleModuleInfoColumnDataHeads heads = new RoleModuleInfoColumnDataHeads();
+                    if(colVo.getRmchId()!=null){//更新
+                        heads.setIsNewRecord(false);
+                        heads.setId(colVo.getRmchId());
+                        heads.setIsEffective(colVo.getrIsEffective());
+                        roleModuleInfoColumnDataHeadsService.saveOrUpdate(heads);
+                    }else if(colVo.getrIsEffective()==1){//新建
+                        heads.setIsEffective(1);
+                        heads.setRoleId(vo.getRoleId());
+                        heads.setModuleInfoColumnDataId(colVo.getModuleColumnId());
+                        roleModuleInfoColumnDataHeadsService.saveOrUpdate(heads);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("保存角色模块权限报错：", e);
+            code = StatusMsgUtils.ERRORCODE_400;
+            msg = StatusMsgUtils.ResponseCode.getName(code);
+        }
+        logger.info("保存角色模块权限完成");
+        AjaxStatus ajaxStatus=new AjaxStatus(code,msg,response);
+        return ajaxStatus;
+    }
+
+//    /**
+//     *
+//     * @param roleId
+//     * @param moduleId
+//     * @param ids
+//     * @param redirectAttributes
+//     * @return
+//     */
+//    @RequestMapping(value = "permissionsSave", method = RequestMethod.POST)
+//    public String permissionsSave(Long roleId, Long moduleId, Long[] ids, RedirectAttributes redirectAttributes) {
+//        try {
+//            roleModuleInfoPermissionHeadsService.celar(moduleId, roleId);
+//            List<Long> perIds = new ArrayList<>();
+//            if (ids != null && ids.length > 0) {
+//                perIds = Arrays.asList(ids);
+//            }
+//            Long[] moduPerIds = moduleInfoPermissionsService.getIds(moduleId, perIds);
+//            RoleModuleInfoPermissionHeads roleModuleInfoPermissionHead = new RoleModuleInfoPermissionHeads();
+//            roleModuleInfoPermissionHead.setRoleId(roleId);
+//            for (Long moduPerId : moduPerIds) {
+//                roleModuleInfoPermissionHead.setId(null);
+//                roleModuleInfoPermissionHead.setIsNewRecord(true);
+//                roleModuleInfoPermissionHead.setModuleInfoPermissionId(moduPerId);
+//                roleModuleInfoPermissionHeadsService.saveOrUpdate(roleModuleInfoPermissionHead);
+//            }
+//            logger.info("roleModuleInfoPermissionHead成功");
+//            redirectAttributes.addFlashAttribute("message", "保存成功");
+//        } catch (Exception e) {
+//            logger.error("roleModuleInfoPermissionHead成功", e);
+//            redirectAttributes.addFlashAttribute("message", "保存失败");
+//        }
+//        return "redirect:/role/module/" + roleId;
+//    }
+//
+//    @RequestMapping(value = "columnDatasSave", method = RequestMethod.POST)
+//    public String columnDatasSave(Long roleId, Long moduleId, Long[] colIds, RedirectAttributes redirectAttributes) {
+//        try {
+//            roleModuleInfoColumnDataHeadsService.celar(moduleId, roleId);
+//            List<Long> cIds = new ArrayList<>();
+//            if (colIds != null && colIds.length > 0) {
+//                cIds = Arrays.asList(colIds);
+//            }
+//            Long[] moduPerIds = moduleInfoColumnDatasService.getIds(moduleId, cIds);
+//            RoleModuleInfoColumnDataHeads roleModuleInfoColumnDataHead = new RoleModuleInfoColumnDataHeads();
+//            roleModuleInfoColumnDataHead.setRoleId(roleId);
+//            for (Long moduPerId : moduPerIds) {
+//                roleModuleInfoColumnDataHead.setId(null);
+//                roleModuleInfoColumnDataHead.setIsNewRecord(true);
+//                roleModuleInfoColumnDataHead.setModuleInfoColumnDataId(moduPerId);
+//                roleModuleInfoColumnDataHeadsService.saveOrUpdate(roleModuleInfoColumnDataHead);
+//            }
+//            logger.info("roleModuleInfoColumnDataHead成功");
+//            redirectAttributes.addFlashAttribute("message", "保存成功");
+//        } catch (Exception e) {
+//            logger.error("roleModuleInfoColumnDataHead成功", e);
+//            redirectAttributes.addFlashAttribute("message", "保存失败");
+//        }
+//        return "redirect:/role/module/" + roleId;
+//    }
 
 }

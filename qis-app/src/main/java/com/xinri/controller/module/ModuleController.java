@@ -67,10 +67,11 @@ public class ModuleController extends BaseController {
     private ResourceService resourceService;
 
 
-
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView findModuleList() {
         logger.info("findModuleList开始");
@@ -79,6 +80,11 @@ public class ModuleController extends BaseController {
         return mv;
     }
 
+    /**
+     * 获取模块树
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public List<JsTree> list() {
@@ -86,7 +92,12 @@ public class ModuleController extends BaseController {
         return moduleInfoesService.getTree();
     }
 
-
+    /**
+     * 根据角色id获取当前角色拥有的模块树
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     @ResponseBody
     @RequestMapping(value = "listForRole/{id}", method = RequestMethod.POST)
     public List<JsTree> listForRole(@PathVariable(value = "id") Long id) {
@@ -106,9 +117,10 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * 返回jsTree点选项的详细信息和上级菜单及权限信息
-     *
-     * @param id 资源ID
+     * 返回jsTree点选项的详细信息和上级模块信息
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "get-infos/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -122,9 +134,9 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * 返回类型为类的模块
-     *
-     * @return List<Dictionary>
+     * 返回所有父模块
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "parentsList", method = RequestMethod.POST)
     @ResponseBody
@@ -137,10 +149,10 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * 新建或修改
-     *
+     * 保存
+     * @param moduleInfo
      * @return
-     * @param模块信息和是否有效
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView create(ModuleInfoes moduleInfo) {
@@ -185,10 +197,10 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * 物理删除
-     *
-     * @return 状态信息
-     * @param要删除的模块的id
+     * 逻辑删除 模块信息 同时物理删除模块-数据列 和模块-权限关联 信息
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
@@ -222,10 +234,13 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * 检查同级下是否存在同名(dicValue)的模块
-     *
+     * 检查同级下是否存在同名（name）的模块
+     * @param name
+     * @param pid
+     * @param status
+     * @param id
      * @return
-     * @paramdicValue(值)，dicPid(父级编号)，status(是修改还是新增)，id
+     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/checkExist", method = RequestMethod.GET)
     @ResponseBody
@@ -246,6 +261,14 @@ public class ModuleController extends BaseController {
         return true;
     }
 
+    /**
+     * 检查同级下是否存在同编码（code）的模块
+     * @param code
+     * @param status
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "/checkCode", method = RequestMethod.GET)
     @ResponseBody
     public Boolean checkCode(String code, String status, Long id) {
@@ -264,51 +287,23 @@ public class ModuleController extends BaseController {
         return true;
     }
 
-    @RequestMapping(value = "/getPermissions", method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getPermissions(Long moduleId, Long roleId) {
-        logger.info("getPermissions开始");
-        Map<String, Object> info = new HashMap<String, Object>();
-        List<Long> ids = moduleInfoPermissionsService.getPermissionIds(moduleId);
-        List<Permissions> permissions = new ArrayList<>();
-        Permissions permission = new Permissions();
-        for (Long pid : ids) {
-            permission = permissionsService.get(pid);
-            permissions.add(permission);
-        }
-        info.put("permissions", permissions);
-        List<Long> perIds = roleModuleInfoPermissionHeadsService.getPerIds(moduleId, roleId);
-        info.put("perIds", perIds);
-        logger.info("getPermissions结束");
-        return info;
-    }
 
-
-
-
-    @RequestMapping(value = "/getColumnDatas", method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getColumnDatas(Long moduleId, Long roleId) {
-        logger.info("getColumnDatas开始");
-        Map<String, Object> info = new HashMap<String, Object>();
-        List<Long> ids = moduleInfoColumnDatasService.getColumnDataIds(moduleId);
-        List<ColumnDatas> columnDatas = new ArrayList<>();
-        ColumnDatas columnData = new ColumnDatas();
-        for (Long pid : ids) {
-            columnData = columnDatasService.get(pid);
-            columnDatas.add(columnData);
-        }
-        info.put("columnDatas", columnDatas);
-        List<Long> colIds = roleModuleInfoColumnDataHeadsService.getColIds(moduleId, roleId);
-        info.put("colIds", colIds);
-        logger.info("getColumnDatas结束");
-        return info;
-    }
-
+    /**
+     * 忘了干啥的了
+     * @param moduleInfo
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     public List<ModuleInfoes> findList(ModuleInfoes moduleInfo,Long id){
         return moduleInfoesService.findList(moduleInfo);
     }
 
+    /**
+     * 返回当前用户拥有的所有模块
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
     public List<Module> search(){
@@ -354,5 +349,45 @@ public class ModuleController extends BaseController {
 //                moduleInfoColumnDatasService.saveOrUpdate(moduleInfoColumnData);
 //            }
 //        }
+//    }
+//    @RequestMapping(value = "/getPermissions", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Map<String, Object> getPermissions(Long moduleId, Long roleId) {
+//        logger.info("getPermissions开始");
+//        Map<String, Object> info = new HashMap<String, Object>();
+//        List<Long> ids = moduleInfoPermissionsService.getPermissionIds(moduleId);
+//        List<Permissions> permissions = new ArrayList<>();
+//        Permissions permission = new Permissions();
+//        for (Long pid : ids) {
+//            permission = permissionsService.get(pid);
+//            permissions.add(permission);
+//        }
+//        info.put("permissions", permissions);
+//        List<Long> perIds = roleModuleInfoPermissionHeadsService.getPerIds(moduleId, roleId);
+//        info.put("perIds", perIds);
+//        logger.info("getPermissions结束");
+//        return info;
+//    }
+//
+//
+//
+//
+//    @RequestMapping(value = "/getColumnDatas", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Map<String, Object> getColumnDatas(Long moduleId, Long roleId) {
+//        logger.info("getColumnDatas开始");
+//        Map<String, Object> info = new HashMap<String, Object>();
+//        List<Long> ids = moduleInfoColumnDatasService.getColumnDataIds(moduleId);
+//        List<ColumnDatas> columnDatas = new ArrayList<>();
+//        ColumnDatas columnData = new ColumnDatas();
+//        for (Long pid : ids) {
+//            columnData = columnDatasService.get(pid);
+//            columnDatas.add(columnData);
+//        }
+//        info.put("columnDatas", columnDatas);
+//        List<Long> colIds = roleModuleInfoColumnDataHeadsService.getColIds(moduleId, roleId);
+//        info.put("colIds", colIds);
+//        logger.info("getColumnDatas结束");
+//        return info;
 //    }
 }

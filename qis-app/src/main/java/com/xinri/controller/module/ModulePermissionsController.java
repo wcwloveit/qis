@@ -23,6 +23,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 模块-权限
+ * 创建人 汪震 20180907
+ */
 @Controller
 @RequestMapping(value = "module/modulePermissions")
 public class ModulePermissionsController {
@@ -39,9 +43,11 @@ public class ModulePermissionsController {
     @Autowired
     private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
 
-    /*
+    /**
      * 首页
-     * */
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView findModuleList() {
         ModelAndView mv = new ModelAndView("/module/per");
@@ -51,6 +57,12 @@ public class ModulePermissionsController {
         return mv;
     }
 
+    /**
+     * 获取此模块拥有的所有权限信息
+     * @param id
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "getPers/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Map getPers(@PathVariable Long id) {
@@ -63,6 +75,13 @@ public class ModulePermissionsController {
         return map;
     }
 
+    /**
+     * 保存
+     * @param id
+     * @param pers
+     * @return
+     * 创建人 汪震 20180907
+     */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView create(Long id, String[] pers) {
         ModuleInfoPermissions moduleInfoPermissions = new ModuleInfoPermissions();

@@ -2,7 +2,7 @@ package com.xinri.service.moduleInfo;
 import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
-import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
+import com.xinri.vo.moduleInfo.RoleModuleInfoColVo;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +34,6 @@ public interface IModuleInfoColumnDatasService extends IBaseService<ModuleInfoCo
 
     DataTable<ModuleInfoColumnDatas> findListA(DataTable<ModuleInfoColumnDatas> dt, Map<String, Object> searchParams);
 
-    List<RoleModuleInFoPerVo> getRoleModuleInFoColumnVo(RoleModuleInFoPerVo vo);
+    List<RoleModuleInfoColVo> getRoleModuleInFoColumnVo(RoleModuleInfoColVo vo);
 }
 

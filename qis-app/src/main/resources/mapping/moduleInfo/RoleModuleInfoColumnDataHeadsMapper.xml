@@ -428,11 +428,12 @@
 		<where>${whereSqlParam}</where>
 	</update>
 
+	<!--根据角色id获取关联表id列表-->
 	<select id="getIds" parameterType="java.lang.Long" resultType="java.lang.Long">
 		  select module_info_column_data_id FROM role_module_info_column_data_heads where role_id = #{id}
 	</select>
 
-
+	<!--根据模块id和角色id获取数据列id列表-->
 	<select id="getColIds" resultType="java.lang.Long">
 		  select b.column_data_id
 		  FROM role_module_info_column_data_heads a left join module_info_column_datas b
@@ -440,6 +441,7 @@
 		  where b.module_info_id = #{moduleId} and a.role_id = #{roleId}
 	</select>
 
+	<!--物理删除-->
 	<delete id="removeByEntity" parameterType="com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads">
 		delete FROM role_module_info_column_data_heads
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -452,6 +454,7 @@
 		</trim>
 	</delete>
 
+	<!--根据模块id和角色id删除-->
 	<delete id="celar">
         delete from role_module_info_column_data_heads
         where module_info_column_data_id
@@ -464,6 +467,7 @@
         and role_id=#{roleId}
 	</delete>
 
+	<!--根据关联表id删除-->
 	<delete id="deleteByRelateId">
 		delete from role_module_info_column_data_heads
 		where module_info_column_data_id
@@ -474,6 +478,7 @@
 		</foreach>
 	</delete>
 
+	<!--删除未选中的数据列id所对应的行-->
 	<delete id="deleteByDiff">
 		delete
 		from role_module_info_column_data_heads
