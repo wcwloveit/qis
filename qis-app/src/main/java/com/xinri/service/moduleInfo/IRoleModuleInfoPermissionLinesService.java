@@ -1,6 +1,10 @@
 package com.xinri.service.moduleInfo;
+import com.app.api.DataTable;
 import com.qis.common.service.IBaseService;
+import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionLines;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo;
+
 /**
  * <p></p>
  * 类名:RoleModuleInfoPermissionLinesService<br>
@@ -11,5 +15,6 @@ import com.xinri.po.moduleInfo.RoleModuleInfoPermissionLines;
 public interface IRoleModuleInfoPermissionLinesService extends IBaseService<RoleModuleInfoPermissionLines>{
 
 
+    DataTable<RoleModuleInFoPermissionLineVo> getModulesForRole(DataTable<RoleModuleInFoPermissionLineVo> dt, Long roleId, Long infoId);
 }
 

@@ -4,17 +4,21 @@ import com.app.api.DataTable;
 import com.app.util.StatusMsgUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.qis.ShiroUser;
 import com.qis.common.mapper.JsonMapper;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.qis.util.Utils;
+import com.xinri.po.departments.Departments;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
 import com.xinri.po.moduleInfo.RoleModuleInfos;
 import com.xinri.po.role.RoleClasses;
 import com.xinri.po.role.Roles;
+import com.xinri.po.user.SysUser;
 import com.xinri.po.user.UserGroups;
+import com.xinri.po.user.Users;
 import com.xinri.service.departments.IDepartmentsService;
 import com.xinri.service.moduleInfo.*;
 import com.xinri.service.role.IRoleClassesService;
@@ -23,10 +27,11 @@ import com.xinri.service.role.IRolesService;
 import com.xinri.service.user.ISysUserService;
 import com.xinri.service.user.IUsersService;
 import com.xinri.util.AjaxStatus;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import com.xinri.vo.moduleInfo.RoleModuleInfoCVo;
 import com.xinri.vo.moduleInfo.RoleModuleInfoColVo;
-import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import com.xinri.vo.moduleInfo.RoleModuleInfoPCVo;
+import com.xinri.vo.redis.Redis;
 import com.xinri.vo.role.RolesVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -348,7 +353,6 @@ public class RoleController extends BaseController {
      * @param roleId
      * @param groupId
      * @return
-     * 创建人 汪震 20180907
      */
     @RequestMapping(value = "join", method = RequestMethod.POST)
     @ResponseBody
@@ -379,8 +383,9 @@ public class RoleController extends BaseController {
      */
     @RequestMapping(value = "/getModulePermissions-{moduleId}-{roleId}", method = RequestMethod.GET)
     public ModelAndView getModulePermissions(@PathVariable("moduleId") Long moduleId,
-                                       @PathVariable("roleId") Long roleId ) {
-        ModelAndView mv = new ModelAndView("/permissions/roleModuleList");
+                                             @PathVariable("roleId") Long roleId,
+                                             RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
         logger.info("getRoleModulePermissions开始");
         List<RoleModuleInFoPerVo> voList  = new  ArrayList<RoleModuleInFoPerVo>();
         RoleModuleInFoPerVo vo = new RoleModuleInFoPerVo();
@@ -390,16 +395,19 @@ public class RoleController extends BaseController {
 
         if(voList==null){
             mv.setViewName("redirect:/role/module/" + roleId);
-            mv.addObject("message","当前无模块");
-            return  mv;
+            redirectAttributes.addFlashAttribute("message", "当前无模块");
+        }else{
+            mv.setViewName("/permissions/roleModuleList");
+
+            ModuleInfoes info =  moduleInfoesService.get(moduleId);
+            Roles role = rolesService.get(roleId);
+            mv.addObject("moList",voList);
+            mv.addObject("info",info);
+            mv.addObject("role",role);
+
         }
 
-        ModuleInfoes info =  moduleInfoesService.get(moduleId);
-        Roles role = rolesService.get(roleId);
 
-        mv.addObject("moList",voList);
-        mv.addObject("info",info);
-        mv.addObject("role",role);
 //        mv.addObject("message","moList");
 //        mv.addObject("success",true);
         logger.info("getRoleModulePermissions结束");
@@ -412,12 +420,13 @@ public class RoleController extends BaseController {
      * @param moduleId
      * @param roleId
      * @return
-     * 创建人 汪震 20180907
+     * 创建者 夏善勇 20180906
      */
     @RequestMapping(value = "/getModuleColumnData-{moduleId}-{roleId}", method = RequestMethod.GET)
     public ModelAndView getModuleColumnData(@PathVariable("moduleId") Long moduleId,
-                                       @PathVariable("roleId") Long roleId ) {
-        ModelAndView mv = new ModelAndView("/columnDatas/roleModuleList");
+                                            @PathVariable("roleId") Long roleId ,
+                                            RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
         logger.info("getModuleColumnData开始");
         List<RoleModuleInfoColVo> voList  = new  ArrayList<RoleModuleInfoColVo>();
         RoleModuleInfoColVo vo = new RoleModuleInfoColVo();
@@ -426,16 +435,18 @@ public class RoleController extends BaseController {
         voList = moduleInfoColumnDatasService.getRoleModuleInFoColumnVo(vo);
 
         if(voList==null){
-            mv.addObject("message","当前无数据列");
+            redirectAttributes.addFlashAttribute("message", "当前无数据列");
             mv.setViewName("redirect:/role/module/" + roleId);
-            return  mv;
-        }
-        ModuleInfoes info =  moduleInfoesService.get(moduleId);
-        Roles role = rolesService.get(roleId);
+        }else {
+            mv.setViewName("/moduleColumnData/roleModuleList");
+            ModuleInfoes info =  moduleInfoesService.get(moduleId);
+            Roles role = rolesService.get(roleId);
 
-        mv.addObject("coList",voList);
-        mv.addObject("info",info);
-        mv.addObject("role",role);
+            mv.addObject("moList",voList);
+            mv.addObject("info",info);
+            mv.addObject("role",role);
+        }
+
 //        mv.addObject("message","moList");
 //        mv.addObject("success",true);
         logger.info("getModuleColumnData结束");
@@ -465,13 +476,12 @@ public class RoleController extends BaseController {
                         heads.setIsNewRecord(false);
                         heads.setId(perVo.getRmphId());
                         heads.setIsEffective(perVo.getrIsEffective());
-                        roleModuleInfoPermissionHeadsService.saveOrUpdate(heads);
                     }else if(perVo.getrIsEffective()==1){//新建
                         heads.setIsEffective(1);
                         heads.setRoleId(vo.getRoleId());
                         heads.setModuleInfoPermissionId(perVo.getModulePermissionId());
-                        roleModuleInfoPermissionHeadsService.saveOrUpdate(heads);
                     }
+                    roleModuleInfoPermissionHeadsService.saveOrUpdate(heads);
                 }
             }
         } catch (Exception e) {
@@ -483,9 +493,11 @@ public class RoleController extends BaseController {
         return responseJsonData(code, msg, null,response);
     }
 
+
+
     /**
-     *保存角色模块数据列
-     * @param RoleModuleInfoCVo
+     * 保存角色模块数据列
+     * @param vo
      * @param request
      * @param response
      * @return

@@ -2,6 +2,10 @@ package com.xinri.dao.moduleInfo;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionLines;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo;
+
+import java.util.List;
+
 /**
  * 类名:RoleModuleInfoPermissionLinesMapper<br>
  * 创建人:xiashanyong<br>
@@ -10,5 +14,6 @@ import com.xinri.po.moduleInfo.RoleModuleInfoPermissionLines;
  @MyBatisDao
 public interface RoleModuleInfoPermissionLinesMapper extends CrudDao<RoleModuleInfoPermissionLines>{
 
+    List<RoleModuleInFoPermissionLineVo> findListByVo(RoleModuleInFoPermissionLineVo vo);
 }
 

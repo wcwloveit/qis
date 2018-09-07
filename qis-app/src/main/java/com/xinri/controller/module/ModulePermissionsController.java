@@ -1,14 +1,14 @@
 package com.xinri.controller.module;
 
+import com.app.api.DataTable;
 import com.xinri.po.moduleInfo.ColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
+import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
-import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
-import com.xinri.service.moduleInfo.IModuleInfoesService;
-import com.xinri.service.moduleInfo.IPermissionsToModuleService;
-import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
+import com.xinri.service.moduleInfo.*;
 import com.xinri.service.moduleInfo.impl.ModuleInfoesServiceImpl;
 import com.xinri.service.permissions.IPermissionsService;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,8 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 /**
  * 模块-权限
  * 创建人 汪震 20180907
@@ -42,6 +42,8 @@ public class ModulePermissionsController {
 
     @Autowired
     private IRoleModuleInfoPermissionHeadsService roleModuleInfoPermissionHeadsService;
+    @Autowired
+    private IRoleModuleInfoPermissionLinesService roleModuleInfoPermissionLinesService;
 
     /**
      * 首页
@@ -103,5 +105,20 @@ public class ModulePermissionsController {
         }
         ModelAndView mv = new ModelAndView("redirect:/module/modulePermissions/index/");
         return mv;
+    }
+
+    /**创建者 夏善勇  创建时间 2018.9.7
+     * 获取当前角色id，模块id下的 权限列数据
+     * @param dt
+     * @param roleId
+     * @param infoId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "lines-{roleId}-{infoId}", method = RequestMethod.POST)
+    public DataTable<RoleModuleInFoPermissionLineVo> getModuleList(DataTable<RoleModuleInFoPermissionLineVo> dt,
+                                                                   @PathVariable(value = "roleId") Long roleId,
+                                                                   @PathVariable(value = "infoId") Long infoId) {
+        return roleModuleInfoPermissionLinesService.getModulesForRole(dt, roleId,infoId);
     }
 }

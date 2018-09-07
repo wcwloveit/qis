@@ -441,6 +441,25 @@
 		DELETE FROM ROLE_MODULE_INFO_PERMISSION_LINES t 
 		<where>${whereSqlParam}</where>
 	</update>
-	
 
+	<select id="findListByVo" parameterType="com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo" resultType="com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo">
+		SELECT p.*,t.name tname,t.code tcode,
+		(case p.role_type
+		when 0 THEN u.name
+		when 1 THEN d.name
+		END) udname ,
+		(case p.role_type
+		when 0 THEN u.user_name
+		when 1 THEN d.oa_no
+		END) udno
+		FROM role_module_info_permission_lines p
+		LEFT JOIN role_module_info_permission_heads r on r.id = p.role_module_info_permission_head_id AND r.is_deleted=0
+		LEFT JOIN module_info_permissions m on r.module_info_permission_id =m.id  AND m.is_deleted=0
+		LEFT JOIN permissions t on t.id = m.permission_id AND t.is_deleted=0
+		LEFT JOIN departments d on d.id = p.useridor_dept_id AND d.is_deleted=0
+		LEFT JOIN users u on u.id = p.useridor_dept_id AND u.is_deleted=0
+		WHERE p.is_deleted=0
+		<if test="moduleId != null">AND m.module_info_id=#{moduleId,jdbcType=BIGINT} </if>
+		<if test="roleId != null">AND r.role_id= #{roleId,jdbcType=BIGINT}</if>
+	</select>
 </mapper>

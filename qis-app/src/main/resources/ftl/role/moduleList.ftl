@@ -135,9 +135,6 @@
     <script type="text/javascript" src="${rc.contextPath}/assets/global/common/commonUtil.js"></script>
     <script type="text/javascript" src="${rc.contextPath}/assets/global/common/common.js"></script>
     <script type="text/javascript" src="${rc.contextPath}/assets/global/common/commonValidation.js"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/plupload/js/plupload.full.min.js"
-            type="text/javascript"></script>
-    <script src="${rc.contextPath}/assets/global/plugins/select2/js/select2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
         });
