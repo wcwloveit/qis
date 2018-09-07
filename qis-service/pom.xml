@@ -11,7 +11,7 @@
 
     <artifactId>qis-service</artifactId>
     <packaging>jar</packaging>
-    <name>qis:service</name>
+    <name>qis-service</name>
 
 
     <build>

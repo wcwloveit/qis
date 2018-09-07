@@ -1,9 +1,11 @@
 package com.xinri.controller.role;
 
 import com.app.api.DataTable;
+import com.app.util.StatusMsgUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.qis.ShiroUser;
+import com.qis.common.mapper.JsonMapper;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.qis.util.Utils;
@@ -26,6 +28,7 @@ import com.xinri.service.user.ISysUserService;
 import com.xinri.service.user.IUsersService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
+import com.xinri.vo.moduleInfo.RoleModuleInfoPCVo;
 import com.xinri.vo.redis.Redis;
 import com.xinri.vo.role.RolesVo;
 import org.apache.commons.collections.CollectionUtils;
@@ -36,6 +39,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Controller("roleController")
@@ -213,7 +218,7 @@ public class RoleController extends BaseController {
     /**
      * 更新
      *
-     * @param zcActivity
+     * @param ids
      * @param attributes
      * @return
      */
@@ -364,7 +369,7 @@ public class RoleController extends BaseController {
      * 员工加入角色
      *
      * @param roleId
-     * @param empId
+     * @param groupId
      * @return
      */
     @RequestMapping(value = "join", method = RequestMethod.POST)
@@ -377,7 +382,7 @@ public class RoleController extends BaseController {
      * 员工离开角色
      *
      * @param roleId
-     * @param empId
+     * @param groupId
      * @return
      */
     @RequestMapping(value = "leave", method = RequestMethod.POST)
@@ -394,24 +399,107 @@ public class RoleController extends BaseController {
      * 创建者 夏善勇 20180904
      */
     @RequestMapping(value = "/getModulePermissions-{moduleId}-{roleId}", method = RequestMethod.GET)
-    public ModelAndView getPermissions(@PathVariable("moduleId") Long moduleId,
+    public ModelAndView getModulePermissions(@PathVariable("moduleId") Long moduleId,
                                        @PathVariable("roleId") Long roleId ) {
-        ModelAndView mv = new ModelAndView("/module/roleModuleList");
+        ModelAndView mv = new ModelAndView("/permissions/roleModuleList");
         logger.info("getRoleModulePermissions开始");
         List<RoleModuleInFoPerVo> voList  = new  ArrayList<RoleModuleInFoPerVo>();
         RoleModuleInFoPerVo vo = new RoleModuleInFoPerVo();
         vo.setModuleId(moduleId);
         vo.setRoleId(roleId);
         voList = moduleInfoPermissionsService.getRoleModuleInFoPerVo(vo);
+
+        if(voList==null){
+            mv.setViewName("redirect:/role/module/" + roleId);
+            mv.addObject("message","当前无模块");
+            return  mv;
+        }
+
+        ModuleInfoes info =  moduleInfoesService.get(moduleId);
+        Roles role = rolesService.get(roleId);
+
         mv.addObject("moList",voList);
-        mv.addObject("moduleId",moduleId);
-        mv.addObject("roleId",roleId);
-        mv.addObject("message",voList);
-        mv.addObject("success",false);
+        mv.addObject("info",info);
+        mv.addObject("role",role);
+//        mv.addObject("message","moList");
+//        mv.addObject("success",true);
         logger.info("getRoleModulePermissions结束");
         return  mv;
     }
 
 
+    /**
+     * 根据角色id和模块id获取角色模块数据列
+     * @param moduleId
+     * @param roleId
+     * @return
+     * 创建者 夏善勇 20180906
+     */
+    @RequestMapping(value = "/getModuleColumnData-{moduleId}-{roleId}", method = RequestMethod.GET)
+    public ModelAndView getModuleColumnData(@PathVariable("moduleId") Long moduleId,
+                                       @PathVariable("roleId") Long roleId ) {
+        ModelAndView mv = new ModelAndView("/moduleColumnData/roleModuleList");
+        logger.info("getModuleColumnData开始");
+        List<RoleModuleInFoPerVo> voList  = new  ArrayList<RoleModuleInFoPerVo>();
+        RoleModuleInFoPerVo vo = new RoleModuleInFoPerVo();
+        vo.setModuleId(moduleId);
+        vo.setRoleId(roleId);
+        voList = moduleInfoColumnDatasService.getRoleModuleInFoColumnVo(vo);
+
+        if(voList==null){
+            mv.addObject("message","当前无数据列");
+            mv.setViewName("redirect:/role/module/" + roleId);
+            return  mv;
+        }
+        ModuleInfoes info =  moduleInfoesService.get(moduleId);
+        Roles role = rolesService.get(roleId);
+
+        mv.addObject("moList",voList);
+        mv.addObject("info",info);
+        mv.addObject("role",role);
+//        mv.addObject("message","moList");
+//        mv.addObject("success",true);
+        logger.info("getModuleColumnData结束");
+        return  mv;
+    }
+
+    /**
+     * 保存角色模块权限
+     * @param body
+     * @param request
+     * @param response
+     * @return
+     * 创建者 夏善勇 20180906
+     */
+    @RequestMapping(value="/modulePermissionsSave",method= RequestMethod.POST)
+    public String list(@RequestBody String body, HttpServletRequest request, HttpServletResponse response) {
+        logger.info("保存角色模块权限开始");
+        String code = StatusMsgUtils.SUCCEEDEDCODE_200;
+        String msg = StatusMsgUtils.ResponseCode.getName(code);
+        try {
+            RoleModuleInfoPCVo vo = (RoleModuleInfoPCVo) JsonMapper.fromJsonString(body,RoleModuleInfoPCVo.class);
+            if(vo.getmList()!=null){
+                for(RoleModuleInFoPerVo perVo: vo.getmList()){
+                    RoleModuleInfoPermissionHeads heads = new RoleModuleInfoPermissionHeads();
+                    if(perVo.getRmphId()!=null){//更新
+                        heads.setIsNewRecord(false);
+                        heads.setId(perVo.getRmphId());
+                        heads.setIsEffective(perVo.getrIsEffective());
+                    }else if(perVo.getrIsEffective()==1){//新建
+                        heads.setIsEffective(1);
+                        heads.setRoleId(vo.getRoleId());
+                        heads.setModuleInfoPermissionId(perVo.getModulePermissionId());
+                    }
+                    roleModuleInfoPermissionHeadsService.saveOrUpdate(heads);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("保存角色模块权限报错：", e);
+            code = StatusMsgUtils.ERRORCODE_400;
+            msg = StatusMsgUtils.ResponseCode.getName(code);
+        }
+        logger.info("保存角色模块权限完成");
+        return responseJsonData(code, msg, null,response);
+    }
 
 }

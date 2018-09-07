@@ -2,6 +2,7 @@ package com.xinri.dao.moduleInfo;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -29,5 +30,6 @@ public interface ModuleInfoColumnDatasMapper extends CrudDao<ModuleInfoColumnDat
 
  void deleteByModuleId(Long moduleId);
 
+    List<RoleModuleInFoPerVo> getRoleModuleInFoColumnVo(RoleModuleInFoPerVo vo);
 }
 

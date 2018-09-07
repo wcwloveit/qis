@@ -9,6 +9,7 @@ public class RoleModuleInFoPerVo {
     private Integer rIsEffective;//role_module_info_permission_heads //是否启用该权限
     private String name;//permissions 权限名称
     private String code;//permissions 权限编码
+    private Long rmphId;//role_module_info_permission_heads id
 
     public Long getModulePermissionId() {
         return modulePermissionId;
@@ -72,5 +73,13 @@ public class RoleModuleInFoPerVo {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Long getRmphId() {
+        return rmphId;
+    }
+
+    public void setRmphId(Long rmphId) {
+        this.rmphId = rmphId;
     }
 }

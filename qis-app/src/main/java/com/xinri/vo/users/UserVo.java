@@ -1,11 +1,11 @@
 package com.xinri.vo.users;
 
 public class UserVo {
-    public String userName; //µÇÂ¼Ãû
-    public String userNo; //±àºÅ
-    private String name;  //Ãû³Æ
-    private String mobilePhone;//ÊÖ»ú
-    public Long roleId;//ÓÃ»§×éid
+    public String userName; //ç”¨æˆ·åç§°
+    public String userNo; //ç”¨æˆ·ç¼–å·
+    private String name;  //åç§°
+    private String mobilePhone;//æ‰‹æœºå·
+    public Long roleId;//è§’è‰²id
 
     public String getUserName() {
         return userName;

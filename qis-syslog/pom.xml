@@ -12,7 +12,7 @@
     <artifactId>qis-sys-log</artifactId>
 
     <packaging>jar</packaging>
-    <name>qis:syslog</name>
+    <name>qis-sys-log</name>
 
     <build>
         <plugins>

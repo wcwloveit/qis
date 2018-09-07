@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <name>qis :: b2b</name>
+    <name>qis-b2b</name>
     <artifactId>qis-b2b</artifactId>
 
     <dependencies>

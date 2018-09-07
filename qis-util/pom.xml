@@ -12,7 +12,7 @@
     <artifactId>qis-util</artifactId>
 
     <packaging>jar</packaging>
-    <name>qis:util</name>
+    <name>qis-util</name>
 
 
     <build>

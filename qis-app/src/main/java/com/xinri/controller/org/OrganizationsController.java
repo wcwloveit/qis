@@ -10,10 +10,14 @@ import com.xinri.po.organizations.Organizations;
 import com.xinri.service.departments.IDepartmentsService;
 import com.xinri.service.organizations.IOrganizationsService;
 import com.xinri.service.user.IUsersService;
+import com.xinri.vo.dept.OADepartmentVo;
+import com.xinri.vo.org.OAOrgVo;
 import com.xinri.vo.org.OrgInfoVo;
 import com.xinri.vo.org.OrgListVo;
 import com.xinri.vo.org.request.OAOrgRequest;
+import com.xinri.vo.users.OAUsersVo;
 import net.sf.json.JSONArray;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -120,9 +124,9 @@ public class OrganizationsController extends BaseController {
     public Map<String, Object> syncOA(){
         Map<String,Object> map=new HashMap<>();
         try{
-            organizationsService.syncOAOrg(new ArrayList<>());
-            departmentsService.syncOADept(new ArrayList<>());
-            usersService.syncUsers(new ArrayList<>());
+            organizationsService.syncOAOrg(new ArrayList<OAOrgVo>());
+            departmentsService.syncOADept(new ArrayList<OADepartmentVo>());
+            usersService.syncUsers(new ArrayList<OAUsersVo>());
             map.put("stat",true);
         }catch (Exception e){
             map.put("stat",false);

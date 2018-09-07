@@ -499,5 +499,16 @@
 	</update>
 
 
-
+	<!-- 根据模块id和角色id获取 角色模块数据列 -->
+	<select id="getRoleModuleInFoColumnVo" parameterType="com.xinri.vo.moduleInfo.RoleModuleInFoPerVo" resultType="com.xinri.vo.moduleInfo.RoleModuleInFoPerVo">
+		SELECT m.id modulePermissionId,m.is_effective mpIsEffective,m.column_data_id permissionId,
+		m.module_info_id moduleId,t.name name,t.code code,r.is_effective rIsEffective,r.role_id roleId,
+		r.id rmphId
+		FROM module_info_column_datas m
+		LEFT JOIN column_datas t on t.id = m.column_data_id AND t.is_deleted=0
+		LEFT JOIN role_module_info_column_data_heads r on r.module_info_column_data_id =m.id AND r.is_deleted=0
+		<if test="roleId != null">AND r.role_id= #{roleId,jdbcType=BIGINT}</if>
+		WHERE  m.is_effective=1 AND m.is_deleted=0
+		<if test="moduleId != null">AND m.module_info_id=#{moduleId,jdbcType=BIGINT} </if>
+	</select>
 </mapper>

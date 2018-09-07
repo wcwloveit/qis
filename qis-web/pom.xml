@@ -10,7 +10,7 @@
 <modelVersion>4.0.0</modelVersion>
 <artifactId>qis-web</artifactId>
 <packaging>war</packaging>
-    <name>qis:web</name>
+    <name>qis-web</name>
 <!-- 依赖项定义 -->
 <dependencies>
 

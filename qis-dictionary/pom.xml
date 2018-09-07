@@ -11,7 +11,7 @@
 
     <artifactId>qis-dictionary</artifactId>
     <packaging>jar</packaging>
-    <name>qis:dictionary</name>
+    <name>qis-dictionary</name>
     <build>
         <plugins>
             <!-- source attach plugin -->

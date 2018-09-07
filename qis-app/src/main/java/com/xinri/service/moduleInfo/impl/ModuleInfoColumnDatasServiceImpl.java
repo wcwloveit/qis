@@ -2,6 +2,7 @@ package com.xinri.service.moduleInfo.impl;
 import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
+import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
 import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
@@ -64,6 +65,11 @@ public class ModuleInfoColumnDatasServiceImpl extends CrudService<ModuleInfoColu
             logger.error("配置列表出错"+e.getMessage());
         }
         return dt;
+    }
+
+    @Override
+    public List<RoleModuleInFoPerVo> getRoleModuleInFoColumnVo(RoleModuleInFoPerVo vo) {
+        return dao.getRoleModuleInFoColumnVo(vo);
     }
 
     @Override

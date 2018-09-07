@@ -196,9 +196,14 @@
                             }
                         }},
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                            var a = '<a href="javascript:void(0);" onclick="assign('+row.id+')"  class="btn btn-xs blue"  title="权限管理" >' +
-                                    '<i class="glyphicon glyphicon-pencil"></i>权限管理</a>';
-                            var b = '<a href="javascript:void(0);" onclick="assignCol('+row.id+')"  class="btn btn-xs blue"  title="权限管理" >' +
+//                            var a = '<a href="javascript:void(0);" onclick="assign('+row.id+')"  class="btn btn-xs blue"  title="权限管理" >' +
+//                                    '<i class="glyphicon glyphicon-pencil"></i>权限管理</a>';
+//                        var b = '<a href="javascript:void(0);" onclick="assignCol('+row.id+')"  class="btn btn-xs blue"  title="权限管理" >' +
+//                                '<i class="glyphicon glyphicon-pencil"></i>数据列管理</a>';
+
+                        var a = '<a href="${rc.contextPath}/role/getModulePermissions-' + row.id + '-' + ${role.id?if_exists} + '" class="btn btn-xs blue"  title="权限管理" >' +
+                                '<i class="glyphicon glyphicon-pencil"></i>权限管理</a>';
+                        var b = '<a href="${rc.contextPath}/role/getModuleColumnData-' + row.id + '-' + ${role.id?if_exists} + '"  class="btn btn-xs blue"  title="权限管理" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>数据列管理</a>';
                             return a+b;
                         }}
