@@ -29,14 +29,26 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet box green-haze">
-            <div class="portlet-title">
-                <div class="caption"><i class="fa fa-cogs"></i>用户组列表</div>
+    <#if message>
+        <div class="note note-danger">
+            <p>
+            ${(message)!}
+            </p>
+        </div>
+    </#if>
+                    <div class="portlet light portlet-fit portlet-datatable bordered">
+                        <div class="portlet-title ">
+                        <#--<div class="caption"><i class="fa fa-cogs"></i>用户组列表</div>-->
+                <div class="caption">
+                    <i class="icon-settings font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">用户组列表</span>
+                </div>
+
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green btn-parent" href="${rc.contextPath}/user/userGroup/create"> <#--跳转新增的URL-->
+                            <a class="btn green btn-parent btn-outline btn-circle" href="${rc.contextPath}/user/userGroup/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
@@ -115,10 +127,10 @@
 
                     <label style="float:left;">
                         <span> &nbsp;&nbsp;</span>
-                        <button class="btn btn-sm yellow margin-bottom filter-submit" value="搜索" onclick="search(this,grid)"><i
+                        <button class="btn btn-sm yellow btn-outline btn-circle" value="搜索" onclick="search(this,grid)"><i
                                 class="fa fa-search"></i> 搜索
                         </button>
-                        <button class="btn btn-sm red filter-cancel" onclick="resetSearch(this)"><i class="fa fa-times"></i> 重置
+                        <button class="btn btn-sm red btn-outline btn-circle" onclick="resetSearch(this)"><i class="fa fa-times"></i> 重置
                         </button>
                     </label>
                 </div>
@@ -384,16 +396,16 @@
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
                         var a = '<a href="${rc.contextPath}/user/userGroup/update/' + row.id
-                                + '" class="btn btn-xs blue"  title="编辑" >' +
+                                + '" class="btn btn-xs blue btn-outline btn-circle"  title="编辑" >' +
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
                         //  逻辑删除
                         var c = '<a href="javascript:void(0);" onclick="doDelete(\'' + row.id
-                                + '\')" class="btn btn-xs red"  title="删除" >' +
+                                + '\')" class="btn btn-xs red btn-outline btn-circle"  title="删除" >' +
                                 '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
-                        var b='<a class="btn btn-xs green" href="javascript:void(0);" onclick="seeUser(\''+row.id+'\')" title ="查看"><i class="fa fa-search"></i>查看</a>';
-                        var d='<a class="btn btn-xs green" href="javascript:void(0);" onclick="toUser(\''+row.id+'\')" title ="分配"><i class="glyphicon glyphicon-cog"></i>分配</a>';
+                        var b='<a class="btn btn-xs green btn-outline btn-circle" href="javascript:void(0);" onclick="seeUser(\''+row.id+'\')" title ="查看"><i class="fa fa-search"></i>查看</a>';
+                        var d='<a class="btn btn-xs green btn-outline btn-circle" href="javascript:void(0);" onclick="toUser(\''+row.id+'\')" title ="分配"><i class="glyphicon glyphicon-cog"></i>分配</a>';
 
 
                         if(row.isSynchro==1){    //isSynchro是自己写的字段
@@ -824,7 +836,7 @@
                             buttons: {
                                 success: {
                                     label: "确定",
-                                    className: "green",
+                                    className: "green ",
                                     callback: function() {
                                         Metronic.startPageLoading();
                                         $.ajax({
@@ -843,7 +855,7 @@
                                 },
                                 main: {
                                     label: "取消",
-                                    className: "gray",
+                                    className: "gray ",
                                     callback: function() {
                                         $(this).hide();
                                     }
@@ -856,14 +868,14 @@
                             buttons: {
                                 success: {
                                     label: "确定",
-                                    className: "green",
+                                    className: "green ",
                                     callback: function() {
                                         alertBox("请先删除该用户组关联的人员、部门信息");
                                     }
                                 },
                                 main: {
                                     label: "取消",
-                                    className: "gray",
+                                    className: "gray ",
                                     callback: function() {
                                         $(this).hide();
                                     }

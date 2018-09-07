@@ -101,10 +101,10 @@
 
                         <label style="float:left;">
                             <span> &nbsp;&nbsp;</span>
-                            <button class="btn btn-sm yellow margin-bottom filter-submit" value="搜索"
+                            <button class="btn btn-sm yellow btn-outline btn-circle" value="搜索"
                                     onclick="search(this,grid)"><i class="fa fa-search"></i> 搜索
                             </button>
-                            <button class="btn btn-sm red filter-cancel" onclick="resetSearch(this)"><i
+                            <button class="btn btn-sm red  btn-outline btn-circle" onclick="resetSearch(this)"><i
                                     class="fa fa-times"></i> 重置
                             </button>
                         </label>

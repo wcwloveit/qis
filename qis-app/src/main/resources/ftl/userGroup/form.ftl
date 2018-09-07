@@ -40,7 +40,7 @@
             <div class="portlet-title">
                 <div class="caption">
                 <#--判断action 等于create是新增   等于update是编辑修改-->
-                    <i class="fa fa-gift"></i>产品<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if>
+                    <i class="fa fa-gift"></i>用户组<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if>
                 </div>
                 <div class="actions">
                     <a href="javascript:history.back(-1)" class="btn grey">返回</a>
