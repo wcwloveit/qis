@@ -860,7 +860,7 @@ Page sidebar
   .page-sidebar-fixed .page-sidebar {
     position: fixed !important;
     margin-left: 0;
-    top: 95px; }
+  }
   .page-sidebar-fixed .page-sidebar-menu > li:last-child {
     margin-bottom: 20px !important; }
   .page-sidebar-fixed .page-sidebar-menu .sub-menu {

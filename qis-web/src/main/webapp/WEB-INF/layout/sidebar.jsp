@@ -50,9 +50,9 @@
                 for (Module resource : resources) {
                     if (resource.getIsMenu()==1){
         %>
-            <li class="heading">
+            <!--<li class="heading">
                 <h3 class="uppercase"><%= resource.getName()%></h3>
-            </li>
+            </li>-->
             <li class="nav-item <%=url.startsWith(resource.getLinkUrl())?"active open":""%>">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="<% if(resource.getIcon()!=null&&!"".equals(resource.getIcon())){ %><%= resource.getIcon()%><% }else{%>fa fa-home<% }%> "></i>
