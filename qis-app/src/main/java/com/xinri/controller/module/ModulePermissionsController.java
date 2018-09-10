@@ -1,24 +1,27 @@
 package com.xinri.controller.module;
 
 import com.app.api.DataTable;
+import com.app.util.StatusMsgUtils;
+import com.qis.common.mapper.JsonMapper;
+import com.qis.common.web.BaseController;
 import com.xinri.po.moduleInfo.ColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
 import com.xinri.po.moduleInfo.ModuleInfoes;
+import com.xinri.po.moduleInfo.RoleModuleInfoPermissionLines;
 import com.xinri.po.permissions.Permissions;
 import com.xinri.service.moduleInfo.*;
 import com.xinri.service.moduleInfo.impl.ModuleInfoesServiceImpl;
 import com.xinri.service.permissions.IPermissionsService;
+import com.xinri.util.AjaxStatus;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +32,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "module/modulePermissions")
-public class ModulePermissionsController {
+public class ModulePermissionsController extends BaseController{
 
     @Autowired
     private IModuleInfoesService moduleInfoesService;
@@ -120,5 +123,54 @@ public class ModulePermissionsController {
                                                                    @PathVariable(value = "roleId") Long roleId,
                                                                    @PathVariable(value = "infoId") Long infoId) {
         return roleModuleInfoPermissionLinesService.getModulesForRole(dt, roleId,infoId);
+    }
+
+
+    /**创建者 夏善勇  创建时间 2018.9.10
+     * 逻辑删除 角色权限line
+     * @param id
+     * @return
+     */
+    @RequestMapping(value="roleDelete/{id}")
+    public String roleDelete(@PathVariable("id") Long id, HttpServletResponse response){
+        roleModuleInfoPermissionLinesService.deleteById(id);
+        return responseJsonData("200", "离开成功", null,response);
+    }
+
+    /**创建者 夏善勇  创建时间 2018.9.10
+     * 保存权限line
+     * @param body
+     * @param response
+     * @return
+     */
+    @RequestMapping(value="roleSave")
+    public String delete(@RequestBody String body, HttpServletResponse response){
+        logger.info("保存角色模块权限开始");
+        String code = StatusMsgUtils.SUCCEEDEDCODE_200;
+        String msg = StatusMsgUtils.ResponseCode.getName(code);
+        try {
+            RoleModuleInfoPermissionLines vo = (RoleModuleInfoPermissionLines) JsonMapper.fromJsonString(body,RoleModuleInfoPermissionLines.class);
+            RoleModuleInfoPermissionLines lines = new RoleModuleInfoPermissionLines();
+            lines = roleModuleInfoPermissionLinesService.get(vo);
+            if(lines==null){
+                vo.setIsEffective(1);
+                roleModuleInfoPermissionLinesService.saveOrUpdate(vo);
+            }else{
+                if(lines.getIsDeleted()==0){
+                    code = StatusMsgUtils.ERRORCODE_8002;
+                    msg = StatusMsgUtils.ResponseCode.getName(code);
+                }else{
+                    lines.setIsDeleted(0);
+                    lines.setIsNewRecord(false);
+                    roleModuleInfoPermissionLinesService.saveOrUpdate(lines);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("保存角色模块权限报错：", e);
+            code = StatusMsgUtils.ERRORCODE_400;
+            msg = StatusMsgUtils.ResponseCode.getName(code);
+        }
+        logger.info("保存角色模块权限完成");
+        return responseJsonData(code, msg, null,response);
     }
 }
