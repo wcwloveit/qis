@@ -64,7 +64,8 @@
 			  p:port="${redis.port}"
 			  p:timeout="${redis.timeout}"
 			  p:password="${redis.password}"
-			  p:poolConfig-ref="redisPoolConfig" />
+			  p:poolConfig-ref="redisPoolConfig"
+			  p:database="${redis.database}"/>
 
 		<!-- redis template definition -->
 		<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connectionFactory-ref="jedisConnFactory"/>

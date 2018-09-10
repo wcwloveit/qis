@@ -75,33 +75,7 @@ public class ModuleController extends BaseController {
 
     @Autowired
     private ResourceService resourceService;
-
-    @Autowired
-    private RedisService redisService;
-
-
-//    @RequestMapping(value = "redisSet")
-//    public void redisSet(){
-//        List<ModuleInfoes> moduleInfoes=moduleInfoesService.findAllList();
-//        JSONArray json = JSONArray.fromObject(moduleInfoes);
-//        String value=json.toString();
-//        redisService.add("2",value);
-//    }
-
-//    @RequestMapping(value = "redisGet")
-//    @ResponseBody
-//    public List<ModuleInfoes> redisGet() {
-//        String value = redisService.getString("2");
-//        List<ModuleInfoes> moduleInfoes=new ArrayList<>();
-//        JSONArray obj = JSON.parseArray(value);
-////        List<ModuleInfoes> moduleInfoes=(List<ModuleInfoes> )JSONArray.toArray(obj);
-//        for (Object a : obj) {
-//            ModuleInfoes moduleInfoes1 = JSONObject.parseObject(a.toString(), ModuleInfoes.class);
-//            moduleInfoes.add(moduleInfoes1);
-//        }
-//        return moduleInfoes;
-//    }
-
+    
     /**
      * 首页
      *

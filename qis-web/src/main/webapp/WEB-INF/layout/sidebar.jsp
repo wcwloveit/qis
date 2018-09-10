@@ -4,7 +4,8 @@
 <%@ page import="com.xinri.vo.redis.Redis" %>
 <%@ page import="com.xinri.service.ResourceService" %>
 <%@ page import="com.xinri.vo.redis.Module" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+	<%@ page import="com.qis.service.RedisService" %>
+	<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
@@ -42,7 +43,8 @@
 	            String url=request.getServletPath();
 	            org.springframework.context.ApplicationContext ctx = org.springframework.web.context.ContextLoader.getCurrentWebApplicationContext();
 	            ResourceService resourceService = (ResourceService)ctx.getBean("resourceService");
-	            Redis info = resourceService.getInfo(user);
+
+	            Redis info = resourceService.getFromRedis(user);
 	            if(info==null){
 	        %>
 			<li class="nav-item active open">

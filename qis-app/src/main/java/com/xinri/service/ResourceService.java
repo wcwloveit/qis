@@ -2,9 +2,13 @@ package com.xinri.service;
 
 //import com.xinri.dao.user.SysUserMapper;
 //import com.xinri.po.user.SysUser;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.kingnode.diva.security.utils.Digests;
 import com.kingnode.diva.utils.Encodes;
 import com.qis.ShiroUser;
+import com.qis.service.RedisService;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.moduleInfo.RoleModuleInfos;
 import com.xinri.po.permissions.Permissions;
@@ -54,6 +58,40 @@ import java.util.List;
     @Autowired
     private IPermissionsService permissionsService;
 
+    @Autowired
+    private RedisService redisService;
+
+
+
+    public Redis getFromRedis(ShiroUser user){
+        String key="";
+        if(user.type==1){
+            key="SYS_USER"+user.id;
+        }else{
+            key="USER"+user.id;
+        }
+        String value = redisService.getString(key);
+        if(value==null){
+            return saveToRedis(user);
+        }else{
+            JSONObject obj =JSON.parseObject(value);
+            return JSONObject.parseObject(obj.toString(), Redis.class);
+        }
+    }
+
+    public Redis saveToRedis(ShiroUser user){
+        Redis info = getInfo(user);
+        JSONObject json = (JSONObject) JSONObject.toJSON(info);
+        String value=json.toString();
+        String key="";
+        if(user.type==1){
+            key="SYS_USER"+user.id;
+        }else{
+            key="USER"+user.id;
+        }
+        redisService.add(key,value);
+        return info;
+    }
     /**
      * 更新密码
      * 创建人 夏善勇 2018-8-28
