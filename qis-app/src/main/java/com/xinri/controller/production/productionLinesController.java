@@ -14,6 +14,7 @@ import com.xinri.service.production.IProductionLinesService;
 import com.xinri.vo.ProductionLines.ProductionLinesVo;
 import com.xinri.vo.role.RoleClassesVo;
 import net.sf.json.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,7 @@ public class productionLinesController extends BaseController {
      * 首页
      * @return
      */
+    @RequiresPermissions("production-productionLines-index")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList() {
         return "productionLines/list";
@@ -57,6 +59,7 @@ public class productionLinesController extends BaseController {
      * @param request
      * @return
      */
+    @RequiresPermissions("production-productionLines-list")
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<ProductionLinesVo> getItemList(DataTable<ProductionLinesVo> dt, ServletRequest request){
@@ -72,6 +75,7 @@ public class productionLinesController extends BaseController {
      * 跳转新增
      * @return
      */
+    @RequiresPermissions("production-productionLines-create")
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create(){
         ModelAndView mv = new ModelAndView("/productionLines/form");
@@ -99,6 +103,7 @@ public class productionLinesController extends BaseController {
      * @param attributes
      * @return
      */
+    @RequiresPermissions("production-productionLines-create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView save(ProductionLines productionLines,
                              RedirectAttributes attributes) {
@@ -123,6 +128,7 @@ public class productionLinesController extends BaseController {
      * @param model
      * @return
      */
+    @RequiresPermissions("production-productionLines-edit")
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable("id") Long id, Model model) {
         ProductionLines productionLines = new ProductionLines();
@@ -152,6 +158,7 @@ public class productionLinesController extends BaseController {
      * @param attributes
      * @return
      */
+    @RequiresPermissions("production-productionLines-edit")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(ProductionLines productionLines, RedirectAttributes attributes) {
         logger.info("更新产品开始");
@@ -175,6 +182,7 @@ public class productionLinesController extends BaseController {
      * @param id
      * @return
      */
+    @RequiresPermissions("production-productionLines-delete")
     @RequestMapping(value = {"delete-{id}"}, method = {RequestMethod.POST})
     @ResponseBody
     public JSONObject LogicDel(@PathVariable Long id){
@@ -202,6 +210,7 @@ public class productionLinesController extends BaseController {
      * @param ids
      * @return
      */
+    @RequiresPermissions("production-productionLines-deleteAll")
     @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {

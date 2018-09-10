@@ -7,6 +7,7 @@ import com.xinri.po.role.RoleClasses;
 import com.xinri.service.role.IRoleClassesService;
 import com.xinri.vo.role.RoleClassesVo;
 import net.sf.json.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,7 @@ public class RoleClassController extends BaseController {
     /*
     * 首页
     * */
+    @RequiresPermissions("production-productionLines-index")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList(){
         return "roleClass/list";
@@ -39,6 +41,7 @@ public class RoleClassController extends BaseController {
      * @param request
      * @return
      */
+    @RequiresPermissions("production-productionLines-list")
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RoleClassesVo> getItemList(DataTable<RoleClassesVo> dt, ServletRequest request){
@@ -53,6 +56,7 @@ public class RoleClassController extends BaseController {
      * 跳转新增
      * @return
      */
+    @RequiresPermissions("production-productionLines-create")
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create(){
         ModelAndView mv = new ModelAndView("/roleClass/roleClassForm");
@@ -65,6 +69,7 @@ public class RoleClassController extends BaseController {
      * @param attributes
      * @return
      */
+    @RequiresPermissions("production-productionLines-create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView save(RoleClasses roleClasses,
                              RedirectAttributes attributes) {
@@ -86,6 +91,7 @@ public class RoleClassController extends BaseController {
      * 更新状态
      * @return
      */
+    @RequiresPermissions("production-productionLines-edit")
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable("id") Long id, Model model) {
         RoleClasses roleClasses = new RoleClasses();
@@ -98,6 +104,7 @@ public class RoleClassController extends BaseController {
     /*
   * 更新
   * */
+    @RequiresPermissions("production-productionLines-edit")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(RoleClasses roleClasses, RedirectAttributes attributes) {
         logger.info("更新产品开始");
@@ -120,6 +127,7 @@ public class RoleClassController extends BaseController {
      * @param id
      * @return
      */
+    @RequiresPermissions("production-productionLines-delete")
     @RequestMapping(value = {"delete-{id}"}, method = {RequestMethod.POST})
     @ResponseBody
     public JSONObject LogicDel(@PathVariable Long id){
@@ -144,6 +152,7 @@ public class RoleClassController extends BaseController {
      * 批量删除
      * @return 返回跳转链接
      */
+    @RequiresPermissions("production-productionLines-deleteAll")
     @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {

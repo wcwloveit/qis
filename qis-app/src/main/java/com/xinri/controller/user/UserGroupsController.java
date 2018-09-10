@@ -36,6 +36,7 @@ public class UserGroupsController extends BaseController {
     /*
    * 首页
    * */
+    @RequiresPermissions("user-groups-index")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList() {
         return "userGroup/list";
@@ -44,6 +45,7 @@ public class UserGroupsController extends BaseController {
     /*
   * 分页列表
   * */
+    @RequiresPermissions("user-groups-list")
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<UserGroupsVo> getItemList(DataTable<UserGroupsVo> dt, ServletRequest request) {
@@ -59,6 +61,7 @@ public class UserGroupsController extends BaseController {
      *
      * @return
      */
+    @RequiresPermissions("user-groups-create")
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         ModelAndView mv = new ModelAndView("/userGroup/form");
@@ -72,6 +75,7 @@ public class UserGroupsController extends BaseController {
      * @param attributes
      * @return
      */
+    @RequiresPermissions("user-groups-create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView save(UserGroups userGroups,
                              RedirectAttributes attributes) {
@@ -94,6 +98,7 @@ public class UserGroupsController extends BaseController {
      *
      * @return
      */
+    @RequiresPermissions("user-groups-edit")
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable("id") Long id, Model model) {
         UserGroups userGroups = new UserGroups();
@@ -107,6 +112,7 @@ public class UserGroupsController extends BaseController {
     /*
 * 更新
 * */
+    @RequiresPermissions("user-groups-edit")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(UserGroups userGroups, RedirectAttributes attributes) {
         logger.info("更新产品开始");
@@ -123,31 +129,6 @@ public class UserGroupsController extends BaseController {
         }
         return mv;
     }
-
-//    /**
-//     * 逻辑删除
-//     * @param id
-//     * @return
-//     */
-//    @RequestMapping(value = {"delete-{id}"}, method = {RequestMethod.POST})
-//    @ResponseBody
-//    public JSONObject LogicDel(@PathVariable Long id){
-//        JSONObject json = new JSONObject();
-//        try{
-//            //逻辑删除商品信息
-//            UserGroups userGroups = new UserGroups();
-//            userGroups.setId(id); //自己的是 编号
-//            userGroups.setIsDeleted(1);//把id为XX的哪一个实体类数据的IsDeleted 改为1
-//            userGroupsService.saveOrUpdate(userGroups);//跟新实体类
-//            json.put("code","200");
-//            json.put("msg","删除成功");
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            json.put("code","8001");
-//            json.put("msg","操作失败，请联系管理员！");
-//        }
-//        return json;
-//    }
 
 
 //    /**
@@ -181,6 +162,7 @@ public class UserGroupsController extends BaseController {
     /**
      * 删除角色组
      * */
+    @RequiresPermissions("user-groups-delete")
     @RequestMapping(value="delete/{id}") @ResponseBody
     public AjaxStatus delete(@PathVariable("id") Long id){
         userGroupsService.DeleteKnRole(id);

@@ -45,16 +45,19 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
+                            <@shiro.hasPermission name="production-productionLines-create">
                             <a class="btn green btn-outline btn-circle" href="${rc.contextPath}/role/roleClass/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
+                            </@shiro.hasPermission>
 
+                            <@shiro.hasPermission name="production-productionLines-deleteAll">
                             <a href="javascript:void(0)" class="btn red btn-outline btn-circle">
                                 <i class="fa fa-trash-o"></i>
                                 <span class="hidden-480"  onclick="deleteList();">批量删除</span>
                             </a>
-
+                            </@shiro.hasPermission>
                             <#--<a class="btn green" href="javascript:exportData();">-->
                                 <#--<i class="fa fa-download"></i>-->
                                 <#--<span class="hidden-480">导出</span>-->
@@ -302,18 +305,22 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/role/roleClass/update/' + row.id
+                        var a = '<@shiro.hasPermission name="production-productionLines-edit">
+                                <a href="${rc.contextPath}/role/roleClass/update/' + row.id
                                 + '" class="btn btn-xs blue  btn-outline btn-circle"  title="编辑" >' +
-                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
+                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                </@shiro.hasPermission>';
 
                         <#--var b = '<a href="${rc.contextPath}/zc/itemPic/index-2-' + row.id-->
                                 <#--+ '" class="btn btn-xs green"  title="产品图片" >' +-->
                                 <#--'<i class="glyphicon glyphicon-picture"></i>产品图片</a>';-->
 
                         //  逻辑删除
-                        var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
+                        var c = '<@shiro.hasPermission name="production-productionLines-delete">
+                                <a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
                                 + '\')" class="btn btn-xs red  btn-outline btn-circle"  title="删除" >' +
-                                '<i class="glyphicon glyphicon-trash"></i>删除</a>';
+                                '<i class="glyphicon glyphicon-trash"></i>删除</a>
+                                </@shiro.hasPermission>';
 
                     <#--var d = '<a href="${rc.contextPath}/zc/itemMode/index-' + row.id-->
                     <#--+ '" class="btn btn-xs blue"  title="配置信息" >' +-->
