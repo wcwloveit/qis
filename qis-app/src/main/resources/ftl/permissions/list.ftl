@@ -2,7 +2,8 @@
 <head>
     <title>权限管理</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
-    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="row">
@@ -38,20 +39,24 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <@shiro.hasPermission name="shiro-permissions-create">
                             <a class="btn green btn-parent" href="${rc.contextPath}/permissions/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
-
+                        </@shiro.hasPermission>
+<@shiro.hasPermission name="shiro-permissions-deleteAll">
                             <a href="javascript:void(0)" class="btn red">
                                 <i class="fa fa-trash-o"></i>
-                                <span class="hidden-480"  onclick="deleteList();">批量删除</span>
+                                <span class="hidden-480" onclick="deleteList();">批量删除</span>
                             </a>
-
+</@shiro.hasPermission>
+<@shiro.hasPermission name="shiro-permissions-export">
                             <a class="btn green" href="javascript:exportData();">
                                 <i class="fa fa-download"></i>
                                 <span class="hidden-480">导出</span>
                             </a>
+</@shiro.hasPermission>
                         </div>
                     </div>
                 </div>
@@ -148,6 +153,7 @@
          * */
         var grid = new Datatable();
         var $attendees_data_table = $("#attendees_data_table");
+<@shiro.hasPermission name="shiro-permissions-list">
         grid.init({
             src: $attendees_data_table,
             onError: function (grid) {
@@ -161,62 +167,78 @@
                 "bServerSide": true,
                 "sAjaxSource": "${rc.contextPath}/permissions/list",
                 "aaSorting": [
-                    [ 0, "desc" ]
+                    [0, "desc"]
                 ],
                 "aoColumnDefs": [
-                    { "bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7] }
+                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7]}
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
-                    { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
-                            return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
-                        }},
-                    { "sTitle": "名称", "mData": "name", "mRender": function (data, type, row) {
+                    {
+                        "sWidth": "1%",
+                        "sTitle": '<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',
+                        "sDefaultContent": "",
+                        "mRender": function (data, type, full) {
+                            return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="' + full.id + '"></span></div>';
+                        }
+                    },
+                    {
+                        "sTitle": "名称", "mData": "name", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "编码", "mData": "code", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "编码", "mData": "code", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "描述", "mData": "descr", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "描述", "mData": "descr", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "唯一标识符", "mData": "guidId", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "唯一标识符", "mData": "guidId", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
                             if (data != null && "" != data) {
                                 return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                             } else {
                                 return "";
                             }
-                        }},
-                    { "sTitle": "修改时间",  "mData": "modifiedOn", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "修改时间", "mData": "modifiedOn", "mRender": function (data, type, row) {
                             if (data != null && "" != data) {
                                 return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                             } else {
                                 return "";
                             }
-                        }},
-                    { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
                             var a = '<a href="${rc.contextPath}/permissions/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
 
                             var b = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
                                     '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
-                            if(row.isDeleted==1){
+                            if (row.isDeleted == 1) {
                                 return "已删除";
-                            }else{
-                                return a+b;
+                            } else {
+                                return a + b;
                             }
-                        }}
+                        }
+                    }
                 ]
             }
         });
-
-
-
-
+</@shiro.hasPermission>
 
         /**
          * 关闭提示信息
@@ -294,7 +316,7 @@
                                     grid.getDataTable().fnDraw();
                                     bootbox.alert("操作成功");
                                 },
-                                error:function(error){
+                                error: function (error) {
 
                                 }
                             });
@@ -315,34 +337,34 @@
          * 批量删除
          */
         function deleteList() {
-            var ids=[];
-            $('#attendees_data_table span.checked >input.checkboxes:checked').each(function(){
+            var ids = [];
+            $('#attendees_data_table span.checked >input.checkboxes:checked').each(function () {
                 ids.push($(this).val());
             })
-            if(ids==''||ids==null||ids.length==0){
+            if (ids == '' || ids == null || ids.length == 0) {
                 bootbox.alert('请选择需要删除的权限');
                 return false;
             }
             bootbox.dialog({
-                message: "您是否确认删除权限编号为："+ids+"的权限",
+                message: "您是否确认删除权限编号为：" + ids + "的权限",
                 buttons: {
                     main: {
                         label: "确定",
                         className: "green",
-                        callback: function() {
+                        callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/permissions/delete-all',
-                                type:'POST',
-                                data:{"ids":ids},
-                                dataType:"json",
-                                traditional:true,
-                                success:function(msg){
+                                url: '${rc.contextPath}/permissions/delete-all',
+                                type: 'POST',
+                                data: {"ids": ids},
+                                dataType: "json",
+                                traditional: true,
+                                success: function (msg) {
                                     Metronic.stopPageLoading();
-                                    if(msg&&msg.stat){
+                                    if (msg && msg.stat) {
                                         alertHint('删除成功');
                                         grid.getDataTable().fnDraw();
-                                    }else{
+                                    } else {
                                         bootbox.alert('删除失败');
                                     }
                                 }
@@ -352,15 +374,13 @@
                     cancel: {
                         label: "取消",
                         className: "gray",
-                        callback: function() {
+                        callback: function () {
                             $(this).hide();
                         }
                     }
                 }
             });
         }
-
-
 
 
     </script>

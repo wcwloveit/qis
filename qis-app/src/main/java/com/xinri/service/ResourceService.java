@@ -21,7 +21,9 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.ShardedJedisPool;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ import java.util.List;
     public static final int HASH_INTERATIONS=1024;
     public static final int SALT_SIZE=8;
     private static Logger logger=LoggerFactory.getLogger(ResourceService.class);
+
 
     @Autowired
     private  HttpServletRequest request;
@@ -50,7 +53,6 @@ import java.util.List;
 
     @Autowired
     private IPermissionsService permissionsService;
-
 
     /**
      * 更新密码

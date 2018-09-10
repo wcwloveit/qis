@@ -41,6 +41,7 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
+
                             <@shiro.hasPermission name="dictionary-dictionary-create">
                                 <a class="btn green btn-parent" href="${rc.contextPath}/dictionary/create"> <#--跳转新增的URL-->
                                     <i class="fa fa-plus"></i>
@@ -218,15 +219,14 @@
                             }
                         }},
                     { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = <@shiro.hasPermission name="dictionary-dictionary-edit">
-                                 '<a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
-                                    '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
-                            </@shiro.hasPermission>
+                        var a = '<@shiro.hasPermission name="dictionary-dictionary-edit">
+                                 <a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                                    '<i class="glyphicon glyphicon-pencil"></i>编辑</a>
+                            </@shiro.hasPermission>';
                             var b = '<a href="${rc.contextPath}/dictionary/baseData/index/' + row.id + '" class="btn btn-xs green"  title="编辑" >' +
                                     '<i class="fa fa-balance-scale"></i>树</a>';
-                            var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
-                                    '<i class="glyphicon glyphicon-trash"></i>删除</a>';
-
+                            var c = '<@shiro.hasPermission name="dictionary-dictionary-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
+                                    '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
                             if(row.isDeleted==1){
                                 return a;
                             }else{

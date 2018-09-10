@@ -2,7 +2,8 @@
 <head>
     <title>角色管理</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
-    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="row">
@@ -25,12 +26,12 @@
     <#if message>
         <div class="note note-danger">
             <p>
-            ${(message)!}
+                ${(message)!}
             </p>
         </div>
     </#if>
         <div class="portlet light portlet-fit portlet-datatable bordered">
-            <input type="hidden"  id="roleId">
+            <input type="hidden" id="roleId">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-settings font-dark"></i>
@@ -39,20 +40,26 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <@shiro.hasPermission name="role-list-create">
                             <a class="btn green btn-parent" href="${rc.contextPath}/role/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
+                        </@shiro.hasPermission>
+<@shiro.hasPermission name="role-list-deleteAll">
 
                             <a href="javascript:void(0)" class="btn red">
                                 <i class="fa fa-trash-o"></i>
-                                <span class="hidden-480"  onclick="deleteList();">批量删除</span>
+                                <span class="hidden-480" onclick="deleteList();">批量删除</span>
                             </a>
+</@shiro.hasPermission>
+<@shiro.hasPermission name="role-list-export">
 
                             <a class="btn green" href="javascript:exportData();">
                                 <i class="fa fa-download"></i>
                                 <span class="hidden-480">导出</span>
                             </a>
+</@shiro.hasPermission>
                         </div>
                     </div>
                 </div>
@@ -133,7 +140,8 @@
                                 <div class="col-md-12">
                                     <div class="portlet">
                                         <div class="portlet-body">
-                                            <table class="table table-striped table-bordered table-hover" id="group_list_table">
+                                            <table class="table table-striped table-bordered table-hover"
+                                                   id="group_list_table">
                                                 <thead>
                                                 <tr role="row" class="heading">
                                                     <th width="25%">用户组名称</th>
@@ -144,13 +152,19 @@
                                                 <tr role="row" class="filter">
 
                                                     <!-- 登录名 -->
-                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_name"></td>
-                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_code"></td>
-                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_descr"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm"
+                                                               name="search_LIKE_name"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm"
+                                                               name="search_LIKE_code"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm"
+                                                               name="search_LIKE_descr"></td>
                                                     <td>
-                                                        <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                        <button class="btn btn-sm yellow filter-submit margin-bottom"><i
+                                                                class="fa fa-search"></i> 搜索
                                                         </button>
-                                                        <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                        <button class="btn btn-sm red filter-cancel"><i
+                                                                class="fa fa-times"></i> 重置
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 </thead>
@@ -178,7 +192,8 @@
                                 <div class="col-md-12">
                                     <div class="portlet">
                                         <div class="portlet-body">
-                                            <table class="table table-striped table-bordered table-hover" id="group_list_table2">
+                                            <table class="table table-striped table-bordered table-hover"
+                                                   id="group_list_table2">
                                                 <thead>
                                                 <tr role="row" class="heading">
                                                     <th width="25%">用户组名称</th>
@@ -188,13 +203,19 @@
                                                 </tr>
                                                 <tr role="row" class="filter">
                                                     <!-- 登录名 -->
-                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_name"></td>
-                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_code"></td>
-                                                    <td><input type="text" class="form-control form-filter input-sm" name="search_LIKE_descr"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm"
+                                                               name="search_LIKE_name"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm"
+                                                               name="search_LIKE_code"></td>
+                                                    <td><input type="text" class="form-control form-filter input-sm"
+                                                               name="search_LIKE_descr"></td>
                                                     <td>
-                                                        <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索
+                                                        <button class="btn btn-sm yellow filter-submit margin-bottom"><i
+                                                                class="fa fa-search"></i> 搜索
                                                         </button>
-                                                        <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> 重置</button>
+                                                        <button class="btn btn-sm red filter-cancel"><i
+                                                                class="fa fa-times"></i> 重置
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 </thead>
@@ -239,6 +260,8 @@
          * */
         var grid = new Datatable();
         var $attendees_data_table = $("#attendees_data_table");
+
+        <@shiro.hasPermission name="role-list-list">
         grid.init({
             src: $attendees_data_table,
             onError: function (grid) {
@@ -252,142 +275,166 @@
                 "bServerSide": true,
                 "sAjaxSource": "${rc.contextPath}/role/list",
                 "aaSorting": [
-                    [ 0, "desc" ]
+                    [0, "desc"]
                 ],
                 "aoColumnDefs": [
-                    { "bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7] }
+                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7]}
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
-                    { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
-                        return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
-                    }},
-                    { "sTitle": "角色名称", "mData": "name", "mRender": function (data, type, row) {
-                        return data;
-                    }},
-                    { "sTitle": "角色类型", "mData": "roleClassesName", "mRender": function (data, type, row) {
-                        return data;
-                    }},
-                    { "sTitle": "描述", "mData": "descr", "mRender": function (data, type, row) {
-                        return data;
-                    }},
-                    { "sTitle": "唯一标识符", "mData": "guidId", "mRender": function (data, type, row) {
-                        return data;
-                    }},
-                    { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
-                        if (data != null && "" != data) {
-                            return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
-                        } else {
-                            return "";
+                    {
+                        "sWidth": "1%",
+                        "sTitle": '<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',
+                        "sDefaultContent": "",
+                        "mRender": function (data, type, full) {
+                            return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="' + full.id + '"></span></div>';
                         }
-                    }},
-                    { "sTitle": "修改时间",  "mData": "modifiedOn", "mRender": function (data, type, row) {
-                        if (data != null && "" != data) {
-                            return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
-                        } else {
-                            return "";
+                    },
+                    {
+                        "sTitle": "角色名称", "mData": "name", "mRender": function (data, type, row) {
+                            return data;
                         }
-                    }},
-                    { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/role/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
-                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
-                        var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
-                                '<i class="fa fa-map"></i>模块管理</a>';
-                        var c='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="seegroup(\''+row.id+'\')" title ="查看组织"><i class="fa fa-search"></i>查看组织</a>';
-                        var d='<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="togroup(\''+row.id+'\')" title ="分配组织"><i class="fa fa-search"></i>分配组织</a>';
-                        var e = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
-                                '<i class="glyphicon glyphicon-trash"></i>删除</a>';
+                    },
+                    {
+                        "sTitle": "角色类型", "mData": "roleClassesName", "mRender": function (data, type, row) {
+                            return data;
+                        }
+                    },
+                    {
+                        "sTitle": "描述", "mData": "descr", "mRender": function (data, type, row) {
+                            return data;
+                        }
+                    },
+                    {
+                        "sTitle": "唯一标识符", "mData": "guidId", "mRender": function (data, type, row) {
+                            return data;
+                        }
+                    },
+                    {
+                        "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
+                            if (data != null && "" != data) {
+                                return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
+                            } else {
+                                return "";
+                            }
+                        }
+                    },
+                    {
+                        "sTitle": "修改时间", "mData": "modifiedOn", "mRender": function (data, type, row) {
+                            if (data != null && "" != data) {
+                                return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
+                            } else {
+                                return "";
+                            }
+                        }
+                    },
+                    {
+                        "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
+                            var a = '<a href="${rc.contextPath}/role/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                                    '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
+                            var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
+                                    '<i class="fa fa-map"></i>模块管理</a>';
+                            var c = '<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="seegroup(\'' + row.id + '\')" title ="查看组织"><i class="fa fa-search"></i>查看组织</a>';
+                            var d = '<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="togroup(\'' + row.id + '\')" title ="分配组织"><i class="fa fa-search"></i>分配组织</a>';
+                            var e = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
+                                    '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
-                        if(row.isDeleted==1){
-                            return "已删除";
-                        }else{
-                            return a+b+c+d+e;
+                            if (row.isDeleted == 1) {
+                                return "已删除";
+                            } else {
+                                return a + b + c + d + e;
+                            }
                         }
-                    }}
+                    }
                 ]
             }
         });
+        </@shiro.hasPermission>
 
-        var groupGrid=new Datatable();
-        var $group_list_table=$("#group_list_table");
+        var groupGrid = new Datatable();
+        var $group_list_table = $("#group_list_table");
         groupGrid.init({
-            src:$group_list_table,
-            onSuccess:function(groupGrid){
+            src: $group_list_table,
+            onSuccess: function (groupGrid) {
                 console.log(groupGrid);
             },
-            onError:function(groupGrid){
+            onError: function (groupGrid) {
             },
-            dataTable:{
-                "bServerSide":true,
-                "sAjaxSource":"${rc.contextPath}/role/query-group-list",
-                "aoColumnDefs":[
-                    { "bSortable":false,"aTargets":[ 0,1,2,3] }
+            dataTable: {
+                "bServerSide": true,
+                "sAjaxSource": "${rc.contextPath}/role/query-group-list",
+                "aoColumnDefs": [
+                    {"bSortable": false, "aTargets": [0, 1, 2, 3]}
                 ],//设置不排序得列
-                "aoColumns":[
-                    { "sTitle":"组织名称","mData":"name"},
-                    { "sTitle":"组织编号","mData":"code"},
-                    { "sTitle":"组织描述","mData":"descr"},
-                    { "sTitle":"操作","mData":"id","sDefaultContent":"","mRender":function(data,type,row){
-                        return'<a class="delete btn green btn-xs black" href="javascript:leave('+data+');"><i class="fa fa-level-down"></i>离开</a>';
-                    }}
+                "aoColumns": [
+                    {"sTitle": "组织名称", "mData": "name"},
+                    {"sTitle": "组织编号", "mData": "code"},
+                    {"sTitle": "组织描述", "mData": "descr"},
+                    {
+                        "sTitle": "操作", "mData": "id", "sDefaultContent": "", "mRender": function (data, type, row) {
+                            return '<a class="delete btn green btn-xs black" href="javascript:leave(' + data + ');"><i class="fa fa-level-down"></i>离开</a>';
+                        }
+                    }
                 ]
             }
         });
 
-        var groupGrid2=new Datatable();
-        var $groupList_data_table2=$("#group_list_table2");
+        var groupGrid2 = new Datatable();
+        var $groupList_data_table2 = $("#group_list_table2");
         groupGrid2.init({
-            src:$groupList_data_table2,
-            onSuccess:function(groupGrid2){
+            src: $groupList_data_table2,
+            onSuccess: function (groupGrid2) {
                 console.log(groupGrid2);
             },
-            onError:function(groupGrid2){
+            onError: function (groupGrid2) {
             },
-            dataTable:{
-                "bServerSide":true,
-                "sAjaxSource":"${rc.contextPath}/role/query-group-notinrole",
-                "aoColumnDefs":[
-                    { "bSortable":false,"aTargets":[ 0,1,2,3] }
+            dataTable: {
+                "bServerSide": true,
+                "sAjaxSource": "${rc.contextPath}/role/query-group-notinrole",
+                "aoColumnDefs": [
+                    {"bSortable": false, "aTargets": [0, 1, 2, 3]}
                 ],//设置不排序得列
-                "aoColumns":[
-                    { "sTitle":"组织名称","mData":"name"},
-                    { "sTitle":"组织编号","mData":"code"},
-                    { "sTitle":"组织描述","mData":"descr"},
-                    { "sTitle":"操作","mData":"id","sDefaultContent":"","mRender":function(data,type,row){
-                        return'<a class="delete btn green btn-xs black" href="javascript:join('+data+');"><i class="fa fa-level-up"></i>加入</a>';
-                    }}
+                "aoColumns": [
+                    {"sTitle": "组织名称", "mData": "name"},
+                    {"sTitle": "组织编号", "mData": "code"},
+                    {"sTitle": "组织描述", "mData": "descr"},
+                    {
+                        "sTitle": "操作", "mData": "id", "sDefaultContent": "", "mRender": function (data, type, row) {
+                            return '<a class="delete btn green btn-xs black" href="javascript:join(' + data + ');"><i class="fa fa-level-up"></i>加入</a>';
+                        }
+                    }
                 ]
             }
         });
 
-        function seegroup(id){
-            groupGrid.setAjaxParam("roleId",id);
+        function seegroup(id) {
+            groupGrid.setAjaxParam("roleId", id);
             $("#roleId").val(id);
             groupGrid.getDataTable().fnDraw();
             $('#group_list_div').modal('show');
         }
 
-        function togroup(id){
-            groupGrid2.setAjaxParam("roleId",id);
+        function togroup(id) {
+            groupGrid2.setAjaxParam("roleId", id);
             $("#roleId").val(id);
             groupGrid2.getDataTable().fnDraw();
             $('#group_list_div2').modal('show');
         }
 
-        function join(id){
+        function join(id) {
             bootbox.dialog({
                 message: "确认此组织加入此角色",
                 buttons: {
                     success: {
                         label: "确定",
                         className: "green",
-                        callback: function() {
+                        callback: function () {
                             $.ajax({
-                                url:'${rc.contextPath}/role/join',
-                                type:'POST',
-                                traditional:true,
-                                data:{"roleId":$("#roleId").val(),"groupId":id},
-                                success:function(){
+                                url: '${rc.contextPath}/role/join',
+                                type: 'POST',
+                                traditional: true,
+                                data: {"roleId": $("#roleId").val(), "groupId": id},
+                                success: function () {
                                     groupGrid2.getDataTable().fnDraw();
                                     groupGrid2.getDataTable().fnDraw();
                                 }
@@ -397,27 +444,28 @@
                     main: {
                         label: "取消",
                         className: "gray",
-                        callback: function() {
+                        callback: function () {
                             $(this).hide();
                         }
                     }
                 }
             });
         }
-        function leave(id){
+
+        function leave(id) {
             bootbox.dialog({
                 message: "确认此组织离开此角色",
                 buttons: {
                     success: {
                         label: "确定",
                         className: "green",
-                        callback: function() {
+                        callback: function () {
                             $.ajax({
-                                url:'${rc.contextPath}/role/leave',
-                                type:'POST',
-                                traditional:true,
-                                data:{"roleId":$("#roleId").val(),"groupId":id},
-                                success:function(){
+                                url: '${rc.contextPath}/role/leave',
+                                type: 'POST',
+                                traditional: true,
+                                data: {"roleId": $("#roleId").val(), "groupId": id},
+                                success: function () {
                                     groupGrid.getDataTable().fnDraw();
                                     groupGrid.getDataTable().fnDraw();
                                 }
@@ -427,7 +475,7 @@
                     main: {
                         label: "取消",
                         className: "gray",
-                        callback: function() {
+                        callback: function () {
                             $(this).hide();
                         }
                     }
@@ -511,7 +559,7 @@
                                     grid.getDataTable().fnDraw();
                                     bootbox.alert("操作成功");
                                 },
-                                error:function(error){
+                                error: function (error) {
 
                                 }
                             });
@@ -532,34 +580,34 @@
          * 批量删除
          */
         function deleteList() {
-            var ids=[];
-            $('#attendees_data_table span.checked >input.checkboxes:checked').each(function(){
+            var ids = [];
+            $('#attendees_data_table span.checked >input.checkboxes:checked').each(function () {
                 ids.push($(this).val());
             })
-            if(ids==''||ids==null||ids.length==0){
+            if (ids == '' || ids == null || ids.length == 0) {
                 bootbox.alert('请选择需要删除的角色');
                 return false;
             }
             bootbox.dialog({
-                message: "您是否确认删除角色编号为："+ids+"的角色",
+                message: "您是否确认删除角色编号为：" + ids + "的角色",
                 buttons: {
                     main: {
                         label: "确定",
                         className: "green",
-                        callback: function() {
+                        callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/role/delete-all',
-                                type:'POST',
-                                data:{"ids":ids},
-                                dataType:"json",
-                                traditional:true,
-                                success:function(msg){
+                                url: '${rc.contextPath}/role/delete-all',
+                                type: 'POST',
+                                data: {"ids": ids},
+                                dataType: "json",
+                                traditional: true,
+                                success: function (msg) {
                                     Metronic.stopPageLoading();
-                                    if(msg&&msg.stat){
+                                    if (msg && msg.stat) {
                                         alertHint('删除成功');
                                         grid.getDataTable().fnDraw();
-                                    }else{
+                                    } else {
                                         bootbox.alert('删除失败');
                                     }
                                 }
@@ -569,15 +617,13 @@
                     cancel: {
                         label: "取消",
                         className: "gray",
-                        callback: function() {
+                        callback: function () {
                             $(this).hide();
                         }
                     }
                 }
             });
         }
-
-
 
 
     </script>

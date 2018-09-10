@@ -16,6 +16,7 @@ import com.xinri.service.user.ISysUserService;
 import com.xinri.service.user.IUsersService;
 import com.xinri.vo.users.SysUserVo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,7 @@ public class SysUserController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("user-sysUser-index")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         return "sysUser/list";
@@ -69,6 +71,7 @@ public class SysUserController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("user-sysUser-list")
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<SysUserVo> getItemList(DataTable<SysUserVo> dt, ServletRequest request) {
@@ -96,6 +99,7 @@ public class SysUserController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("user-sysUser-create")
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         logger.info("创建系统用户开始");
@@ -157,6 +161,7 @@ public class SysUserController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("user-sysUser-edit")
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         logger.info("跳转更新系统用户页面开始");
@@ -236,6 +241,7 @@ public class SysUserController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("user-sysUser-delete")
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
@@ -249,6 +255,7 @@ public class SysUserController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("user-sysUser-deleteAll")
     @RequestMapping(value = "delete-all", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {

@@ -442,7 +442,7 @@
 				#{item}
 			</foreach>
 		  and mip.module_info_id=#{moduleId}
-	  	  and rmip.is_deleted=0 and mip.is_effective=1 and t.is_deleted=0
+	  	  and rmip.is_deleted=0 and rmip.is_effective = 1 and mip.is_effective=1 and t.is_deleted=0
 	</select>
 	
 

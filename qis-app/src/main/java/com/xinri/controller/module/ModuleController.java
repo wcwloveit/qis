@@ -1,7 +1,12 @@
 package com.xinri.controller.module;
 
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.qis.ShiroUser;
 import com.qis.common.web.BaseController;
+import com.qis.service.RedisService;
 import com.xinri.po.moduleInfo.ColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
@@ -16,6 +21,8 @@ import com.xinri.vo.jstree.State;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
 import com.xinri.vo.redis.Module;
 import com.xinri.vo.redis.Redis;
+
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
@@ -24,7 +31,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import redis.clients.jedis.ShardedJedis;
+import redis.clients.jedis.ShardedJedisPool;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.management.ManagementPermission;
@@ -66,11 +76,36 @@ public class ModuleController extends BaseController {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private RedisService redisService;
+
+
+//    @RequestMapping(value = "redisSet")
+//    public void redisSet(){
+//        List<ModuleInfoes> moduleInfoes=moduleInfoesService.findAllList();
+//        JSONArray json = JSONArray.fromObject(moduleInfoes);
+//        String value=json.toString();
+//        redisService.add("2",value);
+//    }
+
+//    @RequestMapping(value = "redisGet")
+//    @ResponseBody
+//    public List<ModuleInfoes> redisGet() {
+//        String value = redisService.getString("2");
+//        List<ModuleInfoes> moduleInfoes=new ArrayList<>();
+//        JSONArray obj = JSON.parseArray(value);
+////        List<ModuleInfoes> moduleInfoes=(List<ModuleInfoes> )JSONArray.toArray(obj);
+//        for (Object a : obj) {
+//            ModuleInfoes moduleInfoes1 = JSONObject.parseObject(a.toString(), ModuleInfoes.class);
+//            moduleInfoes.add(moduleInfoes1);
+//        }
+//        return moduleInfoes;
+//    }
 
     /**
      * 首页
-     * @return
-     * 创建人 汪震 20180907
+     *
+     * @return 创建人 汪震 20180907
      */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView findModuleList() {
@@ -209,12 +244,12 @@ public class ModuleController extends BaseController {
 
 
         Long[] perIds = moduleInfoPermissionsService.getIdsByModuleId(id);
-        if(perIds!=null&&perIds.length>0){
+        if (perIds != null && perIds.length > 0) {
             roleModuleInfoPermissionHeadsService.deleteByRelateId(Arrays.asList(perIds));
         }
 
         Long[] colIds = moduleInfoColumnDatasService.getIdsByModuleId(id);
-        if(colIds!=null&&colIds.length>0){
+        if (colIds != null && colIds.length > 0) {
             roleModuleInfoColumnDataHeadsService.deleteByRelateId(Arrays.asList(colIds));
         }
 
@@ -295,7 +330,7 @@ public class ModuleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    public List<ModuleInfoes> findList(ModuleInfoes moduleInfo,Long id){
+    public List<ModuleInfoes> findList(ModuleInfoes moduleInfo, Long id) {
         return moduleInfoesService.findList(moduleInfo);
     }
 
@@ -306,31 +341,31 @@ public class ModuleController extends BaseController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
-    public List<Module> search(){
+    public List<Module> search() {
         ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-        Redis redis=resourceService.getInfo(user);
-        List<Module> modules=redis.getModuleInfoesList();
+        Redis redis = resourceService.getInfo(user);
+        List<Module> modules = redis.getModuleInfoesList();
         return modules;
     }
 
-    //初始化模块权限关联表
-//    @RequestMapping(value = "/init",method = RequestMethod.GET)
-//    public void init (){
-//        List<Permissions> permissions=permissionsService.findAllList();
-//        ModuleInfoPermissions moduleInfoPermission=new ModuleInfoPermissions();
-//        ModuleInfoes moduleinfo=new ModuleInfoes();
-//        moduleinfo.setIsMenu(0);
-//        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
-//        for (Permissions permission : permissions) {
-//            moduleInfoPermission.setPermissionId(permission.getId());
-//            for (ModuleInfoes moduleInfo : moduleInfoes) {
-//                moduleInfoPermission.setId(null);
-//                moduleInfoPermission.setIsNewRecord(true);
-//                moduleInfoPermission.setModuleInfoId(moduleInfo.getId());
-//                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
-//            }
-//        }
-//    }
+//    初始化模块权限关联表
+    @RequestMapping(value = "/init",method = RequestMethod.GET)
+    public void init (){
+        List<Permissions> permissions=permissionsService.findAllList();
+        ModuleInfoPermissions moduleInfoPermission=new ModuleInfoPermissions();
+        ModuleInfoes moduleinfo=new ModuleInfoes();
+        moduleinfo.setIsMenu(0);
+        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
+        for (Permissions permission : permissions) {
+            moduleInfoPermission.setPermissionId(permission.getId());
+            for (ModuleInfoes moduleInfo : moduleInfoes) {
+                moduleInfoPermission.setId(null);
+                moduleInfoPermission.setIsNewRecord(true);
+                moduleInfoPermission.setModuleInfoId(moduleInfo.getId());
+                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
+            }
+        }
+    }
     //初始化模块数据列关联表
 //    @RequestMapping(value = "/init",method = RequestMethod.GET)
 //    public void init (){
