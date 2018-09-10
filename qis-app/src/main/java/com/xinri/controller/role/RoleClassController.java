@@ -33,9 +33,12 @@ public class RoleClassController extends BaseController {
         return "roleClass/list";
     }
 
-    /*
-   * 分页列表
-   * */
+    /** 创建人 魏严 创建时间 2019.9.7
+     * 分页列表
+     * @param dt
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RoleClassesVo> getItemList(DataTable<RoleClassesVo> dt, ServletRequest request){
