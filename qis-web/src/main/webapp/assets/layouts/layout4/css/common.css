@@ -1,3 +1,13 @@
+body {
+	color: #333333;
+	background-color: #FFFFFF;
+}
+
+a,
+a:hover {
+	text-decoration: none;
+}
+
 .page-header.navbar {
 	background: -webkit-linear-gradient(left, #995aff, #5ca3ff);
 	/* Safari 5.1 - 6.0 */
@@ -11,27 +21,18 @@
 }
 
 .page-header.navbar .page-logo .logo-default {
-	margin: 0;
+	margin: 21px 5px 0 0;
+	line-height: 0;
+	vertical-align: sub;
 }
 
 .page-header.navbar .page-logo {
-	width: auto;
-	height: auto;
+	width: 235px;
 }
 
 .page-header.navbar .page-logo a,
 .page-header.navbar .page-logo a:hover {
-	line-height: 70px;
 	color: #FFFFFF;
-	text-decoration: none;
-}
-
-.page-header.navbar .page-logo a img {
-	vertical-align: sub;
-}
-
-.navbar-nav>li>a {
-	line-height: 34px;
 }
 
 .page-logo span {
@@ -39,41 +40,40 @@
 	font-weight: 600;
 }
 
+.page-sidebar-closed.page-sidebar-closed-hide-logo .page-header.navbar .page-logo {
+	margin: 0;
+}
+
+.page-header.navbar .page-top {
+	height: auto;
+	padding: 21px 10px;
+}
+
+.page-header.navbar .menu-toggler.responsive-toggler {
+	margin: 0;
+}
+
 .page-header.navbar .search-form {
+	margin: 0 20px 0 0;
 	background: none;
 }
 
-.page-header.navbar .top-menu .navbar-nav>li.dropdown-user .dropdown-toggle>img {
-	margin-left: 0;
-	margin-right: 5px;
-	margin-top: 0;
-	height: 36px;
-}
-
-.page-header.navbar .top-menu .navbar-nav>li.dropdown-user>.dropdown-toggle>.username {
-	color: #FFFFFF;
+.page-header.navbar .top-menu a {
+	padding: 0 10px;
 	font-weight: 300;
 }
 
-.QIS-triangle-down {
-	width: 0;
-	height: 0;
-	border-left: 4px solid transparent;
-	border-right: 4px solid transparent;
-	border-top: 5px solid #FFFFFF;
-}
-
-.page-header.navbar .top-menu .navbar-nav>li.dropdown-user .dropdown-toggle {
-	padding: 20px 10px;
+.page-header.navbar .top-menu a,
+.page-header.navbar .top-menu a:hover {
 	color: #FFFFFF;
 }
 
-.page-header.navbar .top-menu .navbar-nav>li.dropdown-user>.dropdown-toggle>i {
-	color: #FFFFFF;
+.page-header.navbar .top-menu a img {
+	margin: 0 5px 0 0;
 }
 
-.page-header.navbar .top-menu .navbar-nav>li.dropdown .dropdown-toggle:hover {
-	background-color: initial;
+.page-header.navbar .top-menu a i {
+	margin-right: 5px;
 }
 
 .page-container,
@@ -83,7 +83,6 @@
 
 .page-sidebar.navbar-collapse {
 	border-right: 1px solid #d8d5db;
-	border-bottom: 1px solid #d8d5db;
 	background-color: #efe5ff;
 	color: #333;
 }
@@ -102,7 +101,7 @@
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.active>a,
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.open>a,
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li:hover>a {
-	border-left: 3px solid #995AFF !important;
+	border-left: 2px solid #995AFF !important;
 	background-color: #e0ccff !important;
 	color: #333;
 }
@@ -124,6 +123,8 @@
 .page-sidebar .page-sidebar-menu .sub-menu>li>a>i[class*=icon-],
 .page-sidebar .page-sidebar-menu .sub-menu>li>a>i[class^=icon-],
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li>a>i[class*=icon-],
-.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li>a>i[class^=icon-] {
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li>a>i[class^=icon-],
+.page-sidebar .page-sidebar-menu>li>a>i,
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li>a>i {
 	color: #333;
 }

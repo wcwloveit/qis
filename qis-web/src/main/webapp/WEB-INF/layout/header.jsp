@@ -12,7 +12,16 @@
 				<img src="${ctx}/assets/layouts/layout4/img/logo-light.png" alt="logo" class="logo-default" />
 				<span>管理系统</span>
 			</a>
-
+			<div class="menu-toggler sidebar-toggler">
+				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+			</div>
+			<script type="text/javascript">
+				$(function() {
+					$(".sidebar-toggler").click(function() {
+						$(".page-logo a").toggle();
+					});
+				})
+			</script>
 		</div>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -26,41 +35,26 @@
 				<div class="input-group">
 					<input type="text" class="form-control input-sm" placeholder="Search..." name="query">
 					<span class="input-group-btn">
-        <a href="javascript:;" class="btn submit">
-        <i class="icon-magnifier"></i>
-        </a>
-        </span>
+                        <a href="javascript:;" class="btn submit">
+                            <i class="icon-magnifier"></i>
+                        </a>
+                    </span>
 				</div>
 			</form>
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
-			<div class="top-menu">
-				<ul class="nav navbar-nav pull-right">
-					<li class="separator hide"> </li>
-					<!-- BEGIN USER LOGIN DROPDOWN -->
-					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-					<li class="dropdown dropdown-user dropdown-dark">
-						<a href="javascript:;" class="dropdown-toggle">
-							<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-							<img alt="" class="img-circle" src="${ctx}/assets/layouts/layout4/img/avatar9.jpg" />
-							<span class="username username-hide-on-mobile">
-					        	<shiro:principal property="name"/>
-					        </span>
-							<i class="QIS-triangle-down"></i>
-						</a>
-					</li>
-
-					<li class="separator hide"> </li>
-
-					<li class="dropdown dropdown dropdown-user dropdown-dark">
-						<a href="${ctx}/logout" class="dropdown-toggle">
-							<i class="icon-logout"></i>
-							<span>退出</span>
-						</a>
-					</li>
-				</ul>
-				</li>
-				</ul>
+			<div class="top-menu pull-right">
+				<a href="javascript:;" class="QIS-user">
+					<img src="${ctx}/assets/layouts/layout4/img/avatar9.jpg" class="img-circle" width="32" />
+					<span>
+						<shiro:principal property="name"/>
+					</span>
+				</a>
+				<!-- BEGIN LOGOUT -->
+				<a href="${ctx}/logout">
+					<i class="icon-key"></i>退出
+				</a>
+				<!-- END LOGOUT -->
 			</div>
 			<!-- END TOP NAVIGATION MENU -->
 		</div>
