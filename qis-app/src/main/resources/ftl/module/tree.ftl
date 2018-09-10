@@ -66,22 +66,30 @@
                         </div>
                         <div class="actions">
                             <div class="btn-group">
+<@shiro.hasPermission name="module-create">
                                 <a class="btn green btn-parent">
                                     <i class="fa fa-plus"></i>
                                     <span class="hidden-480">新增父节点</span>
                                 </a>
+</@shiro.hasPermission>
+    <@shiro.hasPermission name="module-create">
                                 <button type="button" class="btn green btn-children" disabled="disabled">
                                     <i class="fa fa-plus"></i>
                                     <span class="hidden-480">新增子节点</span>
                                 </button>
+    </@shiro.hasPermission>
+<@shiro.hasPermission name="module-edit">
                                 <button type="button" class="btn blue btn-edit" disabled="disabled">
                                     <i class="fa fa-edit"></i>
                                     <span class="hidden-480">编辑此节点</span>
                                 </button>
+</@shiro.hasPermission>
+<@shiro.hasPermission name="module-delete">
                                 <button type="button" class="btn red btn-delete" disabled="disabled">
                                     <i class="fa fa-trash-o"></i>
                                     <span class="hidden-480">删除此节点</span>
                                 </button>
+</@shiro.hasPermission>
                             </div>
                         </div>
                     </div>

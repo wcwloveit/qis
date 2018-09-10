@@ -10,6 +10,7 @@ import com.xinri.service.moduleInfo.impl.ModuleInfoesServiceImpl;
 import com.xinri.service.permissions.IPermissionsService;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo;
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,7 @@ public class ModulePermissionsController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("module-permissions-index")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView findModuleList() {
         ModelAndView mv = new ModelAndView("/module/per");

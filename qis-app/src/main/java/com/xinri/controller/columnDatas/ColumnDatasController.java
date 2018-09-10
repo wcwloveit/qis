@@ -13,6 +13,7 @@ import com.xinri.service.moduleInfo.IModuleInfoesService;
 import com.xinri.service.moduleInfo.IRoleModuleInfoColumnDataHeadsService;
 
 import com.xinri.vo.columnData.ColumnDataVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,7 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-column-index")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         return "columnDatas/list";
@@ -62,6 +64,7 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人汪震 20180907
      */
+    @RequiresPermissions("shiro-column-list")
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<ColumnDataVo> getItemList(DataTable<ColumnDataVo> dt, ServletRequest request) {
@@ -90,6 +93,7 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-column-create")
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         logger.info("创建数据列开始");
@@ -146,6 +150,7 @@ public class ColumnDatasController extends BaseController {
      * @param id
      * @return
      */
+    @RequiresPermissions("shiro-column-edit")
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         logger.info("跳转更新数据列页面开始");
@@ -187,6 +192,7 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-column-delete")
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
@@ -211,6 +217,7 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-column-deleteAll")
     @RequestMapping(value = "delete-all", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {

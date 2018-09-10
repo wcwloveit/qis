@@ -10,6 +10,7 @@ import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
 import com.xinri.service.moduleInfo.IModuleInfoesService;
 import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
 import com.xinri.service.permissions.IPermissionsService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,7 @@ public class permissionsController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-permissions-index")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         return "permissions/list";
@@ -59,6 +61,7 @@ public class permissionsController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-permissions-list")
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<Permissions> getItemList(DataTable<Permissions> dt, ServletRequest request) {
@@ -86,6 +89,7 @@ public class permissionsController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-permissions-create")
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         logger.info("创建权限开始");
@@ -144,6 +148,7 @@ public class permissionsController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-permissions-edit")
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         logger.info("跳转更新权限页面开始");
@@ -185,6 +190,7 @@ public class permissionsController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-permissions-delete")
     @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
@@ -209,6 +215,7 @@ public class permissionsController extends BaseController {
      * @return
      *创建人 汪震 20180907
      */
+    @RequiresPermissions("shiro-permissions-deleteAll")
     @RequestMapping(value = "delete-all", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
