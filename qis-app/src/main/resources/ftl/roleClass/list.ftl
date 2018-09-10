@@ -305,22 +305,18 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<@shiro.hasPermission name="production-productionLines-edit">
-                                <a href="${rc.contextPath}/role/roleClass/update/' + row.id
+                        var a = '<@shiro.hasPermission name="production-productionLines-edit"><a href="${rc.contextPath}/role/roleClass/update/' + row.id
                                 + '" class="btn btn-xs blue  btn-outline btn-circle"  title="编辑" >' +
-                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                </@shiro.hasPermission>';
+                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';
 
                         <#--var b = '<a href="${rc.contextPath}/zc/itemPic/index-2-' + row.id-->
                                 <#--+ '" class="btn btn-xs green"  title="产品图片" >' +-->
                                 <#--'<i class="glyphicon glyphicon-picture"></i>产品图片</a>';-->
 
                         //  逻辑删除
-                        var c = '<@shiro.hasPermission name="production-productionLines-delete">
-                                <a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
+                        var c = '<@shiro.hasPermission name="production-productionLines-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
                                 + '\')" class="btn btn-xs red  btn-outline btn-circle"  title="删除" >' +
-                                '<i class="glyphicon glyphicon-trash"></i>删除</a>
-                                </@shiro.hasPermission>';
+                                '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
 
                     <#--var d = '<a href="${rc.contextPath}/zc/itemMode/index-' + row.id-->
                     <#--+ '" class="btn btn-xs blue"  title="配置信息" >' +-->

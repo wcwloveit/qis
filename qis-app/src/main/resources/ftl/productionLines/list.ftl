@@ -267,18 +267,14 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<@shiro.hasPermission name="production-productionLines-edit">
-                                <a href="${rc.contextPath}/production/lines/update/' + row.id
+                        var a = '<@shiro.hasPermission name="production-productionLines-edit"><a href="${rc.contextPath}/production/lines/update/' + row.id
                                 + '" class="btn btn-xs blue  btn-outline btn-circle"  title="编辑" >' +
-                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                </@shiro.hasPermission>';
+                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';
 
                         //  逻辑删除
-                        var c = '<@shiro.hasPermission name="production-productionLines-delete">
-                                <a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
+                        var c = '<@shiro.hasPermission name="production-productionLines-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
                                 + '\')" class="btn btn-xs red  btn-outline btn-circle"  title="删除" >' +
-                                '<i class="glyphicon glyphicon-trash"></i>删除</a>
-                                </@shiro.hasPermission>';
+                                '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
 
                         //物理删除
 //                        var g = '<a href="javascript:void(0);" onclick="removeOne(\'' + row.id

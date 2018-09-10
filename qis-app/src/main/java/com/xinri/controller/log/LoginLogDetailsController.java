@@ -5,6 +5,7 @@ import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.xinri.service.logs.ILoginLogDetailsService;
 import com.xinri.vo.log.LoginLogsVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class LoginLogDetailsController extends BaseController {
     /*
    * 首页
    * */
+    @RequiresPermissions("log-logins-index")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList(){
         return "log/loginList";
@@ -32,6 +34,7 @@ public class LoginLogDetailsController extends BaseController {
     /*
      * 分页列表
      * */
+    @RequiresPermissions("log-logins-list")
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<LoginLogsVo> getItemList(DataTable<LoginLogsVo> dt, ServletRequest request){
