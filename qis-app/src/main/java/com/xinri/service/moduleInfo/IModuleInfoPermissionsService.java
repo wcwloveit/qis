@@ -3,6 +3,7 @@ package com.xinri.service.moduleInfo;
 import com.qis.common.service.IBaseService;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
+import com.xinri.vo.redis.Resource;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -32,5 +33,7 @@ public interface IModuleInfoPermissionsService extends IBaseService<ModuleInfoPe
     public void deleteByModuleId(Long moduleId);
 
     public List<RoleModuleInFoPerVo> getRoleModuleInFoPerVo(RoleModuleInFoPerVo vo);
+
+    public List<Resource> getResource();
 }
 

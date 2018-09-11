@@ -522,4 +522,18 @@
 		<if test="moduleId != null">AND m.module_info_id=#{moduleId,jdbcType=BIGINT} </if>
 	</select>
 
+	<resultMap  id="resourceResultMap" type="com.xinri.vo.redis.Resource">
+		<result column="LINK_URL" property="url" jdbcType="VARCHAR"/>
+		<result column="MODULE_CODE" property="moCode" jdbcType="VARCHAR"/>
+		<result column="PERMISSION_CODE" property="peCode" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<select id="getResource"  resultMap="resourceResultMap">
+		select m.link_url LINK_URL,m.code MODULE_CODE,p.code PERMISSION_CODE
+		from module_infoes m join permissions p
+		where m.is_menu=0
+	</select>
+
+
+
 </mapper>

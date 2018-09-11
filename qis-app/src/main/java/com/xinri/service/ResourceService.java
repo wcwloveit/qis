@@ -17,12 +17,14 @@ import com.xinri.po.permissions.Permissions;
 import com.xinri.po.role.Roles;
 import com.xinri.po.user.SysUser;
 import com.xinri.po.user.Users;
+import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
 import com.xinri.service.moduleInfo.IModuleInfoesService;
 import com.xinri.service.permissions.IPermissionsService;
 import com.xinri.service.user.IUsersService;
 import com.xinri.service.user.impl.UsersServiceImpl;
 import com.xinri.vo.redis.Module;
 import com.xinri.vo.redis.Redis;
+import com.xinri.vo.redis.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.ShardedJedisPool;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +63,10 @@ public class ResourceService {
 
     @Autowired
     private IModuleInfoesService moduleInfoesService;
+
+    @Autowired
+    private IModuleInfoPermissionsService moduleInfoPermissionsService;
+
 
     @Autowired
     private IPermissionsService permissionsService;
@@ -133,6 +138,10 @@ public class ResourceService {
         return info;
     }
 
+    public List<Resource> getResource(){
+        List<Resource> before=moduleInfoPermissionsService.getResource();
+        return before;
+    }
 
     PropertyFilter redisProfilter = new PropertyFilter() {
 
