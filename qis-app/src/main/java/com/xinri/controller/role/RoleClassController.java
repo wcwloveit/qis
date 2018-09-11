@@ -1,8 +1,10 @@
 package com.xinri.controller.role;
 
 import com.app.api.DataTable;
+import com.qis.common.persistence.Page;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
+import com.qis.util.DownLoadUtil;
 import com.xinri.po.role.RoleClasses;
 import com.xinri.service.role.IRoleClassesService;
 import com.xinri.vo.role.RoleClassesVo;
@@ -14,8 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,4 +170,43 @@ public class RoleClassController extends BaseController {
         }
         return map;
     }
+
+    /**
+     * 导出
+     * 创建人  魏严 2018.9.11
+     * @param response
+     * @param request
+     * @throws IOException
+     */
+    @RequiresPermissions("production-productionLines-export")
+    @RequestMapping(value = {"/export-excel"},method = {RequestMethod.GET})
+    public void exportExcel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        try{
+            Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+            Page page = new Page(request, response);
+            roleClassesService.exportExcel(response,searchParams);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(" Excel文件导出--->", e);
+        }
+    }
+
+//
+//    /**
+//     * 开票模板.xls
+//     *
+//     * @param request
+//     * @param response
+//     * @throws Exception
+//     */
+//    @RequestMapping(value = {"/excelModel"},method = {RequestMethod.GET})
+//    public void downLoadExcelModel(HttpServletRequest request, HttpServletResponse response)throws IOException{
+//        logger.info("下载开票模板 开始");
+//        try{
+//            DownLoadUtil.getInstall().downLoadExcel("测试001.xlsx","orgUser.xlsx",response);; //动态生成excel 下载模板文件
+//        }catch(Exception e){
+//            logger.error("动态生成excel文件,出错{}",e);
+//        }
+//        logger.info("下载开票模板 完成");
+//    }
 }

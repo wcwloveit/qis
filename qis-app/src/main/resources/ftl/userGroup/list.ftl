@@ -47,21 +47,25 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
+
                             <@shiro.hasPermission name="user-groups-create">
                             <a class="btn green btn-parent btn-outline btn-circle" href="${rc.contextPath}/user/userGroup/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
                             </@shiro.hasPermission>
+
                         <#--<a href="javascript:void(0)" class="btn red">-->
                         <#--<i class="fa fa-trash-o"></i>-->
                         <#--<span class="hidden-480"  onclick="deleteList();">批量删除</span>-->
                         <#--</a>-->
 
-                        <#--<a class="btn green" href="javascript:exportData();">-->
-                        <#--<i class="fa fa-download"></i>-->
-                        <#--<span class="hidden-480">导出</span>-->
-                        <#--</a>-->
+                    <@shiro.hasPermission name="user-groups-export">
+                        <a class="btn green  btn-outline btn-circle" href="javascript:exportData();">
+                        <i class="fa fa-download"></i>
+                        <span class="hidden-480">导出</span>
+                        </a>
+                    </@shiro.hasPermission>
 
                         </div>
                     </div>
@@ -898,6 +902,16 @@
                 $(this).find("option").attr("selected", false);
             });
             search(btn, grid);
+        }
+
+        /**
+         * 导出excel
+         */
+        function exportData(){
+                var search_userGroup_name=$('#search_userGroup_name').val(),
+                    search_userGroup_code=$('#search_userGroup_code').val(),
+                    search_userGroup_descr=$('#search_userGroup_descr').val();
+            location.href='${rc.contextPath}/user/userGroup/export-excel?search_userGroup_name='+search_userGroup_name+'&search_userGroup_code='+search_userGroup_code+'&search_userGroup_descr='+search_userGroup_descr;
         }
 
     </script>

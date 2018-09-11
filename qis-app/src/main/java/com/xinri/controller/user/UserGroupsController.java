@@ -1,6 +1,7 @@
 package com.xinri.controller.user;
 
 import com.app.api.DataTable;
+import com.qis.common.persistence.Page;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.xinri.po.departments.Departments;
@@ -22,6 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -278,4 +282,25 @@ public class UserGroupsController extends BaseController {
     public AjaxStatus leave2(@RequestParam("roleId") Long roleId,@RequestParam("empId") Long empId){
         return userGroupsService.LeaveRole2(roleId,empId);
     }
+
+    /**
+     * 导出
+     * 创建人 魏严 2018.9.11
+     * @param response
+     * @param request
+     * @throws IOException
+     */
+    @RequiresPermissions("user-groups-export")
+    @RequestMapping(value = {"/export-excel"},method = {RequestMethod.GET})
+    public void exportExcel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        try{
+            Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+            Page page = new Page(request, response);
+            userGroupsService.exportExcel(response,searchParams);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(" Excel文件导出--->", e);
+        }
+    }
+
 }

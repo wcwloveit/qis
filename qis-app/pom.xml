@@ -206,6 +206,15 @@
             <groupId>com.xinri</groupId>
             <artifactId>qis-dictionary</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>4.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+        </dependency>
 
 
     </dependencies>

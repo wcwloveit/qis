@@ -1,14 +1,18 @@
 package com.xinri.service.user.impl;
 
+import com.app.Setting;
 import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
 import com.qis.common.service.CrudService;
+import com.qis.util.DownExcel;
+import com.qis.util.PathUtil;
 import com.xinri.dao.user.UserGroupDepartmentsMapper;
 import com.xinri.dao.user.UserGroupsMapper;
 import com.xinri.dao.user.UserUserGroupsMapper;
 import com.xinri.dao.user.UsersMapper;
 import com.xinri.po.departments.Departments;
+import com.xinri.po.role.RoleClasses;
 import com.xinri.po.user.UserGroupDepartments;
 import com.xinri.po.user.UserGroups;
 import com.xinri.po.user.UserUserGroups;
@@ -24,7 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -456,6 +462,78 @@ public class UserGroupsServiceImpl extends CrudService<UserGroupsMapper,UserGrou
         userGroupsMapper.delete(id);
         if(a.size()>0){
         }
+    }
+
+    /**
+     * 导出
+     * 创建日期 2018.9.11
+     * @param response
+     * @param searchParams
+     */
+    @Override
+    public void exportExcel(HttpServletResponse response, Map<String, Object> searchParams) {
+        DataTable dt = new DataTable();
+        dt.setiDisplayStart(0);
+        dt.setiDisplayLength(100000000);
+        dt.setiSortCol_0("0");
+        dt.setsSortDir_0("desc");
+
+        ///添加导出条件
+        UserGroups zxOrder = searchZxOrder(searchParams);
+        List<UserGroups> list = dao.findAllList(zxOrder);//导出所有
+
+        //导出数据
+        String excelTitle = "用户组列表";
+        String[] headerTitle = new String[]{"名称","编号","描述"};
+        List<String[]> arrayList = new ArrayList<>();
+        arrayList.add(headerTitle); //列头
+        if(list!=null){
+            int j = 0;
+            for(UserGroups obj : list){
+                j++;
+                arrayList.add(
+                        new String[]{
+                                obj.getName(),
+                                obj.getCode(),
+                                obj.getDescr()
+                        });
+            }
+        }
+        Map<String,List<String[]>> map = new HashMap();//导出excel 内容
+        map.put(excelTitle, arrayList);
+        DownExcel downExcel = DownExcel.getInstall();
+        downExcel.downLoadFile(response, downExcel.exportXlsExcel(map, PathUtil.getRootPath() + Setting.BASEADDRESS + Setting.excelAddress
+                , String.valueOf(System.currentTimeMillis())), excelTitle, true); //导出2003 excel
+
+    }
+
+    private UserGroups searchZxOrder(Map<String, Object> UserGroup) {
+
+        UserGroups UserGroups= new UserGroups();
+        if ( UserGroup!= null && UserGroup.size() != 0) {
+
+            //名称
+            if (UserGroup.containsKey("userGroup_name")&&
+                    !Strings.isNullOrEmpty(UserGroup.get("userGroup_name").toString().trim())) {
+                String name = UserGroup.get("userGroup_name").toString().trim();
+                UserGroups.setName(name);
+            }
+
+            //编号
+            if (UserGroup.containsKey("userGroup_code")&&
+                    !Strings.isNullOrEmpty(UserGroup.get("userGroup_code").toString().trim())) {
+                String code = UserGroup.get("userGroup_code").toString().trim();
+                UserGroups.setCode(code);
+            }
+            //描述
+            if (UserGroup.containsKey("userGroup_descr")&&
+                    !Strings.isNullOrEmpty(UserGroup.get("userGroup_descr").toString().trim())) {
+                String descr = UserGroup.get("userGroup_descr").toString().trim();
+                UserGroups.setDescr(descr);
+            }
+            UserGroups.setIsDeleted(0);
+        }
+        return UserGroups;
     }
 
 

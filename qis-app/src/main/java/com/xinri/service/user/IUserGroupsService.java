@@ -7,6 +7,7 @@ import com.xinri.po.user.UserUserGroups;
 import com.xinri.po.user.Users;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.users.UserGroupsVo;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -41,5 +42,7 @@ public interface IUserGroupsService extends IBaseService<UserGroups>{
     public boolean CheckUserInRole(Long id);
 
     public void DeleteKnRole(Long id);
+
+    public void exportExcel(HttpServletResponse response, Map<String, Object> searchParams);
 }
 
