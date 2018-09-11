@@ -1,9 +1,7 @@
 package com.qis.shiro;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+
 import com.kingnode.diva.utils.Encodes;
 import com.qis.ShiroUser;
 import com.qis.service.RedisService;

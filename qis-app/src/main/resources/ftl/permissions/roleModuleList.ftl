@@ -442,11 +442,14 @@
             var obj={};
             obj.roleType=type;
             if(type==0){//员工
-                obj.useridorDeptId= $('#userId').val();
                 obj.roleModuleInfoPermissionHeadId= $('#userSelect').val();
+                obj.useridorDeptId= $('#userId').val();
+
             }else if(type==1){//部门
-                obj.useridorDeptId= $('#userGroupId').val();
+
                 obj.roleModuleInfoPermissionHeadId= $('#userGroupSelect').val();
+                obj.useridorDeptId= $('#userGroupId').val();
+
             }
 
             $.ajax({
@@ -465,9 +468,9 @@
                             $('#joinByUserGroup').modal('hide');
                         }
                         grid1.getDataTable().fnDraw();
-                        bootbox.alert(resp.msg);
+                        bootbox.alert(data.msg);
                     }else{
-                        bootbox.alert(resp.msg);
+                        bootbox.alert(data.msg);
                     }
                 }
             });

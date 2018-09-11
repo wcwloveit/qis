@@ -1,9 +1,6 @@
 package com.xinri.controller.module;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.qis.ShiroUser;
 import com.qis.common.web.BaseController;
 import com.qis.service.RedisService;
@@ -12,6 +9,7 @@ import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 import com.xinri.po.permissions.Permissions;
+import com.xinri.po.user.Users;
 import com.xinri.service.ResourceService;
 import com.xinri.service.moduleInfo.*;
 import com.xinri.service.permissions.IPermissionsService;
@@ -75,7 +73,7 @@ public class ModuleController extends BaseController {
 
     @Autowired
     private ResourceService resourceService;
-    
+
     /**
      * 首页
      *
@@ -91,8 +89,8 @@ public class ModuleController extends BaseController {
 
     /**
      * 获取模块树
-     * @return
-     * 创建人 汪震 20180907
+     *
+     * @return 创建人 汪震 20180907
      */
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
@@ -103,9 +101,9 @@ public class ModuleController extends BaseController {
 
     /**
      * 根据角色id获取当前角色拥有的模块树
+     *
      * @param id
-     * @return
-     * 创建人 汪震 20180907
+     * @return 创建人 汪震 20180907
      */
     @ResponseBody
     @RequestMapping(value = "listForRole/{id}", method = RequestMethod.POST)
@@ -127,9 +125,9 @@ public class ModuleController extends BaseController {
 
     /**
      * 返回jsTree点选项的详细信息和上级模块信息
+     *
      * @param id
-     * @return
-     * 创建人 汪震 20180907
+     * @return 创建人 汪震 20180907
      */
     @RequestMapping(value = "get-infos/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -144,8 +142,8 @@ public class ModuleController extends BaseController {
 
     /**
      * 返回所有父模块
-     * @return
-     * 创建人 汪震 20180907
+     *
+     * @return 创建人 汪震 20180907
      */
     @RequestMapping(value = "parentsList", method = RequestMethod.POST)
     @ResponseBody
@@ -159,9 +157,9 @@ public class ModuleController extends BaseController {
 
     /**
      * 保存
+     *
      * @param moduleInfo
-     * @return
-     * 创建人 汪震 20180907
+     * @return 创建人 汪震 20180907
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView create(ModuleInfoes moduleInfo) {
@@ -207,9 +205,9 @@ public class ModuleController extends BaseController {
 
     /**
      * 逻辑删除 模块信息 同时物理删除模块-数据列 和模块-权限关联 信息
+     *
      * @param id
-     * @return
-     * 创建人 汪震 20180907
+     * @return 创建人 汪震 20180907
      */
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
@@ -244,12 +242,12 @@ public class ModuleController extends BaseController {
 
     /**
      * 检查同级下是否存在同名（name）的模块
+     *
      * @param name
      * @param pid
      * @param status
      * @param id
-     * @return
-     * 创建人 汪震 20180907
+     * @return 创建人 汪震 20180907
      */
     @RequestMapping(value = "/checkExist", method = RequestMethod.GET)
     @ResponseBody
@@ -272,11 +270,11 @@ public class ModuleController extends BaseController {
 
     /**
      * 检查同级下是否存在同编码（code）的模块
+     *
      * @param code
      * @param status
      * @param id
-     * @return
-     * 创建人 汪震 20180907
+     * @return 创建人 汪震 20180907
      */
     @RequestMapping(value = "/checkCode", method = RequestMethod.GET)
     @ResponseBody
@@ -299,10 +297,10 @@ public class ModuleController extends BaseController {
 
     /**
      * 忘了干啥的了
+     *
      * @param moduleInfo
      * @param id
-     * @return
-     * 创建人 汪震 20180907
+     * @return 创建人 汪震 20180907
      */
     public List<ModuleInfoes> findList(ModuleInfoes moduleInfo, Long id) {
         return moduleInfoesService.findList(moduleInfo);
@@ -310,24 +308,24 @@ public class ModuleController extends BaseController {
 
     /**
      * 返回当前用户拥有的所有模块
-     * @return
-     * 创建人 汪震 20180907
+     *
+     * @return 创建人 汪震 20180907
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
     public List<Module> search() {
         ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-        Redis redis = resourceService.getInfo(user);
+        Redis redis = resourceService.getFromRedis(user);
         List<Module> modules = redis.getModuleInfoesList();
         return modules;
     }
 
-//    初始化模块权限关联表
-    @RequestMapping(value = "/init",method = RequestMethod.GET)
-    public void init (){
-        List<Permissions> permissions=permissionsService.findAllList();
-        ModuleInfoPermissions moduleInfoPermission=new ModuleInfoPermissions();
-        ModuleInfoes moduleinfo=new ModuleInfoes();
+    //    初始化模块权限关联表
+    @RequestMapping(value = "/init", method = RequestMethod.GET)
+    public void init() {
+        List<Permissions> permissions = permissionsService.findAllList();
+        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
+        ModuleInfoes moduleinfo = new ModuleInfoes();
         moduleinfo.setIsMenu(0);
         List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
         for (Permissions permission : permissions) {

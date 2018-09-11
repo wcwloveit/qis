@@ -2,6 +2,10 @@ package com.xinri.dao.moduleInfo;
 import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataLines;
+import com.xinri.vo.moduleInfo.RoleModuleInFoColumnDataLineVo;
+
+import java.util.List;
+
 /**
  * 类名:RoleModuleInfoColumnDataLinesMapper<br>
  * 创建人:xiashanyong<br>
@@ -9,6 +13,6 @@ import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataLines;
  */
  @MyBatisDao
 public interface RoleModuleInfoColumnDataLinesMapper extends CrudDao<RoleModuleInfoColumnDataLines>{
-
+ List<RoleModuleInFoColumnDataLineVo> findListByVo(RoleModuleInFoColumnDataLineVo vo);
 }
 

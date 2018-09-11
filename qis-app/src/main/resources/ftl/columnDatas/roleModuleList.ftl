@@ -163,12 +163,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-3 control-label">选择权限<span class="required">*</span></label>
+                            <label class="col-md-3 control-label">选择数据列<span class="required">*</span></label>
                             <div class="col-md-6">
-                                <select id="aa" class="form-control" >
-                                <#list moList as module>
-                                    <#if module.rIsEffective && module.rIsEffective=1>
-                                        <option value="${module.rmphId!}">${module.name!}(${module.code!})</option>
+                                <select id="userSelect" class="form-control" >
+                                <#list coList as column>
+                                    <#if column.rIsEffective && column.rIsEffective=1>
+                                        <option value="${column.rmchId!}">${column.name!}(${column.code!})</option>
                                     </#if>
                                 </#list>
                                 </select>
@@ -205,12 +205,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-3 control-label">选择权限<span class="required">*</span></label>
+                            <label class="col-md-3 control-label">选择数据列<span class="required">*</span></label>
                             <div class="col-md-6">
-                                <select id="aa" class="form-control" >
-                            <#list moList as module>
-                                <#if module.rIsEffective && module.rIsEffective=1>
-                                    <option value="${module.rmphId!}">${module.name!}(${module.code!})</option>
+                                <select id="userGroupSelect" class="form-control" >
+                            <#list coList as column>
+                                <#if column.rIsEffective && column.rIsEffective=1>
+                                    <option value="${column.rmchId!}">${column.name!}(${column.code!})</option>
                                 </#if>
                             </#list>
                                 </select>
@@ -220,7 +220,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn green ladda-button" data-style="expand-right" onclick="setRefuse();" id = 'sign_org_save'><span class="ladda-label"></span>确定</button>
+                <button class="btn green ladda-button" data-style="expand-right" onclick="join(1);"><span class="ladda-label"></span>加入</button>
                 <button class="btn" data-dismiss="modal" aria-hidden="true">返回</button>
             </div>
         </div><!-- /.modal-content -->
@@ -256,7 +256,7 @@
                 ],
                 "iDisplayLength": 10,
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/module/modulePermissions/lines-${role.id}-${info.id}",
+                "sAjaxSource": "${rc.contextPath}/module/moduleColumnDatas/lines-${role.id}-${info.id}",
                 "aaSorting": [
                     [ 0, "desc" ]
                 ],
@@ -404,6 +404,76 @@
             $('#userGroupName').val(name);
             $('#userGroupId').val(id);
             $('#joinByUserGroup').modal('show');
+        }
+
+        function leave(id){
+            bootbox.dialog({
+                message: "确认要离开权限人员吗？",
+                buttons: {
+                    success: {
+                        label: "确定",
+                        className: "green ",
+                        callback: function() {
+                            Metronic.startPageLoading();
+                            $.ajax({
+                                url:'${rc.contextPath}/module/moduleColumnDatas/roleDelete/'+id,
+                                type:'POST',
+                                dataType:"json",
+                                traditional:true,
+                                success:function(data){
+                                    Metronic.stopPageLoading();
+                                    if(data.code=="200"){
+                                        grid1.getDataTable().fnDraw();
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    main: {
+                        label: "取消",
+                        className: "gray ",
+                        callback: function() {
+                            $(this).hide();
+                        }
+                    }
+                }
+            });
+        }
+
+        function join(type){
+            Metronic.startPageLoading();
+            var obj={};
+            obj.roleType=type;
+            if(type==0){//员工
+                obj.roleModuleInfoColumnDataHeadId= $('#userSelect').val();
+                obj.userIdOrDeptId= $('#userId').val();
+            }else if(type==1){//部门
+                obj.roleModuleInfoColumnDataHeadId= $('#userGroupSelect').val();
+                obj.userIdOrDeptId= $('#userGroupId').val();
+            }
+
+            $.ajax({
+                url:'${rc.contextPath}/module/moduleColumnDatas/roleSave',
+                type:'POST',
+                dataType:"json",
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                traditional:true,
+                success:function(data){
+                    Metronic.stopPageLoading();
+                    if(data.code=="200"){
+                        if(type==0){//员工
+                            $('#joinByUser').modal('hide');
+                        }else if(type==1){//部门
+                            $('#joinByUserGroup').modal('hide');
+                        }
+                        grid1.getDataTable().fnDraw();
+                        bootbox.alert(data.msg);
+                    }else{
+                        bootbox.alert(data.msg);
+                    }
+                }
+            });
         }
 
 
