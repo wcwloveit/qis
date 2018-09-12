@@ -300,7 +300,7 @@
                     search_userId=$('#search_userId').val(),
                     search_userName=$('#search_userName').val(),
                     search_name=$('#search_name').val();
-            location.href='${rc.contextPath}/log/login/export-excel?search_ipAddress='+search_ipAddress+'&search_userId='+search_userId+'&search_userName='+search_userName+'&search_name='+search_name;
+            location.href='${rc.contextPath}/log/login/exportExcel?search_ipAddress='+search_ipAddress+'&search_userId='+search_userId+'&search_userName='+search_userName+'&search_name='+search_name;
         }
 
     </script>

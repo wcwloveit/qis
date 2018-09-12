@@ -844,7 +844,7 @@
                                     callback: function() {
                                         Metronic.startPageLoading();
                                         $.ajax({
-                                            url:'${rc.contextPath}/user/userGroup/delete/'+id,
+                                            url:'${rc.contextPath}/user/userGroup/deleteOne/'+id,
                                             type:'POST',
                                             dataType:"json",
                                             traditional:true,
@@ -911,7 +911,7 @@
                 var search_userGroup_name=$('#search_userGroup_name').val(),
                     search_userGroup_code=$('#search_userGroup_code').val(),
                     search_userGroup_descr=$('#search_userGroup_descr').val();
-            location.href='${rc.contextPath}/user/userGroup/export-excel?search_userGroup_name='+search_userGroup_name+'&search_userGroup_code='+search_userGroup_code+'&search_userGroup_descr='+search_userGroup_descr;
+            location.href='${rc.contextPath}/user/userGroup/exportExcel?search_userGroup_name='+search_userGroup_name+'&search_userGroup_code='+search_userGroup_code+'&search_userGroup_descr='+search_userGroup_descr;
         }
 
     </script>

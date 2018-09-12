@@ -2,16 +2,23 @@ package com.qis.shiro;
 
 
 
+import com.app.Setting;
 import com.kingnode.diva.utils.Encodes;
 import com.qis.ShiroUser;
 import com.qis.service.RedisService;
+import com.qis.util.Utils;
+import com.xinri.po.logs.LoginLogs;
 import com.xinri.po.permissions.Permissions;
 import com.xinri.po.user.SysUser;
+import com.xinri.po.user.Users;
 import com.xinri.service.ResourceService;
+import com.xinri.service.logs.ILoginLogDetailsService;
 import com.xinri.service.user.ISysUserService;
 import com.xinri.vo.redis.Module;
 import com.xinri.vo.redis.Redis;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -23,10 +30,13 @@ import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import sun.security.krb5.internal.ktab.KeyTab;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ShiroDbRealm extends AuthorizingRealm {
@@ -34,6 +44,10 @@ public class ShiroDbRealm extends AuthorizingRealm {
     protected ResourceService resourceService;
     @Autowired
     private ISysUserService sysUserService;
+
+    @Autowired
+    private ILoginLogDetailsService loginLogDetailsService;
+
     //    private KnLogDao logDao;
 //    @Autowired
 //    private KnEmployeeDao employeeDao;
@@ -73,10 +87,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
             resourceService.saveToRedis(shiroUser);
             auth = new SimpleAuthenticationInfo(shiroUser,
                     sysUser.getPassword(), ByteSource.Util.bytes(salt), getName());
+            this.saveLog(shiroUser);//记录登录日志
             return auth;
         } else {
-
-
             throw new UnknownAccountException();
         }
 
@@ -107,7 +120,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 //                auth = new SimpleAuthenticationInfo(new ShiroUser(user.getId(), user.getLoginName(), user.getName()), user.getPassword(), ByteSource.Util.bytes(salt), getName());
 //
 //            }
-//            //this.saveLog(user);//记录登录日志
+
 //            return auth;
 //        } else {
 //            throw new UnknownAccountException();
@@ -166,18 +179,32 @@ public class ShiroDbRealm extends AuthorizingRealm {
     }
 
 
+    /**
+     * 记录登录日志
+     * 创建人  魏严  2018.9.12
+     * @param @param user
+     * @return void
+     * @throws
+     * @Title: saveLog
+     * @author Jason
+     */
+    @Transactional(readOnly = false)
+    public void saveLog(ShiroUser shiroUser) {
+        try {
+            LoginLogs Login=new LoginLogs();
+            Login.setUserId(shiroUser.getId()); //用户id
+            String ip = SecurityUtils.getSubject().getSession().getHost(); //IP地址
+            Login.setIpAddress(ip);
+            Login.setDataTypeId(Long.valueOf(35));//35 数据库表示登入
+            Login.setIsEffective(shiroUser.getType()); //用户类型：1系统管理员，2普通用户
+            loginLogDetailsService.saveOrUpdate(Login);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
-//    /**
-//     * 记录登录日志
-//     *
-//     * @param @param user
-//     * @return void
-//     * @throws
-//     * @Title: saveLog
-//     * @author Jason
-//     */
 //    @Transactional(readOnly = false)
 //    public void saveLog(KnUser user) {
 //

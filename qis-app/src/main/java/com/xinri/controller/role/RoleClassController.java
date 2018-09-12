@@ -30,10 +30,11 @@ public class RoleClassController extends BaseController {
     @Autowired
     private IRoleClassesService roleClassesService;
 
-    /*
-    * 首页
-    * */
-    
+    /**
+     * 首页
+     * 创建人 魏严 2018.9.12
+     * @return
+     */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList(){
         return "roleClass/list";
@@ -45,7 +46,6 @@ public class RoleClassController extends BaseController {
      * @param request
      * @return
      */
-    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RoleClassesVo> getItemList(DataTable<RoleClassesVo> dt, ServletRequest request){

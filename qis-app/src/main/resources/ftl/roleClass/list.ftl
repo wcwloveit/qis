@@ -423,7 +423,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/role/roleClass/delete-' + id,
+                                url: '${rc.contextPath}/role/roleClass/deleteOne/' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -561,7 +561,7 @@
             var search_RoleClass_name=$('#search_RoleClass_name').val(),
                     search_RoleClass_code=$('#search_RoleClass_code').val(),
                     search_RoleClass_descr=$('#search_RoleClass_descr').val();
-            location.href='${rc.contextPath}/role/roleClass/export-excel?search_RoleClass_name='+search_RoleClass_name+'&search_RoleClass_code='+search_RoleClass_code+'&search_RoleClass_descr='+search_RoleClass_descr;
+            location.href='${rc.contextPath}/role/roleClass/exportExcel?search_RoleClass_name='+search_RoleClass_name+'&search_RoleClass_code='+search_RoleClass_code+'&search_RoleClass_descr='+search_RoleClass_descr;
         }
     </script>
 </content>
