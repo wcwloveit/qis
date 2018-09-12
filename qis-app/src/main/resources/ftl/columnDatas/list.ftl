@@ -295,7 +295,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/permissions/columnDatas/deleteOne-' + id,
+                                url: '${rc.contextPath}/permissions/columnDatas/deleteOne/' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {

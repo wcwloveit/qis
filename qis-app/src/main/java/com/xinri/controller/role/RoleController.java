@@ -295,7 +295,7 @@ public class RoleController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("role-list-delete")
-    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         return rolesService.deleteOne(id);
@@ -308,7 +308,7 @@ public class RoleController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("role-list-deleteAll")
-    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         Map<String, Boolean> map = new HashMap<String, Boolean>();

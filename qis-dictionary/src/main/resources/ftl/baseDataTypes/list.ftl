@@ -309,7 +309,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/dictionary/deleteOne-' + id,
+                                url: '${rc.contextPath}/dictionary/deleteOne/' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -355,7 +355,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/dictionary/delete-all',
+                                url:'${rc.contextPath}/dictionary/deleteAll',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",

@@ -150,7 +150,7 @@ public class baseDtaTypesController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("dictionary-dictionary-delete")
-    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除数据" + id);
@@ -164,7 +164,7 @@ public class baseDtaTypesController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("dictionary-dictionary-deleteAll")
-    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         logger.info("删除全部数据");

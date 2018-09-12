@@ -242,7 +242,7 @@ public class SysUserController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("user-sysUser-delete")
-    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除系统用户" + id);
@@ -256,7 +256,7 @@ public class SysUserController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("user-sysUser-deleteAll")
-    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         logger.info("删除所有系统用户开始");

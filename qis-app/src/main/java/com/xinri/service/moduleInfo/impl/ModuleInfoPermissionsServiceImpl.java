@@ -69,7 +69,12 @@ public class ModuleInfoPermissionsServiceImpl extends CrudService<ModuleInfoPerm
     @Override
     public List<Resource> getResource() {
         List<Resource> resources=dao.getResource();
+        String beforeUrl="";
+        String afterUrl="";
         for (Resource resource : resources) {
+            beforeUrl=resource.getUrl();
+            afterUrl=beforeUrl.substring(0,beforeUrl.lastIndexOf("/"))+"/"+resource.getDescr();
+            resource.setUrl(afterUrl);
             resource.setCode(resource.getMoCode()+"-"+resource.getPeCode());
         }
         return resources;

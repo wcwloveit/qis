@@ -21,6 +21,7 @@ import com.xinri.vo.redis.Module;
 import com.xinri.vo.redis.Redis;
 
 
+import com.xinri.vo.redis.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
@@ -32,7 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 
-import javax.annotation.Resource;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.management.ManagementPermission;
@@ -73,6 +74,13 @@ public class ModuleController extends BaseController {
 
     @Autowired
     private ResourceService resourceService;
+
+
+    @RequestMapping("test")
+    @ResponseBody
+    public List<Resource> getResouce(){
+        return resourceService.getResource();
+    }
 
     /**
      * 首页

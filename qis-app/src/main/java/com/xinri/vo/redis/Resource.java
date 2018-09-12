@@ -4,7 +4,16 @@ public class Resource {
     private String url;
     private String moCode;
     private String peCode;
+    private String descr;
     private String code;
+
+    public String getDescr() {
+        return descr;
+    }
+
+    public void setDescr(String descr) {
+        this.descr = descr;
+    }
 
     public String getUrl() {
         return url;

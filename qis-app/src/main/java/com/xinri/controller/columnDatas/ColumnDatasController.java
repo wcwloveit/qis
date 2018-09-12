@@ -195,7 +195,7 @@ public class ColumnDatasController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("shiro-column-delete")
-    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除数据列" + id);
@@ -220,7 +220,7 @@ public class ColumnDatasController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("shiro-column-deleteAll")
-    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         logger.info("删除所有数据列开始");

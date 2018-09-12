@@ -191,7 +191,7 @@ public class permissionsController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequiresPermissions("shiro-permissions-delete")
-    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除权限" + id);
@@ -216,7 +216,7 @@ public class permissionsController extends BaseController {
      *创建人 汪震 20180907
      */
     @RequiresPermissions("shiro-permissions-deleteAll")
-    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         logger.info("删除所有权限开始");

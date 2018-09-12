@@ -551,7 +551,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/role/deleteOne-' + id,
+                                url: '${rc.contextPath}/role/deleteOne/' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -597,7 +597,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/role/delete-all',
+                                url: '${rc.contextPath}/role/deleteAll',
                                 type: 'POST',
                                 data: {"ids": ids},
                                 dataType: "json",

@@ -524,14 +524,18 @@
 
 	<resultMap  id="resourceResultMap" type="com.xinri.vo.redis.Resource">
 		<result column="LINK_URL" property="url" jdbcType="VARCHAR"/>
+		<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
 		<result column="MODULE_CODE" property="moCode" jdbcType="VARCHAR"/>
 		<result column="PERMISSION_CODE" property="peCode" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<select id="getResource"  resultMap="resourceResultMap">
-		select m.link_url LINK_URL,m.code MODULE_CODE,p.code PERMISSION_CODE
-		from module_infoes m join permissions p
-		where m.is_menu=0
+		select m.link_url LINK_URL,p.descr DESCR,m.code MODULE_CODE,p.code PERMISSION_CODE
+		from module_info_permissions mip
+		left join module_infoes m on mip.module_info_id=m.id
+		left join permissions p on mip.permission_id=p.id
+		where mip.is_deleted=0 and mip.is_effective=1 and m.is_deleted=0 and m.is_menu=0 and p.is_deleted=0
+
 	</select>
 
 
