@@ -91,9 +91,11 @@
             <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off"
                    placeholder="密码" name="password"/>
         </div>
-            <label class="rememberme check">
-                <input type="checkbox" name="rememberMe" value="true"/>记住我
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="rememberMe" value="true"> 记住我
             </label>
+        </div>
         <button type="submit" class="btn btn-block QIS-btn uppercase">登录</button>
 
     </form>

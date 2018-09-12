@@ -14,6 +14,12 @@ a:hover {
 }
 
 .QIS-btn {
+    border: 0;
+    color: #ffffff;
+    line-height: 28px !important;
+}
+
+.QIS-btn:hover {
     color: #ffffff;
 }
 
@@ -27,6 +33,18 @@ a:hover {
     background: linear-gradient(to right, #995aff, #5ca3ff);
     /* 标准的语法 */
     filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr="#995aff", endColorstr="#5ca3ff", gradientType="1");
+}
+
+.login .content h3 {
+    text-align: left;
+}
+
+.checkbox, .form-horizontal .checkbox {
+    padding: 0 20px;
+}
+
+.page-header.navbar {
+    border: 0;
 }
 
 .login .logo img {
