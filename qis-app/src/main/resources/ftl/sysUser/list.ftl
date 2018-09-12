@@ -10,7 +10,7 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="${rc.contextPath}/">系统用户管理ooo</a>
+                <a href="${rc.contextPath}/">系统用户管理</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>

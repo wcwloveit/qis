@@ -9,7 +9,7 @@
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
 			<a href="${ctx}/main">
-				<img src="${ctx}/assets/layouts/layout4/img/logo-light.png" alt="logo" class="logo-default" />
+				<img src="${ctx}/assets/layouts/layout4/img/logo-light.png" alt="logo" class="logo-default" width="40" />
 				<span>管理系统</span>
 			</a>
 			<div class="menu-toggler sidebar-toggler">
@@ -52,7 +52,7 @@
 				</a>
 				<!-- BEGIN LOGOUT -->
 				<a href="${ctx}/logout">
-					<i class="icon-key"></i>退出
+					<i class="fa fa-sign-out"></i>退出
 				</a>
 				<!-- END LOGOUT -->
 			</div>
