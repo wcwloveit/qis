@@ -1,17 +1,21 @@
 package com.xinri.service.logs.impl;
+import com.app.Setting;
 import com.app.api.DataTable;
 import com.google.common.base.Strings;
 import com.qis.common.persistence.Page;
 import com.qis.common.service.CrudService;
+import com.qis.util.DownExcel;
+import com.qis.util.PathUtil;
 import com.xinri.dao.logs.LoginLogsMapper;
 import com.xinri.po.logs.LoginLogs;
+import com.xinri.po.role.RoleClasses;
 import com.xinri.service.logs.ILoginLogDetailsService;
 import com.xinri.vo.log.LoginLogsVo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service("loginLogDetailsService")
 class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> implements ILoginLogDetailsService {
@@ -85,5 +89,95 @@ class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> 
             logger.error("配置列表出错"+e.getMessage());
         }
         return dt;
+    }
+
+    /**
+     * 导出
+     * 创建人 魏严 2018.9.11
+     * @param response
+     * @param searchParams
+     */
+    @Override
+    public void exportExcel(HttpServletResponse response, Map<String, Object> searchParams) {
+        DataTable dt = new DataTable();
+        dt.setiDisplayStart(0);
+        dt.setiDisplayLength(100000000);
+        dt.setiSortCol_0("0");
+        dt.setsSortDir_0("desc");
+
+        SimpleDateFormat a = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String CreatedOn;
+
+        ///添加导出条件
+        LoginLogsVo zxOrder = searchZxOrder(searchParams);
+        List<LoginLogsVo> list =dao.findListByVo(zxOrder);    //导出数据
+        String excelTitle = "登录日志列表";
+        String[] headerTitle = new String[]{"登录名","姓名","IP地址","用户IP","创建时间"};
+        List<String[]> arrayList = new ArrayList<>();
+        arrayList.add(headerTitle); //列头
+        if(list!=null){
+            int j = 0;
+            for(LoginLogsVo obj : list){
+                //日期格式转换
+                if(obj.getCreatedOn()!=null){
+                    CreatedOn=a.format(obj.getCreatedOn());
+                }else{
+                    CreatedOn="0000-00-00 00:00:00";
+                };
+                j++;
+                arrayList.add(
+                        new String[]{
+
+                                obj.getUserName(),
+                                obj.getName(),
+                                obj.getIpAddress(),
+                                String.valueOf(obj.getUserId()),
+                                CreatedOn //创建日期
+
+                        });
+            }
+        }
+        Map<String,List<String[]>> map = new HashMap();//导出excel 内容
+        map.put(excelTitle, arrayList);
+        DownExcel downExcel = DownExcel.getInstall();
+        downExcel.downLoadFile(response, downExcel.exportXlsExcel(map, PathUtil.getRootPath() + Setting.BASEADDRESS + Setting.excelAddress
+                , String.valueOf(System.currentTimeMillis())), excelTitle, true); //导出2003 excel
+
+    }
+
+    private LoginLogsVo searchZxOrder(Map<String, Object> searchParams) {
+        LoginLogsVo loginLogsVo= new LoginLogsVo();
+        if ( searchParams!= null && searchParams.size() != 0) {
+
+            //ip地址
+            if (searchParams.containsKey("ipAddress")&&
+                    !Strings.isNullOrEmpty(searchParams.get("ipAddress").toString().trim())) {
+                String ipAddress = searchParams.get("ipAddress").toString().trim();
+                loginLogsVo.setIpAddress(ipAddress);
+            }
+
+            //用户id
+            if (searchParams.containsKey("userId")&&
+                    !Strings.isNullOrEmpty(searchParams.get("userId").toString().trim())) {
+                String userId = searchParams.get("userId").toString().trim();
+                loginLogsVo.setUserId(Long.valueOf(userId));
+            }
+            //登录名
+            if (searchParams.containsKey("userName")&&
+                    !Strings.isNullOrEmpty(searchParams.get("userName").toString().trim())) {
+                String userName = searchParams.get("userName").toString().trim();
+                loginLogsVo.setUserName(String.valueOf(userName));
+            }
+
+            //姓名
+            if (searchParams.containsKey("name")&&
+                    !Strings.isNullOrEmpty(searchParams.get("name").toString().trim())) {
+                String name = searchParams.get("name").toString().trim();
+                loginLogsVo.setName(String.valueOf(name));
+            }
+
+            loginLogsVo.setIsDeleted(0);
+        }
+        return loginLogsVo;
     }
 }
