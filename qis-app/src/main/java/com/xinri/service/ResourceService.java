@@ -139,7 +139,7 @@ public class ResourceService {
     }
 
     public List<Resource> getResource(){
-        List<Resource> before=moduleInfoPermissionsService.getResource();
+        List<Resource> before = moduleInfoPermissionsService.getResource();
         return before;
     }
 

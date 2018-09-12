@@ -147,7 +147,7 @@ public class ModulePermissionsController extends BaseController{
      */
     @RequestMapping(value="roleSave")
     public String delete(@RequestBody String body, HttpServletResponse response){
-        logger.info("保存角色模块权限开始");
+        logger.info("保存角色模块权限line开始");
         String code = StatusMsgUtils.SUCCEEDEDCODE_200;
         String msg = StatusMsgUtils.ResponseCode.getName(code);
         try {
@@ -168,11 +168,11 @@ public class ModulePermissionsController extends BaseController{
                 }
             }
         } catch (Exception e) {
-            logger.error("保存角色模块权限报错：", e);
+            logger.error("保存角色模块权限line报错：", e);
             code = StatusMsgUtils.ERRORCODE_400;
             msg = StatusMsgUtils.ResponseCode.getName(code);
         }
-        logger.info("保存角色模块权限完成");
+        logger.info("保存角色模块权限line完成");
         return responseJsonData(code, msg, null,response);
     }
 }

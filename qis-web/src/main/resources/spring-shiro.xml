@@ -28,11 +28,32 @@
         <property name="resourceService" ref="resourceService" />
     </bean>
 
+    <!--&lt;!&ndash;自定义的filter&ndash;&gt;-->
+    <!--<bean id="roleOrFilter" class="com.qis.shiro.CustomRolesAuthorizationFilter"></bean>-->
+
     <!-- Shiro Filter -->
-    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+    <!--<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">-->
+    <bean id="shiroFilter" class="com.qis.service.ShiroPermissionFactory">
         <property name="securityManager" ref="securityManager" />
         <property name="loginUrl" value="/login" />
         <property name="successUrl" value="/" />
+        <!--<property name="filters">-->
+            <!--<util:map>-->
+                <!--<entry key="roleOrFilter" value-ref="roleOrFilter"/>-->
+            <!--</util:map>-->
+        <!--</property>-->
+        <!--<property name="filters">-->
+            <!--<map>-->
+                <!--<entry key="role">-->
+                    <!--<bean-->
+                            <!--class="com.silvery.security.shiro.filter.RoleAuthorizationFilter" />-->
+                <!--</entry>-->
+                <!--<entry key="authc">-->
+                    <!--<bean-->
+                            <!--class="com.silvery.security.shiro.filter.SimpleFormAuthenticationFilter" />-->
+                <!--</entry>-->
+            <!--</map>-->
+        <!--</property>-->
 
         <property name="filterChainDefinitions">
             <value>
