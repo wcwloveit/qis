@@ -59,7 +59,7 @@ public class ModuleColumnDatasController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("module-columns-index")
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView findModuleList() {
         ModelAndView mv = new ModelAndView("/module/col");

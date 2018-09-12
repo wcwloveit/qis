@@ -33,7 +33,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("dictionary-dictionary-index")
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         logger.info("findTypesList");
@@ -47,7 +47,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("dictionary-dictionary-list")
+    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<BaseDataTypes> getItemList(DataTable<BaseDataTypes> dt, ServletRequest request) {
@@ -63,7 +63,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("dictionary-dictionary-create")
+    
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         logger.info("跳转新增页面开始");
@@ -107,7 +107,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("dictionary-dictionary-edit")
+    
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         logger.info("跳转更新页面开始");
@@ -149,7 +149,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("dictionary-dictionary-delete")
+    
     @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
@@ -163,7 +163,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("dictionary-dictionary-deleteAll")
+    
     @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {

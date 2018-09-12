@@ -37,6 +37,14 @@
         <property name="securityManager" ref="securityManager" />
         <property name="loginUrl" value="/login" />
         <property name="successUrl" value="/" />
+
+        <property name="filters">
+            <map>
+                <!-- 将自定义 的FormAuthenticationFilter注入shiroFilter中 -->
+                <entry key="logout" value-ref="logoutFilter"/>
+            </map>
+        </property>
+
         <!--<property name="unauthorizedUrl" value="/error/403" />-->
 
         <!--<property name="filters">-->
@@ -65,6 +73,10 @@
                 /logout = logout
             </value>
         </property>
+    </bean>
+
+    <bean id="logoutFilter" class="com.qis.shiro.SystemLogoutFilter">
+        <property name="redirectUrl" value="/login"/>
     </bean>
 
     <!-- 用户授权信息Cache, 采用EhCache -->

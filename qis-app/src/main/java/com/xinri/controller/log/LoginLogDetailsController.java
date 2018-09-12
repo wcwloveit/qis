@@ -28,7 +28,7 @@ public class LoginLogDetailsController extends BaseController {
     /*
    * 首页
    * */
-    @RequiresPermissions("log-logins-index")
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList(){
         return "log/loginList";
@@ -38,7 +38,7 @@ public class LoginLogDetailsController extends BaseController {
     /*
      * 分页列表
      * */
-    @RequiresPermissions("log-logins-list")
+    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<LoginLogsVo> getItemList(DataTable<LoginLogsVo> dt, ServletRequest request){
@@ -56,7 +56,7 @@ public class LoginLogDetailsController extends BaseController {
      * @param request
      * @throws IOException
      */
-    @RequiresPermissions("production-productionLines-export")
+    
     @RequestMapping(value = {"/export-excel"},method = {RequestMethod.GET})
     public void exportExcel(HttpServletResponse response, HttpServletRequest request) throws IOException {
         try{

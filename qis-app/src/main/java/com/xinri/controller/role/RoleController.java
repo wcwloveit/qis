@@ -99,7 +99,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("role-list-index")
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findRoleList() {
         return "role/list";
@@ -149,7 +149,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("role-list-list")
+    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RolesVo> getItemList(DataTable<RolesVo> dt, ServletRequest request) {
@@ -165,7 +165,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("role-list-create")
+    
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         ModelAndView mv = new ModelAndView("/role/form");
@@ -229,7 +229,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("role-list-edit")
+    
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         ModelAndView mv = new ModelAndView("/role/form");
@@ -294,7 +294,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("role-list-delete")
+    
     @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
@@ -307,7 +307,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequiresPermissions("role-list-deleteAll")
+    
     @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
