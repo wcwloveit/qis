@@ -61,6 +61,7 @@ import java.util.Map;
             }
             // 加上数据库中过滤链
             section.putAll(otherChains);
+            section.put("/**","user");
             setFilterChainDefinitionMap(section);
 
         }

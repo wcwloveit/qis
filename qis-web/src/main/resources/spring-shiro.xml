@@ -37,6 +37,8 @@
         <property name="securityManager" ref="securityManager" />
         <property name="loginUrl" value="/login" />
         <property name="successUrl" value="/" />
+        <!--<property name="unauthorizedUrl" value="/error/403" />-->
+
         <!--<property name="filters">-->
             <!--<util:map>-->
                 <!--<entry key="roleOrFilter" value-ref="roleOrFilter"/>-->
@@ -61,7 +63,6 @@
                 /assets/** = anon
                 /login = authc
                 /logout = logout
-                /** = user
             </value>
         </property>
     </bean>
