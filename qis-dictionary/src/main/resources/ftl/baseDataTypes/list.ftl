@@ -232,7 +232,6 @@
                             }
                         }
                     }
-                        <#--}},-->
                     <#--{ "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {-->
                         <#--var a = '<@shiro.hasPermission name="dictionary-dictionary-edit"> <a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +-->
                                     <#--'<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';-->
@@ -245,7 +244,7 @@
                             <#--}else{-->
                                 <#--return a+b+c;-->
                             <#--}-->
-                        }}
+
                 ]
             }
         });
@@ -375,18 +374,12 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/dictionary/delete-all',
+                                url: '${rc.contextPath}/dictionary/deleteAll',
                                 type: 'POST',
                                 data: {"ids": ids},
                                 dataType: "json",
                                 traditional: true,
                                 success: function (msg) {
-                                url:'${rc.contextPath}/dictionary/deleteAll',
-                                type:'POST',
-                                data:{"ids":ids},
-                                dataType:"json",
-                                traditional:true,
-                                success:function(msg){
                                     Metronic.stopPageLoading();
                                     if (msg && msg.stat) {
                                         alertHint('删除成功');
