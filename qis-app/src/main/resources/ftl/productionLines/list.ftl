@@ -1,8 +1,9 @@
 <html>
 <head>
-    <title>角色类型2312131232132123</title>
+    <title>产线</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
-
+<#--<link href="${rc.contextPath}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />-->
+<#--<link href="${rc.contextPath}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />-->
     <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -11,11 +12,11 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="${rc.contextPath}/">角色</a>
+                <a href="${rc.contextPath}/">生产</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="#">角色类型</a>
+                <a href="#">产线</a>
                 <i class="fa fa-angle-right"></i>
             </li>
         </ul>
@@ -25,23 +26,43 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet box green-haze">
-            <div class="portlet-title">
-                <div class="caption"><i class="fa fa-cogs"></i>数据类型列表</div>
+    <#if message>
+        <div class="note note-danger">
+            <p>
+            ${(message)!}
+            </p>
+        </div>
+    </#if>
+        <#--<div class="portlet box  green-haze"> 表单头改为无色 -->
+            <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title ">
+
+                <div class="caption">
+                    <i class="icon-settings font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">产线列表</span>
+                </div>
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <a class="btn green btn-parent" href="${rc.contextPath}/column/create"> <#--跳转新增的URL-->
+                        <@shiro.hasPermission name="production-productionLines-create">
+                            <a class="btn green btn-outline btn-circle" href="${rc.contextPath}/production/lines/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
+                        </@shiro.hasPermission>
 
-                            <a href="javascript:void(0)" class="btn red">
+                        <@shiro.hasPermission name="production-productionLines-deleteAll">
+                            <a href="javascript:void(0)" class="btn red btn-outline btn-circle">
                                 <i class="fa fa-trash-o"></i>
                                 <span class="hidden-480"  onclick="deleteList();">批量删除</span>
                             </a>
+                        </@shiro.hasPermission>
 
+                            <#--<a class="btn green" href="javascript:exportData();">-->
+                                <#--<i class="fa fa-download"></i>-->
+                                <#--<span class="hidden-480">导出</span>-->
+                            <#--</a>-->
 
                         </div>
                     </div>
@@ -60,18 +81,35 @@
                     </div>
                     <div id="data_table_search">
 
-
+                        <label style="float:left;margin-right:5px;">
+                            <b class="form-control input-inline" style="border: 0px; text-align: left;">名称</b>
+                            <input type="text" class="input-sm form-filter" name="search_RoleClass_name"
+                                   id="search_RoleClass_name" placeholder="名称"/>
+                        </label>
 
                         <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">描述</b>
-                            <input type="text" class="input-sm form-filter" name="search_ColumnData_descr"
-                                   id="search_ColumnData_descr" placeholder="描述"/>
+                            <b class="form-control input-inline" style="border: 0px; text-align: left;">编号</b>
+                            <input type="text" class="input-sm form-filter" name="search_RoleClass_code"
+                                   id="search_RoleClass_code" placeholder="编号"/>
                         </label>
+
                         <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">唯一标识符</b>
-                            <input type="text" class="input-sm form-filter" name="search_ColumnData_descr"
-                                   id="search_ColumnData_guidId" placeholder="唯一标识符"/>
+                            <b class="form-control input-inline" style="border: 0px; text-align: left;">备注</b>
+                            <input type="text" class="input-sm form-filter" name="search_RoleClass_descr"
+                                   id="search_RoleClass_descr" placeholder="备注"/>
                         </label>
+
+                        <#--<label style="float:left;margin-right:5px;">-->
+                            <#--<b class="form-control input-inline" style="border: 0px; text-align: left;">生效开始时间</b>-->
+                            <#--<input type="text" class="input-sm form-filter" name="search_RoleClass_startCreatedOn"-->
+                                   <#--id="search_RoleClass_startCreatedOn" placeholder="生效开始时间"/>-->
+                        <#--</label>-->
+
+                        <#--<label style="float:left;margin-right:5px;">-->
+                            <#--<b class="form-control input-inline" style="border: 0px; text-align: left;">生效结束时间</b>-->
+                            <#--<input type="text" class="input-sm form-filter" name="search_RoleClass_endCreatedOn"-->
+                                   <#--id="search_RoleClass_endCreatedOn" placeholder="生效结束时间"/>-->
+                        <#--</label>-->
 
                         <label style="float:left;margin-right:5px;">
                             <div class="form-control input-inline"
@@ -79,7 +117,7 @@
                             ">创建时间</div>
                     <div class="input-group date date-picker" data-date-format="yyyy-mm-dd"
                          style="width: 123px;float: left;">
-                        <input id="search_ColumnData_startCreatedOn" name="search_ColumnData_startCreatedOn" style=" width: 90px; padding: 2px; "
+                        <input id="search_RoleClass_startCreatedOn" name="search_RoleClass_startCreatedOn" style=" width: 90px; padding: 2px; "
                                type="text" class="form-filter input-sm" placeholder="开始日期" readonly>
                         <span class="input-group-btn"><button class="btn btn-sm default" type="button"><i
                                 class="fa fa-calendar"></i></button></span>
@@ -87,20 +125,61 @@
                     <div style="float:left;">~</div>
                     <div class="input-group date date-picker" data-date-format="yyyy-mm-dd"
                          style="width: 123px;float: left;">
-                        <input id="search_ColumnData_endCreatedOn" name="search_ColumnData_endCreatedOn" style=" width:90px; padding: 2px;"
+                        <input id="search_RoleClass_endCreatedOn" name="search_RoleClass_endCreatedOn" style=" width:90px; padding: 2px;"
                                type="text" class="form-filter input-sm" placeholder="结束日期" readonly>
                         <span class="input-group-btn"><button class="btn btn-sm default" type="button"><i
                                 class="fa fa-calendar"></i></button></span>
                     </div>
                     </label>
 
+                    <#--<label style="float:left;margin-right:5px;">-->
+                    <#--<div class="form-control input-inline"-->
+                    <#--style="float: left;padding-top: 5px;border: 0px; text-align: left;"-->
+                    <#--">创建时间</div>-->
+                    <#--<div class="input-group date date-picker" data-date-format="yyyy-mm-dd"-->
+                    <#--style="width: 123px;float: left;">-->
+                    <#--<input id="search_ZC_startCreatedOn" name="search_ZC_startCreatedOn" style=" width: 90px; padding: 2px; "-->
+                    <#--type="text" class="form-filter input-sm" placeholder="开始日期" readonly>-->
+                    <#--<span class="input-group-btn"><button class="btn btn-sm default" type="button"><i-->
+                    <#--class="fa fa-calendar"></i></button></span>-->
+                    <#--</div>-->
+                    <#--<div style="float:left;">~</div>-->
+                    <#--<div class="input-group date date-picker" data-date-format="yyyy-mm-dd"-->
+                    <#--style="width: 123px;float: left;">-->
+                    <#--<input id="search_ZC_endCreatedOn" name="search_ZC_endCreatedOn" style=" width:90px; padding: 2px;"-->
+                    <#--type="text" class="form-filter input-sm" placeholder="结束日期" readonly>-->
+                    <#--<span class="input-group-btn"><button class="btn btn-sm default" type="button"><i-->
+                    <#--class="fa fa-calendar"></i></button></span>-->
+                    <#--</div>-->
+                    <#--</label>-->
+
+                    <#--<label style="float:left;margin-right:5px;">-->
+                    <#--<div class="form-control input-inline"-->
+                    <#--style="float: left;padding-top: 5px;border: 0px; text-align: left;"-->
+                    <#--">更新时间</div>-->
+                    <#--<div class="input-group date date-picker" data-date-format="yyyy-mm-dd"-->
+                    <#--style="width: 123px;float: left;">-->
+                    <#--<input id="search_ZC_startUpdatedOn" name="search_ZC_startUpdatedOn" style=" width: 90px; padding: 2px; "-->
+                    <#--type="text" class="form-filter input-sm" placeholder="开始日期" readonly>-->
+                    <#--<span class="input-group-btn"><button class="btn btn-sm default" type="button"><i-->
+                    <#--class="fa fa-calendar"></i></button></span>-->
+                    <#--</div>-->
+                    <#--<div style="float:left;">~</div>-->
+                    <#--<div class="input-group date date-picker" data-date-format="yyyy-mm-dd"-->
+                    <#--style="width: 123px;float: left;">-->
+                    <#--<input id="search_ZC_endUpdatedOn" name="search_ZC_endUpdatedOn" style=" width:90px; padding: 2px;"-->
+                    <#--type="text" class="form-filter input-sm" placeholder="结束日期" readonly>-->
+                    <#--<span class="input-group-btn"><button class="btn btn-sm default" type="button"><i-->
+                    <#--class="fa fa-calendar"></i></button></span>-->
+                    <#--</div>-->
+                    <#--</label>-->
 
                         <label style="float:left;">
                             <span> &nbsp;&nbsp;</span>
-                            <button class="btn btn-sm yellow margin-bottom filter-submit" value="搜索" onclick="search(this,grid)"><i
+                            <button class="btn btn-sm yellow btn-outline btn-circle" value="搜索" onclick="search(this,grid)"><i
                                     class="fa fa-search"></i> 搜索
                             </button>
-                            <button class="btn btn-sm red filter-cancel" onclick="resetSearch(this)"><i class="fa fa-times"></i> 重置
+                            <button class="btn btn-sm red  btn-outline btn-circle " onclick="resetSearch(this)"><i class="fa fa-times"></i> 重置
                             </button>
                         </label>
                     </div>
@@ -151,7 +230,7 @@
                 ],
                 "iDisplayLength": 10,//页面显示数据数量
                 "bServerSide": true,
-                "sAjaxSource": "${rc.contextPath}/permissions/moduleColumn/list",
+                "sAjaxSource": "${rc.contextPath}/production/lines/list",
                 "aaSorting": [
                     [0, "desc"]
                 ],
@@ -163,18 +242,15 @@
                     { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
                         return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
                     }},
-
-                    {"sTitle": "描述", "mData": "descr"},
-                    {"sTitle": "唯一标识符", "mData": "guidId"},
-                    { "sTitle": "是否生效", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        if(row.isEffective==1){
-                            var a = '<span style="color: #8a8a8a">失效</span>';
-                            return a;
-                        }else{
-                            return "生效";
-                        }
-                    }},
-
+                    {"sTitle": "名称", "mData": "name"},
+                    {"sTitle": "编号", "mData": "code"},
+                    {"sTitle": "备注", "mData": "descr"},
+//                    {"sTitle": "组织id", "mData": "useOrganizationId"},
+                    {"sTitle": "组织名称", "mData": "useOrganizationName"},
+//                    {"sTitle": "系统id", "mData": "useSystemId"},
+                    {"sTitle": "系统名称", "mData": "useSystemName"},
+//                    {"sTitle": "生效开始时间", "mData": "effectiveDateStart"},
+//                    {"sTitle": "生效结束时间", "mData": "effectiveDateEnd"},
                     { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
                         if (data != null && "" != data) {
                             return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
@@ -182,26 +258,28 @@
                             return "";
                         }
                     }},
-                    { "sTitle": "更新日期", "mData": "modifiedOn", "mRender": function (data, type, row) {
-                        if (data != null && "" != data) {
-                            return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
-                        } else {
-                            return "";
-                        }
-                    }},
-
+//                    { "sTitle": "生效结束时间", "mData": "effectiveDateEndVo", "mRender": function (data, type, row) {
+//                        if (data != null && "" != data) {
+//                            return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
+//                        } else {
+//                            return "";
+//                        }
+//                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/permissions/column/update/' + row.id
-                                + '" class="btn btn-xs blue"  title="编辑" >' +
-                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
-
+                        var a = '<@shiro.hasPermission name="production-productionLines-edit"><a href="${rc.contextPath}/production/lines/update/' + row.id
+                                + '" class="btn btn-xs blue  btn-outline btn-circle"  title="编辑" >' +
+                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';
 
                         //  逻辑删除
-                        var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
-                                + '\')" class="btn btn-xs red"  title="删除" >' +
-                                '<i class="glyphicon glyphicon-trash"></i>删除</a>';
-                     '<i class="glyphicon glyphicon-trash"></i>删除</a>';
+                        var c = '<@shiro.hasPermission name="production-productionLines-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
+                                + '\')" class="btn btn-xs red  btn-outline btn-circle"  title="删除" >' +
+                                '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
+
+                        //物理删除
+//                        var g = '<a href="javascript:void(0);" onclick="removeOne(\'' + row.id
+//                                + '\')" class="btn btn-xs grey"  title="删除" >' +
+//                                '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
                         if(row.isSynchro==1){    //isSynchro是自己写的字段
                             return "已删除";
@@ -280,11 +358,11 @@
                 buttons: {
                     main: {
                         label: "确定",
-                        className: "green",
+                        className: "green btn-outline btn-circle",
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/column/delete-' + id,
+                                url: '${rc.contextPath}/production/lines/delete-' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -317,7 +395,7 @@
                     },
                     cancel: {
                         label: "取消",
-                        className: "gray",
+                        className: "gray btn-outline btn-circle",
                         callback: function () {
                             $(this).hide();
                         }
@@ -325,6 +403,43 @@
                 }
             });
         }
+
+
+        <#--/**-->
+         <#--* 物理删除-->
+         <#--*/-->
+        <#--function removeOne(id) {-->
+            <#--bootbox.dialog({-->
+                <#--message: "您是否确认删除?",-->
+                <#--buttons: {-->
+                    <#--main: {-->
+                        <#--label: "确定",-->
+                        <#--className: "green",-->
+                        <#--callback: function() {-->
+                            <#--Metronic.startPageLoading();-->
+                            <#--$.ajax({-->
+                                <#--url:'${rc.contextPath}/zc/kaohe/removeOne',-->
+                                <#--type:'POST',-->
+                                <#--data:{"id":id},-->
+                                <#--dataType:"json",-->
+                                <#--traditional:true,-->
+                                <#--success:function(){-->
+                                    <#--Metronic.stopPageLoading();-->
+                                    <#--grid.getDataTable().fnDraw();-->
+                                <#--}-->
+                            <#--});-->
+                        <#--}-->
+                    <#--},-->
+                    <#--cancel: {-->
+                        <#--label: "取消",-->
+                        <#--className: "gray",-->
+                        <#--callback: function() {-->
+                            <#--$(this).hide();-->
+                        <#--}-->
+                    <#--}-->
+                <#--}-->
+            <#--});-->
+        <#--}-->
 
 
         /**
@@ -350,7 +465,7 @@
                         callback: function() {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/column/deleteAll',
+                                url:'${rc.contextPath}/production/lines/deleteAll',
                                 type:'POST',
                                 data:{"ids":ids},
                                 dataType:"json",
@@ -378,7 +493,25 @@
             });
         }
 
-
+        /**
+         * 导出excel
+         */
+        <#--function exportData(){-->
+            <#--var search_ZC_modelCode=$('#search_ZC_modelCode').val();-->
+<#--//                    search_ZC_modelName=$('#search_ZC_modelName').val(),-->
+<#--//                    search_ZC_orgCode=$('#search_ZC_orgCode').val();-->
+<#--//                    search_ZX_city=$('#search_ZX_city').val(),-->
+<#--//                    search_ZX_store=$('#search_ZX_store').val(),-->
+<#--//                    search_ZX_orderNumber=$('#search_ZX_orderNumber').val(),-->
+<#--//                    search_ZX_paymentStatus=$('#search_ZX_paymentStatus').val(),-->
+<#--//                    search_ZX_refundStatus=$('#search_ZX_refundStatus').val();-->
+            <#--location.href='${rc.contextPath}/zc/kaohe/export-excel?search_ZC_modelCode='+search_ZC_modelCode+'&search_ZC_modelName='+search_ZC_modelName+'&search_ZC_orgCode='+search_ZC_orgCode;-->
+<#--//                    +'&search_ZX_city='+search_ZX_city-->
+<#--//                    +'&search_ZX_store='+search_ZX_store-->
+<#--//                    +'&search_ZX_orderNumber='+search_ZX_orderNumber-->
+<#--//                    +'&search_ZX_paymentStatus='+search_ZX_paymentStatus-->
+<#--//                    +'&search_ZX_refundStatus='+search_ZX_refundStatus;-->
+        <#--}-->
 
     </script>
 </content>

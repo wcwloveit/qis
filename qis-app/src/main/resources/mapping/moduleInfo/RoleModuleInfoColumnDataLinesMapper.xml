@@ -72,18 +72,18 @@
 			<if test="isEffective != null">
 				AND t.IS_EFFECTIVE = #{isEffective}
 			</if>
-			<if test="startEffectiveDateStart != null and startEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START >=str_to_date(concat(#{startEffectiveDateStart},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateStart != null and endEffectiveDateStart !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_START <= str_to_date(concat(#{endEffectiveDateStart}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="startEffectiveDateEnd != null and startEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END >=str_to_date(concat(#{startEffectiveDateEnd},'00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
-			<if test="endEffectiveDateEnd != null and endEffectiveDateEnd !=''">
-				AND <![CDATA[ t.EFFECTIVE_DATE_END <= str_to_date(concat(#{endEffectiveDateEnd}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
-			</if>
+			<!--<if test="startEffectiveDateStart != null and startEffectiveDateStart !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_START >=str_to_date(concat(#{startEffectiveDateStart},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endEffectiveDateStart != null and endEffectiveDateStart !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_START <= str_to_date(concat(#{endEffectiveDateStart}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="startEffectiveDateEnd != null and startEffectiveDateEnd !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_END >=str_to_date(concat(#{startEffectiveDateEnd},'00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
+			<!--<if test="endEffectiveDateEnd != null and endEffectiveDateEnd !=''">-->
+				<!--AND <![CDATA[ t.EFFECTIVE_DATE_END <= str_to_date(concat(#{endEffectiveDateEnd}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>-->
+			<!--</if>-->
 			<if test="startCreatedOn != null and startCreatedOn !=''">
 				AND <![CDATA[ t.CREATED_ON >=str_to_date(concat(#{startCreatedOn},'00:00:00'),'%Y-%m-%d %T')]]>
 			</if>
@@ -441,6 +441,27 @@
 		DELETE FROM ROLE_MODULE_INFO_COLUMN_DATA_LINES t 
 		<where>${whereSqlParam}</where>
 	</update>
+
+	<select id="findListByVo" parameterType="com.xinri.vo.moduleInfo.RoleModuleInFoColumnDataLineVo" resultType="com.xinri.vo.moduleInfo.RoleModuleInFoColumnDataLineVo">
+		SELECT p.*,t.name tname,t.code tcode,
+		(case p.role_type
+		when 0 THEN u.name
+		when 1 THEN d.name
+		END) udname ,
+		(case p.role_type
+		when 0 THEN u.user_name
+		when 1 THEN d.oa_no
+		END) udno
+		FROM role_module_info_column_data_lines p
+		LEFT JOIN role_module_info_column_data_heads r on r.id = p.role_module_info_column_data_head_id AND r.is_deleted=0
+		LEFT JOIN module_info_column_datas m on r.module_info_column_data_id =m.id  AND m.is_deleted=0
+		LEFT JOIN column_datas t on t.id = m.column_data_id AND t.is_deleted=0
+		LEFT JOIN departments d on d.id = p.user_id_or_dept_id AND d.is_deleted=0
+		LEFT JOIN users u on u.id = p.user_id_or_dept_id AND u.is_deleted=0
+		WHERE p.is_deleted=0
+		<if test="moduleId != null">AND m.module_info_id=#{moduleId,jdbcType=BIGINT} </if>
+		<if test="roleId != null">AND r.role_id= #{roleId,jdbcType=BIGINT}</if>
+	</select>
 	
 
 </mapper>

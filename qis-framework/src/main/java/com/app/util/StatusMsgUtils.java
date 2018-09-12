@@ -8,11 +8,13 @@ public class StatusMsgUtils {
 	public static final String SUCCEEDEDCODE_200 = "200"; //
 	public static final String ERRORCODE_400 = "400";
 	public static final String ERRORCODE_8001 = "8001";
+	public static final String ERRORCODE_8002 = "8002";
 
-	
+
 	public enum ResponseCode {
 		SUCCEEDED_200(SUCCEEDEDCODE_200, "OK"),
 		ERROR_400(ERRORCODE_400, "操作失败，请联系管理员"),
+		ERROR_8002(ERRORCODE_8002, "已存在该数据，请检查后操作"),
 		ERROR_8001(ERRORCODE_8001, "操作异常");
 
 		private String name;

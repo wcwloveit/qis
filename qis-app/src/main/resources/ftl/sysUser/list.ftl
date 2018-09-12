@@ -2,7 +2,8 @@
 <head>
     <title>系统用户管理</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
-    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="row">
@@ -38,20 +39,25 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <a class="btn green btn-parent" href="${rc.contextPath}/user/sysUser/create"> <#--跳转新增的URL-->
+                        <@shiro.hasPermission name="user-sysUser-create">
+                            <a class="btn green btn-parent"
+                               href="${rc.contextPath}/user/sysUser/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
-
+                        </@shiro.hasPermission>
+<@shiro.hasPermission name="user-sysUser-deleteAll">
                             <a href="javascript:void(0)" class="btn red">
                                 <i class="fa fa-trash-o"></i>
-                                <span class="hidden-480"  onclick="deleteList();">批量删除</span>
+                                <span class="hidden-480" onclick="deleteList();">批量删除</span>
                             </a>
-
+</@shiro.hasPermission>
+                        <@shiro.hasPermission name="user-sysUser-export">
                             <a class="btn green" href="javascript:exportData();">
                                 <i class="fa fa-download"></i>
                                 <span class="hidden-480">导出</span>
                             </a>
+                        </@shiro.hasPermission>
                         </div>
                     </div>
                 </div>
@@ -144,6 +150,7 @@
          * */
         var grid = new Datatable();
         var $attendees_data_table = $("#attendees_data_table");
+        <@shiro.hasPermission name="user-sysUser-list">
         grid.init({
             src: $attendees_data_table,
             onError: function (grid) {
@@ -157,68 +164,88 @@
                 "bServerSide": true,
                 "sAjaxSource": "${rc.contextPath}/user/sysUser/list",
                 "aaSorting": [
-                    [ 0, "desc" ]
+                    [0, "desc"]
                 ],
                 "aoColumnDefs": [
-                    { "bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7] }
+                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7]}
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
-                    { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
-                            return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
-                        }},
-                    { "sTitle": "账号", "mData": "account", "mRender": function (data, type, row) {
+                    {
+                        "sWidth": "1%",
+                        "sTitle": '<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',
+                        "sDefaultContent": "",
+                        "mRender": function (data, type, full) {
+                            return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="' + full.id + '"></span></div>';
+                        }
+                    },
+                    {
+                        "sTitle": "账号", "mData": "account", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "名字", "mData": "name", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "名字", "mData": "name", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "生日", "mData": "birthday", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "生日", "mData": "birthday", "mRender": function (data, type, row) {
                             if (data != null && "" != data) {
                                 return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                             } else {
                                 return "";
                             }
-                        }},
-                    { "sTitle": "性别", "mData": "sex", "mRender": function (data, type, row) {
-                            if(data=="1"){
+                        }
+                    },
+                    {
+                        "sTitle": "性别", "mData": "sex", "mRender": function (data, type, row) {
+                            if (data == "1") {
                                 return "男";
-                            }else if(data=="2"){
+                            } else if (data == "2") {
                                 return "女";
                             }
-                        }},
-                    { "sTitle": "邮箱", "mData": "email", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "邮箱", "mData": "email", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "电话", "mData": "phone", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "电话", "mData": "phone", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "角色", "mData": "role", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "角色", "mData": "role", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "部门", "mData": "dept", "mRender": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "sTitle": "部门", "mData": "dept", "mRender": function (data, type, row) {
                             return data;
-                        }},
-                    { "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                            var a = '<a href="${rc.contextPath}/user/sysUser/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
-                                    '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
+                        }
+                    },
+                    {
+                        "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
+                            var a = '<@shiro.hasPermission name="user-sysUser-edit"><a href="${rc.contextPath}/user/sysUser/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +
+                                    '<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';
 
-                            var b = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
-                                    '<i class="glyphicon glyphicon-trash"></i>删除</a>';
+                            var b = '<@shiro.hasPermission name="user-sysUser-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
+                                    '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
 
-                            if(row.isDeleted==1){
+                            if (row.isDeleted == 1) {
                                 return "已删除";
-                            }else{
-                                return a+b;
+                            } else {
+                                return a + b;
                             }
-                        }}
+                        }
+                    }
                 ]
             }
         });
-
-
-
-
+        </@shiro.hasPermission>
 
         /**
          * 关闭提示信息
@@ -288,7 +315,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/user/sysUser/deleteOne-' + id,
+                                url: '${rc.contextPath}/user/sysUser/deleteOne/' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -296,7 +323,7 @@
                                     grid.getDataTable().fnDraw();
                                     bootbox.alert("操作成功");
                                 },
-                                error:function(error){
+                                error: function (error) {
 
                                 }
                             });
@@ -317,34 +344,34 @@
          * 批量删除
          */
         function deleteList() {
-            var ids=[];
-            $('#attendees_data_table span.checked >input.checkboxes:checked').each(function(){
+            var ids = [];
+            $('#attendees_data_table span.checked >input.checkboxes:checked').each(function () {
                 ids.push($(this).val());
             })
-            if(ids==''||ids==null||ids.length==0){
+            if (ids == '' || ids == null || ids.length == 0) {
                 bootbox.alert('请选择需要删除的系统用户');
                 return false;
             }
             bootbox.dialog({
-                message: "您是否确认删除系统用户编号为："+ids+"的系统用户",
+                message: "您是否确认删除系统用户编号为：" + ids + "的系统用户",
                 buttons: {
                     main: {
                         label: "确定",
                         className: "green",
-                        callback: function() {
+                        callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/user/sysUser/delete-all',
-                                type:'POST',
-                                data:{"ids":ids},
-                                dataType:"json",
-                                traditional:true,
-                                success:function(msg){
+                                url: '${rc.contextPath}/user/sysUser/deleteAll',
+                                type: 'POST',
+                                data: {"ids": ids},
+                                dataType: "json",
+                                traditional: true,
+                                success: function (msg) {
                                     Metronic.stopPageLoading();
-                                    if(msg&&msg.stat){
+                                    if (msg && msg.stat) {
                                         alertHint('删除成功');
                                         grid.getDataTable().fnDraw();
-                                    }else{
+                                    } else {
                                         bootbox.alert('删除失败');
                                     }
                                 }
@@ -354,15 +381,13 @@
                     cancel: {
                         label: "取消",
                         className: "gray",
-                        callback: function() {
+                        callback: function () {
                             $(this).hide();
                         }
                     }
                 }
             });
         }
-
-
 
 
     </script>

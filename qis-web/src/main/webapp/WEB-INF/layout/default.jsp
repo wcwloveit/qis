@@ -45,6 +45,13 @@
     <script src="${ctx}/assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="favicon.ico"/>
+	<style type="text/css">
+		#searchList {
+			position: absolute;
+			left: 20px;
+			top: 30px;
+		}
+	</style>
     <sitemesh:head/>
     <!-- END PAGE LEVEL STYLES -->
     <script>
@@ -84,46 +91,86 @@
         <i class="icon-arrow-up"></i>
     </div>
 </div>
-<!-- END FOOTER -->
-<!--[if lt IE 9]>
-<script src="${ctx}/assets/global/plugins/respond.min.js"></script>
-<script src="${ctx}/assets/global/plugins/excanvas.min.js"></script>
-<![endif]-->
-<!-- BEGIN CORE PLUGINS -->
-<script src="${ctx}/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="${ctx}/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-<script src="${ctx}/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-        type="text/javascript"></script>
-<script src="${ctx}/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="${ctx}/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="${ctx}/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-<script src="${ctx}/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-<!-- END CORE PLUGINS -->
-<!-- BEGIN THEME GLOBAL SCRIPTS -->
-<%--<script src="${ctx}/assets/global/scripts/app.js" type="text/javascript"></script>--%>
-<script src="${ctx}/assets/global/scripts/metronic.js" type="text/javascript"></script>
-<!-- END THEME GLOBAL SCRIPTS -->
-<!-- BEGIN THEME LAYOUT SCRIPTS -->
-<script src="${ctx}/assets/global/scripts/metronic.js" type="text/javascript"></script>
-<script src="${ctx}/assets/global/scripts/layout.js" type="text/javascript"></script>
 
-<%--<script src="${ctx}/assets/layouts/layout4/scripts/layout.js" type="text/javascript"></script>--%>
-<%--<script src="${ctx}/assets/layouts/layout4/scripts/demo.js" type="text/javascript"></script>--%>
-<%--<script src="${ctx}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>--%>
-<script>
-    jQuery(document).ready(function () {
-        $("#data_table_search").bind("keypress", function (e) { //键盘监听，按enter键搜索
-            if (e.keyCode == 13) {
-                $("#data_table_search .filter-submit").click();
-            }
-        });
-        // initiate layout and plugins
-        Metronic.init(); // init metronic core components
-        Layout.init();
-    });
-</script>
-<sitemesh:getProperty property="page.script"/>
-<!-- END JAVASCRIPTS -->
+	<!-- END FOOTER -->
+	<!--[if lt IE 9]>
+        <script src="${ctx}/assets/global/plugins/respond.min.js"></script>
+        <script src="${ctx}/assets/global/plugins/excanvas.min.js"></script>
+        <![endif]-->
+	<!-- BEGIN CORE PLUGINS -->
+	<script src="${ctx}/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="${ctx}/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+	<script src="${ctx}/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+	<script src="${ctx}/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+	<script src="${ctx}/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+	<script src="${ctx}/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+	<script src="${ctx}/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+	<!-- END CORE PLUGINS -->
+	<!-- BEGIN THEME GLOBAL SCRIPTS -->
+	<%--<script src="${ctx}/assets/global/scripts/app.js" type="text/javascript"></script>--%>
+	<script src="${ctx}/assets/global/scripts/metronic.js" type="text/javascript"></script>
+	<!-- END THEME GLOBAL SCRIPTS -->
+	<!-- BEGIN THEME LAYOUT SCRIPTS -->
+	<script src="${ctx}/assets/global/scripts/metronic.js" type="text/javascript"></script>
+	<script src="${ctx}/assets/global/scripts/layout.js" type="text/javascript"></script>
+
+	<%--<script src="${ctx}/assets/layouts/layout4/scripts/layout.js" type="text/javascript"></script>--%>
+	<%--<script src="${ctx}/assets/layouts/layout4/scripts/demo.js" type="text/javascript"></script>--%>
+	<%--<script src="${ctx}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>--%>
+	<script>
+		var modules;
+		$.ajax({
+			url: '${rc.contextPath}/module/search/',
+			type: 'GET',
+			async: false,
+			success: function (msg) {
+				modules = msg;
+			}
+		});
+
+		$("#searchList").hide();
+
+		$("input[name=ajaxtest]").blur(function () {  //失去焦点收起
+			setTimeout(function () {
+				$("#searchList").hide();
+			}, 500);
+		});
+		$("input[name=ajaxtest]").keyup(function (event) {
+			var name = $("input[name=ajaxtest]").val()
+			if (name == "") {
+				//如果文本框没有值
+				//先清空所有的 li ，即候选框
+				$("#searchList li").remove();
+				//隐藏 ul ，只是为了美观
+				$("#searchList").hide();
+				return;
+			}
+			if (name != "") {
+				$("#searchList li").remove();
+				for (var i = 0; i < modules.length; i++) {
+					if ((modules[i].name).indexOf(name) != -1 && (modules[i].isMenu) == 0) {
+						//循环添加li节点
+						$("#searchList").append("<li><a  tabindex='-1' href='${rc.contextPath}" + modules[i].linkUrl + "'>" + modules[i].name + "</a></li>");
+						$("#searchList").show();
+					}
+				}
+				//显示 ul 节点
+			}
+		});
+
+		jQuery(document).ready(function () {
+			$("#data_table_search").bind("keypress", function (e) { //键盘监听，按enter键搜索
+				if (e.keyCode == 13) {
+					$("#data_table_search .filter-submit").click();
+				}
+			});
+			// initiate layout and plugins
+			Metronic.init(); // init metronic core components
+			Layout.init();
+		});
+	</script>
+	<sitemesh:getProperty property="page.script" />
+	<!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->
 

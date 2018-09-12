@@ -1,8 +1,10 @@
 package com.qis.shiro;
 
 
+
 import com.kingnode.diva.utils.Encodes;
 import com.qis.ShiroUser;
+import com.qis.service.RedisService;
 import com.xinri.po.permissions.Permissions;
 import com.xinri.po.user.SysUser;
 import com.xinri.service.ResourceService;
@@ -40,6 +42,11 @@ public class ShiroDbRealm extends AuthorizingRealm {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private RedisService redisService;
+
+
+
     //    @Autowired
 //    private SystemService systemService;
 
@@ -62,7 +69,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
         if (sysUser != null) {
             byte[] salt = Encodes.decodeHex(sysUser.getSalt());
             SimpleAuthenticationInfo auth;
-            auth = new SimpleAuthenticationInfo(new ShiroUser(sysUser.getId(), sysUser.getAccount(), sysUser.getName(), 1),
+            ShiroUser shiroUser=new ShiroUser(sysUser.getId(), sysUser.getAccount(), sysUser.getName(), 1);
+            resourceService.saveToRedis(shiroUser);
+            auth = new SimpleAuthenticationInfo(shiroUser,
                     sysUser.getPassword(), ByteSource.Util.bytes(salt), getName());
             return auth;
         } else {
@@ -116,7 +125,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
         // 单独定一个集合对象
         List<String> permissions = new ArrayList<String>();
         permissions.add("authc");
-        Redis info = resourceService.getInfo(shiroUser);
+        Redis info =resourceService.getFromRedis(shiroUser);
         List<Module> resources = info.getModuleInfoesList();
         for (Module resource : resources) {
             if (CollectionUtils.isNotEmpty(resource.getPermissionList())) {
@@ -155,6 +164,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
     public void setResourceService(ResourceService resourceService) {
         this.resourceService = resourceService;
     }
+
+
+
 
 
 //    /**

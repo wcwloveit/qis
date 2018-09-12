@@ -1,20 +1,25 @@
 package com.xinri.controller.role;
 
 import com.app.api.DataTable;
+import com.qis.common.persistence.Page;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
+import com.qis.util.DownLoadUtil;
 import com.xinri.po.role.RoleClasses;
 import com.xinri.service.role.IRoleClassesService;
 import com.xinri.vo.role.RoleClassesVo;
 import net.sf.json.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +33,19 @@ public class RoleClassController extends BaseController {
     /*
     * 首页
     * */
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList(){
         return "roleClass/list";
     }
 
-    /*
-   * 分页列表
-   * */
+    /** 创建人 魏严 创建时间 2019.9.7
+     * 分页列表
+     * @param dt
+     * @param request
+     * @return
+     */
+    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RoleClassesVo> getItemList(DataTable<RoleClassesVo> dt, ServletRequest request){
@@ -50,6 +60,7 @@ public class RoleClassController extends BaseController {
      * 跳转新增
      * @return
      */
+    
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create(){
         ModelAndView mv = new ModelAndView("/roleClass/roleClassForm");
@@ -62,6 +73,7 @@ public class RoleClassController extends BaseController {
      * @param attributes
      * @return
      */
+    
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView save(RoleClasses roleClasses,
                              RedirectAttributes attributes) {
@@ -83,6 +95,7 @@ public class RoleClassController extends BaseController {
      * 更新状态
      * @return
      */
+    
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable("id") Long id, Model model) {
         RoleClasses roleClasses = new RoleClasses();
@@ -95,6 +108,7 @@ public class RoleClassController extends BaseController {
     /*
   * 更新
   * */
+    
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(RoleClasses roleClasses, RedirectAttributes attributes) {
         logger.info("更新产品开始");
@@ -117,6 +131,7 @@ public class RoleClassController extends BaseController {
      * @param id
      * @return
      */
+    
     @RequestMapping(value = {"delete-{id}"}, method = {RequestMethod.POST})
     @ResponseBody
     public JSONObject LogicDel(@PathVariable Long id){
@@ -141,6 +156,7 @@ public class RoleClassController extends BaseController {
      * 批量删除
      * @return 返回跳转链接
      */
+    
     @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
@@ -154,4 +170,43 @@ public class RoleClassController extends BaseController {
         }
         return map;
     }
+
+    /**
+     * 导出
+     * 创建人  魏严 2018.9.11
+     * @param response
+     * @param request
+     * @throws IOException
+     */
+    
+    @RequestMapping(value = {"/export-excel"},method = {RequestMethod.GET})
+    public void exportExcel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        try{
+            Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+            Page page = new Page(request, response);
+            roleClassesService.exportExcel(response,searchParams);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(" Excel文件导出--->", e);
+        }
+    }
+
+//
+//    /**
+//     * 开票模板.xls
+//     *
+//     * @param request
+//     * @param response
+//     * @throws Exception
+//     */
+//    @RequestMapping(value = {"/excelModel"},method = {RequestMethod.GET})
+//    public void downLoadExcelModel(HttpServletRequest request, HttpServletResponse response)throws IOException{
+//        logger.info("下载开票模板 开始");
+//        try{
+//            DownLoadUtil.getInstall().downLoadExcel("测试001.xlsx","orgUser.xlsx",response);; //动态生成excel 下载模板文件
+//        }catch(Exception e){
+//            logger.error("动态生成excel文件,出错{}",e);
+//        }
+//        logger.info("下载开票模板 完成");
+//    }
 }

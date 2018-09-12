@@ -1,6 +1,7 @@
 package com.xinri.controller.user;
 
 import com.app.api.DataTable;
+import com.qis.common.persistence.Page;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.xinri.po.departments.Departments;
@@ -22,6 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +40,7 @@ public class UserGroupsController extends BaseController {
     /*
    * 首页
    * */
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findLogList() {
         return "userGroup/list";
@@ -44,6 +49,7 @@ public class UserGroupsController extends BaseController {
     /*
   * 分页列表
   * */
+    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<UserGroupsVo> getItemList(DataTable<UserGroupsVo> dt, ServletRequest request) {
@@ -59,6 +65,7 @@ public class UserGroupsController extends BaseController {
      *
      * @return
      */
+    
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         ModelAndView mv = new ModelAndView("/userGroup/form");
@@ -72,6 +79,7 @@ public class UserGroupsController extends BaseController {
      * @param attributes
      * @return
      */
+    
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView save(UserGroups userGroups,
                              RedirectAttributes attributes) {
@@ -94,6 +102,7 @@ public class UserGroupsController extends BaseController {
      *
      * @return
      */
+    
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable("id") Long id, Model model) {
         UserGroups userGroups = new UserGroups();
@@ -107,6 +116,7 @@ public class UserGroupsController extends BaseController {
     /*
 * 更新
 * */
+    
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(UserGroups userGroups, RedirectAttributes attributes) {
         logger.info("更新产品开始");
@@ -123,31 +133,6 @@ public class UserGroupsController extends BaseController {
         }
         return mv;
     }
-
-//    /**
-//     * 逻辑删除
-//     * @param id
-//     * @return
-//     */
-//    @RequestMapping(value = {"delete-{id}"}, method = {RequestMethod.POST})
-//    @ResponseBody
-//    public JSONObject LogicDel(@PathVariable Long id){
-//        JSONObject json = new JSONObject();
-//        try{
-//            //逻辑删除商品信息
-//            UserGroups userGroups = new UserGroups();
-//            userGroups.setId(id); //自己的是 编号
-//            userGroups.setIsDeleted(1);//把id为XX的哪一个实体类数据的IsDeleted 改为1
-//            userGroupsService.saveOrUpdate(userGroups);//跟新实体类
-//            json.put("code","200");
-//            json.put("msg","删除成功");
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            json.put("code","8001");
-//            json.put("msg","操作失败，请联系管理员！");
-//        }
-//        return json;
-//    }
 
 
 //    /**
@@ -181,6 +166,7 @@ public class UserGroupsController extends BaseController {
     /**
      * 删除角色组
      * */
+    
     @RequestMapping(value="delete/{id}") @ResponseBody
     public AjaxStatus delete(@PathVariable("id") Long id){
         userGroupsService.DeleteKnRole(id);
@@ -296,4 +282,25 @@ public class UserGroupsController extends BaseController {
     public AjaxStatus leave2(@RequestParam("roleId") Long roleId,@RequestParam("empId") Long empId){
         return userGroupsService.LeaveRole2(roleId,empId);
     }
+
+    /**
+     * 导出
+     * 创建人 魏严 2018.9.11
+     * @param response
+     * @param request
+     * @throws IOException
+     */
+    
+    @RequestMapping(value = {"/export-excel"},method = {RequestMethod.GET})
+    public void exportExcel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        try{
+            Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+            Page page = new Page(request, response);
+            userGroupsService.exportExcel(response,searchParams);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(" Excel文件导出--->", e);
+        }
+    }
+
 }

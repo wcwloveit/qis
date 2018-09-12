@@ -5,6 +5,7 @@ import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.xinri.po.baseDataTypes.BaseDataTypes;
 import com.xinri.service.baseDataTypes.IBaseDataTypesService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         logger.info("findTypesList");
@@ -45,6 +47,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<BaseDataTypes> getItemList(DataTable<BaseDataTypes> dt, ServletRequest request) {
@@ -60,6 +63,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         logger.info("跳转新增页面开始");
@@ -103,6 +107,7 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         logger.info("跳转更新页面开始");
@@ -144,7 +149,8 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除数据" + id);
@@ -157,7 +163,8 @@ public class baseDtaTypesController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         logger.info("删除全部数据");

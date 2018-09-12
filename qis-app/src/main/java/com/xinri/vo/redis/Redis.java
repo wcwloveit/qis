@@ -8,6 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Redis {
+    @Override
+    public String toString() {
+        return "Redis{" +
+                "loginName='" + loginName + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", moduleInfoesList=" + moduleInfoesList +
+                ", roles=" + roles +
+                '}';
+    }
 
     private String loginName;
 

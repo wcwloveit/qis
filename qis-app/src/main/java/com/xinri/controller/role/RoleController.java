@@ -34,6 +34,7 @@ import com.xinri.vo.moduleInfo.RoleModuleInfoPCVo;
 import com.xinri.vo.redis.Redis;
 import com.xinri.vo.role.RolesVo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -98,6 +99,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findRoleList() {
         return "role/list";
@@ -147,6 +149,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RolesVo> getItemList(DataTable<RolesVo> dt, ServletRequest request) {
@@ -162,6 +165,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         ModelAndView mv = new ModelAndView("/role/form");
@@ -225,6 +229,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         ModelAndView mv = new ModelAndView("/role/form");
@@ -289,7 +294,8 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         return rolesService.deleteOne(id);
@@ -301,7 +307,8 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         Map<String, Boolean> map = new HashMap<String, Boolean>();
@@ -426,7 +433,7 @@ public class RoleController extends BaseController {
     public ModelAndView getModuleColumnData(@PathVariable("moduleId") Long moduleId,
                                             @PathVariable("roleId") Long roleId ,
                                             RedirectAttributes redirectAttributes) {
-        ModelAndView mv = new ModelAndView();
+        ModelAndView mv = new ModelAndView("/columnDatas/roleModuleList");
         logger.info("getModuleColumnData开始");
         List<RoleModuleInfoColVo> voList  = new  ArrayList<RoleModuleInfoColVo>();
         RoleModuleInfoColVo vo = new RoleModuleInfoColVo();
@@ -438,11 +445,11 @@ public class RoleController extends BaseController {
             redirectAttributes.addFlashAttribute("message", "当前无数据列");
             mv.setViewName("redirect:/role/module/" + roleId);
         }else {
-            mv.setViewName("/moduleColumnData/roleModuleList");
+            mv.setViewName("/columnDatas/roleModuleList");
             ModuleInfoes info =  moduleInfoesService.get(moduleId);
             Roles role = rolesService.get(roleId);
 
-            mv.addObject("moList",voList);
+            mv.addObject("coList",voList);
             mv.addObject("info",info);
             mv.addObject("role",role);
         }

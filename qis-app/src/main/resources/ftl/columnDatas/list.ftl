@@ -3,7 +3,8 @@
     <title>角色类型2312131232132123</title>
     <link rel="stylesheet" href="${rc.contextPath}/assets/global/plugins/data-tables/DT_bootstrap.css"/>
 
-    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="${rc.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="row">
@@ -31,15 +32,19 @@
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
-
-                            <a class="btn green btn-parent" href="${rc.contextPath}/permissions/columnDatas/create"> <#--跳转新增的URL-->
+                        <@shiro.hasPermission name="shiro-column-create">
+                            <a class="btn green btn-parent"
+                               href="${rc.contextPath}/permissions/columnDatas/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
+                        </@shiro.hasPermission>
+<@shiro.hasPermission name="shiro-column-deleteAll">
                             <a href="javascript:void(0)" class="btn red">
                                 <i class="fa fa-trash-o"></i>
-                                <span class="hidden-480"  onclick="deleteList();">批量删除</span>
+                                <span class="hidden-480" onclick="deleteList();">批量删除</span>
                             </a>
+</@shiro.hasPermission>
                         </div>
                     </div>
                 </div>
@@ -48,7 +53,7 @@
             <#if message>
                 <div class="alert  <#if message && success='true'>alert-success<#else>alert-danger</#if>">
                     <button data-dismiss="alert" class="close">×</button>
-                ${(message)!}
+                    ${(message)!}
                 </div>
             </#if>
                 <div id="tip"></div>
@@ -82,7 +87,8 @@
                             ">创建时间</div>
                     <div class="input-group date date-picker" data-date-format="yyyy-mm-dd"
                          style="width: 123px;float: left;">
-                        <input id="search_ColumnData_startCreatedOn" name="search_ColumnData_startCreatedOn" style=" width: 90px; padding: 2px; "
+                        <input id="search_ColumnData_startCreatedOn" name="search_ColumnData_startCreatedOn"
+                               style=" width: 90px; padding: 2px; "
                                type="text" class="form-filter input-sm" placeholder="开始日期" readonly>
                         <span class="input-group-btn"><button class="btn btn-sm default" type="button"><i
                                 class="fa fa-calendar"></i></button></span>
@@ -90,7 +96,8 @@
                     <div style="float:left;">~</div>
                     <div class="input-group date date-picker" data-date-format="yyyy-mm-dd"
                          style="width: 123px;float: left;">
-                        <input id="search_ColumnData_endCreatedOn" name="search_ColumnData_endCreatedOn" style=" width:90px; padding: 2px;"
+                        <input id="search_ColumnData_endCreatedOn" name="search_ColumnData_endCreatedOn"
+                               style=" width:90px; padding: 2px;"
                                type="text" class="form-filter input-sm" placeholder="结束日期" readonly>
                         <span class="input-group-btn"><button class="btn btn-sm default" type="button"><i
                                 class="fa fa-calendar"></i></button></span>
@@ -98,24 +105,26 @@
                     </label>
 
 
-                        <label style="float:left;">
-                            <span> &nbsp;&nbsp;</span>
-                            <button class="btn btn-sm yellow margin-bottom filter-submit" value="搜索" onclick="search(this,grid)"><i
-                                    class="fa fa-search"></i> 搜索
-                            </button>
-                            <button class="btn btn-sm red filter-cancel" onclick="resetSearch(this)"><i class="fa fa-times"></i> 重置
-                            </button>
-                        </label>
-                    </div>
-
-                <#--空的表格，init初始化加载数据-->
-                    <table class="table table-striped table-bordered table-hover" id="attendees_data_table">
-                    </table>
+                    <label style="float:left;">
+                        <span> &nbsp;&nbsp;</span>
+                        <button class="btn btn-sm yellow margin-bottom filter-submit" value="搜索"
+                                onclick="search(this,grid)"><i
+                                class="fa fa-search"></i> 搜索
+                        </button>
+                        <button class="btn btn-sm red filter-cancel" onclick="resetSearch(this)"><i
+                                class="fa fa-times"></i> 重置
+                        </button>
+                    </label>
                 </div>
-            </div>
 
+            <#--空的表格，init初始化加载数据-->
+                <table class="table table-striped table-bordered table-hover" id="attendees_data_table">
+                </table>
+            </div>
         </div>
+
     </div>
+</div>
 </div>
 
 </body>
@@ -159,53 +168,60 @@
                     [0, "desc"]
                 ],
                 "aoColumnDefs": [
-                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4,5]}   //控制表格有多少列
+                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5]}   //控制表格有多少列
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
-                    { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
-                        return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
-                    }},
+                    {
+                        "sWidth": "1%",
+                        "sTitle": '<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',
+                        "sDefaultContent": "",
+                        "mRender": function (data, type, full) {
+                            return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="' + full.id + '"></span></div>';
+                        }
+                    },
                     {"sTitle": "名称", "mData": "name"},
                     {"sTitle": "编号", "mData": "code"},
                     {"sTitle": "描述", "mData": "descr"},
-                    { "sTitle": "是否生效", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        if(row.isEffective==1){
-                            var a = '<span style="color: #8a8a8a">失效</span>';
-                            return a;
-                        }else{
-                            return "生效";
+                    {
+                        "sTitle": "是否生效", "sDefaultContent": "", "mRender": function (data, type, row) {
+                            if (row.isEffective == 1) {
+                                var a = '<span style="color: #8a8a8a">失效</span>';
+                                return a;
+                            } else {
+                                return "生效";
+                            }
                         }
-                    }},
-                    { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
-                        if (data != null && "" != data) {
-                            return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
-                        } else {
-                            return "";
+                    },
+                    {
+                        "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
+                            if (data != null && "" != data) {
+                                return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
+                            } else {
+                                return "";
+                            }
                         }
-                    }},
+                    },
 
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/permissions/columnDatas/update/' + row.id
+                            var a = '<@shiro.hasPermission name="shiro-column-edit"><a href="${rc.contextPath}/permissions/columnDatas/update/' + row.id
                                 + '" class="btn btn-xs blue"  title="编辑" >' +
-                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
+                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';
 
 
-                        //  逻辑删除
-                        var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
-                                + '\')" class="btn btn-xs red"  title="删除" >' +
-                                '<i class="glyphicon glyphicon-trash"></i>删除</a>';
-                     '<i class="glyphicon glyphicon-trash"></i>删除</a>';
+                            //  逻辑删除
+                            var b = '<@shiro.hasPermission name="shiro-column-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
+                                    '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
 
-                        if(row.isSynchro==1){    //isSynchro是自己写的字段
-                            return "已删除";
-                        }else{
-                            return a+c; //修改和逻辑删除
-                            // return a+g; //修改和物理删除
+                            if (row.isSynchro == 1) {    //isSynchro是自己写的字段
+                                return "已删除";
+                            } else {
+                                return a + b; //修改和逻辑删除
+                                // return a+g; //修改和物理删除
 //                            return a+b+d+c;
+                            }
                         }
-                    }
                     }
                 ]
             }
@@ -279,31 +295,31 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/permissions/columnDatas/deleteOne-' + id,
+                                url: '${rc.contextPath}/permissions/columnDatas/deleteOne/' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
                                     console.log(data);
                                     Metronic.stopPageLoading();
-                                    if(data.code == '200'){
+                                    if (data.code == '200') {
                                         $('#tip').show();
-                                        $('#tip').html('<div class="alert alert-success"><button data-dismiss="alert" class="close">×</button>'+data.msg+'</div>');
-                                        window.setTimeout(function(){
+                                        $('#tip').html('<div class="alert alert-success"><button data-dismiss="alert" class="close">×</button>' + data.msg + '</div>');
+                                        window.setTimeout(function () {
                                             $('#tip').hide();
                                         }, 3000);
-                                    }else{
+                                    } else {
                                         $('#tip').show();
-                                        $('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>'+data.msg+'</div>');
-                                        window.setTimeout(function(){
+                                        $('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>' + data.msg + '</div>');
+                                        window.setTimeout(function () {
                                             $('#tip').hide();
                                         }, 3000);
                                     }
                                     grid.getDataTable().fnDraw();
                                 },
-                                error:function(error){
+                                error: function (error) {
                                     $('#tip').show();
                                     $('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>删除失败</div>');
-                                    window.setTimeout(function(){
+                                    window.setTimeout(function () {
                                         $('#tip').hide();
                                     }, 3000);
                                 }
@@ -326,36 +342,36 @@
          * 批量删除
          */
         function deleteList() {
-            var ids=[];
-            var codes=[];
-            $('#attendees_data_table span.checked >input.checkboxes:checked').each(function(){
+            var ids = [];
+            var codes = [];
+            $('#attendees_data_table span.checked >input.checkboxes:checked').each(function () {
                 ids.push($(this).val());
                 codes.push($(this).parents("tr").find("td").eq(1).text());
             })
-            if(ids==''||ids==null||ids.length==0){
+            if (ids == '' || ids == null || ids.length == 0) {
                 bootbox.alert('请选择需要删除的账号');
                 return false;
             }
             bootbox.dialog({
-                message: "您是否确认删除名称为："+codes+"的角色类型",
+                message: "您是否确认删除名称为：" + codes + "的角色类型",
                 buttons: {
                     main: {
                         label: "确定",
                         className: "green",
-                        callback: function() {
+                        callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url:'${rc.contextPath}/permissions/columnDatas/deleteAll',
-                                type:'POST',
-                                data:{"ids":ids},
-                                dataType:"json",
-                                traditional:true,
-                                success:function(msg){
+                                url: '${rc.contextPath}/permissions/columnDatas/deleteAll',
+                                type: 'POST',
+                                data: {"ids": ids},
+                                dataType: "json",
+                                traditional: true,
+                                success: function (msg) {
                                     Metronic.stopPageLoading();
-                                    if(msg&&msg.stat){
+                                    if (msg && msg.stat) {
                                         alertHint('删除成功');
                                         grid.getDataTable().fnDraw();
-                                    }else{
+                                    } else {
                                         bootbox.alert('删除失败');
                                     }
                                 }
@@ -365,14 +381,13 @@
                     cancel: {
                         label: "取消",
                         className: "gray",
-                        callback: function() {
+                        callback: function () {
                             $(this).hide();
                         }
                     }
                 }
             });
         }
-
 
 
     </script>

@@ -1,6 +1,3 @@
-<@shiro.hasPermission name="aaa">
-
-</@shiro.hasPermission>
 <html>
 <head>
     <title>数据字典</title>
@@ -9,6 +6,7 @@
           rel="stylesheet" type="text/css"/>
 </head>
 <body>
+
 
 <div class="actions">
     <div class="btn-group">
@@ -234,6 +232,20 @@
                             }
                         }
                     }
+                        <#--}},-->
+                    <#--{ "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {-->
+                        <#--var a = '<@shiro.hasPermission name="dictionary-dictionary-edit"> <a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +-->
+                                    <#--'<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';-->
+                            <#--var b = '<a href="${rc.contextPath}/dictionary/baseData/index/' + row.id + '" class="btn btn-xs green"  title="编辑" >' +-->
+                                    <#--'<i class="fa fa-balance-scale"></i>树</a>';-->
+                            <#--var c = '<@shiro.hasPermission name="dictionary-dictionary-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +-->
+                                    <#--'<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';-->
+                            <#--if(row.isDeleted==1){-->
+                                <#--return a;-->
+                            <#--}else{-->
+                                <#--return a+b+c;-->
+                            <#--}-->
+                        }}
                 ]
             }
         });
@@ -317,7 +329,7 @@
                         callback: function () {
                             Metronic.startPageLoading();
                             $.ajax({
-                                url: '${rc.contextPath}/dictionary/deleteOne-' + id,
+                                url: '${rc.contextPath}/dictionary/deleteOne/' + id,
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
@@ -369,6 +381,12 @@
                                 dataType: "json",
                                 traditional: true,
                                 success: function (msg) {
+                                url:'${rc.contextPath}/dictionary/deleteAll',
+                                type:'POST',
+                                data:{"ids":ids},
+                                dataType:"json",
+                                traditional:true,
+                                success:function(msg){
                                     Metronic.stopPageLoading();
                                     if (msg && msg.stat) {
                                         alertHint('删除成功');

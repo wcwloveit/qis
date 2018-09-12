@@ -25,6 +25,15 @@
 	      	<result column="USE_SYSTEM_ID" property="useSystemId" jdbcType="BIGINT"/>
 	</resultMap>
 
+	<resultMap id="productionLinesVoResultMap" type="com.xinri.vo.ProductionLines.ProductionLinesVo">
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="CODE" property="code" jdbcType="VARCHAR"/>
+		<result column="DESCR" property="descr" jdbcType="VARCHAR"/>
+		<result column="USE_ORGANIZATION_ID" property="useOrganizationId" jdbcType="BIGINT"/>
+		<result column="USE_ORGANIZATION_NAME" property="useOrganizationName" jdbcType="VARCHAR"/>
+		<result column="USE_SYSTEM_ID" property="useSystemId" jdbcType="BIGINT"/>
+		<result column="USESYSTEMNAME" property="useSystemName" jdbcType="VARCHAR"/>
+	</resultMap>
     <!-- 列定义 -->
 	<sql id="productionLinesColumns">
 	  t.ID,
@@ -220,6 +229,37 @@
 				ORDER BY t.ID DESC
 				</otherwise>
 			
+		</choose>
+	</select>
+
+	<!-- VO查询列表可以根据分页进行查询 -->
+	<select id="findListByVo" parameterType="com.xinri.vo.ProductionLines.ProductionLinesVo" resultMap="productionLinesVoResultMap">
+		SELECT
+		<include refid="productionLinesColumns" />,t2.NAME USE_ORGANIZATION_NAME,T3.NAME USESYSTEMNAME
+		FROM PRODUCTION_LINES t
+		LEFT JOIN ORGANIZATIONS t2 ON t.USE_ORGANIZATION_ID = t2.ID
+		LEFT JOIN (SELECT ID,NAME FROM BASE_DATAS WHERE BASE_DATA_TYPE_ID = 10) t3 ON t.USE_SYSTEM_ID = t3.ID
+		<!--<include refid="whereColumnBySelect" />-->
+		<where>
+			<if test="name != null and name !=''">
+				AND t.NAME = #{name}
+			</if>
+			<if test="code != null and code !=''">
+				AND t.CODE = #{code}
+			</if>
+			<if test="descr != null and descr !=''">
+				AND t.DESCR = #{descr}
+			</if>
+			AND t.IS_DELETED = 0
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY t.ID DESC
+			</otherwise>
+
 		</choose>
 	</select>
 

@@ -1,7 +1,7 @@
 <html>
 <head>
 <#--判断action 等于create是新增   等于update是编辑修改-->
-    <title>角色新增<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if></title>
+    <title>生产线新增<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if></title>
     <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet"/>
     <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
     <link href="${rc.contextPath}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"/>
@@ -24,11 +24,11 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="javascript:void(0);">数据</a>
+                <a href="javascript:void(0);">生产</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="javascript:void(0);">角色类型</a>
+                <a href="javascript:void(0);">生产线</a>
                 <i class="fa fa-angle-right"></i>
             </li>
         </ul>
@@ -36,23 +36,31 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet box green-haze">
+
+    <div class="portlet box  green-haze">
             <div class="portlet-title">
+
+                <#--<div class="caption">-->
+                    <#--<i class="icon-settings font-dark"></i>-->
+                    <#--<span class="caption-subject font-dark sbold uppercase">角色类型<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if></span>-->
+                <#--</div>-->
+
                 <div class="caption">
                 <#--判断action 等于create是新增   等于update是编辑修改-->
-                    <i class="fa fa-gift"></i>产品<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if>
-            </div>
+                    <i class="fa fa-gift"></i>生产线<#if action?? && action == 'create'>新增</#if><#if action?? && action == 'update'>编辑</#if>
+                </div>
+
                 <div class="actions">
-                    <a href="javascript:history.back(-1)" class="btn grey">返回</a>
+                    <a href="javascript:history.back(-1)" class="btn grey ">返回</a>
                 </div>
 
             </div>
             <div class="portlet-body form">
             <#--寻找是哪个Controller-->
-                <form id="myForm" action="${rc.contextPath}/column/${action}" class="form-horizontal" method="POST">
+                <form id="myForm" action="${rc.contextPath}/production/lines/${action}" class="form-horizontal" method="POST">
                     <div class="form-body">
                     <#--<h3 class="form-section">基本信息</h3>-->
-                        <input type="hidden" class="form-control"  name="id" value="${ColumnDatas.id?if_exists}" >
+                        <input type="hidden" class="form-control"  name="id" value="${productionLines.id?if_exists}" >
                         <div class="row">
                             <div class="col-md-6">
 
@@ -62,7 +70,7 @@
 											 *
 										</span></label>
                                     <div class="col-md-10">
-                                        <input type="text" required="true" class="form-control" value="${ColumnDatas.name?if_exists}" <#--Product-->
+                                        <input type="text" required="true" class="form-control" value="${productionLines.name?if_exists}" <#--Product-->
                                                name="name" placeholder="名称" id="name" >
                                     </div>
                                 </div>
@@ -73,46 +81,54 @@
                                         *
 										</span></label>
                                     <div class="col-md-10">
-                                        <input type="text"  class="form-control" value="${ColumnDatas.code?if_exists}"
+                                        <input type="text"  class="form-control" value="${productionLines.code?if_exists}"
                                                name="code" placeholder="编号" id="code" >
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" style="width: 87px;text-align: left;padding-right: 0">描述<span class="descr">
+                                    <label class="col-md-2 control-label" style="width: 87px;text-align: left;padding-right: 0">备注<span class="required">
 
 									</span></label>
                                     <div class="col-md-10">
-                                        <input type="text"  class="form-control" value="${ColumnDatas.descr?if_exists}"
-                                               name="descr" placeholder="描述" id="descr" >
+                                        <input type="text"  class="form-control" value="${productionLines.descr?if_exists}"
+                                               name="descr" placeholder="备注" id="descr" >
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="inputWarning" style="width: 87px;text-align: left;padding-right: 0" >组织名称<span class="required">*</span></label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" name="useOrganizationId" id="useOrganizationId">
+                                            <option value="">组织名称</option>
+                                        <#list organizationsList as organizationslist>
+                                            <option value="${organizationslist.id}" <#if organizationslist.id==productionLines.useOrganizationId>selected="selected"</#if>>${organizationslist.name}</option>
+                                        </#list>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" style="width: 87px;text-align: left;padding-right: 0">
-                                        是否生效<span class="required">
-                                        *
-										</span></label>
+                                    <label class="col-md-2 control-label" for="inputWarning" style="width: 87px;text-align: left;padding-right: 0" >系统名称<span class="required">*</span></label>
                                     <div class="col-md-10">
-                                        <select name="isEffective" class="select">
-                                            <option value="0"
-<#if ColumnDatas.isEffective == 0>selected</#if> >
-                                                生效</option>
-                                            <option value="1"
-<#if ColumnDatas.isEffective == 1>selected</#if> >
-                                                失效</option>
+                                        <select class="form-control" name="useSystemId" id="useSystemId">
+                                            <option value="">系统名称</option>
+                                        <#list baseDatasList as baseDataslist>
+                                            <option value="${baseDataslist.id}" <#if baseDataslist.id==productionLines.useSystemId>selected="selected"</#if>>${baseDataslist.name}</option>
+                                        </#list>
                                         </select>
-
                                     </div>
+                                </div>
 
-
+                            </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-actions fluid">
                         <div class="col-md-offset-3 col-md-9">
-                            <button type="submit" class="btn green">提交</button>
-                            <button type="reset" class="btn red">重置</button>
+                            <button type="submit" class="btn green ">提交</button>
+                            <button type="reset" class="btn red ">重置</button>
                         </div>
                     </div>
                 </form>
@@ -146,11 +162,16 @@
             errorClass: 'help-block help-block-error',
             focusInvalid: true,
             messages: {
-                name:{    //对应手机验证的 name id
+                name:{
                     // phone:"ddddd"  // 验证信息内容，如果没有填写就提示框架自带的提示信息
                 },
                 code:{
-//                    remote:"未找到满足条件的料号"
+                },
+                useOrganizationId:{
+                    //组织id
+                },
+                useSystemId:{
+                    //系统id
                 }
             },
             rules: {
@@ -160,8 +181,38 @@
                 code:{
                     required: true  //表示是必填项
                 },
+                useOrganizationId:{
+                    required: true  //表示是必填项
+                },
+                useSystemId:{
+                    required: true  //表示是必填项
+                },
 
 
+                /*
+                itemId:{
+                    required: true,
+                    remote:  {
+                        url: "http://58.214.5.20:8024/api/O2OItemName",     //后台处理程序
+                        type: "post",               //数据发送方式
+                        dataType: "json",           //接受数据格式
+                        data: {                     //要传递的数据
+                            "ItemCode": function() {
+                                return $("#u9Code").val();
+                            }
+                        },
+                        success:function(data){
+                            console.info(data);
+                            if(data!=null){
+                                $("#itemName").val(data.Name+" "+data.Specs+" "+data.Colour);
+                                return true;
+                            }else{
+                                $("#itemName").val("");
+                                return false;
+                            }
+                        }
+                    }
+                }*/
             },
             invalidHandler: function (event, validator) {
                 error.show();

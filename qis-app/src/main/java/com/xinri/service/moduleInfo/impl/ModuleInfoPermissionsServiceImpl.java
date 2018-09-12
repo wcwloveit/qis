@@ -1,6 +1,7 @@
 package com.xinri.service.moduleInfo.impl;
 
 import com.xinri.vo.moduleInfo.RoleModuleInFoPerVo;
+import com.xinri.vo.redis.Resource;
 import org.springframework.stereotype.Service;
 import com.qis.common.service.CrudService;
 import com.xinri.po.moduleInfo.ModuleInfoPermissions;
@@ -63,6 +64,20 @@ public class ModuleInfoPermissionsServiceImpl extends CrudService<ModuleInfoPerm
     @Override
     public List<RoleModuleInFoPerVo> getRoleModuleInFoPerVo(RoleModuleInFoPerVo vo) {
         return dao.getRoleModuleInFoPerVo(vo);
+    }
+
+    @Override
+    public List<Resource> getResource() {
+        List<Resource> resources=dao.getResource();
+        String beforeUrl="";
+        String afterUrl="";
+        for (Resource resource : resources) {
+            beforeUrl=resource.getUrl();
+            afterUrl=beforeUrl.substring(0,beforeUrl.lastIndexOf("/"))+"/"+resource.getDescr();
+            resource.setUrl(afterUrl);
+            resource.setCode(resource.getMoCode()+"-"+resource.getPeCode());
+        }
+        return resources;
     }
 
 }

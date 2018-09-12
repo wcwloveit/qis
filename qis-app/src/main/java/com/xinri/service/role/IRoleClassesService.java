@@ -4,6 +4,7 @@ import com.qis.common.service.IBaseService;
 import com.xinri.po.role.RoleClasses;
 import com.xinri.vo.role.RoleClassesVo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -17,5 +18,7 @@ import java.util.Map;
 public interface IRoleClassesService extends IBaseService<RoleClasses>{
 
     public DataTable<RoleClassesVo>  findListByVo( DataTable<RoleClassesVo>dt, Map<String, Object> searchParams);
+
+    public void exportExcel(HttpServletResponse response, Map<String, Object> searchParams);
 }
 

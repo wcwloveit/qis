@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Module extends ModuleInfoes {
+    @Override
+    public String toString() {
+        return "Module{" +
+                "permissionList=" + permissionList +
+                '}';
+    }
 
     List<Permissions> permissionList;
 

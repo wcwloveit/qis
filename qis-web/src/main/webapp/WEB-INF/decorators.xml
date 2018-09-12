@@ -19,6 +19,7 @@
         <pattern>/roleClass/*</pattern>
         <pattern>/userGroup/*</pattern>
         <pattern>/column/*</pattern>
+        <pattern>/production/*</pattern>
 
     </decorator>
 </decorators>

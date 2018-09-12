@@ -1,18 +1,19 @@
 package com.xinri.controller.ColumnDatas;
 
 import com.app.api.DataTable;
+import com.app.util.StatusMsgUtils;
+import com.qis.common.mapper.JsonMapper;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
 import com.xinri.po.moduleInfo.ColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoColumnDatas;
 import com.xinri.po.moduleInfo.ModuleInfoes;
 
-import com.xinri.service.moduleInfo.IColumnDatasService;
-import com.xinri.service.moduleInfo.IModuleInfoColumnDatasService;
-import com.xinri.service.moduleInfo.IModuleInfoesService;
-import com.xinri.service.moduleInfo.IRoleModuleInfoColumnDataHeadsService;
+import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataLines;
+import com.xinri.service.moduleInfo.*;
 
 import com.xinri.vo.columnData.ColumnDataVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +47,13 @@ public class ColumnDatasController extends BaseController {
     @Autowired
     private IRoleModuleInfoColumnDataHeadsService moduleInfoColumnDataHeadsService;
 
+
     /**
      * 首页
      * @return
      * 创建人 汪震 20180907
      */
+    
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findTypesList() {
         return "columnDatas/list";
@@ -62,6 +66,7 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人汪震 20180907
      */
+    
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<ColumnDataVo> getItemList(DataTable<ColumnDataVo> dt, ServletRequest request) {
@@ -90,6 +95,7 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
+    
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         logger.info("创建数据列开始");
@@ -146,6 +152,7 @@ public class ColumnDatasController extends BaseController {
      * @param id
      * @return
      */
+    
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         logger.info("跳转更新数据列页面开始");
@@ -187,7 +194,8 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequestMapping(value = "deleteOne-{id}", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除数据列" + id);
@@ -211,7 +219,8 @@ public class ColumnDatasController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    @RequestMapping(value = "delete-all", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
         logger.info("删除所有数据列开始");
@@ -227,4 +236,6 @@ public class ColumnDatasController extends BaseController {
         }
         return map;
     }
+
+
 }

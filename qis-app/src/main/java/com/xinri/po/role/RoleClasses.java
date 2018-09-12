@@ -37,6 +37,7 @@ public class RoleClasses extends DataEntity<RoleClasses>{
     	private String descFlexField5;
 
     	private String descFlexField6;
+
 	/**
 	 * createdOn字段查询条件开始
 	 */

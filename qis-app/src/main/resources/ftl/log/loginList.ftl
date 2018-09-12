@@ -40,10 +40,12 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <#--<a class="btn green" href="javascript:exportData();">-->
-                                <#--<i class="fa fa-download"></i>-->
-                                <#--<span class="hidden-480">导出</span>-->
-                            <#--</a>-->
+                        <@shiro.hasPermission name="log-logins-export">
+                            <a class="btn green btn-outline btn-circle" href="javascript:exportData();">
+                                <i class="fa fa-download"></i>
+                                <span class="hidden-480">导出</span>
+                            </a>
+                        </@shiro.hasPermission>
 
                         </div>
                     </div>
@@ -290,27 +292,16 @@
             search(btn, grid);
         }
 
-
-
         /**
          * 导出excel
          */
-        <#--function exportData(){-->
-        <#--var search_ZC_modelCode=$('#search_ZC_modelCode').val();-->
-        <#--//                    search_ZC_modelName=$('#search_ZC_modelName').val(),-->
-        <#--//                    search_ZC_orgCode=$('#search_ZC_orgCode').val();-->
-        <#--//                    search_ZX_city=$('#search_ZX_city').val(),-->
-        <#--//                    search_ZX_store=$('#search_ZX_store').val(),-->
-        <#--//                    search_ZX_orderNumber=$('#search_ZX_orderNumber').val(),-->
-        <#--//                    search_ZX_paymentStatus=$('#search_ZX_paymentStatus').val(),-->
-        <#--//                    search_ZX_refundStatus=$('#search_ZX_refundStatus').val();-->
-        <#--location.href='${rc.contextPath}/zc/kaohe/export-excel?search_ZC_modelCode='+search_ZC_modelCode+'&search_ZC_modelName='+search_ZC_modelName+'&search_ZC_orgCode='+search_ZC_orgCode;-->
-        <#--//                    +'&search_ZX_city='+search_ZX_city-->
-        <#--//                    +'&search_ZX_store='+search_ZX_store-->
-        <#--//                    +'&search_ZX_orderNumber='+search_ZX_orderNumber-->
-        <#--//                    +'&search_ZX_paymentStatus='+search_ZX_paymentStatus-->
-        <#--//                    +'&search_ZX_refundStatus='+search_ZX_refundStatus;-->
-        <#--}-->
+        function exportData(){
+            var search_ipAddress=$('#search_ipAddress').val(),
+                    search_userId=$('#search_userId').val(),
+                    search_userName=$('#search_userName').val(),
+                    search_name=$('#search_name').val();
+            location.href='${rc.contextPath}/log/login/export-excel?search_ipAddress='+search_ipAddress+'&search_userId='+search_userId+'&search_userName='+search_userName+'&search_name='+search_name;
+        }
 
     </script>
 </content>

@@ -1,7 +1,7 @@
 package com.app;
 
 /**
- * @author chirs@zhoujin.com (Chirs Chou)
+ * @author xsy
  */
 public class Setting implements java.io.Serializable {
 	public static final String INVALID_CLIENT_DESCRIPTION = "qis";

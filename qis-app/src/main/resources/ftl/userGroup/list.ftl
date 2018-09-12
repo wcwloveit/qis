@@ -48,20 +48,24 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
+                            <@shiro.hasPermission name="user-groups-create">
                             <a class="btn green btn-parent btn-outline btn-circle" href="${rc.contextPath}/user/userGroup/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
+                            </@shiro.hasPermission>
 
                         <#--<a href="javascript:void(0)" class="btn red">-->
                         <#--<i class="fa fa-trash-o"></i>-->
                         <#--<span class="hidden-480"  onclick="deleteList();">批量删除</span>-->
                         <#--</a>-->
 
-                        <#--<a class="btn green" href="javascript:exportData();">-->
-                        <#--<i class="fa fa-download"></i>-->
-                        <#--<span class="hidden-480">导出</span>-->
-                        <#--</a>-->
+                    <@shiro.hasPermission name="user-groups-export">
+                        <a class="btn green  btn-outline btn-circle" href="javascript:exportData();">
+                        <i class="fa fa-download"></i>
+                        <span class="hidden-480">导出</span>
+                        </a>
+                    </@shiro.hasPermission>
 
                         </div>
                     </div>
@@ -395,14 +399,14 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<a href="${rc.contextPath}/user/userGroup/update/' + row.id
+                        var a = '<@shiro.hasPermission name="user-groups-edit"><a href="${rc.contextPath}/user/userGroup/update/' + row.id
                                 + '" class="btn btn-xs blue btn-outline btn-circle"  title="编辑" >' +
-                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
+                                '<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';
 
                         //  逻辑删除
-                        var c = '<a href="javascript:void(0);" onclick="doDelete(\'' + row.id
+                        var c = '<@shiro.hasPermission name="user-groups-delete"><a href="javascript:void(0);" onclick="doDelete(\'' + row.id
                                 + '\')" class="btn btn-xs red btn-outline btn-circle"  title="删除" >' +
-                                '<i class="glyphicon glyphicon-trash"></i>删除</a>';
+                                '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
 
                         var b='<a class="btn btn-xs green btn-outline btn-circle" href="javascript:void(0);" onclick="seeUser(\''+row.id+'\')" title ="查看"><i class="fa fa-search"></i>查看</a>';
                         var d='<a class="btn btn-xs green btn-outline btn-circle" href="javascript:void(0);" onclick="toUser(\''+row.id+'\')" title ="分配"><i class="glyphicon glyphicon-cog"></i>分配</a>';
@@ -898,6 +902,16 @@
                 $(this).find("option").attr("selected", false);
             });
             search(btn, grid);
+        }
+
+        /**
+         * 导出excel
+         */
+        function exportData(){
+                var search_userGroup_name=$('#search_userGroup_name').val(),
+                    search_userGroup_code=$('#search_userGroup_code').val(),
+                    search_userGroup_descr=$('#search_userGroup_descr').val();
+            location.href='${rc.contextPath}/user/userGroup/export-excel?search_userGroup_name='+search_userGroup_name+'&search_userGroup_code='+search_userGroup_code+'&search_userGroup_descr='+search_userGroup_descr;
         }
 
     </script>
