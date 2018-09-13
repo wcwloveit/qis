@@ -40,4 +40,19 @@ public class RoleModuleInfoPermissionHeadsServiceImpl extends CrudService<RoleMo
     public void deleteByDiff(List<Long> ids,Long moduleId){
         dao.deleteByDiff(ids,moduleId);
     }
+
+    @Override
+    public List<Long> getIdsByDiff(List<Long> ids) {
+        return dao.getIdsByDiff(ids);
+    }
+
+    @Override
+    public List<Long> getBeforeIds(Long roleId, Long moduleId) {
+        return dao.getBeforeIds(roleId,moduleId);
+    }
+
+    @Override
+    public List<Long> getAfterIds(Long roleId, List<Long> ids) {
+        return dao.getAfterIds(roleId,ids);
+    }
 }

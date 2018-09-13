@@ -13,6 +13,7 @@ import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataLines;
 import com.xinri.service.moduleInfo.*;
 
 import com.xinri.vo.columnData.ColumnDataVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -200,10 +201,17 @@ public class ColumnDatasController extends BaseController {
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除数据列" + id);
 
-        Long[] ids = moduleInfoColumnDatasService.getIdsByColumnDataId(id);
-        if(ids!=null&&ids.length>0){
-            moduleInfoColumnDataHeadsService.deleteByRelateId(Arrays.asList(ids));
+        ModuleInfoColumnDatas mc=new ModuleInfoColumnDatas();
+        mc.setColumnDataId(id);
+        mc.setIsEffective(1);
+        List<ModuleInfoColumnDatas> list = moduleInfoColumnDatasService.findList(mc);
+        if(CollectionUtils.isNotEmpty(list)){
+            return false;
         }
+//        Long[] ids = moduleInfoColumnDatasService.getIdsByColumnDataId(id);
+//        if(ids!=null&&ids.length>0){
+//            moduleInfoColumnDataHeadsService.deleteByRelateId(Arrays.asList(ids));
+//        }
         ModuleInfoColumnDatas moduleInfoColumnData = new ModuleInfoColumnDatas();
         moduleInfoColumnData.setColumnDataId(id);
         moduleInfoColumnData.setIsEffective(0);

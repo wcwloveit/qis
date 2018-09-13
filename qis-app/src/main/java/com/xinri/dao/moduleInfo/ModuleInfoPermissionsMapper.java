@@ -32,5 +32,7 @@ public interface ModuleInfoPermissionsMapper extends CrudDao<ModuleInfoPermissio
     List<RoleModuleInFoPerVo> getRoleModuleInFoPerVo(RoleModuleInFoPerVo vo);
 
     List<Resource> getResource();
+
+
 }
 

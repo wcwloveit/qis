@@ -4,6 +4,7 @@ import java.util.List;
 
 public class RoleModuleInfoPCVo {
     private Long roleId;
+    private Long moduleId;
     private List<RoleModuleInFoPerVo> mList;
 
     public Long getRoleId() {
@@ -20,5 +21,13 @@ public class RoleModuleInfoPCVo {
 
     public void setmList(List<RoleModuleInFoPerVo> mList) {
         this.mList = mList;
+    }
+
+    public Long getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(Long moduleId) {
+        this.moduleId = moduleId;
     }
 }

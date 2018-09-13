@@ -10,6 +10,7 @@ import com.xinri.service.moduleInfo.IModuleInfoPermissionsService;
 import com.xinri.service.moduleInfo.IModuleInfoesService;
 import com.xinri.service.moduleInfo.IRoleModuleInfoPermissionHeadsService;
 import com.xinri.service.permissions.IPermissionsService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -196,10 +197,17 @@ public class permissionsController extends BaseController {
     public Boolean deleteById(@PathVariable("id") Long id) {
         logger.info("删除权限" + id);
 
-        Long[] ids = moduleInfoPermissionsService.getIdsByPermissionId(id);
-        if(ids!=null&&ids.length>0){
-        moduleInfoPermissionHeadsService.deleteByRelateId(Arrays.asList(ids));
+        ModuleInfoPermissions mp=new ModuleInfoPermissions();
+        mp.setPermissionId(id);
+        mp.setIsEffective(1);
+        List<ModuleInfoPermissions> list = moduleInfoPermissionsService.findList(mp);
+        if(CollectionUtils.isNotEmpty(list)){
+            return false;
         }
+//        Long[] ids = moduleInfoPermissionsService.getIdsByPermissionId(id);
+//        if(ids!=null&&ids.length>0){
+//        moduleInfoPermissionHeadsService.deleteByRelateId(Arrays.asList(ids));
+//        }
         ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
         moduleInfoPermission.setPermissionId(id);
         moduleInfoPermission.setIsEffective(0);

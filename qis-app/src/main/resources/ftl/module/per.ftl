@@ -22,6 +22,13 @@
     </style>
 </head>
 <body>
+<#if message>
+               <div class="note note-danger">
+                   <p>
+                       ${(message)!}
+                   </p>
+               </div>
+</#if>
 <!--导航菜单栏-->
 <div class="row">
     <div class="col-md-12">
@@ -66,6 +73,7 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
+
                         <form class="form-horizontal" action="${rc.contextPath}/module/modulePermissions/save" method="POST"
                               id="moduleForm">
                             <input type="hidden" name="id"/>

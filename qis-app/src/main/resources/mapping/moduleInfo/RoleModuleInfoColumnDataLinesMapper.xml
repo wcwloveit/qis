@@ -462,6 +462,16 @@
 		<if test="moduleId != null">AND m.module_info_id=#{moduleId,jdbcType=BIGINT} </if>
 		<if test="roleId != null">AND r.role_id= #{roleId,jdbcType=BIGINT}</if>
 	</select>
+
+	<select id="getIdsByDiff" resultType="java.lang.Long">
+		select id from role_module_info_column_data_lines
+		where role_module_info_column_data_head_id in
+		<foreach item="item" collection="list" index="index" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		and is_deleted=0 and is_effective=1
+	</select>
 	
 
 </mapper>

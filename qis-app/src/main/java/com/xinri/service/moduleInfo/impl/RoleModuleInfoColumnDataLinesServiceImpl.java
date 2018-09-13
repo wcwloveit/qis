@@ -42,4 +42,9 @@ public class RoleModuleInfoColumnDataLinesServiceImpl extends CrudService<RoleMo
         return dt;
     }
 
+    @Override
+    public List<Long> getIdsByDiff(List<Long> beforeIds) {
+        return dao.getIdsByDiff(beforeIds);
+    }
+
 }

@@ -45,6 +45,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 角色
@@ -83,6 +84,12 @@ public class RoleController extends BaseController {
     private IRoleModuleInfoColumnDataHeadsService roleModuleInfoColumnDataHeadsService;
 
     @Autowired
+    private IRoleModuleInfoPermissionLinesService roleModuleInfoPermissionLinesService;
+
+    @Autowired
+    private IRoleModuleInfoColumnDataLinesService roleModuleInfoColumnDataLinesService;
+
+    @Autowired
     private IRoleClassesService roleClassesService;
 
     @Autowired
@@ -99,7 +106,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    
+
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String findRoleList() {
         return "role/list";
@@ -149,7 +156,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    
+
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RolesVo> getItemList(DataTable<RolesVo> dt, ServletRequest request) {
@@ -165,7 +172,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    
+
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public ModelAndView create() {
         ModelAndView mv = new ModelAndView("/role/form");
@@ -229,7 +236,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    
+
     @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") Long id) {
         ModelAndView mv = new ModelAndView("/role/form");
@@ -294,7 +301,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    
+
     @RequestMapping(value = "deleteOne/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteById(@PathVariable("id") Long id) {
@@ -307,7 +314,7 @@ public class RoleController extends BaseController {
      * @return
      * 创建人 汪震 20180907
      */
-    
+
     @RequestMapping(value = "deleteAll", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Boolean> deleteAll(@RequestParam("ids") List<Long> ids) {
@@ -411,7 +418,6 @@ public class RoleController extends BaseController {
             mv.addObject("moList",voList);
             mv.addObject("info",info);
             mv.addObject("role",role);
-
         }
 
 
@@ -476,6 +482,22 @@ public class RoleController extends BaseController {
         String msg = StatusMsgUtils.ResponseCode.getName(code);
         try {
             RoleModuleInfoPCVo vo = (RoleModuleInfoPCVo) JsonMapper.fromJsonString(body,RoleModuleInfoPCVo.class);
+            List<Long> beforeIds = roleModuleInfoPermissionHeadsService.getBeforeIds(vo.getRoleId(), vo.getModuleId());
+            List<Long> afterModulePermissionIds=vo.getmList().stream().filter(RoleModuleInFoPerVo -> RoleModuleInFoPerVo.getrIsEffective() == 1).map(RoleModuleInFoPerVo->RoleModuleInFoPerVo.getModulePermissionId()).collect(Collectors.toList());
+            List<Long> afterIds=null;
+            if(CollectionUtils.isNotEmpty(afterModulePermissionIds)){
+                afterIds = roleModuleInfoPermissionHeadsService.getAfterIds(vo.getRoleId(), afterModulePermissionIds);
+            }else{
+                afterIds=new ArrayList<>();
+            }
+
+            beforeIds.removeAll(afterIds);
+            if (CollectionUtils.isNotEmpty(beforeIds)){
+                List<Long> idsByDiff = roleModuleInfoPermissionLinesService.getIdsByDiff(beforeIds);
+                if(CollectionUtils.isNotEmpty(idsByDiff)){
+                    throw new Exception("存在关联，无法删除");
+                }
+            }
             if(vo.getmList()!=null){
                 for(RoleModuleInFoPerVo perVo: vo.getmList()){
                     RoleModuleInfoPermissionHeads heads = new RoleModuleInfoPermissionHeads();
@@ -517,6 +539,21 @@ public class RoleController extends BaseController {
         String code = StatusMsgUtils.SUCCEEDEDCODE_200;
         String msg = StatusMsgUtils.ResponseCode.getName(code);
         try {
+            List<Long> beforeIds = roleModuleInfoColumnDataHeadsService.getBeforeIds(vo.getRoleId(), vo.getModuleId());
+            List<Long> afterModuleColumnDataIds=vo.getmList().stream().filter(RoleModuleInfoColVo -> RoleModuleInfoColVo.getrIsEffective() == 1).map(RoleModuleInfoColVo->RoleModuleInfoColVo.getModuleColumnId()).collect(Collectors.toList());
+            List<Long> afterIds=null;
+            if(CollectionUtils.isNotEmpty(afterModuleColumnDataIds)){
+                afterIds = roleModuleInfoColumnDataHeadsService.getAfterIds(vo.getRoleId(), afterModuleColumnDataIds);
+            }else{
+                afterIds=new ArrayList<>();
+            }
+            beforeIds.removeAll(afterIds);
+            if (CollectionUtils.isNotEmpty(beforeIds)){
+                List<Long> idsByDiff = roleModuleInfoColumnDataLinesService.getIdsByDiff(beforeIds);
+                if(CollectionUtils.isNotEmpty(idsByDiff)){
+                    throw new Exception("存在关联，无法删除");
+                }
+            }
             if(vo.getmList()!=null){
                 for(RoleModuleInfoColVo colVo: vo.getmList()){
                     RoleModuleInfoColumnDataHeads heads = new RoleModuleInfoColumnDataHeads();

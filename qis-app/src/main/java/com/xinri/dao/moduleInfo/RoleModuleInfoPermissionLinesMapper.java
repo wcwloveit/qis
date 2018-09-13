@@ -3,6 +3,7 @@ import com.qis.common.persistence.CrudDao;
 import com.qis.common.persistence.annotation.MyBatisDao;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionLines;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ import java.util.List;
 public interface RoleModuleInfoPermissionLinesMapper extends CrudDao<RoleModuleInfoPermissionLines>{
 
     List<RoleModuleInFoPermissionLineVo> findListByVo(RoleModuleInFoPermissionLineVo vo);
+
+    List<Long> getIdsByDiff(@Param("list") List<Long> ids);
 }
 

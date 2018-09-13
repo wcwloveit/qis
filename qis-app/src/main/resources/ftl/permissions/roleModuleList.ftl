@@ -374,6 +374,7 @@
                 mList.push(obj);
             });
             module.mList = mList;
+            module.moduleId=${info.id}
             $.ajax({
                 type: 'POST',
                 url:  "${rc.contextPath}/role/modulePermissionsSave",

@@ -4,6 +4,7 @@ package com.qis.shiro;
 
 import com.qis.ShiroUser;
 import com.qis.common.util.StringUtils;
+import com.qis.util.PathUtil;
 import com.xinri.po.logs.LoginLogs;
 import com.xinri.service.logs.ILoginLogsService;
 import org.apache.shiro.SecurityUtils;
@@ -29,19 +30,8 @@ public class SystemLogoutFilter extends LogoutFilter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		Subject subject = getSubject(request, response);
-		String ip = req.getHeader("x-forwarded-for");
-		if (StringUtils.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
-			ip = req.getHeader("Proxy-Client-IP");
-		}
-		if (StringUtils.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
-			ip = req.getHeader("WL-Proxy-Client-IP");
-		}
-		if (StringUtils.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
-			// 若以上三种方式均为获取到ip则证明获得客户端并没有采用反向代理直接使用getRemoteAddr()获取客户端的ip地址
-			ip = request.getRemoteAddr();
-		}
+		String ip = PathUtil.getIpAddr(req);
 		try {
-
 			LoginLogs loginLogs=new LoginLogs();
 			loginLogs.setIpAddress(ip);
 			loginLogs.setUserId(user.getId());

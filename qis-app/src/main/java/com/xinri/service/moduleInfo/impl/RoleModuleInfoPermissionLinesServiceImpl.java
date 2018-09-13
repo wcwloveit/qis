@@ -41,4 +41,9 @@ public class RoleModuleInfoPermissionLinesServiceImpl extends CrudService<RoleMo
         }
         return dt;
     }
+
+    @Override
+    public List<Long> getIdsByDiff(List<Long> ids) {
+        return dao.getIdsByDiff(ids);
+    }
 }

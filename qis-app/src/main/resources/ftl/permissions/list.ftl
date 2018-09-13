@@ -313,11 +313,14 @@
                                 traditional: true,
                                 success: function (data) {
                                     Metronic.stopPageLoading();
-                                    grid.getDataTable().fnDraw();
-                                    bootbox.alert("操作成功");
+                                    if(data){
+                                        grid.getDataTable().fnDraw();
+                                        bootbox.alert("操作成功");
+                                    }else{
+                                        bootbox.alert("改权限被关联无法删除");
+                                    }
                                 },
                                 error: function (error) {
-
                                 }
                             });
                         }

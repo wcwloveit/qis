@@ -23,5 +23,12 @@ public interface RoleModuleInfoColumnDataHeadsMapper extends CrudDao<RoleModuleI
  void deleteByRelateId(@Param("list") List<Long> ids);
 
  void deleteByDiff(@Param("list") List<Long> ids,@Param("moduleId")Long moduleId);
+
+ List<Long> getIdsByDiff(@Param("list") List<Long> ids);
+
+ List<Long> getBeforeIds(@Param("roleId") Long roleId,@Param("moduleId") Long moduleId);
+
+ List<Long> getAfterIds(@Param("roleId") Long roleId,@Param("list") List<Long> ids);
+
 }
 

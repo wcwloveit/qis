@@ -15,18 +15,18 @@ import com.xinri.service.permissions.IPermissionsService;
 import com.xinri.util.AjaxStatus;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo;
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 /**
  * 模块-权限
  * 创建人 汪震 20180907
@@ -90,26 +90,53 @@ public class ModulePermissionsController extends BaseController{
      * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView create(Long id, String[] pers) {
-        ModuleInfoPermissions moduleInfoPermissions = new ModuleInfoPermissions();
-        moduleInfoPermissions.setModuleInfoId(id);
-        moduleInfoPermissions.setIsEffective(0);
-        moduleInfoPermissionsService.relate(moduleInfoPermissions);
-
+    public ModelAndView create(Long id, String[] pers,RedirectAttributes attributes) {
+        ModelAndView mv = new ModelAndView("redirect:/module/modulePermissions/index/");
         Long[] ids = (Long[]) ConvertUtils.convert(pers,Long.class);
-        if(ids!=null&&ids.length>0){
-        roleModuleInfoPermissionHeadsService.deleteByDiff(Arrays.asList(ids),id);
-        }
-        if (pers != null) {
-            for (String per : pers) {
-                moduleInfoPermissions.setModuleInfoId(id);
-                moduleInfoPermissions.setPermissionId(Long.valueOf(per));
-                moduleInfoPermissions.setIsEffective(1);
-                moduleInfoPermissionsService.relate(moduleInfoPermissions);
+        List<Long> a= moduleInfoPermissionsService.getPermissionIds(id);
+        List<Long> beforeIds= new ArrayList<>(Arrays.asList(moduleInfoPermissionsService.getIds(id,null)));
+        List<Long> afterIds=new ArrayList<>(Arrays.asList(moduleInfoPermissionsService.getIds(id,Arrays.asList(ids))));
+        beforeIds.removeAll(afterIds);
+        if (CollectionUtils.isNotEmpty(beforeIds)){
+            List<Long> idsByDiff = roleModuleInfoPermissionHeadsService.getIdsByDiff(beforeIds);
+            if(CollectionUtils.isNotEmpty(idsByDiff)){
+                attributes.addFlashAttribute("message","保存失败");
+                return mv;
             }
         }
-        ModelAndView mv = new ModelAndView("redirect:/module/modulePermissions/index/");
+            ModuleInfoPermissions moduleInfoPermissions = new ModuleInfoPermissions();
+            moduleInfoPermissions.setModuleInfoId(id);
+            moduleInfoPermissions.setIsEffective(0);
+            moduleInfoPermissionsService.relate(moduleInfoPermissions);
+           moduleInfoPermissions = new ModuleInfoPermissions();
+            if (pers != null) {
+                for (String per : pers) {
+                    moduleInfoPermissions.setModuleInfoId(id);
+                    moduleInfoPermissions.setPermissionId(Long.valueOf(per));
+                    moduleInfoPermissions.setIsEffective(1);
+                    moduleInfoPermissionsService.relate(moduleInfoPermissions);
+                }
+            }
         return mv;
+//        ModuleInfoPermissions moduleInfoPermissions = new ModuleInfoPermissions();
+//        moduleInfoPermissions.setModuleInfoId(id);
+//        moduleInfoPermissions.setIsEffective(0);
+//        moduleInfoPermissionsService.relate(moduleInfoPermissions);
+//
+//
+//        if(ids!=null&&ids.length>0){
+//        roleModuleInfoPermissionHeadsService.deleteByDiff(Arrays.asList(ids),id);
+//        }
+//        if (pers != null) {
+//            for (String per : pers) {
+//                moduleInfoPermissions.setModuleInfoId(id);
+//                moduleInfoPermissions.setPermissionId(Long.valueOf(per));
+//                moduleInfoPermissions.setIsEffective(1);
+//                moduleInfoPermissionsService.relate(moduleInfoPermissions);
+//            }
+//        }
+
+
     }
 
     /**创建者 夏善勇  创建时间 2018.9.7

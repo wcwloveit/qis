@@ -540,5 +540,32 @@
 
 	</delete>
 
+    <select id="getIdsByDiff" resultType="java.lang.Long">
+		  select id FROM role_module_info_permission_heads where module_info_permission_id in
+        <foreach item="item" collection="list" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        and is_effective=1
+	</select>
+
+    <select id="getBeforeIds" resultType="java.lang.Long">
+		select r.id from role_module_info_permission_heads r
+		left join module_info_permissions m on r.module_info_permission_id=m.id
+		where role_id=#{roleId} and m.module_info_id=#{moduleId} and r.is_deleted=0
+		and r.is_effective=1 and m.is_deleted=0 and m.is_effective=1
+	</select>
+
+    <select id="getAfterIds" resultType="java.lang.Long">
+		select r.id from role_module_info_permission_heads r
+		left join module_info_permissions m on r.module_info_permission_id=m.id
+		where m.id in
+        <foreach item="item" collection="list" index="index" open="("
+                              separator="," close=")">
+            #{item}
+        </foreach>
+        and role_id=#{roleId} and r.is_effective=1
+	</select>
+
 
 </mapper>
