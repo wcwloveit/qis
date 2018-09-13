@@ -6,6 +6,7 @@ import com.app.Setting;
 import com.kingnode.diva.utils.Encodes;
 import com.qis.ShiroUser;
 import com.qis.service.RedisService;
+import com.qis.util.PathUtil;
 import com.qis.util.Utils;
 import com.xinri.po.logs.LoginLogs;
 import com.xinri.po.permissions.Permissions;
@@ -56,7 +57,6 @@ public class ShiroDbRealm extends AuthorizingRealm {
 //    private KnEmployeeDao employeeDao;
 //    @Autowired
 //    private SystemService systemService;
-    @Autowired
     private HttpServletRequest request;
 
     @Autowired
@@ -214,6 +214,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
             LoginLogs Login=new LoginLogs();
             Login.setUserId(shiroUser.getId()); //用户id
             String ip = SecurityUtils.getSubject().getSession().getHost(); //IP地址
+           // String ip = PathUtil.getIpAddr(request);
             Login.setIpAddress(ip);
             Login.setDataTypeId(Long.valueOf(35));//35 数据库表示登入
             Login.setIsEffective(shiroUser.getType()); //用户类型：1系统管理员，2普通用户

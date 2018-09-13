@@ -9,8 +9,11 @@ import com.qis.util.PathUtil;
 import com.xinri.dao.logs.LoginLogsMapper;
 import com.xinri.po.logs.LoginLogs;
 import com.xinri.po.role.RoleClasses;
+import com.xinri.po.user.SysUser;
+import com.xinri.po.user.Users;
 import com.xinri.service.logs.ILoginLogDetailsService;
 import com.xinri.vo.log.LoginLogsVo;
+import org.activiti.engine.identity.User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,13 +29,14 @@ class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> 
         try {
             Page page = new Page(dt.pageNo()+1, dt.getiDisplayLength());
             LoginLogsVo loginLogsVo= new LoginLogsVo();  //实体类
+            SysUser sysUser=new SysUser();
+            Users user = new Users();
             List<LoginLogsVo> configList = new ArrayList<LoginLogsVo>(); //new list
-
             //登录名称
             if ( searchParams!= null && searchParams.size() != 0) {
                 if (searchParams.containsKey("userName") && !Strings.isNullOrEmpty(searchParams.get("userName").toString().trim())) {
-                    String userName = searchParams.get("userName").toString().trim();
-                    loginLogsVo.setUserName(String.valueOf(userName));
+                    String userNo = searchParams.get("userName").toString().trim();
+                    loginLogsVo.setUserNo(String.valueOf(userNo));
                 }
             }
             //姓名
@@ -81,7 +85,26 @@ class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> 
 
             loginLogsVo.setPage(page);  //获取分页对象
             configList=dao.findListByVo(loginLogsVo); //获取分页数据
-            page.setData(configList);  //***
+
+//            for (LoginLogsVo Loginvo: configList){
+//                if (Loginvo.getDataTypeId() != null){
+//                    if(Loginvo.getDataTypeId()==35){
+//                        Loginvo.setDataTypeName("登入");
+//                    }else if (Loginvo.getDataTypeId()==36){
+//                        Loginvo.setDataTypeName("登出");
+//                    }
+//                }
+//
+//                if(Loginvo.getIsEffective() !=null){
+//                    if (Loginvo.getIsEffective()==1){
+//                        Loginvo.setIsEffectiveName("系统用户");
+//                    }else if (Loginvo.getIsEffective()==2){
+//                        Loginvo.setIsEffectiveName("普通用户");
+//                    }
+//                }
+//
+//            }
+            page.setData(configList);
             dt.setiTotalDisplayRecords(page.getTotalSize());
             dt.setAaData(page.getData());
         }catch (Exception e) {
@@ -105,7 +128,7 @@ class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> 
         dt.setiSortCol_0("0");
         dt.setsSortDir_0("desc");
 
-        SimpleDateFormat a = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       SimpleDateFormat a = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String CreatedOn;
 
         ///添加导出条件
@@ -119,7 +142,7 @@ class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> 
             int j = 0;
             for(LoginLogsVo obj : list){
                 //日期格式转换
-                if(obj.getCreatedOn()!=null){
+                if(obj.getCreatedTime()!=null){
                     CreatedOn=a.format(obj.getCreatedOn());
                 }else{
                     CreatedOn="0000-00-00 00:00:00";
@@ -128,11 +151,11 @@ class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> 
                 arrayList.add(
                         new String[]{
 
-                                obj.getUserName(),
+                                obj.getUserNo(),
                                 obj.getName(),
                                 obj.getIpAddress(),
                                 String.valueOf(obj.getUserId()),
-                                CreatedOn //创建日期
+                                CreatedOn//创建日期
 
                         });
             }
@@ -162,11 +185,11 @@ class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> 
                 String userId = searchParams.get("userId").toString().trim();
                 loginLogsVo.setUserId(Long.valueOf(userId));
             }
-            //登录名
+            //登录账号
             if (searchParams.containsKey("userName")&&
                     !Strings.isNullOrEmpty(searchParams.get("userName").toString().trim())) {
                 String userName = searchParams.get("userName").toString().trim();
-                loginLogsVo.setUserName(String.valueOf(userName));
+                loginLogsVo.setUserNo(String.valueOf(userName));
             }
 
             //姓名

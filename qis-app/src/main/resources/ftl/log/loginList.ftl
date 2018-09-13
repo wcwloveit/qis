@@ -58,7 +58,7 @@
                     </div>
                     <div id="data_table_search">
                         <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">登录名</b>
+                            <b class="form-control input-inline" style="border: 0px; text-align: left;">登录账号</b>
                             <input type="text" class="input-sm form-filter" name="search_userName"
                                    id="search_userName" placeholder="登录名"/>
                         </label>
@@ -73,11 +73,11 @@
                             <input type="text" class="input-sm form-filter" name="search_ipAddress"
                                    id="search_ipAddress" placeholder="IP地址"/>
                         </label>
-                        <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">用户ID</b>
-                            <input type="text" class="input-sm form-filter" name="search_userId"
-                                   id="search_userId" placeholder="用户ID"/>
-                        </label>
+                        <#--<label style="float:left;margin-right:5px;">-->
+                            <#--<b class="form-control input-inline" style="border: 0px; text-align: left;">用户ID</b>-->
+                            <#--<input type="text" class="input-sm form-filter" name="search_userId"-->
+                                   <#--id="search_userId" placeholder="用户ID"/>-->
+                        <#--</label>-->
 
 
                         <label style="float:left;margin-right:5px;">
@@ -170,12 +170,27 @@
 //                    { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
 //                        return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
 //                    }},
-                    {"sTitle": "登录名", "mData": "userName"},
+                    {"sTitle": "登录账号", "mData": "userNo"},
                     {"sTitle": "姓名", "mData": "name"},
                     {"sTitle": "IP地址", "mData": "ipAddress"},
-                    {"sTitle": "用户ID", "mData": "userId"},
-//                    {"sTitle": "类别ID", "mData": "dataTypeId"},
-                    { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
+//                    {"sTitle": "用户ID", "mData": "userId"},
+//                   {"sTitle": "登录类别ID", "mData": "dataTypeId"},
+                    {"sTitle": "登录类别", "mData": "dataTypeId","mRender": function (data, type, row) {
+                        if (data == "35" ) {
+                            return "登入";
+                        } else if (data == "36" ){
+                            return "登出";
+                        }
+                    }},
+//                    {"sTitle": "用户类别ID", "mData": "isEffective"},
+                    {"sTitle": "用户类别", "mData": "isEffective","mRender": function (data, type, row) {
+                        if (data == "1" ) {
+                            return "系统用户";
+                        } else if (data == "2" ){
+                            return "普通用户";
+                        }
+                    }},
+                    { "sTitle": "创建时间", "mData": "createdTime", "mRender": function (data, type, row) {
                         if (data != null && "" != data) {
                             return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                         } else {

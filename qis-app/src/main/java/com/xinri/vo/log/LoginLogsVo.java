@@ -12,17 +12,32 @@ public class LoginLogsVo extends LoginLogs {
     //用户id
     private Long userId;
 
-    //类别id
+    //登录类别id 登入 登出
     private Long dataTypeId;
 
-    //创建日期
-    private Date createdOn;
+    //登录类别 登入 登出
+    private String dataTypeName;
 
-    //登录名
-    private String userName;
+    //创建日期
+    private Date createdTime ;
+
+    //登录账号
+    private String userNo;
 
     //姓名
     private String name;
+
+    //系统用户名称
+    private String sysName;
+
+    //系统用户登录名
+    private String account;
+
+    //用户类别id  管理员 普通用户
+    private Integer isEffective;
+
+    //用户类别名称
+    private String isEffectiveName;
 
     public String getName() {
         return name;
@@ -48,22 +63,20 @@ public class LoginLogsVo extends LoginLogs {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserNo() {
+        return userNo;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserNo(String userNo) {
+        this.userNo = userNo;
     }
 
-    @Override
-    public Date getCreatedOn() {
-        return createdOn;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    @Override
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     @Override
@@ -74,5 +87,47 @@ public class LoginLogsVo extends LoginLogs {
     @Override
     public void setDataTypeId(Long dataTypeId) {
         this.dataTypeId = dataTypeId;
+    }
+
+    public String getSysName() {
+        return sysName;
+    }
+
+    public void setSysName(String sysName) {
+        this.sysName = sysName;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    @Override
+    public Integer getIsEffective() {
+        return isEffective;
+    }
+
+    @Override
+    public void setIsEffective(Integer isEffective) {
+        this.isEffective = isEffective;
+    }
+
+    public String getDataTypeName() {
+        return dataTypeName;
+    }
+
+    public void setDataTypeName(String dataTypeName) {
+        this.dataTypeName = dataTypeName;
+    }
+
+    public String getIsEffectiveName() {
+        return isEffectiveName;
+    }
+
+    public void setIsEffectiveName(String isEffectiveName) {
+        this.isEffectiveName = isEffectiveName;
     }
 }
