@@ -59,13 +59,22 @@ class LoginLogDetailsServiceImpl extends CrudService<LoginLogsMapper,LoginLogs> 
                 }
             }
 
-            //用户id
+            //用户类别
             if ( searchParams!= null && searchParams.size() != 0) {
-                if (searchParams.containsKey("userId") && !Strings.isNullOrEmpty(searchParams.get("userId").toString().trim())) {
-                    String userId = searchParams.get("userId").toString().trim();
-                    loginLogsVo.setUserId(Long.valueOf(userId));
+                if (searchParams.containsKey("isEffective") && !Strings.isNullOrEmpty(searchParams.get("isEffective").toString().trim())) {
+                    String isEffective = searchParams.get("isEffective").toString().trim();
+                    loginLogsVo.setIsEffective(Integer.valueOf(isEffective));
                 }
             }
+
+            //登录类别
+            if ( searchParams!= null && searchParams.size() != 0) {
+                if (searchParams.containsKey("dataTypeId") && !Strings.isNullOrEmpty(searchParams.get("dataTypeId").toString().trim())) {
+                    String dataTypeId = searchParams.get("dataTypeId").toString().trim();
+                    loginLogsVo.setDataTypeId(Long.valueOf(dataTypeId));
+                }
+            }
+
 
 //            //创建时间  开始日期
 //            if ( searchParams!= null && searchParams.size() != 0) {

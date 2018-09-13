@@ -508,6 +508,12 @@
 		<if test="userNo != null and userNo !=''">
 		AND (t2.USER_NAME = #{userNo} OR t3.ACCOUNT = #{userNo})
 		</if>
+		<if test="isEffective != null and isEffective !=''">
+		AND t1.IS_EFFECTIVE = #{isEffective}
+		</if>
+		<if test="dataTypeId != null and dataTypeId !=''">
+		AND t1.DATA_TYPE_ID = #{dataTypeId}
+		</if>
 		</where>
 		<choose>
 		<when test="page !=null and page.orderBy != null and page.orderBy != ''">

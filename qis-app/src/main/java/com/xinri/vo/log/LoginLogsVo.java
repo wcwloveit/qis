@@ -12,7 +12,7 @@ public class LoginLogsVo extends LoginLogs {
     //用户id
     private Long userId;
 
-    //登录类别id 登入 登出
+    //登录类别id 登入35 登出36
     private Long dataTypeId;
 
     //登录类别 登入 登出
@@ -33,7 +33,7 @@ public class LoginLogsVo extends LoginLogs {
     //系统用户登录名
     private String account;
 
-    //用户类别id  管理员 普通用户
+    //用户类别id  管理员1 普通用户2
     private Integer isEffective;
 
     //用户类别名称
