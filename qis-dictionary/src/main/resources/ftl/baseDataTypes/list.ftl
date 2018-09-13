@@ -7,13 +7,12 @@
 </head>
 <body>
 
-
 <div class="actions">
     <div class="btn-group">
         <div class="fileinput fileinput-new" data-provides="fileinput">
             <@shiro.hasPermission name="dictionary-dictionary-create">
                 <a class="btn"
-                   href="${rc.contextPath}/dictionary/create"> <#--跳转新增的URL-->
+                   href="${rc.contextPath}/dictionary/create">
                     <i class="fa fa-plus"></i>
                     <span class="hidden-480">新增</span>
                 </a>
@@ -56,11 +55,11 @@
     </li>
     <li class="vertical-line"></li>
     <li>
-        <a href="${rc.contextPath}/">角色管理</a>
+        <a href="${rc.contextPath}/">数据字典</a>
         <i class="fa fa-angle-right"></i>
     </li>
     <li>
-        <span class="active">角色</span>
+        <span class="active">数据字典</span>
     </li>
 </ul>
 <!-- END PAGE BREADCRUMB -->
@@ -232,18 +231,18 @@
                             }
                         }
                     }
-                    <#--{ "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {-->
-                        <#--var a = '<@shiro.hasPermission name="dictionary-dictionary-edit"> <a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +-->
-                                    <#--'<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';-->
-                            <#--var b = '<a href="${rc.contextPath}/dictionary/baseData/index/' + row.id + '" class="btn btn-xs green"  title="编辑" >' +-->
-                                    <#--'<i class="fa fa-balance-scale"></i>树</a>';-->
-                            <#--var c = '<@shiro.hasPermission name="dictionary-dictionary-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +-->
-                                    <#--'<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';-->
-                            <#--if(row.isDeleted==1){-->
-                                <#--return a;-->
-                            <#--}else{-->
-                                <#--return a+b+c;-->
-                            <#--}-->
+                <#--{ "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {-->
+                <#--var a = '<@shiro.hasPermission name="dictionary-dictionary-edit"> <a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn btn-xs blue"  title="编辑" >' +-->
+                <#--'<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';-->
+                <#--var b = '<a href="${rc.contextPath}/dictionary/baseData/index/' + row.id + '" class="btn btn-xs green"  title="编辑" >' +-->
+                <#--'<i class="fa fa-balance-scale"></i>树</a>';-->
+                <#--var c = '<@shiro.hasPermission name="dictionary-dictionary-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +-->
+                <#--'<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';-->
+                <#--if(row.isDeleted==1){-->
+                <#--return a;-->
+                <#--}else{-->
+                <#--return a+b+c;-->
+                <#--}-->
 
                 ]
             }

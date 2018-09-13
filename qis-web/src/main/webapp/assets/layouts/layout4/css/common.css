@@ -35,10 +35,6 @@ a:hover {
     filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr="#995aff", endColorstr="#5ca3ff", gradientType="1");
 }
 
-.login .content h3 {
-    text-align: left;
-}
-
 .checkbox, .form-horizontal .checkbox {
     padding: 0 20px;
 }
@@ -183,6 +179,7 @@ a:hover {
     border-bottom: 1px solid #e7ecf1;
     height: 40px;
     line-height: 40px;
+    background-color: #f9fafb;
 }
 
 .actions .btn {
@@ -248,7 +245,14 @@ a:hover {
     border-bottom: 1px solid #e7ecf1;
 }
 
-.table-hover > tbody > tr:hover, .table > tbody > tr.active > td, .table > tbody > tr.active > th, .table > tbody > tr > td.active, .table > tbody > tr > th.active, .table > tfoot > tr.active > td, .table > tfoot > tr.active > th, .table > tfoot > tr > td.active, .table > tfoot > tr > th.active, .table > thead > tr.active > td, .table > thead > tr.active > th, .table > thead > tr > td.active, .table > thead > tr > th.active {
+.table-hover > tbody > tr:hover, .table > tbody > tr.active > td,
+.table > tbody > tr.active > th, .table > tbody > tr > td.active,
+.table > tbody > tr > th.active, .table > tfoot > tr.active > td,
+.table > tfoot > tr.active > th, .table > tfoot > tr > td.active,
+.table > tfoot > tr > th.active, .table > thead > tr.active > td,
+.table > thead > tr.active > th, .table > thead > tr > td.active,
+.table > thead > tr > th.active,
+.jstree-default .jstree-wholerow-clicked {
     /*background-color: #efe5ff;*/
     background: -webkit-linear-gradient(left, rgba(153, 90, 255, 0.25), rgba(92, 163, 255, 0.25)) !important;
     /* Safari 5.1 - 6.0 */
@@ -347,4 +351,12 @@ table.dataTable td.sorting_1, table.dataTable td.sorting_2, table.dataTable td.s
 .table-search .row div:last-child {
     padding-left: 10px;
     padding-right: 15px;
+}
+
+.page-head {
+    padding: 20px;
+}
+
+.page-head .page-title > h1 {
+    color: #333333;
 }

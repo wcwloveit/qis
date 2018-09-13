@@ -25,93 +25,105 @@
     </style>
 </head>
 <body>
-<div class="row">
-    <div class="col-md-12">
-        <ul class="page-breadcrumb breadcrumb">
-            <li>
-                <i class="fa fa-home"></i>
-                <a href="${rc.contextPath}/">数据字典管理</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <a href="#">数据字典详情</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-        </ul>
+
+<div class="actions">
+    <div class="btn-group">
+        <div class="fileinput fileinput-new" data-provides="fileinput">
+            <a class="btn"
+               href="#">
+                <i class="fa fa-check-circle-o"></i>
+                <span class="hidden-480">提交</span>
+            </a>
+            <a class="btn"
+               onclick="javascript:window.location.href='${rc.contextPath}/dictionary/baseDataTypes/index';">
+                <i class="fa fa-times-circle-o"></i>
+                <span class="hidden-480" onclick="deleteList();">取消</span>
+            </a>
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="portlet light portlet-fit portlet-form bordered" id="form_wizard_1">
-            <div class="portlet-title">
+<!-- BEGIN PAGE BREADCRUMB -->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="#">
+            <i class="fa fa-chevron-left"></i>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-chevron-right"></i>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-refresh"></i>
+        </a>
+    </li>
+    <li class="vertical-line"></li>
+    <li>
+        <a href="${rc.contextPath}/">数据字典</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <span class="active">数据字典详情</span>
+    </li>
+</ul>
+<!-- END PAGE BREADCRUMB -->
 
-                <div class="caption">
-                    数据字典<#if action?? && action == 'create'>
-                    新增</#if><#if action?? && action == 'update'>编辑</#if>
-                </div>
-                <div class="actions">
-                    <a href="javascript:history.back(-1)" class="btn grey">返回</a>
-                </div>
-            </div>
-
-
-            <div class="portlet-body">
-
-                <form id="myForm" action="${rc.contextPath}/dictionary/baseDataTypes/${action?if_exists}"
-                      method="POST" class="form-horizontal">
-                    <input id="id" name="id" value="${baseDataTypes.id?if_exists}" style="display: none">
-                    <div class="form-body">
-                        <h3 class="form-section">名称</h3>
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="inputWarning">数据字典名称<span class="required">*</span></label>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="name" id="name" value="${baseDataTypes.name?if_exists}"/>
-                            </div>
-                        </div>
-
-                        <h3 class="form-section">值</h3>
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="inputWarning">数据字典值<span class="required">*</span></label>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="typeValue" id="typeValue" value="${baseDataTypes.typeValue?if_exists}"/>
-                            </div>
-                        </div>
-
-                        <h3 class="form-section">描述</h3>
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="inputWarning">描述<span class="required">*</span></label>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="descr" id="descr" value="${baseDataTypes.descr?if_exists}"/>
-                            </div>
-                        </div>
-                        <#if baseDataTypes.id??>
-                            <h3 class="form-section">子数据字典</h3>
-                            <div class="form-group">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-6">
-                                <div id="resourceTree"></div>
-                            </div>
-                        </div>
-                        </#if>
-
-
-                    </div>
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn green">提交</button>
-                                <button type="button" class="btn default"
-                                        onclick="javascript:window.location.href='${rc.contextPath}/dictionary/baseDataTypes/index';">
-                                    取消
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            数据字典 -
+            <span class="QIS-text-primary">
+            <#if action?? && action == 'create'>新增</#if>
+            <#if action?? && action == 'update'>编辑</#if>
+            </span>
+        </h1>
     </div>
+</div>
+
+<div class="form">
+    <form id="myForm" action="${rc.contextPath}/dictionary/baseDataTypes/${action?if_exists}"
+          method="POST" class="form-horizontal">
+        <input id="id" name="id" value="${baseDataTypes.id?if_exists}" style="display: none">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="control-label col-md-3" for="inputWarning">数据字典名称<span
+                        class="required">*</span></label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="name" id="name"
+                           value="${baseDataTypes.name?if_exists}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="inputWarning">数据字典值<span
+                        class="required">*</span></label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="typeValue" id="typeValue"
+                           value="${baseDataTypes.typeValue?if_exists}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="inputWarning">描述<span class="required">*</span></label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="descr" id="descr"
+                           value="${baseDataTypes.descr?if_exists}"/>
+                </div>
+            </div>
+
+            <#if baseDataTypes.id??>
+            <div class="form-group">
+                <label class="control-label col-md-3" for="inputWarning">子数据字典</label>
+                <div class="col-md-4">
+                    <div id="resourceTree"></div>
+                </div>
+            </div>
+            </#if>
+        </div>
+    </form>
 </div>
 </body>
 
@@ -140,19 +152,19 @@
     <script type="text/javascript"
             src="${rc.contextPath}/assets/global/plugins/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
     <script type="text/javascript">
-        var tree=$("#resourceTree").jstree({
+        var tree = $("#resourceTree").jstree({
             "core": {
                 "animation": 0,
-                        "themes": {
+                "themes": {
                     theme: "classic",
-                            "dots": true,
-                            "icons": true
+                    "dots": true,
+                    "icons": true
                 },
                 "check_callback": true,
-                        "data": {
+                "data": {
                     'dataType': 'json',
-                            'type': "post",
-                            'url': "${rc.contextPath}/dictionary/baseData/list/${baseDataTypes.id?if_exists}",
+                    'type': "post",
+                    'url': "${rc.contextPath}/dictionary/baseData/list/${baseDataTypes.id?if_exists}",
                 },
             },
             "types": {
@@ -171,24 +183,24 @@
                 errorClass: 'help-block help-block-error',
                 focusInvalid: true,
                 rules: {
-                    name:{
+                    name: {
                         required: true
                     },
-                    typeValue:{
+                    typeValue: {
                         required: true
                     },
-                    desc:{
+                    desc: {
                         required: true
                     }
                 },
                 messages: {
-                    name:{
+                    name: {
                         required: "不能为空"
                     },
-                    typeValue:{
+                    typeValue: {
                         required: "不能为空"
                     },
-                    desc:{
+                    desc: {
                         required: "不能为空"
                     }
                 },
