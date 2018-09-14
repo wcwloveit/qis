@@ -45,27 +45,15 @@
 	            ResourceService resourceService = (ResourceService)ctx.getBean("resourceService");
 
 	            Redis info = resourceService.getFromRedis(user);
-	            if(info==null){
-	        %>
-			<li class="nav-item active open">
-				<a href="javascript:;" class="nav-link nav-toggle">
+            %>
+	            <li class="nav-item">
+				<a href="${ctx}/main" class="nav-link nav-toggle">
 					<i class="icon-home"></i>
 					<span class="title">主页</span>
-					<span class="selected"></span>
-					<span class="arrow"></span>
 				</a>
-				<ul class="sub-menu">
-					<li class="nav-item start active open">
-						<a href="${ctx}/main" class="nav-link ">
-							<i class="icon-home"></i>
-							<span class="title">首页</span>
-							<span class="selected"></span>
-						</a>
-					</li>
-				</ul>
 			</li>
-			<%
-            }else{
+			 <%
+	            if(info!=null){
                java.util.List<Module> resources=info.getModuleInfoesList();
                 for (Module resource : resources) {
                     if (resource.getIsMenu()==1){
