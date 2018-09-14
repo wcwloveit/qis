@@ -58,7 +58,7 @@
 
             <div class="portlet-body">
 
-                <form id="myForm" action="${rc.contextPath}/dictionary/baseDataTypes/${action?if_exists}"
+                <form id="myForm" action="${rc.contextPath}/dictionary/${action?if_exists}"
                       method="POST" class="form-horizontal">
                     <input id="id" name="id" value="${baseDataTypes.id?if_exists}" style="display: none">
                     <div class="form-body">
