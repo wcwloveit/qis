@@ -58,7 +58,7 @@
                     </div>
                     <div id="data_table_search">
                         <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">登录名</b>
+                            <b class="form-control input-inline" style="border: 0px; text-align: left;">登录账号</b>
                             <input type="text" class="input-sm form-filter" name="search_userName"
                                    id="search_userName" placeholder="登录名"/>
                         </label>
@@ -68,16 +68,36 @@
                             <input type="text" class="input-sm form-filter" name="search_name"
                                    id="search_name" placeholder="姓名"/>
                         </label>
+
                         <label style="float:left;margin-right:5px;">
                             <b class="form-control input-inline" style="border: 0px; text-align: left;">IP地址</b>
                             <input type="text" class="input-sm form-filter" name="search_ipAddress"
                                    id="search_ipAddress" placeholder="IP地址"/>
                         </label>
-                        <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">用户ID</b>
-                            <input type="text" class="input-sm form-filter" name="search_userId"
-                                   id="search_userId" placeholder="用户ID"/>
+
+                        <label style="float:left;margin-right:10px;">
+                            <b style="border: 0px; text-align: right;" class="form-control input-inline">用户类别:</b>
+                            <select class="form-filter input-sm" id="search_isEffective" name="search_isEffective" style="text-align: left;" >
+                                <option value="">请选择</option>
+                                <option value="2">普通用户</option>
+                                <option value="1">系统用户</option>
+                            </select>
                         </label>
+
+                        <label style="float:left;margin-right:10px;">
+                            <b style="border: 0px; text-align: right;" class="form-control input-inline">登录类别:</b>
+                            <select class="form-filter input-sm" id="search_dataTypeId" name="search_dataTypeId" style="text-align: left;" >
+                                <option value="">请选择</option>
+                                <option value="35">登入</option>
+                                <option value="36">登出</option>
+                            </select>
+                        </label>
+
+                        <#--<label style="float:left;margin-right:5px;">-->
+                            <#--<b class="form-control input-inline" style="border: 0px; text-align: left;">用户ID</b>-->
+                            <#--<input type="text" class="input-sm form-filter" name="search_userId"-->
+                                   <#--id="search_userId" placeholder="用户ID"/>-->
+                        <#--</label>-->
 
 
                         <label style="float:left;margin-right:5px;">
@@ -163,19 +183,34 @@
                     [0, "desc"]
                 ],
                 "aoColumnDefs": [
-                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4]}   //控制表格有多少列
+                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4,5]}   //控制表格有多少列
                 ],//设置不排序得列
                 "sDom": "<'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",//dataTable翻页,只保留表格底部翻页样式
                 "aoColumns": [
 //                    { "sWidth":"1%","sTitle":'<input type="checkbox" class= "checkAllBox" onclick="checkAllBox(this)" title="全选" class="group-checkable" />',"sDefaultContent":"","mRender":function(data,type,full){
 //                        return '<div class="checker"  ><span class=""><input type="checkbox" class="checkboxes" name="checkBox" value="'+full.id+'"></span></div>';
 //                    }},
-                    {"sTitle": "登录名", "mData": "userName"},
+                    {"sTitle": "登录账号", "mData": "userNo"},
                     {"sTitle": "姓名", "mData": "name"},
                     {"sTitle": "IP地址", "mData": "ipAddress"},
-                    {"sTitle": "用户ID", "mData": "userId"},
-//                    {"sTitle": "类别ID", "mData": "dataTypeId"},
-                    { "sTitle": "创建时间", "mData": "createdOn", "mRender": function (data, type, row) {
+//                    {"sTitle": "用户ID", "mData": "userId"},
+//                   {"sTitle": "登录类别ID", "mData": "dataTypeId"},
+                    {"sTitle": "登录类别", "mData": "dataTypeId","mRender": function (data, type, row) {
+                        if (data == "35" ) {
+                            return "登入";
+                        } else if (data == "36" ){
+                            return "登出";
+                        }
+                    }},
+//                    {"sTitle": "用户类别ID", "mData": "isEffective"},
+                    {"sTitle": "用户类别", "mData": "isEffective","mRender": function (data, type, row) {
+                        if (data == "1" ) {
+                            return "系统用户";
+                        } else if (data == "2" ){
+                            return "普通用户";
+                        }
+                    }},
+                    { "sTitle": "创建时间", "mData": "createdTime", "mRender": function (data, type, row) {
                         if (data != null && "" != data) {
                             return new Date(data).Format("yyyy-MM-dd hh:mm:ss");
                         } else {

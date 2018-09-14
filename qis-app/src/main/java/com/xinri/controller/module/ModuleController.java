@@ -329,23 +329,23 @@ public class ModuleController extends BaseController {
     }
 
     //    初始化模块权限关联表
-    @RequestMapping(value = "/init", method = RequestMethod.GET)
-    public void init() {
-        List<Permissions> permissions = permissionsService.findAllList();
-        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
-        ModuleInfoes moduleinfo = new ModuleInfoes();
-        moduleinfo.setIsMenu(0);
-        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
-        for (Permissions permission : permissions) {
-            moduleInfoPermission.setPermissionId(permission.getId());
-            for (ModuleInfoes moduleInfo : moduleInfoes) {
-                moduleInfoPermission.setId(null);
-                moduleInfoPermission.setIsNewRecord(true);
-                moduleInfoPermission.setModuleInfoId(moduleInfo.getId());
-                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
-            }
-        }
-    }
+//    @RequestMapping(value = "/init", method = RequestMethod.GET)
+//    public void init() {
+//        List<Permissions> permissions = permissionsService.findAllList();
+//        ModuleInfoPermissions moduleInfoPermission = new ModuleInfoPermissions();
+//        ModuleInfoes moduleinfo = new ModuleInfoes();
+//        moduleinfo.setIsMenu(0);
+//        List<ModuleInfoes> moduleInfoes = moduleInfoesService.findList(moduleinfo);
+//        for (Permissions permission : permissions) {
+//            moduleInfoPermission.setPermissionId(permission.getId());
+//            for (ModuleInfoes moduleInfo : moduleInfoes) {
+//                moduleInfoPermission.setId(null);
+//                moduleInfoPermission.setIsNewRecord(true);
+//                moduleInfoPermission.setModuleInfoId(moduleInfo.getId());
+//                moduleInfoPermissionsService.saveOrUpdate(moduleInfoPermission);
+//            }
+//        }
+//    }
     //初始化模块数据列关联表
 //    @RequestMapping(value = "/init",method = RequestMethod.GET)
 //    public void init (){

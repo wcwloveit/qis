@@ -6,233 +6,215 @@
           rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="row">
-    <div class="col-md-12">
-        <ul class="page-breadcrumb breadcrumb">
-            <li>
-                <i class="fa fa-home"></i>
-                <a href="${rc.contextPath}/">角色管理</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <a href="#">角色</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-        </ul>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-    <#if message>
-        <div class="note note-danger">
-            <p>
-                ${(message)!}
-            </p>
-        </div>
-    </#if>
-        <div class="portlet light portlet-fit portlet-datatable bordered">
-            <input type="hidden" id="roleId">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="icon-settings font-dark"></i>
-                    <span class="caption-subject font-dark sbold uppercase">角色列表</span>
-                </div>
-                <div class="actions">
-                    <div class="btn-group">
-                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                        <@shiro.hasPermission name="role-list-create">
-                            <a class="btn green btn-parent" href="${rc.contextPath}/role/create"> <#--跳转新增的URL-->
+
+
+<div class="actions">
+    <div class="btn-group">
+        <div class="fileinput fileinput-new" data-provides="fileinput">
+           <@shiro.hasPermission name="role-list-create">
+                            <a class="btn" href="${rc.contextPath}/role/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
-                        </@shiro.hasPermission>
+           </@shiro.hasPermission>
 <@shiro.hasPermission name="role-list-deleteAll">
 
-                            <a href="javascript:void(0)" class="btn red">
+                            <a href="javascript:void(0)" class="btn">
                                 <i class="fa fa-trash-o"></i>
                                 <span class="hidden-480" onclick="deleteList();">批量删除</span>
                             </a>
 </@shiro.hasPermission>
 <@shiro.hasPermission name="role-list-export">
 
-                            <a class="btn green" href="javascript:exportData();">
+                            <a class="btn" href="javascript:exportData();">
                                 <i class="fa fa-download"></i>
                                 <span class="hidden-480">导出</span>
                             </a>
 </@shiro.hasPermission>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="portlet-body">
-
-                <div class="table-container">
-                    <div class="table-actions-wrapper">
-                    </div>
-                    <div id="data_table_search">
-                        <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">角色名称</b>
-                            <input type="text" class="input-sm form-filter" name="search_name"
-                                   id="search_name" placeholder="角色名称"/>
-                        </label>
-                        <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">角色类型</b>
-                            <input type="text" class="input-sm form-filter" name="search_role_class_id"
-                                   id="search_role_class_id" placeholder="角色类型"/>
-                        </label>
-                        <label style="float:left;margin-right:5px;">
-                            <b class="form-control input-inline" style="border: 0px; text-align: left;">描述</b>
-                            <input type="text" class="input-sm form-filter" name="search_desc"
-                                   id="search_desc" placeholder="描述"/>
-                        </label>
-                        <label style="float:left;margin-right:5px;">
-                            <div class="form-control input-inline"
-                                 style="float: left;padding-top: 5px;border: 0px; text-align: left;">创建时间
-                            </div>
-                            <div class="input-group date date-picker" data-date-format="yyyy-mm-dd"
-                                 style="width: 123px;float: left;">
-                                <input id="search_startCreatedOn" name="search_startCreatedOn"
-                                       style=" width: 90px; padding: 2px; "
-                                       type="text" class="form-filter input-sm" placeholder="" readonly>
-                                <span class="input-group-btn"><button class="btn btn-sm default" type="button"><i
-                                        class="fa fa-calendar"></i></button></span>
-                            </div>
-                            <div style="float:left;">~</div>
-
-                            <div class="input-group date date-picker" data-date-format="yyyy-mm-dd"
-                                 style="width: 123px;float: left;">
-                                <input id="search_endCreatedOn" name="search_endCreatedOn"
-                                       style=" width:90px; padding: 2px;"
-                                       type="text" class="form-filter input-sm" placeholder="" readonly>
-                                <span class="input-group-btn"><button class="btn btn-sm default" type="button"><i
-                                        class="fa fa-calendar"></i></button></span>
-                            </div>
-                        </label>
-
-                        <label style="float:left;">
-                            <span> &nbsp;&nbsp;</span>
-                            <button class="btn btn-sm yellow margin-bottom filter-submit" value="搜索"
-                                    onclick="search(this,grid)"><i class="fa fa-search"></i> 搜索
-                            </button>
-                            <button class="btn btn-sm red filter-cancel" onclick="resetSearch(this)"><i
-                                    class="fa fa-times"></i> 重置
-                            </button>
-                        </label>
-
-                    </div>
-                    <div>
-                        <table class="table table-striped table-bordered table-hover" id="attendees_data_table">
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-
-            <div id="group_list_div" class="modal fade" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog" style="width:800px;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h4 class="modal-title">组织列表</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row" id="tableDatas">
-                                <div class="col-md-12">
-                                    <div class="portlet">
-                                        <div class="portlet-body">
-                                            <table class="table table-striped table-bordered table-hover"
-                                                   id="group_list_table">
-                                                <thead>
-                                                <tr role="row" class="heading">
-                                                    <th width="25%">用户组名称</th>
-                                                    <th width="25%">用户组编号</th>
-                                                    <th width="25%">用户组描述</th>
-                                                    <th width="25%">操作</th>
-                                                </tr>
-                                                <tr role="row" class="filter">
-
-                                                    <!-- 登录名 -->
-                                                    <td><input type="text" class="form-control form-filter input-sm"
-                                                               name="search_LIKE_name"></td>
-                                                    <td><input type="text" class="form-control form-filter input-sm"
-                                                               name="search_LIKE_code"></td>
-                                                    <td><input type="text" class="form-control form-filter input-sm"
-                                                               name="search_LIKE_descr"></td>
-                                                    <td>
-                                                        <button class="btn btn-sm yellow filter-submit margin-bottom"><i
-                                                                class="fa fa-search"></i> 搜索
-                                                        </button>
-                                                        <button class="btn btn-sm red filter-cancel"><i
-                                                                class="fa fa-times"></i> 重置
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="group_list_div2" class="modal fade" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog" style="width:800px;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h4 class="modal-title">组织列表</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row" id="tableDatas">
-                                <div class="col-md-12">
-                                    <div class="portlet">
-                                        <div class="portlet-body">
-                                            <table class="table table-striped table-bordered table-hover"
-                                                   id="group_list_table2">
-                                                <thead>
-                                                <tr role="row" class="heading">
-                                                    <th width="25%">用户组名称</th>
-                                                    <th width="25%">用户组编号</th>
-                                                    <th width="25%">用户组描述</th>
-                                                    <th width="25%">操作</th>
-                                                </tr>
-                                                <tr role="row" class="filter">
-                                                    <!-- 登录名 -->
-                                                    <td><input type="text" class="form-control form-filter input-sm"
-                                                               name="search_LIKE_name"></td>
-                                                    <td><input type="text" class="form-control form-filter input-sm"
-                                                               name="search_LIKE_code"></td>
-                                                    <td><input type="text" class="form-control form-filter input-sm"
-                                                               name="search_LIKE_descr"></td>
-                                                    <td>
-                                                        <button class="btn btn-sm yellow filter-submit margin-bottom"><i
-                                                                class="fa fa-search"></i> 搜索
-                                                        </button>
-                                                        <button class="btn btn-sm red filter-cancel"><i
-                                                                class="fa fa-times"></i> 重置
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
+</div>
+
+<!-- BEGIN PAGE BREADCRUMB -->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="#">
+            <i class="fa fa-chevron-left"></i>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-chevron-right"></i>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-refresh"></i>
+        </a>
+    </li>
+    <li class="vertical-line"></li>
+    <li>
+        <a href="${rc.contextPath}/">角色管理</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <span class="active">角色</span>
+    </li>
+</ul>
+<!-- END PAGE BREADCRUMB -->
+
+<#if message>
+   <div class="note note-danger">
+       <p>
+           ${(message)!}
+       </p>
+   </div>
+</#if>
+<input type="hidden" id="roleId">
+<div class="table-container">
+    <div class="table-search" id="data_table_search">
+
+        <form role="form">
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="text" class="form-control form-filter" name="search_name" id="search_name"
+                           placeholder="角色名称">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="form-control form-filter" name="search_role_class_id" id="search_role_class_id"
+                           placeholder="角色类型">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="form-control form-filter" name="search_desc" id="search_desc"
+                           placeholder="描述">
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group date-picker input-daterange">
+                        <input type="text" class="form-control border-none form-filter" name="search_startCreatedOn" placeholder="开始日期">
+                        <span class="input-group-addon">~</span>
+                        <input type="text" class="form-control border-none form-filter" name="search_endCreatedOn" placeholder="结束日期">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary filter-submit" value="搜索"
+                            onclick="search(this,grid)">
+                        <i class="fa fa-search"></i> 搜索
+                    </button>
+                    <button class="btn btn-default filter-cancel" onclick="resetSearch(this)">
+                        <i class="fa fa-remove"></i> 重置
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <table class="table table-striped table-bordered table-hover" id="attendees_data_table">
+    </table>
+    <div id="group_list_div" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">用户组列表</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="tableDatas">
+                        <div class="col-md-12">
+                            <div class="portlet">
+                                <div class="portlet-body">
+                                    <table class="table table-striped table-bordered table-hover"
+                                           id="group_list_table">
+                                        <thead>
+                                        <tr role="row" class="heading">
+                                            <th width="25%">用户组名称</th>
+                                            <th width="25%">用户组编号</th>
+                                            <th width="25%">用户组描述</th>
+                                            <th width="25%">操作</th>
+                                        </tr>
+                                        <tr role="row" class="filter">
+
+                                            <!-- 登录名 -->
+                                            <td><input type="text" class="form-control form-filter input-sm"
+                                                       name="search_LIKE_name"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm"
+                                                       name="search_LIKE_code"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm"
+                                                       name="search_LIKE_descr"></td>
+                                            <td>
+                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i
+                                                        class="fa fa-search"></i> 搜索
+                                                </button>
+                                                <button class="btn btn-sm red filter-cancel"><i
+                                                        class="fa fa-times"></i> 重置
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="group_list_div2" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">用户组列表</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="tableDatas">
+                        <div class="col-md-12">
+                            <div class="portlet">
+                                <div class="portlet-body">
+                                    <table class="table table-striped table-bordered table-hover"
+                                           id="group_list_table2">
+                                        <thead>
+                                        <tr role="row" class="heading">
+                                            <th width="25%">用户组名称</th>
+                                            <th width="25%">用户组编号</th>
+                                            <th width="25%">用户组描述</th>
+                                            <th width="25%">操作</th>
+                                        </tr>
+                                        <tr role="row" class="filter">
+                                            <!-- 登录名 -->
+                                            <td><input type="text" class="form-control form-filter input-sm"
+                                                       name="search_LIKE_name"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm"
+                                                       name="search_LIKE_code"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm"
+                                                       name="search_LIKE_descr"></td>
+                                            <td>
+                                                <button class="btn btn-sm yellow filter-submit margin-bottom"><i
+                                                        class="fa fa-search"></i> 搜索
+                                                </button>
+                                                <button class="btn btn-sm red filter-cancel"><i
+                                                        class="fa fa-times"></i> 重置
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </body>
@@ -334,8 +316,8 @@
                                     '<i class="glyphicon glyphicon-pencil"></i>编辑</a>';
                             var b = '<a href="${rc.contextPath}/role/module/' + row.id + '" class="btn btn-xs green"  title="模块管理" >' +
                                     '<i class="fa fa-map"></i>模块管理</a>';
-                            var c = '<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="seegroup(\'' + row.id + '\')" title ="查看组织"><i class="fa fa-search"></i>查看组织</a>';
-                            var d = '<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="togroup(\'' + row.id + '\')" title ="分配组织"><i class="fa fa-search"></i>分配组织</a>';
+                            var c = '<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="seegroup(\'' + row.id + '\')" title ="查看用户组"><i class="fa fa-search"></i>查看用户组</a>';
+                            var d = '<a class="btn btn-xs yellow" href="javascript:void(0);" onclick="togroup(\'' + row.id + '\')" title ="分配用户组"><i class="fa fa-search"></i>分配用户组</a>';
                             var e = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn btn-xs red"  title="删除" >' +
                                     '<i class="glyphicon glyphicon-trash"></i>删除</a>';
 
@@ -367,9 +349,9 @@
                     {"bSortable": false, "aTargets": [0, 1, 2, 3]}
                 ],//设置不排序得列
                 "aoColumns": [
-                    {"sTitle": "组织名称", "mData": "name"},
-                    {"sTitle": "组织编号", "mData": "code"},
-                    {"sTitle": "组织描述", "mData": "descr"},
+                    {"sTitle": "用户组名称", "mData": "name"},
+                    {"sTitle": "用户组编号", "mData": "code"},
+                    {"sTitle": "用户组描述", "mData": "descr"},
                     {
                         "sTitle": "操作", "mData": "id", "sDefaultContent": "", "mRender": function (data, type, row) {
                             return '<a class="delete btn green btn-xs black" href="javascript:leave(' + data + ');"><i class="fa fa-level-down"></i>离开</a>';
@@ -395,9 +377,9 @@
                     {"bSortable": false, "aTargets": [0, 1, 2, 3]}
                 ],//设置不排序得列
                 "aoColumns": [
-                    {"sTitle": "组织名称", "mData": "name"},
-                    {"sTitle": "组织编号", "mData": "code"},
-                    {"sTitle": "组织描述", "mData": "descr"},
+                    {"sTitle": "用户组名称", "mData": "name"},
+                    {"sTitle": "用户组编号", "mData": "code"},
+                    {"sTitle": "用户组描述", "mData": "descr"},
                     {
                         "sTitle": "操作", "mData": "id", "sDefaultContent": "", "mRender": function (data, type, row) {
                             return '<a class="delete btn green btn-xs black" href="javascript:join(' + data + ');"><i class="fa fa-level-up"></i>加入</a>';
@@ -423,7 +405,7 @@
 
         function join(id) {
             bootbox.dialog({
-                message: "确认此组织加入此角色",
+                message: "确认此用户组加入此角色",
                 buttons: {
                     success: {
                         label: "确定",
@@ -454,7 +436,7 @@
 
         function leave(id) {
             bootbox.dialog({
-                message: "确认此组织离开此角色",
+                message: "确认此用户组离开此角色",
                 buttons: {
                     success: {
                         label: "确定",

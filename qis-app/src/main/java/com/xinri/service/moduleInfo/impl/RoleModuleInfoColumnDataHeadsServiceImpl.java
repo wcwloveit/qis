@@ -40,4 +40,19 @@ public class RoleModuleInfoColumnDataHeadsServiceImpl extends CrudService<RoleMo
         dao.deleteByDiff(ids,moduleId);
     }
 
+    @Override
+    public List<Long> getIdsByDiff(List<Long> ids) {
+        return dao.getIdsByDiff(ids);
+    }
+
+    @Override
+    public List<Long> getBeforeIds(Long roleId, Long moduleId) {
+        return dao.getBeforeIds(roleId,moduleId);
+    }
+
+    @Override
+    public List<Long> getAfterIds(Long roleId, List<Long> afterModuleColumnDataIds) {
+        return dao.getAfterIds(roleId,afterModuleColumnDataIds);
+    }
+
 }

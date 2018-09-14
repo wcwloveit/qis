@@ -219,6 +219,9 @@
 		<if test="descr != null and descr != ''">
 			AND t.DESCR LIKE '${descr}'
 		</if>
+			AND t.is_deleted=0
+			AND t.is_effective=1
+		order by t.modified_on,t.id DESC
 	</select>
 
 	<select id="findGroupByRoleId" parameterType="com.xinri.po.user.UserGroups" resultMap="com.xinri.dao.user.UserGroupsMapper.userGroupsResultMap">
@@ -239,6 +242,9 @@
 		<if test="descr != null and descr != ''">
 			AND t.DESCR LIKE '${descr}'
 		</if>
+		AND t.is_deleted=0
+		AND t.is_effective=1
+		order by t.modified_on,t.id DESC
 	</select>
 
 	<delete id="removeByEntity" parameterType="com.xinri.po.role.RoleUserGroups">

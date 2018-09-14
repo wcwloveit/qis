@@ -11,6 +11,7 @@ import java.util.*;
  
 public class Users extends DataEntity<Users>{
 
+	    private String salt;
 
     	private String user;
 
@@ -77,6 +78,15 @@ public class Users extends DataEntity<Users>{
 	 * endUpdatedOn字段查询条件结束
 	 */
 	private String endModifiedOn;
+
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 
 	public String getStartModifiedOn() {
 		return startModifiedOn;

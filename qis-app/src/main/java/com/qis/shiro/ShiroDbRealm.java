@@ -6,6 +6,7 @@ import com.app.Setting;
 import com.kingnode.diva.utils.Encodes;
 import com.qis.ShiroUser;
 import com.qis.service.RedisService;
+import com.qis.util.PathUtil;
 import com.qis.util.Utils;
 import com.xinri.po.logs.LoginLogs;
 import com.xinri.po.permissions.Permissions;
@@ -14,6 +15,7 @@ import com.xinri.po.user.Users;
 import com.xinri.service.ResourceService;
 import com.xinri.service.logs.ILoginLogDetailsService;
 import com.xinri.service.user.ISysUserService;
+import com.xinri.service.user.IUsersService;
 import com.xinri.vo.redis.Module;
 import com.xinri.vo.redis.Redis;
 import org.apache.commons.collections.CollectionUtils;
@@ -44,6 +46,8 @@ public class ShiroDbRealm extends AuthorizingRealm {
     protected ResourceService resourceService;
     @Autowired
     private ISysUserService sysUserService;
+    @Autowired
+    private IUsersService usersService;
 
     @Autowired
     private ILoginLogDetailsService loginLogDetailsService;
@@ -53,7 +57,6 @@ public class ShiroDbRealm extends AuthorizingRealm {
 //    private KnEmployeeDao employeeDao;
 //    @Autowired
 //    private SystemService systemService;
-    @Autowired
     private HttpServletRequest request;
 
     @Autowired
@@ -83,14 +86,31 @@ public class ShiroDbRealm extends AuthorizingRealm {
         if (sysUser != null) {
             byte[] salt = Encodes.decodeHex(sysUser.getSalt());
             SimpleAuthenticationInfo auth;
-            ShiroUser shiroUser=new ShiroUser(sysUser.getId(), sysUser.getAccount(), sysUser.getName(), 1);
+            ShiroUser shiroUser = new ShiroUser(sysUser.getId(), sysUser.getAccount(), sysUser.getName(), 1);
             resourceService.saveToRedis(shiroUser);
             auth = new SimpleAuthenticationInfo(shiroUser,
                     sysUser.getPassword(), ByteSource.Util.bytes(salt), getName());
             this.saveLog(shiroUser);//记录登录日志
             return auth;
         } else {
-            throw new UnknownAccountException();
+            Users user = new Users();
+            user.setIsEffective(0);
+            user.setIsDeleted(0);
+            user.setUserUseType(0);
+            user.setUserNo(username);
+            Users user2 = usersService.get(user);
+            if (user2 != null) {
+                byte[] salt = Encodes.decodeHex(user2.getSalt());
+                SimpleAuthenticationInfo auth;
+                ShiroUser shiroUser = new ShiroUser(user2.getId(), user2.getUserNo(), user2.getName(), 2);
+                resourceService.saveToRedis(shiroUser);
+                auth = new SimpleAuthenticationInfo(shiroUser,
+                        user2.getPassword(), ByteSource.Util.bytes(salt), getName());
+                this.saveLog(shiroUser);//记录登录日志
+                return auth;
+            } else {
+                throw new UnknownAccountException();
+            }
         }
 
 
@@ -194,6 +214,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
             LoginLogs Login=new LoginLogs();
             Login.setUserId(shiroUser.getId()); //用户id
             String ip = SecurityUtils.getSubject().getSession().getHost(); //IP地址
+           // String ip = PathUtil.getIpAddr(request);
             Login.setIpAddress(ip);
             Login.setDataTypeId(Long.valueOf(35));//35 数据库表示登入
             Login.setIsEffective(shiroUser.getType()); //用户类型：1系统管理员，2普通用户

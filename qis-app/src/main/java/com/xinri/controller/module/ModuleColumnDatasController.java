@@ -11,17 +11,18 @@ import com.xinri.service.moduleInfo.*;
 import com.xinri.service.moduleInfo.impl.ModuleInfoesServiceImpl;
 import com.xinri.vo.moduleInfo.RoleModuleInFoColumnDataLineVo;
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.jar.Attributes;
 
 /**
  * 模块 数据列
@@ -95,25 +96,33 @@ public class ModuleColumnDatasController extends BaseController {
      * 创建人 汪震 20180907
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView create(Long id, String[] cols) {
+    public ModelAndView create(Long id, String[] cols, RedirectAttributes attributes) {
+        ModelAndView mv = new ModelAndView("redirect:/module/moduleColumnDatas/index/");
+        Long[] ids = (Long[]) ConvertUtils.convert(cols,Long.class);
+        List<Long> a= moduleInfoColumnDatasService.getColumnDataIds(id);
+        List<Long> beforeIds= new ArrayList<>(Arrays.asList(moduleInfoColumnDatasService.getIds(id,null)));
+        List<Long> afterIds=new ArrayList<>(Arrays.asList(moduleInfoColumnDatasService.getIds(id,Arrays.asList(ids))));
+        beforeIds.removeAll(afterIds);
+        if (CollectionUtils.isNotEmpty(beforeIds)){
+            List<Long> idsByDiff = roleModuleInfoColumnDataHeadsService.getIdsByDiff(beforeIds);
+            if(CollectionUtils.isNotEmpty(idsByDiff)){
+                attributes.addFlashAttribute("message","保存失败");
+                return mv;
+            }
+        }
         ModuleInfoColumnDatas moduleInfoColumnDatas = new ModuleInfoColumnDatas();
         moduleInfoColumnDatas.setModuleInfoId(id);
         moduleInfoColumnDatas.setIsEffective(0);
         moduleInfoColumnDatasService.relate(moduleInfoColumnDatas);
-
-        Long[] ids = (Long[]) ConvertUtils.convert(cols,Long.class);
-        if(ids!=null&&ids.length>0){
-        roleModuleInfoColumnDataHeadsService.deleteByDiff(Arrays.asList(ids),id);
-        }
+        moduleInfoColumnDatas = new ModuleInfoColumnDatas();
         if (cols != null) {
-            for (String col : cols) {
+            for (String per : cols) {
                 moduleInfoColumnDatas.setModuleInfoId(id);
-                moduleInfoColumnDatas.setColumnDataId(Long.valueOf(col));
+                moduleInfoColumnDatas.setColumnDataId(Long.valueOf(per));
                 moduleInfoColumnDatas.setIsEffective(1);
                 moduleInfoColumnDatasService.relate(moduleInfoColumnDatas);
             }
         }
-        ModelAndView mv = new ModelAndView("redirect:/module/moduleColumnDatas/index/");
         return mv;
     }
 

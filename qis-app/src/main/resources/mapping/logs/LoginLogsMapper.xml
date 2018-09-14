@@ -28,10 +28,15 @@
 		<id column="ID" property="id" jdbcType="BIGINT"/>
 		<result column="IP_ADDRESS" property="ipAddress" jdbcType="VARCHAR"/>
 		<result column="USER_ID" property="userId" jdbcType="BIGINT"/>
-		<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
+		<!--<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>-->
+		<result column="CREATED_ON" property="createdTime" jdbcType="TIMESTAMP"/>
 		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
-		<result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+		<result column="USER_NO" property="userNo" jdbcType="VARCHAR"/>
 		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="ACCOUNT" property="account" jdbcType="VARCHAR"/>
+		<result column="SYS_NAME" property="sysName" jdbcType="VARCHAR"/>
+		<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
+		<result column="DATA_TYPE_ID" property="dataTypeId" jdbcType="BIGINT"/>
 	</resultMap>
 
 	<!-- 列定义 -->
@@ -454,36 +459,69 @@
 
 	<!-- 根据VO查询列表可以根据分页进行查询 -->
 	<select id="findListByVo" parameterType="com.xinri.vo.log.LoginLogsVo" resultMap="loginLogsVoResultMap">
+		<!--SELECT-->
+		<!--t1.IP_ADDRESS,-->
+		<!--t1.USER_ID,-->
+		<!--t1.CREATED_ON,-->
+		<!--t1.IS_EFFECTIVE,-->
+		<!--t1.DATA_TYPE_ID-->
+		<!--FROM LOGIN_LOGS t1-->
+		<!--<where>-->
+			<!--<if test="ipAddress != null and ipAddress !=''">-->
+				<!--AND t1.IP_ADDRESS = #{ipAddress}-->
+			<!--</if>-->
+			<!--<if test="userId != null">-->
+				<!--AND t1.USER_ID = #{userId}-->
+			<!--</if>-->
+		<!--</where>-->
+		<!--<choose>-->
+			<!--<when test="page !=null and page.orderBy != null and page.orderBy != ''">-->
+				<!--ORDER BY ${page.orderBy}-->
+			<!--</when>-->
+			<!--<otherwise>-->
+				<!--ORDER BY t1.ID DESC-->
+			<!--</otherwise>-->
+		<!--</choose>-->
+
 		SELECT
-		<!--<include refid="loginLogsColumns" />-->
-		t1.IP_ADDRESS,
+ 		t1.IP_ADDRESS,
 		t1.USER_ID,
 		t1.CREATED_ON,
-		t2.NAME,
-		t2.USER_NAME
+		t1.IS_EFFECTIVE,
+		t1.DATA_TYPE_ID,
+		CASE t1.IS_EFFECTIVE WHEN  '2' THEN t2.NAME
+		WHEN  '1' THEN t3.NAME
+		ELSE '其他' END AS NAME,
+		CASE t1.IS_EFFECTIVE WHEN  '2' THEN t2.USER_NO
+		WHEN  '1' THEN t3.ACCOUNT
+		ELSE '其他' END AS USERNO
 		FROM LOGIN_LOGS t1
-		INNER JOIN USERS t2 ON t1.USER_ID = t2.ID
+		LEFT JOIN USERS t2 ON t1.USER_ID = t2.ID
+		LEFT JOIN SYS_USER t3 ON t1.USER_ID = t3.ID
 		<where>
-			<if test="ipAddress != null and ipAddress !=''">
-				AND t1.IP_ADDRESS = #{ipAddress}
-			</if>
-			<if test="userId != null">
-				AND t1.USER_ID = #{userId}
-			</if>
-			<if test="name != null and name !=''">
-				AND t2.NAME = #{name}
-			</if>
-			<if test="userName != null and userName !=''">
-				AND t2.USER_NAME = #{userName}
-			</if>
+		<if test="ipAddress != null and ipAddress !=''">
+		AND t1.IP_ADDRESS = #{ipAddress}
+		</if>
+		<if test="name != null and name !=''">
+		AND (t2.NAME = #{name} OR t3.NAME = #{name})
+		</if>
+		<if test="userNo != null and userNo !=''">
+		AND (t2.USER_NAME = #{userNo} OR t3.ACCOUNT = #{userNo})
+		</if>
+		<if test="isEffective != null and isEffective !=''">
+		AND t1.IS_EFFECTIVE = #{isEffective}
+		</if>
+		<if test="dataTypeId != null and dataTypeId !=''">
+		AND t1.DATA_TYPE_ID = #{dataTypeId}
+		</if>
 		</where>
 		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY t1.ID DESC
-			</otherwise>
+		<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+		ORDER BY ${page.orderBy}
+		</when>
+		<otherwise>
+		ORDER BY t1.ID DESC
+		</otherwise>
 		</choose>
 	</select>
 

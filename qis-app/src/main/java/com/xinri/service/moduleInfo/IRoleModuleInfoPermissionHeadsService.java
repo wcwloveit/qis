@@ -2,6 +2,7 @@ package com.xinri.service.moduleInfo;
 
 import com.qis.common.service.IBaseService;
 import com.xinri.po.moduleInfo.RoleModuleInfoPermissionHeads;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,6 +22,12 @@ public interface IRoleModuleInfoPermissionHeadsService extends IBaseService<Role
     void deleteByRelateId(List<Long> ids);
 
     void deleteByDiff(List<Long> ids,Long moduleId);
+
+    List<Long> getIdsByDiff(List<Long> ids);
+
+    List<Long> getBeforeIds( Long roleId, Long moduleId);
+
+    List<Long> getAfterIds(Long roleId,List<Long> ids);
 
 }
 

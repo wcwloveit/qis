@@ -36,7 +36,7 @@
     <bean id="shiroFilter" class="com.qis.service.ShiroPermissionFactory">
         <property name="securityManager" ref="securityManager" />
         <property name="loginUrl" value="/login" />
-        <property name="successUrl" value="/" />
+        <property name="successUrl" value="/main" />
 
         <property name="filters">
             <map>

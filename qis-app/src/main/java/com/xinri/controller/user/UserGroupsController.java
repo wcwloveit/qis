@@ -83,16 +83,16 @@ public class UserGroupsController extends BaseController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView save(UserGroups userGroups,
                              RedirectAttributes attributes) {
-        logger.info("新增产品开始");
+        logger.info("新用户组开始");
         ModelAndView mv = new ModelAndView("redirect:/user/userGroup/index"); //重定向
         try {
             userGroupsService.saveOrUpdate(userGroups);
             attributes.addFlashAttribute("success", true);
-            attributes.addFlashAttribute("message", "添加产品成功");
-            logger.info("新增产品完成");
+            attributes.addFlashAttribute("message", "添加用户组成功");
+            logger.info("新增用户组完成");
         } catch (Exception e) {
-            logger.error("新增产品报错：", e);
-            attributes.addFlashAttribute("message", "添加产品报错");
+            logger.error("新增用户组报错：", e);
+            attributes.addFlashAttribute("message", "添加用户组报错");
         }
         return mv;
     }
@@ -119,17 +119,17 @@ public class UserGroupsController extends BaseController {
     
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(UserGroups userGroups, RedirectAttributes attributes) {
-        logger.info("更新产品开始");
+        logger.info("更新用户组开始");
         ModelAndView mv = new ModelAndView("redirect:/user/userGroup/index");
         try {
             userGroups.setIsNewRecord(false);
             userGroupsService.saveOrUpdate(userGroups);
             attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","更新产品成功");
-            logger.info("更新产品完成");
+            attributes.addFlashAttribute("message","更新用户组成功");
+            logger.info("更新用户组完成");
         } catch (Exception e) {
-            logger.error("更新产品报错：", e);
-            attributes.addFlashAttribute("message", "更新产品报错");
+            logger.error("更新用户组报错：", e);
+            attributes.addFlashAttribute("message", "更新用户组报错");
         }
         return mv;
     }

@@ -23,5 +23,10 @@ public interface IRoleModuleInfoColumnDataHeadsService extends IBaseService<Role
 
     void deleteByDiff(List<Long> ids,Long moduleId);
 
+    List<Long> getIdsByDiff(List<Long> ids);
+
+    List<Long> getBeforeIds(Long roleId, Long moduleId);
+
+    List<Long> getAfterIds(Long roleId, List<Long> afterModuleColumnDataIds);
 }
 

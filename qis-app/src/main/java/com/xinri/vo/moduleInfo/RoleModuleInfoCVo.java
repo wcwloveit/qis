@@ -4,7 +4,16 @@ import java.util.List;
 
 public class RoleModuleInfoCVo {
     private Long roleId;
+    private Long moduleId;
     private List<RoleModuleInfoColVo> mList;
+
+    public Long getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(Long moduleId) {
+        this.moduleId = moduleId;
+    }
 
     public Long getRoleId() {
         return roleId;

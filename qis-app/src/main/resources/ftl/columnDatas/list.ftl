@@ -12,11 +12,11 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="${rc.contextPath}/">角色</a>
+                <a href="${rc.contextPath}/">权限</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="#">角色类型</a>
+                <a href="#">数据列</a>
                 <i class="fa fa-angle-right"></i>
             </li>
         </ul>
@@ -28,7 +28,7 @@
     <div class="col-md-12">
         <div class="portlet box green-haze">
             <div class="portlet-title">
-                <div class="caption"><i class="fa fa-cogs"></i>数据类型列表</div>
+                <div class="caption"><i class="fa fa-cogs"></i>数据列列表</div>
                 <div class="actions">
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -299,22 +299,13 @@
                                 type: 'POST',
                                 traditional: true,
                                 success: function (data) {
-                                    console.log(data);
                                     Metronic.stopPageLoading();
-                                    if (data.code == '200') {
-                                        $('#tip').show();
-                                        $('#tip').html('<div class="alert alert-success"><button data-dismiss="alert" class="close">×</button>' + data.msg + '</div>');
-                                        window.setTimeout(function () {
-                                            $('#tip').hide();
-                                        }, 3000);
-                                    } else {
-                                        $('#tip').show();
-                                        $('#tip').html('<div class="alert alert-danger"><button data-dismiss="alert" class="close">×</button>' + data.msg + '</div>');
-                                        window.setTimeout(function () {
-                                            $('#tip').hide();
-                                        }, 3000);
+                                    if(data){
+                                        grid.getDataTable().fnDraw();
+                                        bootbox.alert("操作成功");
+                                    }else{
+                                        bootbox.alert("改权限被关联无法删除");
                                     }
-                                    grid.getDataTable().fnDraw();
                                 },
                                 error: function (error) {
                                     $('#tip').show();
@@ -368,12 +359,13 @@
                                 traditional: true,
                                 success: function (msg) {
                                     Metronic.stopPageLoading();
-                                    if (msg && msg.stat) {
-                                        alertHint('删除成功');
+                                    if(data=="true"){
                                         grid.getDataTable().fnDraw();
-                                    } else {
-                                        bootbox.alert('删除失败');
+                                        bootbox.alert("操作成功");
+                                    }else{
+                                        bootbox.alert("该数据列被关联无法删除");
                                     }
+
                                 }
                             });
                         }

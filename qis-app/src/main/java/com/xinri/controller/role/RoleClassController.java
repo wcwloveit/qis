@@ -49,10 +49,10 @@ public class RoleClassController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<RoleClassesVo> getItemList(DataTable<RoleClassesVo> dt, ServletRequest request){
-        logger.info("获取产品列表开始");
+        logger.info("获取角色类型列表开始");
         Map<String,Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
         DataTable<RoleClassesVo> baseDatas = roleClassesService.findListByVo(dt, searchParams); //查询方法
-        logger.info("获取产品列表结束始");
+        logger.info("获取角色类型列表结束始");
         return baseDatas;
     }
 
@@ -77,16 +77,16 @@ public class RoleClassController extends BaseController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView save(RoleClasses roleClasses,
                              RedirectAttributes attributes) {
-        logger.info("新增产品开始");
+        logger.info("新增角色类型开始");
         ModelAndView mv = new ModelAndView("redirect:/role/roleClass/index"); //重定向
         try {
             roleClassesService.saveOrUpdate(roleClasses);
             attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","添加产品成功");
-            logger.info("新增产品完成");
+            attributes.addFlashAttribute("message","添加角色类型成功");
+            logger.info("新增角色类型完成");
         } catch (Exception e) {
-            logger.error("新增产品报错：", e);
-            attributes.addFlashAttribute("message", "添加产品报错");
+            logger.error("新增角色类型报错：", e);
+            attributes.addFlashAttribute("message", "添加角色类型报错");
         }
         return mv;
     }
@@ -111,17 +111,17 @@ public class RoleClassController extends BaseController {
     
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(RoleClasses roleClasses, RedirectAttributes attributes) {
-        logger.info("更新产品开始");
+        logger.info("更新角色类型开始");
         ModelAndView mv = new ModelAndView("redirect:/role/roleClass/index");
         try {
             roleClasses.setIsNewRecord(false);
             roleClassesService.saveOrUpdate(roleClasses);
             attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","更新产品成功");
-            logger.info("更新产品完成");
+            attributes.addFlashAttribute("message","更新角色类型成功");
+            logger.info("更新角色类型完成");
         } catch (Exception e) {
-            logger.error("更新产品报错：", e);
-            attributes.addFlashAttribute("message", "更新产品报错");
+            logger.error("更新角色类型报错：", e);
+            attributes.addFlashAttribute("message", "更新角色类型报错");
         }
         return mv;
     }

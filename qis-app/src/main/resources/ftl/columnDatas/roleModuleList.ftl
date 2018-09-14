@@ -178,7 +178,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn green ladda-button" data-style="expand-right" onclick="setRefuse();" id = 'sign_org_save'><span class="ladda-label"></span>确定</button>
+                <button class="btn green ladda-button" data-style="expand-right" onclick="join(0);" id = 'sign_org_save'><span class="ladda-label"></span>确定</button>
                 <button class="btn" data-dismiss="modal" aria-hidden="true">返回</button>
             </div>
         </div><!-- /.modal-content -->
@@ -362,7 +362,7 @@
             Metronic.startPageLoading();
             var module = {};
             module.roleId = ${role.id!};
-
+            module.moduleId=${info.id}
             var mList = new Array();
             $(".icheck").each(function(i) {
                 var obj = {};

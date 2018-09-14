@@ -63,10 +63,10 @@ public class productionLinesController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<ProductionLinesVo> getItemList(DataTable<ProductionLinesVo> dt, ServletRequest request){
-        logger.info("获取产品列表开始");
+        logger.info("获取生产线列表开始");
         Map<String,Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
         DataTable<ProductionLinesVo> baseDatas = productionLinesService.findListByVo(dt, searchParams); //查询方法
-        logger.info("获取产品列表结束始");
+        logger.info("获取生产线列表结束始");
         return baseDatas;
     }
 
@@ -161,17 +161,17 @@ public class productionLinesController extends BaseController {
     
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateitemDetail(ProductionLines productionLines, RedirectAttributes attributes) {
-        logger.info("更新产品开始");
+        logger.info("更新生产线开始");
         ModelAndView mv = new ModelAndView("redirect:/production/lines/index");
         try {
             productionLines.setIsNewRecord(false);
             productionLinesService.saveOrUpdate(productionLines);
             attributes.addFlashAttribute("success",true);
-            attributes.addFlashAttribute("message","更新产品成功");
-            logger.info("更新产品完成");
+            attributes.addFlashAttribute("message","更新生产线成功");
+            logger.info("更新生产线完成");
         } catch (Exception e) {
-            logger.error("更新产品报错：", e);
-            attributes.addFlashAttribute("message", "更新产品报错");
+            logger.error("更新生产线报错：", e);
+            attributes.addFlashAttribute("message", "更新生产线报错");
         }
         return mv;
     }

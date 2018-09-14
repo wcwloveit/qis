@@ -5,6 +5,8 @@ import com.xinri.po.moduleInfo.RoleModuleInfoColumnDataLines;
 import com.xinri.vo.moduleInfo.RoleModuleInFoColumnDataLineVo;
 import com.xinri.vo.moduleInfo.RoleModuleInFoPermissionLineVo;
 
+import java.util.List;
+
 /**
  * <p></p>
  * 类名:RoleModuleInfoColumnDataLinesService<br>
@@ -16,5 +18,6 @@ public interface IRoleModuleInfoColumnDataLinesService extends IBaseService<Role
 
     DataTable<RoleModuleInFoColumnDataLineVo> getModulesForRole(DataTable<RoleModuleInFoColumnDataLineVo> dt, Long roleId, Long infoId);
 
+    List<Long> getIdsByDiff(List<Long> beforeIds);
 }
 

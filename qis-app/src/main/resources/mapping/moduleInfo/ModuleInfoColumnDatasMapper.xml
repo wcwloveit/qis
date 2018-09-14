@@ -445,16 +445,32 @@
 		  and is_effective = 1
 	</select>
 	<!--根据模块id和数据列id列表获取关联表id列表-->
+	<!--<select id="getIds" resultType="java.lang.Long">-->
+		<!--select id-->
+		<!--FROM MODULE_INFO_COLUMN_DATAS-->
+		<!--where module_info_id = #{moduleId}-->
+		<!--AND COLUMN_DATA_ID IN-->
+		<!--<foreach item="id" collection="list" index="index" open="("-->
+				 <!--separator="," close=")">-->
+			<!--#{id}-->
+		<!--</foreach>-->
+		<!--and is_effective = 1-->
+	<!--</select>-->
+
 	<select id="getIds" resultType="java.lang.Long">
 		select id
-		FROM MODULE_INFO_COLUMN_DATAS
+		FROM module_info_column_datas
 		where module_info_id = #{moduleId}
-		AND COLUMN_DATA_ID IN
-		<foreach item="id" collection="list" index="index" open="("
-				 separator="," close=")">
-			#{id}
-		</foreach>
-		and is_effective = 1
+		<if test="list != null">
+			AND column_data_ID IN
+			<foreach item="per" collection="list" index="index" open="("
+					 separator="," close=")">
+				#{per}
+			</foreach>
+		</if>
+		<if test="list == null">
+			and is_effective = 1
+		</if>
 	</select>
 	<!--根据模块id获取关联表id数组-->
 	<select id="getIdsByModuleId" parameterType="java.lang.Long" resultType="java.lang.Long">
