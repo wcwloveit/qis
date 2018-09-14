@@ -103,6 +103,8 @@ public class ShiroDbRealm extends AuthorizingRealm {
                 byte[] salt = Encodes.decodeHex(user2.getSalt());
                 SimpleAuthenticationInfo auth;
                 ShiroUser shiroUser = new ShiroUser(user2.getId(), user2.getUserNo(), user2.getName(), 2);
+                shiroUser.setDepId(user2.getDepartmentId());
+                shiroUser.setOrgId(user2.getOrganizationId());
                 resourceService.saveToRedis(shiroUser);
                 auth = new SimpleAuthenticationInfo(shiroUser,
                         user2.getPassword(), ByteSource.Util.bytes(salt), getName());

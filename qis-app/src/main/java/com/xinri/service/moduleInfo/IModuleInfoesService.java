@@ -23,7 +23,7 @@ public interface IModuleInfoesService extends IBaseService<ModuleInfoes> {
 
     List<ModuleInfoes> findListBySysUserId(ModuleInfoes moduleInfoes,Long id);
 
-    Redis getModulesByUserId(Long id);
+    Redis getModulesByUserId(Long userId,Long deptId);
 
     Redis getModulesBySysUserId(Long id);
 

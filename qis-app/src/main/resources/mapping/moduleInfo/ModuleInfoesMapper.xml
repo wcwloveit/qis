@@ -580,8 +580,6 @@
 
 	<resultMap  id="redisResultMap" type="com.xinri.vo.redis.Redis">
 		<result column="USER_NAME" property="loginName" jdbcType="VARCHAR"/>
-		<result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
-		<result column="SALT" property="salt" jdbcType="VARCHAR"/>
 		<collection property="moduleInfoesList" ofType="com.xinri.vo.redis.Module" column="id" javaType="java.util.ArrayList" resultMap="moduleResultMap">
 		</collection>
         <collection property="roles" ofType="com.xinri.po.role.Roles" column="id" javaType="java.util.ArrayList" resultMap="rolesResultMap">
@@ -677,32 +675,40 @@
 	</resultMap>
 
 	<!--根据用户id获取角色及模块信息-->
-	<select id="getModulesByUserId" parameterType="java.lang.Long" resultMap="redisResultMap">
+	<!--根据用户id获取角色及模块信息-->
+	<select id="getModulesByUserId" resultMap="redisResultMap">
 		SELECT
-        distinct
-        <include refid="moduleInfoesColumns" />,
-        <include refid="rolesColumns" />,
-		u.USER_NAME,u.PASSWORD,u.SALT
-		from users u
-		inner join user_user_groups uug on u.id = uug.user_id and uug.is_deleted=0
-		left join departments d on u.department_id=d.id and d.is_deleted=0 and d.is_effective=0
-		left join user_group_departments ugd on d.id = ugd.department_id and ugd.is_deleted=0
-		inner join user_groups ug on ug.id=uug.user_group_id or ug.id=ugd.user_group_id and ug.is_deleted=0 and ug.is_effective=1
-		inner join role_user_groups rug on ug.id=rug.user_group_id and rug.is_deleted=0
-		inner join roles r on rug.role_id=r.id and r.is_deleted=0 and r.is_effective=1
-		inner join role_module_infos rmi on r.id=rmi.role_id and rmi.is_deleted=0 and rmi.is_effective=1
-		inner join module_infoes t on rmi.module_info_id=t.id and t.is_deleted=0 and t.is_effective=1
-		where u.id=#{id}
+		'USER' USER_NAME,
+		<include refid="moduleInfoesColumns" />,
+		<include refid="rolesColumns" />
+		FROM roles r
+		LEFT JOIN role_user_groups rug ON r.id = rug.role_id
+		inner join role_module_infos rmi on r.id=rmi.role_id
+		inner join module_infoes t on rmi.module_info_id=t.id
+		WHERE r.is_deleted = 0
+		AND r.is_effective = 1
+		and rmi.is_deleted=0 and rmi.is_effective=1
+		and t.is_deleted=0 and t.is_effective=1
+		AND rug.user_group_id IN (
+		SELECT user_group_id
+		FROM user_user_groups
+		WHERE user_id = #{userId}
+		AND is_deleted = 0
+		UNION
+		SELECT ugd.user_group_id
+		FROM user_group_departments ugd
+		WHERE ugd.department_id = #{deptId}
+		AND ugd.is_deleted = 0
+		)
 		order BY t.sort asc
 	</select>
-
 	<!--根据系统用户id获取角色及模块信息-->
 	<select id="getModulesBySysUserId" parameterType="java.lang.Long" resultMap="redisResultMap">
 		SELECT
 		distinct
 		<include refid="moduleInfoesColumns" />,
 		<include refid="rolesColumns" />,
-		u.NAME,u.PASSWORD,u.SALT
+		u.NAME USER_NAME
 		from sys_user u
 		inner join roles r on u.roleid=r.id
 		inner join role_module_infos rmi on r.id=rmi.role_id
@@ -715,7 +721,6 @@
 		AND t.is_effective=1
 		AND rmi.is_effective=1
 		order BY t.sort asc
-
 	</select>
 
 </mapper>

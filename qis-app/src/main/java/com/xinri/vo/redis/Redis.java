@@ -11,9 +11,6 @@ public class Redis {
     @Override
     public String toString() {
         return "Redis{" +
-                "loginName='" + loginName + '\'' +
-                ", password='" + password + '\'' +
-                ", salt='" + salt + '\'' +
                 ", moduleInfoesList=" + moduleInfoesList +
                 ", roles=" + roles +
                 '}';
@@ -21,9 +18,6 @@ public class Redis {
 
     private String loginName;
 
-    private String password;
-
-    private String salt;
 
     List<Module> moduleInfoesList;
 
@@ -37,13 +31,7 @@ public class Redis {
         this.loginName = loginName;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public List<Roles> getRoles() {
         return roles;
@@ -53,13 +41,7 @@ public class Redis {
         this.roles = roles;
     }
 
-    public String getSalt() {
-        return salt;
-    }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
 
     public List<Module> getModuleInfoesList() {
         return moduleInfoesList;

@@ -16,7 +16,7 @@ import java.util.List;
 public interface ModuleInfoesMapper extends CrudDao<ModuleInfoes> {
     List<ModuleInfoes> getModulesForRole(List<Long> ids);
 
-    Redis getModulesByUserId(@Param("id") Long id);
+    Redis getModulesByUserId(@Param("userId") Long userId,@Param("deptId") Long deptId);
 
     Redis getModulesBySysUserId(@Param("id") Long id);
 

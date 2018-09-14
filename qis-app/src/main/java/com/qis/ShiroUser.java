@@ -15,11 +15,31 @@ public class ShiroUser implements Serializable{
     public String loginName;
     public String name;
     public Integer type;//1.系统管理员 2.员工
+    public Long orgId;//组织id
+    public Long depId;//部门id，
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public Long getDepId() {
+        return depId;
+    }
+
+    public void setDepId(Long depId) {
+        this.depId = depId;
+    }
+
     public ShiroUser(Long id, String loginName, String name, Integer type){
         this.id=id;
         this.loginName=loginName;
         this.name=name;
         this.type=type;
+
     }
     public Long getId(){
         return id;

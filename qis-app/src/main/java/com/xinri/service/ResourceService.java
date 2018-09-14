@@ -119,7 +119,7 @@ public class ResourceService {
         if (user.type == 1) {
             info = moduleInfoesService.getModulesBySysUserId(user.id);
         } else if (user.type == 2) {
-            info = moduleInfoesService.getModulesByUserId(user.id);
+            info = moduleInfoesService.getModulesByUserId(user.id,user.getDepId());
         }
         if (info == null) return info;
         List<Roles> roles = info.getRoles();
@@ -157,11 +157,11 @@ public class ResourceService {
 
     public static void main(String[] args) {
 
-//        String a = Encodes.encodeHex(Digests.generateSalt(SALT_SIZE));
-//        byte[] hashPassword=Digests.sha1("123456".getBytes(), Encodes.decodeHex(a),HASH_INTERATIONS);
-//        String b =Encodes.encodeHex(hashPassword);
-//        System.out.println(a);
-//        System.out.println(b);
+        String a = Encodes.encodeHex(Digests.generateSalt(SALT_SIZE));
+        byte[] hashPassword=Digests.sha1("1".getBytes(), Encodes.decodeHex(a),HASH_INTERATIONS);
+        String b =Encodes.encodeHex(hashPassword);
+        System.out.println(a);
+        System.out.println(b);
     }
 
     /**
