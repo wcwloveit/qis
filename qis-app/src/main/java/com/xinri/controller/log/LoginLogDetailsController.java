@@ -42,10 +42,10 @@ public class LoginLogDetailsController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public DataTable<LoginLogsVo> getItemList(DataTable<LoginLogsVo> dt, ServletRequest request){
-        logger.info("获取产品列表开始");
+        logger.info("获取登录日志列表开始");
         Map<String,Object> searchParams = Servlets.getParametersStartingWith(request, "search_"); //去除search_
         DataTable<LoginLogsVo> baseDatas = loginLogDetailsService.findListByVo(dt, searchParams); //查询方法
-        logger.info("获取产品列表结束始");
+        logger.info("获取登录日志列表结束始");
         return baseDatas;
     }
 
