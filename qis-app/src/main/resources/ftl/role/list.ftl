@@ -71,7 +71,7 @@
        </p>
    </div>
 </#if>
-
+<input type="hidden" id="roleId">
 <div class="table-container">
     <div class="table-search" id="data_table_search">
 
