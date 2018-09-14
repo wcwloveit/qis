@@ -9,30 +9,27 @@
 
 <div class="actions">
     <div class="btn-group">
-        <div class="fileinput fileinput-new" data-provides="fileinput">
-            <@shiro.hasPermission name="dictionary-dictionary-create">
-                <a class="btn"
-                   href="${rc.contextPath}/dictionary/create">
-                    <i class="fa fa-plus"></i>
-                    <span class="hidden-480">新增</span>
-                </a>
-            </@shiro.hasPermission>
+        <@shiro.hasPermission name="dictionary-dictionary-create">
+            <a class="btn"
+               href="${rc.contextPath}/dictionary/create">
+                <i class="fa fa-plus"></i>
+                <span class="hidden-480">新增</span>
+            </a>
+        </@shiro.hasPermission>
 
-            <@shiro.hasPermission name="dictionary-dictionary-deleteAll">
-                <a href="javascript:void(0)" class="btn">
-                    <i class="fa fa-trash-o"></i>
-                    <span class="hidden-480" onclick="deleteList();">删除</span>
-                </a>
-            </@shiro.hasPermission>
+        <@shiro.hasPermission name="dictionary-dictionary-deleteAll">
+            <a href="javascript:void(0)" class="btn">
+                <i class="fa fa-trash-o"></i>
+                <span class="hidden-480" onclick="deleteList();">删除</span>
+            </a>
+        </@shiro.hasPermission>
 
-            <@shiro.hasPermission name="dictionary-dictionary-export">
-                <a class="btn" href="javascript:exportData();">
-                    <i class="fa fa-download"></i>
-                    <span class="hidden-480">导出</span>
-                </a>
-            </@shiro.hasPermission>
-
-        </div>
+        <@shiro.hasPermission name="dictionary-dictionary-export">
+            <a class="btn" href="javascript:exportData();">
+                <i class="fa fa-download"></i>
+                <span class="hidden-480">导出</span>
+            </a>
+        </@shiro.hasPermission>
     </div>
 </div>
 
@@ -176,7 +173,7 @@
                                  '<a href="${rc.contextPath}/dictionary/update/' + row.id + '" class="btn"  title="编辑" >' +
                                     '<i class="fa fa-edit"></i></a>';
                             </@shiro.hasPermission>
-                            var b = '<a href="${rc.contextPath}/dictionary/baseData/index/' + row.id + '" class="btn"  title="编辑" >' +
+                            var b = '<a href="${rc.contextPath}/dictionary/baseData/index/' + row.id + '" class="btn"  title="树" >' +
                                     '<i class="fa fa-balance-scale"></i></a>';
                             var c = '<a href="javascript:void(0);" onclick="deleteOne(\'' + row.id + '\')" class="btn"  title="删除" >' +
                                     '<i class="fa fa-trash-o"></i></a>';

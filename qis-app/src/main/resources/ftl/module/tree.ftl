@@ -9,271 +9,336 @@
         .vakata-context {
             z-index: 999 !important;
         }
-        .pagination { display: inline-block; padding-left: 0; margin: 20px 0; border-radius: 4px; }
-        .pagination li { display: inline; }
-        .pagination li a { position: relative; float: left; padding: 6px 12px; margin-left: -1px; line-height: 1.428571429; text-decoration: none; background-color: #fff; border: 1px solid #ddd; }
-        .pagination li:first-child a { margin-left: 0; border-bottom-left-radius: 4px; border-top-left-radius: 4px; }
-        .pagination li:last-child a { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
-        .pagination li a:hover, .pagination li a:focus { background-color: #eee; }
-        .pagination .active a, .pagination .active a:hover, .pagination .active a:focus { z-index: 2; color: #fff; cursor: default; background-color: #428bca; border-color: #428bca; }
-        .pagination .disabled a, .pagination .disabled a:hover, .pagination .disabled a:focus { color: #999; cursor: not-allowed; background-color: #fff; border-color: #ddd; }
-        .pagination-lg li a { padding: 10px 16px; font-size: 18px; }
-        .pagination-sm li a, .pagination-sm li span { padding: 5px 10px; font-size: 12px; }
+
+        .pagination {
+            display: inline-block;
+            padding-left: 0;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .pagination li {
+            display: inline;
+        }
+
+        .pagination li a {
+            position: relative;
+            float: left;
+            padding: 6px 12px;
+            margin-left: -1px;
+            line-height: 1.428571429;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        .pagination li:first-child a {
+            margin-left: 0;
+            border-bottom-left-radius: 4px;
+            border-top-left-radius: 4px;
+        }
+
+        .pagination li:last-child a {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .pagination li a:hover, .pagination li a:focus {
+            background-color: #eee;
+        }
+
+        .pagination .active a, .pagination .active a:hover, .pagination .active a:focus {
+            z-index: 2;
+            color: #fff;
+            cursor: default;
+            background-color: #428bca;
+            border-color: #428bca;
+        }
+
+        .pagination .disabled a, .pagination .disabled a:hover, .pagination .disabled a:focus {
+            color: #999;
+            cursor: not-allowed;
+            background-color: #fff;
+            border-color: #ddd;
+        }
+
+        .pagination-lg li a {
+            padding: 10px 16px;
+            font-size: 18px;
+        }
+
+        .pagination-sm li a, .pagination-sm li span {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
-<!--导航菜单栏-->
-<div class="row">
-    <div class="col-md-12">
-        <ul class="page-breadcrumb breadcrumb">
-            <li>
-                <i class="fa fa-home"></i>
-                <a href="#">系统设置</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <a href="${rc.contextPath}/ftl/moduletionary/list">模块</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <a href="${rc.contextPath}/moduleTypes/index">模块列表</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <a href="#">${name?if_exists}</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-        </ul>
+
+<div class="actions">
+    <div class="btn-group">
+        <@shiro.hasPermission name="module-list-create">
+            <a class="btn btn-parent">
+                <i class="fa fa-plus"></i>
+                <span class="hidden-480">新增父节点</span>
+            </a>
+        </@shiro.hasPermission>
+        <@shiro.hasPermission name="module-list-create">
+            <a type="button" class="btn btn-children" disabled="disabled">
+                <i class="fa fa-plus"></i>
+                <span class="hidden-480">新增子节点</span>
+            </a>
+        </@shiro.hasPermission>
+        <@shiro.hasPermission name="module-list-edit">
+            <a type="button" class="btn btn-edit" disabled="disabled">
+                <i class="fa fa-edit"></i>
+                <span class="hidden-480">编辑此节点</span>
+            </a>
+        </@shiro.hasPermission>
+        <@shiro.hasPermission name="module-list-delete">
+            <a type="button" class="btn btn-delete" disabled="disabled">
+                <i class="fa fa-trash-o"></i>
+                <span class="hidden-480">删除此节点</span>
+            </a>
+        </@shiro.hasPermission>
     </div>
 </div>
+
+<!--导航菜单栏-->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="#">
+            <i class="fa fa-chevron-left"></i>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-chevron-right"></i>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-refresh"></i>
+        </a>
+    </li>
+    <li class="vertical-line"></li>
+    <li>
+        <a href="#">系统设置</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <a href="${rc.contextPath}/ftl/moduletionary/list">模块</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <span class="active">模块列表</span>
+    </li>
+</ul>
+
 <!--数据列表-->
-<div class="row">
-    <div class="col-md-4">
-        <div class="portlet light portlet-fit bordered">
-            <div class="portlet-title">
-                <div class="caption"><i class="fa fa-sitemap"></i>模块树</div>
+<div class="QIS-data-list">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="portlet light portlet-fit bordered">
+                <div class="portlet-title">
+                    <div class="caption"><i class="fa fa-sitemap"></i>模块树</div>
+                </div>
+                <div class="portlet-body" id="moduleTree"></div>
             </div>
-            <div class="portlet-body" id="moduleTree"></div>
         </div>
-    </div>
-    <div class="col-md-8">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="portlet light bordered">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="fa fa-square-o"></i>数据信息表单
-                        </div>
-                        <div class="actions">
-                            <div class="btn-group">
-<@shiro.hasPermission name="module-list-create">
-                                <a class="btn green btn-parent">
-                                    <i class="fa fa-plus"></i>
-                                    <span class="hidden-480">新增父节点</span>
-                                </a>
-</@shiro.hasPermission>
-    <@shiro.hasPermission name="module-list-create">
-                                <button type="button" class="btn green btn-children" disabled="disabled">
-                                    <i class="fa fa-plus"></i>
-                                    <span class="hidden-480">新增子节点</span>
-                                </button>
-    </@shiro.hasPermission>
-<@shiro.hasPermission name="module-list-edit">
-                                <button type="button" class="btn blue btn-edit" disabled="disabled">
-                                    <i class="fa fa-edit"></i>
-                                    <span class="hidden-480">编辑此节点</span>
-                                </button>
-</@shiro.hasPermission>
-<@shiro.hasPermission name="module-list-delete">
-                                <button type="button" class="btn red btn-delete" disabled="disabled">
-                                    <i class="fa fa-trash-o"></i>
-                                    <span class="hidden-480">删除此节点</span>
-                                </button>
-</@shiro.hasPermission>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-square-o"></i>数据信息表单
                             </div>
                         </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <form class="form-horizontal" action="${rc.contextPath}/module/save" method="POST"
-                              id="moduleForm">
-                            <input type="hidden" name="id"/>
-                            <input type="hidden" name="pid" value="0"/>
-                            <div class="form-body">
-                                <div class="alert alert-danger display-hide">
-                                    <button class="close" data-close="alert"></button>
-                                    请检查后再提交
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3 nowrap">模块名称<span
-                                                    class="required">*</span></label>
-
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="name"
-                                                           placeholder="请录入模块名称" readonly="true"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                        <div class="portlet-body form">
+                            <form class="form-horizontal" action="${rc.contextPath}/module/save" method="POST"
+                                  id="moduleForm">
+                                <input type="hidden" name="id"/>
+                                <input type="hidden" name="pid" value="0"/>
+                                <div class="form-body">
+                                    <div class="alert alert-danger display-hide">
+                                        <button class="close" data-close="alert"></button>
+                                        请检查后再提交
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">编码<span
-                                                    class="required">*</span></label>
-
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="code"
-                                                           placeholder="请录入编码" readonly="true"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label  class="control-label col-md-3">链接类型</label>
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <select type="hidden" id="menuType" name="menuType" class="form-control" disabled="disabled" placeholder="请选择是菜单还是选项">
-                                                        <option value="0">无</option>
-                                                        <option value="1">内部</option>
-                                                        <option value="2">外部</option>
-
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">链接地址</label>
-
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="linkUrl"
-                                                           placeholder="请录入链接地址" readonly="true"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">父模块</label>
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <select id="parentModuleId" name="parentModuleId" class="form-control" disabled="disabled" placeholder="请录入上级模块编号">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">描述</label>
-
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="descr"
-                                                           placeholder="请录入描述" readonly="true"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label  class="control-label col-md-3">类型</label>
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <select id="isMenu" name="isMenu" class="form-control" disabled="disabled" placeholder="请选择是菜单还是选项">
-                                                        <option value="1">菜单</option>
-                                                        <option value="0">选项</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">是否公开</label>
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <select id="isOpen" name="isOpen" class="form-control" disabled="disabled" placeholder="请选择是否公开">
-                                                        <option value="1">公开</option>
-                                                        <option value="0">不公开</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row ">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">排序</label>
-
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="sort"
-                                                           placeholder="请录入排序号" readonly="true"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group" >
-                                            <label class="control-label col-md-3">图标</label>
-                                            <div class="col-md-7">
-                                                <div class="input-icon right">
-
-                                                    <i class="fa"></i>
-                                                    <input type="text" id="icon" class="form-control" name="icon"
-                                                           placeholder="请选择图标图标" readonly="true"/>
-                                                </div>
-
-                                            </div>
-                                            <span class="input-group-btn">
-                                                    <button id="icon_add" class="btn green"   onclick="showIconModul()" type="button"> 选择</button>
-                                                </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-actions fluid">
                                     <div class="row">
                                         <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 nowrap">模块名称<span
+                                                        class="required">*</span></label>
+
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <input type="text" class="form-control" name="name"
+                                                               placeholder="请录入模块名称" readonly="true"/>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="col-md-offset-3 col-md-9">
-                                                <button type="submit" class="btn green" disabled="disabled">保存</button>
-                                                <button type="button" class="btn default btn-cancel"
-                                                        disabled="disabled">取消
-                                                </button>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">编码<span
+                                                        class="required">*</span></label>
+
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <input type="text" class="form-control" name="code"
+                                                               placeholder="请录入编码" readonly="true"/>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                        </form>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">链接类型</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <select type="hidden" id="menuType" name="menuType"
+                                                                class="form-control" disabled="disabled"
+                                                                placeholder="请选择是菜单还是选项">
+                                                            <option value="0">无</option>
+                                                            <option value="1">内部</option>
+                                                            <option value="2">外部</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">链接地址</label>
+
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <input type="text" class="form-control" name="linkUrl"
+                                                               placeholder="请录入链接地址" readonly="true"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">父模块</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <select id="parentModuleId" name="parentModuleId"
+                                                                class="form-control" disabled="disabled"
+                                                                placeholder="请录入上级模块编号">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">描述</label>
+
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <input type="text" class="form-control" name="descr"
+                                                               placeholder="请录入描述" readonly="true"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">类型</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <select id="isMenu" name="isMenu" class="form-control"
+                                                                disabled="disabled" placeholder="请选择是菜单还是选项">
+                                                            <option value="1">菜单</option>
+                                                            <option value="0">选项</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">是否公开</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <select id="isOpen" name="isOpen" class="form-control"
+                                                                disabled="disabled" placeholder="请选择是否公开">
+                                                            <option value="1">公开</option>
+                                                            <option value="0">不公开</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row ">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">排序</label>
+
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <input type="text" class="form-control" name="sort"
+                                                               placeholder="请录入排序号" readonly="true"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">图标</label>
+                                                <div class="col-md-7">
+                                                    <div class="input-icon right">
+
+                                                        <i class="fa"></i>
+                                                        <input type="text" id="icon" class="form-control" name="icon"
+                                                               placeholder="请选择图标图标" readonly="true"/>
+                                                    </div>
+
+                                                </div>
+                                                <span class="input-group-btn">
+                                                    <button id="icon_add" class="btn btn-primary"
+                                                            onclick="showIconModul()"
+                                                            type="button"> 选择</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions fluid">
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-primary" disabled="disabled">保存
+                                            </button>
+                                            <button type="button" class="btn default btn-cancel"
+                                                    disabled="disabled">取消
+                                            </button>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -285,7 +350,7 @@
     <div class="modal-dialog" style="width:900px;">
         <div class="modal-content">
             <div class="modal-header" style="border-bottom:none;">
-                <button type="button" class="close"  data-dismiss="modal" aria-hidden="true"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body">
                 <div class="row" id="roletableDatas">
@@ -295,7 +360,7 @@
                                 <div class="caption"><i class="fa fa-cogs"></i>图标列表</div>
                                 <div class="actions">
                                     <div class="btn-group">
-                                        <select  class="form-control" id="_dlgCheckIcon" onchange="checkIcon()">
+                                        <select class="form-control" id="_dlgCheckIcon" onchange="checkIcon()">
                                             <option value="new">new</option>
                                             <option value="web-application">web-application</option>
                                             <option value="hand">hand</option>
@@ -486,7 +551,7 @@
                         }
                     }
                 },
-                code:{
+                code: {
                     required: true,
                     remote: {
                         type: "GET",
@@ -568,10 +633,10 @@
             form.resetForm();
             $('input[name=id]').val("");
             $.ajax({
-                url: '${rc.contextPath}/module/get-infos/'+module_id,
+                url: '${rc.contextPath}/module/get-infos/' + module_id,
                 type: 'GET',
                 success: function (msg) {
-                    var data=msg.module;
+                    var data = msg.module;
                     var value = "";
                     for (var i = 0; i < msg.parents.length; i++) {
                         var obj = msg.parents[i];
@@ -644,100 +709,102 @@
         });
 
         /**获取所有的功能****/
-        var currentPage=1; //第几页
-        var pageCount = 32 ; //每页显示多少条记录数据
-        var totalPages=0;
+        var currentPage = 1; //第几页
+        var pageCount = 32; //每页显示多少条记录数据
+        var totalPages = 0;
         //分页查询
-        var queryByPage=function(){
+        var queryByPage = function () {
             Metronic.startPageLoading();
             $.ajax({
-                dataType:"json",
-                cache:true,
-                type:"GET",
+                dataType: "json",
+                cache: true,
+                type: "GET",
                 url: "${rc.contextPath}/assets/global/newIcon.json",
-                traditional:true,
-                success:function(data){
-                    window.
-                    Metronic.stopPageLoading();
+                traditional: true,
+                success: function (data) {
+                    window.Metronic.stopPageLoading();
                     var checkIcon = $("#_dlgCheckIcon").val();
                     data = data[checkIcon];
                     //删除所有子项
                     $("#iconTable").empty();
-                    var total = 0 , str = '';
-                    $.each(data, function(i, n){
-                        str += '<li onclick="addIconImage(\''+n+'\');"><span class="'+n+'" style="font-size:24px;margin:5px auto 10px;display:block"></span><span>'+n+' </span></li>';
-                        total++ ;
+                    var total = 0, str = '';
+                    $.each(data, function (i, n) {
+                        str += '<li onclick="addIconImage(\'' + n + '\');"><span class="' + n + '" style="font-size:24px;margin:5px auto 10px;display:block"></span><span>' + n + ' </span></li>';
+                        total++;
                     });
-                    if(data==null||data==undefined||total==0){
+                    if (data == null || data == undefined || total == 0) {
                         return;
                     }
-                    if(total<=pageCount){
-                        $("#iconPageBar").css({ visibility: "hidden" });
-                    }else{
-                        $("#iconPageBar").css({ visibility: "visible" });
-                        str = '' ;
-                        var start = (currentPage-1)*pageCount ;
-                        var k = 0 ;
-                        $.each(data, function(i, n){
-                            if(i>=start){
-                                str += '<li onclick="addIconImage(\''+n+'\');"><span class="'+n+'" style="font-size:24px;margin:5px auto 10px;display:block"></span><span>'+n+' </span></li>';
-                                k++ ;
+                    if (total <= pageCount) {
+                        $("#iconPageBar").css({visibility: "hidden"});
+                    } else {
+                        $("#iconPageBar").css({visibility: "visible"});
+                        str = '';
+                        var start = (currentPage - 1) * pageCount;
+                        var k = 0;
+                        $.each(data, function (i, n) {
+                            if (i >= start) {
+                                str += '<li onclick="addIconImage(\'' + n + '\');"><span class="' + n + '" style="font-size:24px;margin:5px auto 10px;display:block"></span><span>' + n + ' </span></li>';
+                                k++;
                             }
-                            if(pageCount==k){
+                            if (pageCount == k) {
                                 return false;
                             }
                         });
                     }
-                    $("#iconTable").append(str) ;
+                    $("#iconTable").append(str);
                     //总页数
-                    if(total%pageCount!=0){
-                        totalPages=parseInt(total/pageCount)+1;
-                    }else{
-                        totalPages=total/pageCount;
+                    if (total % pageCount != 0) {
+                        totalPages = parseInt(total / pageCount) + 1;
+                    } else {
+                        totalPages = total / pageCount;
                     }
-                    var options={
-                        currentPage:currentPage,
-                        totalPages:totalPages,
-                        onPageClicked:function(event,originalEvent,type,page){
-                            currentPage=page;
-                            queryByPage(currentPage,pageCount);
+                    var options = {
+                        currentPage: currentPage,
+                        totalPages: totalPages,
+                        onPageClicked: function (event, originalEvent, type, page) {
+                            currentPage = page;
+                            queryByPage(currentPage, pageCount);
                         }
                     }
                     $('#iconPager').bootstrapPaginator(options);
                 },
-                error:function(XMLHttpRequest,textStatus,errorThrown){
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
 //                    bootbox.alert("网络异常,数据不能成功返回");
                 }
             });
         }
         //初始化列表
-        queryByPage(currentPage,pageCount);
+        queryByPage(currentPage, pageCount);
         //翻页
-        $("#gotoMPage").bind("click",function(){
-            if($("#toMPage").val()==null||""==$("#toMPage").val()){
+        $("#gotoMPage").bind("click", function () {
+            if ($("#toMPage").val() == null || "" == $("#toMPage").val()) {
                 bootbox.alert("请输入跳转页码");
                 return;
             }
-            var thisPage=parseInt($("#toMPage").val());
-            if(!( thisPage>0 && thisPage<=totalPages) ){
+            var thisPage = parseInt($("#toMPage").val());
+            if (!(thisPage > 0 && thisPage <= totalPages)) {
                 bootbox.alert("请输入正确跳转页码");
                 return;
             }
-            $('#iconPager').bootstrapPaginator("show",thisPage);
-            currentPage=thisPage;
-            queryByPage(currentPage,pageCount);
+            $('#iconPager').bootstrapPaginator("show", thisPage);
+            currentPage = thisPage;
+            queryByPage(currentPage, pageCount);
         });
-        function showIconModul(){
+
+        function showIconModul() {
             $('#icon_add_div').modal('show');
         }
-        function checkIcon(){
-            this.currentPage=1; //第几页
-            this.pageCount = 32 ; //每页显示多少条记录数据
-            this.totalPages=0;
+
+        function checkIcon() {
+            this.currentPage = 1; //第几页
+            this.pageCount = 32; //每页显示多少条记录数据
+            this.totalPages = 0;
             $('#toMPage').val('');
-            queryByPage(1,32);
+            queryByPage(1, 32);
         }
-        function addIconImage(data){
+
+        function addIconImage(data) {
             $('#icon').val(data);
             $('#icon_add_div').modal('hide');
         }

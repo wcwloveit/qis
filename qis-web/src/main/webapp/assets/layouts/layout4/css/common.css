@@ -190,10 +190,6 @@ a:hover {
     color: #995aff;
 }
 
-.btn, .btn-group, .btn-group-vertical, .caret, .checkbox-inline, .radio-inline {
-    vertical-align: initial;
-}
-
 .breadcrumb {
     padding: 0 0 0 13px;
     border-bottom: 1px solid #e7ecf1;
@@ -359,4 +355,33 @@ table.dataTable td.sorting_1, table.dataTable td.sorting_2, table.dataTable td.s
 
 .page-head .page-title > h1 {
     color: #333333;
+}
+
+.QIS-data-list {
+    padding: 20px;
+}
+
+.QIS-data-list .portlet.light, .QIS-data-list .form-body {
+    padding-bottom: 0;
+}
+
+.btn-primary.disabled,
+.btn-primary.disabled.active,
+.btn-primary.disabled.focus,
+.btn-primary.disabled:active,
+.btn-primary.disabled:focus,
+.btn-primary.disabled:hover,
+.btn-primary[disabled],
+.btn-primary[disabled].active,
+.btn-primary[disabled].focus,
+.btn-primary[disabled]:active,
+.btn-primary[disabled]:focus,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary,
+fieldset[disabled] .btn-primary.active,
+fieldset[disabled] .btn-primary.focus,
+fieldset[disabled] .btn-primary:active,
+fieldset[disabled] .btn-primary:focus,
+fieldset[disabled] .btn-primary:hover {
+    background-color: #338bff;
 }

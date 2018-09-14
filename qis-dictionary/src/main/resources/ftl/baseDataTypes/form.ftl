@@ -17,29 +17,21 @@
           href="${rc.contextPath}/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
     <link rel="stylesheet" type="text/css"
           href="${rc.contextPath}/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css"/>
-
-    <style type="text/css">
-        a.delete {
-            color: #ffffff;
-        }
-    </style>
 </head>
 <body>
 
 <div class="actions">
     <div class="btn-group">
-        <div class="fileinput fileinput-new" data-provides="fileinput">
-            <a class="btn"
-               href="#">
-                <i class="fa fa-check-circle-o"></i>
-                <span class="hidden-480">提交</span>
-            </a>
-            <a class="btn"
-               onclick="javascript:window.location.href='${rc.contextPath}/dictionary/baseDataTypes/index';">
-                <i class="fa fa-times-circle-o"></i>
-                <span class="hidden-480" onclick="deleteList();">取消</span>
-            </a>
-        </div>
+        <a class="btn"
+           href="#">
+            <i class="fa fa-check-circle-o"></i>
+            <span class="hidden-480">提交</span>
+        </a>
+        <a class="btn"
+           onclick="javascript:window.location.href='${rc.contextPath}/dictionary/baseDataTypes/index';">
+            <i class="fa fa-times-circle-o"></i>
+            <span class="hidden-480" onclick="deleteList();">取消</span>
+        </a>
     </div>
 </div>
 
