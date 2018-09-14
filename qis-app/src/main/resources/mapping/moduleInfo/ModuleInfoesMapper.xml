@@ -684,24 +684,16 @@
         <include refid="rolesColumns" />,
 		u.USER_NAME,u.PASSWORD,u.SALT
 		from users u
-		inner join user_user_groups uug on u.id = uug.user_id
-		inner join departments d on u.department_id=d.id
-		left join user_group_departments ugd on d.id = ugd.department_id
-		inner join user_groups ug on ug.id=uug.user_group_id or ug.id=ugd.user_group_id
-		inner join role_user_groups rug on ug.id=rug.user_group_id
-		inner join roles r on rug.role_id=r.id
-		inner join role_module_infos rmi on r.id=rmi.role_id
-		inner join module_infoes t on rmi.module_info_id=t.id
+		inner join user_user_groups uug on u.id = uug.user_id and uug.is_deleted=0
+		left join departments d on u.department_id=d.id and d.is_deleted=0 and d.is_effective=0
+		left join user_group_departments ugd on d.id = ugd.department_id and ugd.is_deleted=0
+		inner join user_groups ug on ug.id=uug.user_group_id or ug.id=ugd.user_group_id and ug.is_deleted=0 and ug.is_effective=1
+		inner join role_user_groups rug on ug.id=rug.user_group_id and rug.is_deleted=0
+		inner join roles r on rug.role_id=r.id and r.is_deleted=0 and r.is_effective=1
+		inner join role_module_infos rmi on r.id=rmi.role_id and rmi.is_deleted=0 and rmi.is_effective=1
+		inner join module_infoes t on rmi.module_info_id=t.id and t.is_deleted=0 and t.is_effective=1
 		where u.id=#{id}
-		and u.is_deleted=0	and uug.is_deleted=0
-		and d.is_deleted=0	and ugd.is_deleted=0
-		and ug.is_deleted=0	and rug.is_deleted=0
-		and r.is_deleted=0	and rmi.is_deleted=0
-		and t.is_deleted=0
-		AND t.is_effective=1
-		AND rmi.is_effective=1
 		order BY t.sort asc
-
 	</select>
 
 	<!--根据系统用户id获取角色及模块信息-->
