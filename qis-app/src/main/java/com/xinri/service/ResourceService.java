@@ -86,7 +86,7 @@ public class ResourceService {
             key = "USER" + user.id;
         }
         String value = redisService.getString(key);
-        if (value == null) {
+        if (value == null||value.equals("null")||value.equals("")) {
             return saveToRedis(user);
         } else {
             JSONObject obj = JSON.parseObject(value);

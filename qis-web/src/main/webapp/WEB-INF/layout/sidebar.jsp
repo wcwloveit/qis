@@ -44,7 +44,8 @@
 	            org.springframework.context.ApplicationContext ctx = org.springframework.web.context.ContextLoader.getCurrentWebApplicationContext();
 	            ResourceService resourceService = (ResourceService)ctx.getBean("resourceService");
 
-	            Redis info = resourceService.getFromRedis(user);
+	            Redis info = new Redis();
+				info = resourceService.getFromRedis(user);
             %>
 	            <li class="nav-item">
 				<a href="${ctx}/main" class="nav-link nav-toggle">
