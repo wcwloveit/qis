@@ -1,0 +1,512 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinri.dao.item.ItemPicMapper">
+	<resultMap id="itemPicResultMap" type="com.xinri.po.item.ItemPic">
+		   <id column="ID" property="id" jdbcType="BIGINT"/>
+	      	<result column="ITEM_ID" property="itemId" jdbcType="BIGINT"/>
+	      	<result column="PARENT_ID" property="parentId" jdbcType="BIGINT"/>
+	      	<result column="PIC_URL" property="picUrl" jdbcType="VARCHAR"/>
+	      	<result column="PIC_SMALL" property="picSmall" jdbcType="VARCHAR"/>
+	      	<result column="PIC_SORT" property="picSort" jdbcType="INTEGER"/>
+	      	<result column="PAGE_CODE" property="pageCode" jdbcType="INTEGER"/>
+	      	<result column="PIC_SIZE" property="picSize" jdbcType="BIGINT"/>
+	      	<result column="PIC_LAYOUT" property="picLayout" jdbcType="VARCHAR"/>
+	      	<result column="CREATED_ON" property="createdOn" jdbcType="TIMESTAMP"/>
+	      	<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+	      	<result column="UPDATED_ON" property="updatedOn" jdbcType="TIMESTAMP"/>
+	      	<result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+	      	<result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER"/>
+	      	<result column="GUID_ID" property="guidId" jdbcType="VARCHAR"/>
+	      	<result column="IS_EFFECTIVE" property="isEffective" jdbcType="INTEGER"/>
+	      	<result column="EFFECTIVE_DATE_START" property="effectiveDateStart" jdbcType="TIMESTAMP"/>
+	      	<result column="EFFECTIVE_DATE_END" property="effectiveDateEnd" jdbcType="TIMESTAMP"/>
+	      	<result column="DESC_FLEX_FIELD1" property="descFlexField1" jdbcType="VARCHAR"/>
+	      	<result column="DESC_FLEX_FIELD2" property="descFlexField2" jdbcType="VARCHAR"/>
+	      	<result column="DESC_FLEX_FIELD3" property="descFlexField3" jdbcType="VARCHAR"/>
+	      	<result column="DESC_FLEX_FIELD4" property="descFlexField4" jdbcType="VARCHAR"/>
+	      	<result column="DESC_FLEX_FIELD5" property="descFlexField5" jdbcType="VARCHAR"/>
+	      	<result column="DESC_FLEX_FIELD6" property="descFlexField6" jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <!-- 列定义 -->
+	<sql id="itemPicColumns">
+	  t.ID,
+	  t.ITEM_ID,
+	  t.PARENT_ID,
+	  t.PIC_URL,
+	  t.PIC_SMALL,
+	  t.PIC_SORT,
+	  t.PAGE_CODE,
+	  t.PIC_SIZE,
+	  t.PIC_LAYOUT,
+	  t.CREATED_ON,
+	  t.CREATED_BY,
+	  t.UPDATED_ON,
+	  t.UPDATED_BY,
+	  t.IS_DELETED,
+	  t.GUID_ID,
+	  t.IS_EFFECTIVE,
+	  t.EFFECTIVE_DATE_START,
+	  t.EFFECTIVE_DATE_END,
+	  t.DESC_FLEX_FIELD1,
+	  t.DESC_FLEX_FIELD2,
+	  t.DESC_FLEX_FIELD3,
+	  t.DESC_FLEX_FIELD4,
+	  t.DESC_FLEX_FIELD5,
+	  t.DESC_FLEX_FIELD6
+  	</sql>
+
+    <!-- 查询条件SQL -->
+	<sql id="whereColumnBySelect">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND t.ID = #{id}
+			</if>
+			<if test="itemId != null">
+				AND t.ITEM_ID = #{itemId}
+			</if>
+			<if test="parentId != null">
+				AND t.PARENT_ID = #{parentId}
+			</if>
+			<if test="picUrl != null and picUrl !=''">
+				AND t.PIC_URL = #{picUrl}
+			</if>
+			<if test="picSmall != null and picSmall !=''">
+				AND t.PIC_SMALL = #{picSmall}
+			</if>
+			<if test="picSort != null">
+				AND t.PIC_SORT = #{picSort}
+			</if>
+			<if test="pageCode != null">
+				AND t.PAGE_CODE = #{pageCode}
+			</if>
+			<if test="picSize != null">
+				AND t.PIC_SIZE = #{picSize}
+			</if>
+			<if test="picLayout != null and picLayout !=''">
+				AND t.PIC_LAYOUT = #{picLayout}
+			</if>
+			<if test="startCreatedOn != null and startCreatedOn !=''">
+				AND <![CDATA[ t.CREATED_ON >=str_to_date(concat(#{startCreatedOn},'00:00:00'),'%Y-%m-%d %T')]]>
+			</if>
+			<if test="endCreatedOn != null and endCreatedOn !=''">
+				AND <![CDATA[ t.CREATED_ON <= str_to_date(concat(#{endCreatedOn}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
+			</if>
+			<if test="createdBy != null and createdBy !=''">
+				AND t.CREATED_BY = #{createdBy}
+			</if>
+			<if test="startUpdatedOn != null and startUpdatedOn !=''">
+				AND <![CDATA[ t.UPDATED_ON >=str_to_date(concat(#{startUpdatedOn},'00:00:00'),'%Y-%m-%d %T')]]>
+			</if>
+			<if test="endUpdatedOn != null and endUpdatedOn !=''">
+				AND <![CDATA[ t.UPDATED_ON <= str_to_date(concat(#{endUpdatedOn}||' 23:59:59','00:00:00'),'%Y-%m-%d %T')]]>
+			</if>
+			<if test="updatedBy != null and updatedBy !=''">
+				AND t.UPDATED_BY = #{updatedBy}
+			</if>
+			<if test="isDeleted != null">
+				AND t.IS_DELETED = #{isDeleted}
+			</if>
+			<if test="guidId != null and guidId !=''">
+				AND t.GUID_ID = #{guidId}
+			</if>
+			<if test="isEffective != null">
+				AND t.IS_EFFECTIVE = #{isEffective}
+			</if>
+			<if test="descFlexField1 != null and descFlexField1 !=''">
+				AND t.DESC_FLEX_FIELD1 = #{descFlexField1}
+			</if>
+			<if test="descFlexField2 != null and descFlexField2 !=''">
+				AND t.DESC_FLEX_FIELD2 = #{descFlexField2}
+			</if>
+			<if test="descFlexField3 != null and descFlexField3 !=''">
+				AND t.DESC_FLEX_FIELD3 = #{descFlexField3}
+			</if>
+			<if test="descFlexField4 != null and descFlexField4 !=''">
+				AND t.DESC_FLEX_FIELD4 = #{descFlexField4}
+			</if>
+			<if test="descFlexField5 != null and descFlexField5 !=''">
+				AND t.DESC_FLEX_FIELD5 = #{descFlexField5}
+			</if>
+			<if test="descFlexField6 != null and descFlexField6 !=''">
+				AND t.DESC_FLEX_FIELD6 = #{descFlexField6}
+			</if>
+		</trim>
+	</sql>
+
+    <!-- 修改字段SQL -->
+	<sql id="whereColumnByUpdate">
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">
+			t.ID = #{id},
+			</if>
+			<if test="itemId != null">
+			t.ITEM_ID = #{itemId},
+			</if>
+			<if test="parentId != null">
+			t.PARENT_ID = #{parentId},
+			</if>
+			<if test="picUrl != null">
+			t.PIC_URL = #{picUrl},
+			</if>
+			<if test="picSmall != null">
+			t.PIC_SMALL = #{picSmall},
+			</if>
+			<if test="picSort != null">
+			t.PIC_SORT = #{picSort},
+			</if>
+			<if test="pageCode != null">
+			t.PAGE_CODE = #{pageCode},
+			</if>
+			<if test="picSize != null">
+			t.PIC_SIZE = #{picSize},
+			</if>
+			<if test="picLayout != null">
+			t.PIC_LAYOUT = #{picLayout},
+			</if>
+			<if test="createdOn != null">
+			t.CREATED_ON = #{createdOn},
+			</if>
+			<if test="createdBy != null">
+			t.CREATED_BY = #{createdBy},
+			</if>
+			<if test="updatedOn != null">
+			t.UPDATED_ON = #{updatedOn},
+			</if>
+			<if test="updatedBy != null">
+			t.UPDATED_BY = #{updatedBy},
+			</if>
+			<if test="isDeleted != null">
+			t.IS_DELETED = #{isDeleted},
+			</if>
+			<if test="guidId != null">
+			t.GUID_ID = #{guidId},
+			</if>
+			<if test="isEffective != null">
+			t.IS_EFFECTIVE = #{isEffective},
+			</if>
+			<if test="effectiveDateStart != null">
+			t.EFFECTIVE_DATE_START = #{effectiveDateStart},
+			</if>
+			<if test="effectiveDateEnd != null">
+			t.EFFECTIVE_DATE_END = #{effectiveDateEnd},
+			</if>
+			<if test="descFlexField1 != null">
+			t.DESC_FLEX_FIELD1 = #{descFlexField1},
+			</if>
+			<if test="descFlexField2 != null">
+			t.DESC_FLEX_FIELD2 = #{descFlexField2},
+			</if>
+			<if test="descFlexField3 != null">
+			t.DESC_FLEX_FIELD3 = #{descFlexField3},
+			</if>
+			<if test="descFlexField4 != null">
+			t.DESC_FLEX_FIELD4 = #{descFlexField4},
+			</if>
+			<if test="descFlexField5 != null">
+			t.DESC_FLEX_FIELD5 = #{descFlexField5},
+			</if>
+			<if test="descFlexField6 != null">
+			t.DESC_FLEX_FIELD6 = #{descFlexField6},
+			</if>
+		</trim>
+	</sql>
+
+    <!-- 根据主键ID获取数据 -->
+	<select id="get" parameterType="com.xinri.po.item.ItemPic" resultMap="itemPicResultMap">
+		SELECT <include refid="itemPicColumns" /> 
+		FROM ITEM_PIC t 
+		WHERE t.ID = #{id}
+	</select>
+    <!-- 查询列表可以根据分页进行查询 -->
+	<select id="findList" parameterType="com.xinri.po.item.ItemPic" resultMap="itemPicResultMap">
+		SELECT
+		<include refid="itemPicColumns" /> 
+		FROM ITEM_PIC t 
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}			
+			</when>
+				<otherwise>
+				ORDER BY t.ID DESC
+				</otherwise>
+			
+		</choose>
+	</select>
+
+    <!-- 查询所有列表 -->
+	<select id="findAllList" parameterType="com.xinri.po.item.ItemPic" resultMap="itemPicResultMap">
+		SELECT
+		<include refid="itemPicColumns" /> 
+		FROM ITEM_PIC t 	
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}			
+			</when>
+				<otherwise>
+				ORDER BY  t.ID DESC
+				</otherwise>
+			
+		</choose>
+		
+		
+	</select>
+
+    <!-- 根据条件查询对象 -->
+	<select id="getByEntity" parameterType="com.xinri.po.item.ItemPic" resultMap="itemPicResultMap">
+		SELECT <include refid="itemPicColumns" /> 
+		FROM ITEM_PIC t 
+		<include refid="whereColumnBySelect"></include>
+	</select>
+	
+    <!-- 新增并设置主键ID至参数对象 -->
+	<insert id="insert" parameterType="com.xinri.po.item.ItemPic">
+
+		INSERT INTO ITEM_PIC
+			(ID, ITEM_ID, PARENT_ID, PIC_URL, PIC_SMALL, PIC_SORT, PAGE_CODE, PIC_SIZE, PIC_LAYOUT, CREATED_ON, CREATED_BY, UPDATED_ON, UPDATED_BY, IS_DELETED, GUID_ID, IS_EFFECTIVE, EFFECTIVE_DATE_START, EFFECTIVE_DATE_END, DESC_FLEX_FIELD1, DESC_FLEX_FIELD2, DESC_FLEX_FIELD3, DESC_FLEX_FIELD4, DESC_FLEX_FIELD5, DESC_FLEX_FIELD6)
+		VALUES
+			(#{id}, #{itemId}, #{parentId}, #{picUrl}, #{picSmall}, #{picSort}, #{pageCode}, #{picSize}, #{picLayout}, #{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy}, #{isDeleted}, #{guidId}, #{isEffective}, #{effectiveDateStart}, #{effectiveDateEnd}, #{descFlexField1}, #{descFlexField2}, #{descFlexField3}, #{descFlexField4}, #{descFlexField5}, #{descFlexField6})
+	</insert>
+    <!-- 新增并设置主键ID判断哪些列不为空时，则进行插入 -->
+	<insert id="insertSelective" parameterType="com.xinri.po.item.ItemPic" useGeneratedKeys="true" keyProperty="id" >
+		
+	    INSERT INTO ITEM_PIC
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="itemId != null">
+				ITEM_ID,
+			</if>
+			<if test="parentId != null">
+				PARENT_ID,
+			</if>
+			<if test="picUrl != null">
+				PIC_URL,
+			</if>
+			<if test="picSmall != null">
+				PIC_SMALL,
+			</if>
+			<if test="picSort != null">
+				PIC_SORT,
+			</if>
+			<if test="pageCode != null">
+				PAGE_CODE,
+			</if>
+			<if test="picSize != null">
+				PIC_SIZE,
+			</if>
+			<if test="picLayout != null">
+				PIC_LAYOUT,
+			</if>
+			<if test="createdOn != null">
+				CREATED_ON,
+			</if>
+			<if test="createdBy != null">
+				CREATED_BY,
+			</if>
+			<if test="updatedOn != null">
+				UPDATED_ON,
+			</if>
+			<if test="updatedBy != null">
+				UPDATED_BY,
+			</if>
+			<if test="isDeleted != null">
+				IS_DELETED,
+			</if>
+			<if test="guidId != null">
+				GUID_ID,
+			</if>
+			<if test="isEffective != null">
+				IS_EFFECTIVE,
+			</if>
+			<if test="effectiveDateStart != null">
+				EFFECTIVE_DATE_START,
+			</if>
+			<if test="effectiveDateEnd != null">
+				EFFECTIVE_DATE_END,
+			</if>
+			<if test="descFlexField1 != null">
+				DESC_FLEX_FIELD1,
+			</if>
+			<if test="descFlexField2 != null">
+				DESC_FLEX_FIELD2,
+			</if>
+			<if test="descFlexField3 != null">
+				DESC_FLEX_FIELD3,
+			</if>
+			<if test="descFlexField4 != null">
+				DESC_FLEX_FIELD4,
+			</if>
+			<if test="descFlexField5 != null">
+				DESC_FLEX_FIELD5,
+			</if>
+			<if test="descFlexField6 != null">
+				DESC_FLEX_FIELD6,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null">
+				#{id,jdbcType=BIGINT},
+		  </if>
+		  <if test="itemId != null">
+				#{itemId,jdbcType=BIGINT},
+		  </if>
+		  <if test="parentId != null">
+				#{parentId,jdbcType=BIGINT},
+		  </if>
+		  <if test="picUrl != null">
+				#{picUrl,jdbcType=VARCHAR},
+		  </if>
+		  <if test="picSmall != null">
+				#{picSmall,jdbcType=VARCHAR},
+		  </if>
+		  <if test="picSort != null">
+				#{picSort,jdbcType=INTEGER},
+		  </if>
+		  <if test="pageCode != null">
+				#{pageCode,jdbcType=INTEGER},
+		  </if>
+		  <if test="picSize != null">
+				#{picSize,jdbcType=BIGINT},
+		  </if>
+		  <if test="picLayout != null">
+				#{picLayout,jdbcType=VARCHAR},
+		  </if>
+		  <if test="createdOn != null">
+				#{createdOn,jdbcType=TIMESTAMP},
+		  </if>
+		  <if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+		  </if>
+		  <if test="updatedOn != null">
+				#{updatedOn,jdbcType=TIMESTAMP},
+		  </if>
+		  <if test="updatedBy != null">
+				#{updatedBy,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isDeleted != null">
+				#{isDeleted,jdbcType=INTEGER},
+		  </if>
+		  <if test="guidId != null">
+				#{guidId,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isEffective != null">
+				#{isEffective,jdbcType=INTEGER},
+		  </if>
+		  <if test="effectiveDateStart != null">
+				#{effectiveDateStart,jdbcType=TIMESTAMP},
+		  </if>
+		  <if test="effectiveDateEnd != null">
+				#{effectiveDateEnd,jdbcType=TIMESTAMP},
+		  </if>
+		  <if test="descFlexField1 != null">
+				#{descFlexField1,jdbcType=VARCHAR},
+		  </if>
+		  <if test="descFlexField2 != null">
+				#{descFlexField2,jdbcType=VARCHAR},
+		  </if>
+		  <if test="descFlexField3 != null">
+				#{descFlexField3,jdbcType=VARCHAR},
+		  </if>
+		  <if test="descFlexField4 != null">
+				#{descFlexField4,jdbcType=VARCHAR},
+		  </if>
+		  <if test="descFlexField5 != null">
+				#{descFlexField5,jdbcType=VARCHAR},
+		  </if>
+		  <if test="descFlexField6 != null">
+				#{descFlexField6,jdbcType=VARCHAR},
+		  </if>
+	    </trim>
+  	</insert>
+
+    <!-- 根据主键ID进行修改 -->
+  	<update id="update" parameterType="com.xinri.po.item.ItemPic">
+		UPDATE ITEM_PIC t 
+		<include refid="whereColumnByUpdate"></include>
+		<where>
+			t.ID = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+
+    <!-- 根据条件进行修改 -->
+	<update id="updateByCondition" parameterType="com.xinri.po.item.ItemPic">
+		UPDATE ITEM_PIC t 
+		<include refid="whereColumnByUpdate"></include>
+		<where>${whereSqlParam}</where>
+	</update>
+
+    <!-- 根据主键ID进行逻辑删除 -->
+	<update id="delete" parameterType="com.xinri.po.item.ItemPic">
+		UPDATE ITEM_PIC t SET 
+		t.IS_DELETED = 1
+		WHERE t.ID = #{id,jdbcType=BIGINT}
+	</update>
+
+    <!-- 根据主键ID进行批量逻辑删除 -->
+	<update id="batchDelete" parameterType="java.util.List">
+		UPDATE ITEM_PIC t SET 
+		t.IS_DELETED = 1
+		WHERE t.ID IN
+		<foreach item="item" collection="list" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+    <!-- 根据条件进行逻辑删除 -->
+	<update id="deleteByEntity" parameterType="com.xinri.po.item.ItemPic">
+		UPDATE ITEM_PIC t SET 
+			t.IS_DELETED = 1
+		<include refid="whereColumnBySelect"/>
+	</update>
+
+    <!-- 根据主键ID进行物理删除 -->
+	<delete id="remove" parameterType="com.xinri.po.item.ItemPic">
+		DELETE FROM ITEM_PIC t 
+		WHERE t.ID = #{id,jdbcType=BIGINT}
+	</delete>
+
+    <!-- 根据主键ID进行批量物理删除 -->
+	<delete id="batchRemove" parameterType="java.util.List">
+		DELETE FROM ITEM_PIC t 
+		WHERE t.ID IN
+		<foreach item="item" collection="list" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <!-- 根据条件进行物理删除 -->
+	<update id="removeByCondition" parameterType="com.xinri.po.item.ItemPic">
+		DELETE FROM ITEM_PIC t 
+		<where>${whereSqlParam}</where>
+	</update>
+
+	<resultMap id="itemPicVoResultMap" type="com.xinri.vo.item.ItemPicVo" extends="itemPicResultMap">
+		<result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP"/>
+		<result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP"/>
+		<result column="isSynchro" property="isSynchro" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<!-- 查询列表可以根据分页进行查询 -->
+	<select id="findListByVo" parameterType="com.xinri.vo.item.ItemPicVo" resultMap="itemPicVoResultMap">
+		SELECT
+		<include refid="itemPicColumns" />,t.created_on CREATED_TIME,t.updated_on UPDATED_TIME,t.IS_DELETED isSynchro
+		FROM ITEM_PIC t
+		<include refid="whereColumnBySelect" />
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY t.ID DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+
+</mapper>

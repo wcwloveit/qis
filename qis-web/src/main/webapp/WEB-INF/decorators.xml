@@ -20,6 +20,10 @@
         <pattern>/userGroup/*</pattern>
         <pattern>/column/*</pattern>
         <pattern>/production/*</pattern>
+        <pattern>/item/*</pattern>
+        <pattern>/itemPic/*</pattern>
+        <pattern>/itemMode/*</pattern>
+        <pattern>/itemColor/*</pattern>
 
     </decorator>
 </decorators>
