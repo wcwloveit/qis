@@ -45,21 +45,21 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                            <@shiro.hasPermission name="production-productionLines-create">
+                            <@shiro.hasPermission name="role-class-create">
                             <a class="btn green btn-outline btn-circle" href="${rc.contextPath}/role/roleClass/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="production-productionLines-deleteAll">
+                            <@shiro.hasPermission name="role-class-deleteAll">
                             <a href="javascript:void(0)" class="btn red btn-outline btn-circle">
                                 <i class="fa fa-trash-o"></i>
                                 <span class="hidden-480"  onclick="deleteList();">批量删除</span>
                             </a>
                             </@shiro.hasPermission>
 
-                            <@shiro.hasPermission name="production-productionLines-export">
+                            <@shiro.hasPermission name="role-class-export">
                             <a class="btn green btn-outline btn-circle" href="javascript:exportData();">
                                 <i class="fa fa-download"></i>
                                 <span class="hidden-480">导出</span>
@@ -308,7 +308,7 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<@shiro.hasPermission name="production-productionLines-edit"><a href="${rc.contextPath}/role/roleClass/update/' + row.id
+                        var a = '<@shiro.hasPermission name="role-class-edit"><a href="${rc.contextPath}/role/roleClass/update/' + row.id
                                 + '" class="btn btn-xs blue  btn-outline btn-circle"  title="编辑" >' +
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';
 
@@ -317,7 +317,7 @@
                                 <#--'<i class="glyphicon glyphicon-picture"></i>产品图片</a>';-->
 
                         //  逻辑删除
-                        var c = '<@shiro.hasPermission name="production-productionLines-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
+                        var c = '<@shiro.hasPermission name="role-class-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
                                 + '\')" class="btn btn-xs red  btn-outline btn-circle"  title="删除" >' +
                                 '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
 

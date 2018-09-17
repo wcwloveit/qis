@@ -45,14 +45,14 @@
                     <div class="btn-group">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
 
-                        <@shiro.hasPermission name="production-productionLines-create">
+                        <@shiro.hasPermission name="production-lines-create">
                             <a class="btn green btn-outline btn-circle" href="${rc.contextPath}/production/lines/create"> <#--跳转新增的URL-->
                                 <i class="fa fa-plus"></i>
                                 <span class="hidden-480">新增</span>
                             </a>
                         </@shiro.hasPermission>
 
-                        <@shiro.hasPermission name="production-productionLines-deleteAll">
+                        <@shiro.hasPermission name="production-lines-deleteAll">
                             <a href="javascript:void(0)" class="btn red btn-outline btn-circle">
                                 <i class="fa fa-trash-o"></i>
                                 <span class="hidden-480"  onclick="deleteList();">批量删除</span>
@@ -267,12 +267,12 @@
 //                    }},
                     {
                         "sTitle": "操作", "sDefaultContent": "", "mRender": function (data, type, row) {
-                        var a = '<@shiro.hasPermission name="production-productionLines-edit"><a href="${rc.contextPath}/production/lines/update/' + row.id
+                        var a = '<@shiro.hasPermission name="production-lines-edit"><a href="${rc.contextPath}/production/lines/update/' + row.id
                                 + '" class="btn btn-xs blue  btn-outline btn-circle"  title="编辑" >' +
                                 '<i class="glyphicon glyphicon-pencil"></i>编辑</a></@shiro.hasPermission>';
 
                         //  逻辑删除
-                        var c = '<@shiro.hasPermission name="production-productionLines-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
+                        var c = '<@shiro.hasPermission name="production-lines-delete"><a href="javascript:void(0);" onclick="deleteOne(\'' + row.id
                                 + '\')" class="btn btn-xs red  btn-outline btn-circle"  title="删除" >' +
                                 '<i class="glyphicon glyphicon-trash"></i>删除</a></@shiro.hasPermission>';
 
