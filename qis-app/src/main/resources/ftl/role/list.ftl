@@ -302,6 +302,15 @@
                         }
                     },
                     {
+                        "sTitle": "状态", "mData": "isEffective", "mRender": function (data, type, row) {
+                            if (data != null && "0" == data) {
+                                return "失效";
+                            }else if(data != null && "1" == data)  {
+                                return "生效";
+                            }
+                        }
+                    },
+                    {
                         "sTitle": "修改时间", "mData": "modifiedOn", "mRender": function (data, type, row) {
                             if (data != null && "" != data) {
                                 return new Date(data).Format("yyyy-MM-dd hh:mm:ss");

@@ -87,6 +87,16 @@
                                 <input type="text" class="form-control" name="descr" id="descr" value="${role.desc?if_exists}"/>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="inputWarning">状态<span class="required">*</span></label>
+                            <div class="col-md-4">
+                                <select class="form-control" name="isEffective" id="isEffective">
+                                    <option value="">请选择一个角色</option>
+                                    <option value="1" <#if role.isEffective==1>selected="selected"</#if>>生效</option>
+                                    <option value="0" <#if role.isEffective==0>selected="selected"</#if>>失效</option>
+                                </select>
+                            </div>
+                        </div>
                         <h3 class="form-section">拥有模块</h3>
                         <div class="form-group">
                             <label class="control-label col-md-3" for="inputWarning">拥有模块<span class="required">*</span></label>
