@@ -1,7 +1,4 @@
 package com.xinri.controller.item;
-
-
-
 import com.app.api.DataTable;
 import com.qis.common.web.BaseController;
 import com.qis.common.web.Servlets;
@@ -28,7 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 @Controller
 @RequestMapping(value="/itemPic")
 public class ItemPicController extends BaseController {

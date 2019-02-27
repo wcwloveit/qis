@@ -75,9 +75,6 @@
 </div>
 </div>
 
-
-
-
 <div class="modal fade" id="createModals"  tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

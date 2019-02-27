@@ -68,7 +68,7 @@ public abstract class BaseController {
 //		}catch(ConstraintViolationException ex){
 //			List<String> list = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
 //			list.add(0, "数据验证失败：");
-//			//addMessage(model, list.toArray(new String[]{}));待完善
+//			addMessage(model, list.toArray(new String[]{}));//待完善
 //			return false;
 //		}
 //		return true;

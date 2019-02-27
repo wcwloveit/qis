@@ -50,7 +50,6 @@
 //                    $('#chooseModals',parent.document).modal('hidden');
                 },
                 error:function(error){
-
                 }
             });
         }
